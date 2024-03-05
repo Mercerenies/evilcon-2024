@@ -9,3 +9,4 @@ var card_type: CardType = null:
 func _update_display() -> void:
     $TitleLabel.text = card_type.get_title()
     $TextLabel.text = card_type.get_text()
+    $TextLabel.add_theme_font_override("font", card_type.get_text_font())

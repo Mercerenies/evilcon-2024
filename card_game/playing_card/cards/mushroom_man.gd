@@ -11,3 +11,7 @@ func get_title() -> String:
 
 func get_text() -> String:
     return "An adorable little mushroom. He doesn't look too threatening."
+
+
+func is_text_flavor() -> bool:
+    return true
