@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://d1hh31lpc0qp6"]
+
+[ext_resource type="Script" path="res://card_game/playing_card/playing_card_display/playing_card_display.gd" id="1_ctuju"]
+[ext_resource type="PackedScene" uid="uid://bnpua7ivul3vs" path="res://card_game/playing_card/playing_card_display/card_frame/card_frame.tscn" id="1_titw6"]
+[ext_resource type="Theme" uid="uid://e72ukg4v02e7" path="res://card_game/playing_card/playing_card_display/card_display_theme.tres" id="2_7d3ug"]
+
+[node name="PlayingCardDisplay" type="Node2D"]
+script = ExtResource("1_ctuju")
+
+[node name="CardFrame" parent="." instance=ExtResource("1_titw6")]
+
+[node name="TitleLabel" type="Label" parent="."]
+offset_left = -111.0
+offset_top = -139.0
+offset_right = 102.0
+offset_bottom = -106.0
+theme = ExtResource("2_7d3ug")
+theme_type_variation = &"TitleLabel"
+text = "Card Title"
+
+[node name="TextLabel" type="Label" parent="."]
+offset_left = -137.0
+offset_top = 56.0
+offset_right = 142.0
+offset_bottom = 142.0
+theme = ExtResource("2_7d3ug")
+text = "Card Description"
+autowrap_mode = 3

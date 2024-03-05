@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://bhgmsspndgbym"]
+
+[ext_resource type="Texture2D" uid="uid://cpk0py50dxwa1" path="res://card_game/playing_card/playing_card_display/card_picture/card_picture.png" id="1_cr4k8"]
+
+[node name="CardPicture" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_cr4k8")
+hframes = 10
+vframes = 15

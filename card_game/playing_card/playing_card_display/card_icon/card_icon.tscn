@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://dhi813hsu46i6"]
+
+[ext_resource type="Script" path="res://card_game/playing_card/playing_card_display/card_icon/card_icon.gd" id="1_g60wx"]
+[ext_resource type="Texture2D" uid="uid://dadtmrmchxr8g" path="res://card_game/playing_card/playing_card_display/card_icon/card_icon.png" id="2_ytflh"]
+
+[node name="CardIcon" type="Node2D"]
+script = ExtResource("1_g60wx")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_ytflh")
+hframes = 5
+vframes = 5

@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://bnpua7ivul3vs"]
+
+[ext_resource type="Script" path="res://card_game/playing_card/playing_card_display/card_frame/card_frame.gd" id="1_o4l3v"]
+[ext_resource type="Texture2D" uid="uid://bayg1tkw16271" path="res://card_game/playing_card/playing_card_display/card_frame/card_frame.png" id="1_w2apm"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8hq2o"]
+size = Vector2(300, 382)
+
+[node name="CardFrame" type="Node2D"]
+script = ExtResource("1_o4l3v")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_w2apm")
+hframes = 4
+vframes = 2
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_8hq2o")
