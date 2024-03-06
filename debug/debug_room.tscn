@@ -8,3 +8,6 @@ script = ExtResource("1_jdag2")
 
 [node name="PlayingCardDisplay" parent="." instance=ExtResource("2_fevnx")]
 position = Vector2(207, 273)
+
+[node name="PlayingCardDisplay2" parent="." instance=ExtResource("2_fevnx")]
+position = Vector2(727, 269)

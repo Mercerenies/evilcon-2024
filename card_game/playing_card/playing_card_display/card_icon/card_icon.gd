@@ -1,4 +1,8 @@
+@tool
 extends Node2D
+
+const ICON_WIDTH = 28
+const ICON_HEIGHT = 28
 
 enum Frame {
     EVIL_STAR = 0,
@@ -22,9 +26,10 @@ enum Frame {
     CARDS = 18,
     MONEY = 19,
     SONG = 20,
+    LIMITED = 21,
 }
 
-var frame: int:
+var frame: int = 0:
     get:
         return $Sprite2D.frame
     set(v):

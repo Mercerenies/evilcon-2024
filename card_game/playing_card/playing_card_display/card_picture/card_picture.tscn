@@ -1,8 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://bhgmsspndgbym"]
+[gd_scene load_steps=3 format=3 uid="uid://bhgmsspndgbym"]
 
 [ext_resource type="Texture2D" uid="uid://cpk0py50dxwa1" path="res://card_game/playing_card/playing_card_display/card_picture/card_picture.png" id="1_cr4k8"]
+[ext_resource type="Script" path="res://card_game/playing_card/playing_card_display/card_picture/card_picture.gd" id="1_yj2li"]
 
 [node name="CardPicture" type="Node2D"]
+script = ExtResource("1_yj2li")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_cr4k8")
