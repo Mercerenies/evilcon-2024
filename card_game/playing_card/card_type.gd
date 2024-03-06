@@ -27,6 +27,11 @@ func get_picture_index() -> int:
     return 0
 
 
+func get_rarity() -> int:
+    push_warning("Forgot to override get_rarity!")
+    return 0
+
+
 func get_icon_row() -> Array:
     if is_limited():
         return [CardIcon.Frame.LIMITED]

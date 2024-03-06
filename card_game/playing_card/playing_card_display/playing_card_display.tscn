@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://d1hh31lpc0qp6"]
+[gd_scene load_steps=7 format=3 uid="uid://d1hh31lpc0qp6"]
 
 [ext_resource type="Script" path="res://card_game/playing_card/playing_card_display/playing_card_display.gd" id="1_ctuju"]
 [ext_resource type="PackedScene" uid="uid://bnpua7ivul3vs" path="res://card_game/playing_card/playing_card_display/card_frame/card_frame.tscn" id="1_titw6"]
 [ext_resource type="Theme" uid="uid://e72ukg4v02e7" path="res://card_game/playing_card/playing_card_display/card_display_theme.tres" id="2_7d3ug"]
 [ext_resource type="PackedScene" uid="uid://brk2nqbiy5ofr" path="res://card_game/playing_card/playing_card_display/card_icon_row/card_icon_row.tscn" id="4_o5fv1"]
 [ext_resource type="PackedScene" uid="uid://bhgmsspndgbym" path="res://card_game/playing_card/playing_card_display/card_picture/card_picture.tscn" id="5_58xf2"]
+[ext_resource type="PackedScene" uid="uid://dhi813hsu46i6" path="res://card_game/playing_card/playing_card_display/card_icon/card_icon.tscn" id="6_yw3j3"]
 
 [node name="PlayingCardDisplay" type="Node2D"]
 script = ExtResource("1_ctuju")
@@ -46,3 +47,6 @@ text = "(Card Type)"
 
 [node name="CardPicture" parent="." instance=ExtResource("5_58xf2")]
 position = Vector2(1, -9)
+
+[node name="CardIcon" parent="." instance=ExtResource("6_yw3j3")]
+position = Vector2(-116, 157)

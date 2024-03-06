@@ -15,6 +15,8 @@ func _update_display() -> void:
     $ArchetypesRow.icons = card_type.get_icon_row()
     $CostRow.icons = Util.filled_array(CardIcon.Frame.EVIL_STAR, card_type.get_star_cost())
     $CardPicture.frame = card_type.get_picture_index()
+    $CardIcon.frame = Rarity.to_icon_index(card_type.get_rarity())
+    $CardFrame.frame = Rarity.to_frame_index(card_type.get_rarity())
 
     var archetypes_rect = $ArchetypesRow.get_rect()
     $ArchetypesTextLabel.position.x = archetypes_rect.end.x

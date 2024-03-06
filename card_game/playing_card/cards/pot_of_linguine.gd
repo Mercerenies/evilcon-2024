@@ -23,3 +23,7 @@ func get_picture_index() -> int:
 
 func is_limited() -> bool:
     return true
+
+
+func get_rarity() -> int:
+    return Rarity.UNCOMMON

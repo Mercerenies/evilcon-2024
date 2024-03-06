@@ -27,3 +27,7 @@ func get_picture_index() -> int:
 
 func get_archetypes() -> Array:
     return [Archetype.FUNGUS]
+
+
+func get_rarity() -> int:
+    return Rarity.COMMON
