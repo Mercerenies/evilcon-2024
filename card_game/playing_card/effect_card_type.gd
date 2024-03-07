@@ -17,3 +17,7 @@ func get_archetypes_row_text() -> String:
         return "(Effect / Ongoing)"
     else:
         return "(Effect)"
+
+
+func get_stats_text() -> String:
+    return ""

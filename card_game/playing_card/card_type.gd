@@ -44,6 +44,11 @@ func get_star_cost() -> int:
     return 0
 
 
+func get_stats_text() -> String:
+    push_warning("Forgot to override get_stats_text!")
+    return ""
+
+
 func is_text_flavor() -> bool:
     return false
 

@@ -50,3 +50,17 @@ position = Vector2(1, -9)
 
 [node name="CardIcon" parent="." instance=ExtResource("6_yw3j3")]
 position = Vector2(-116, 157)
+
+[node name="StatsLabel" type="Label" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = 52.0
+offset_top = 149.0
+offset_right = 119.0
+offset_bottom = 172.0
+grow_horizontal = 0
+size_flags_horizontal = 8
+theme = ExtResource("2_7d3ug")
+text = "Card Stats"
+horizontal_alignment = 2

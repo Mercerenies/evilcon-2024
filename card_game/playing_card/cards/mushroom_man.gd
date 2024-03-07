@@ -25,6 +25,14 @@ func get_picture_index() -> int:
     return 1
 
 
+func get_base_level() -> int:
+    return 1
+
+
+func get_base_morale() -> int:
+    return 1
+
+
 func get_archetypes() -> Array:
     return [Archetype.FUNGUS]
 

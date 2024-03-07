@@ -9,3 +9,17 @@ func get_archetypes() -> Array:
 
 func get_icon_row() -> Array:
     return super.get_icon_row() + get_archetypes().map(Archetype.to_icon_index)
+
+
+func get_base_level() -> int:
+    push_warning("Forgot to override get_base_level!")
+    return 0
+
+
+func get_base_morale() -> int:
+    push_warning("Forgot to override get_base_morale!")
+    return 0
+
+
+func get_stats_text() -> String:
+    return "Lvl %s / %s Mor" % [get_base_level(), get_base_morale()]
