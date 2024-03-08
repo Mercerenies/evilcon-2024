@@ -8,4 +8,9 @@ script = ExtResource("1_x00h6")
 
 [node name="CardContainer" parent="." instance=ExtResource("2_4a0fb")]
 
+[node name="AllCards" type="Node2D" parent="."]
+
+[node name="DebugVisualRect" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(-1000, -193, 1000, -193, 1000, 193, -1000, 193)
+
 [connection signal="cards_modified" from="CardContainer" to="." method="_on_card_container_cards_modified"]

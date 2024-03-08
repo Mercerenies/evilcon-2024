@@ -6,7 +6,7 @@ extends Node
 
 signal cards_modified
 
-@export_enum("Card", "CardType") var contained_type = "Card"
+@export_enum("Card", "CardType") var contained_type = "CardType"
 
 var _array: Array = []
 
@@ -47,10 +47,13 @@ func peek_card(index: int = -1):
     return _array[index]
 
 
-func pop_card():
-    var top_card = _array.pop_back()
+func pop_card(index: int = -1):
+    if index < 0:
+        index += len(_array)
+    var card = _array[index]
+    _array.remove_at(index)
     cards_modified.emit()
-    return top_card
+    return card
 
 
 func push_card(card):

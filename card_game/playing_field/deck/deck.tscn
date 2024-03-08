@@ -9,7 +9,6 @@
 script = ExtResource("1_73yum")
 
 [node name="CardContainer" parent="." instance=ExtResource("2_w0w5c")]
-contained_type = "CardType"
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(0.25, 0.25)
