@@ -1,9 +1,12 @@
-[gd_scene load_steps=5 format=3 uid="uid://pxp7u44hyyv2"]
+[gd_scene load_steps=8 format=3 uid="uid://pxp7u44hyyv2"]
 
 [ext_resource type="Texture2D" uid="uid://bynkbt50b1evw" path="res://card_game/playing_field/card_mat/card_mat.png" id="1_3fl7o"]
 [ext_resource type="Script" path="res://card_game/playing_field/playing_field.gd" id="1_cgwfb"]
 [ext_resource type="Texture2D" uid="uid://ba6n74del1dnm" path="res://card_game/playing_field/card_mat/player_corner_mat.png" id="2_2fr12"]
 [ext_resource type="PackedScene" uid="uid://d06m06mq1io2n" path="res://card_game/playing_field/deck/deck.tscn" id="3_5hleg"]
+[ext_resource type="PackedScene" uid="uid://7aew13ponkej" path="res://card_game/playing_field/card_strip/card_strip.tscn" id="5_dckxn"]
+[ext_resource type="PackedScene" uid="uid://d1hh31lpc0qp6" path="res://card_game/playing_card/playing_card_display/playing_card_display.tscn" id="6_dwxxq"]
+[ext_resource type="PackedScene" uid="uid://cysmxvy2tf6p7" path="res://card_game/playing_card/hidden_card_display/hidden_card_display.tscn" id="7_878nt"]
 
 [node name="PlayingField" type="Node2D"]
 script = ExtResource("1_cgwfb")
@@ -21,6 +24,11 @@ texture = ExtResource("2_2fr12")
 [node name="BottomDeck" parent="." instance=ExtResource("3_5hleg")]
 position = Vector2(164, 701)
 
+[node name="BottomHand" parent="." instance=ExtResource("5_dckxn")]
+position = Vector2(520, 727)
+scale = Vector2(0.25, 0.25)
+card_display_scene = ExtResource("6_dwxxq")
+
 [node name="TopCornerMat" type="Sprite2D" parent="."]
 position = Vector2(1076, -106)
 scale = Vector2(0.717731, 0.717731)
@@ -28,3 +36,11 @@ texture = ExtResource("2_2fr12")
 
 [node name="TopDeck" parent="." instance=ExtResource("3_5hleg")]
 position = Vector2(860, 75)
+
+[node name="TopHand" parent="." instance=ExtResource("5_dckxn")]
+position = Vector2(520, 41)
+rotation = 3.14159
+scale = Vector2(0.25, 0.25)
+card_display_scene = ExtResource("7_878nt")
+
+[node name="AnimationLayer" type="Node2D" parent="."]
