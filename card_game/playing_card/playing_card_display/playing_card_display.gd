@@ -23,3 +23,11 @@ func _update_display() -> void:
     var archetypes_rect = $ArchetypesRow.get_rect()
     $ArchetypesTextLabel.position.x = archetypes_rect.end.x
     $ArchetypesTextLabel.text = card_type.get_archetypes_row_text()
+
+
+func set_card(card):
+    if card is Card:
+        card_type = card.card_type
+    else:
+        card_type = card
+    _update_display()
