@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://pxp7u44hyyv2"]
+
+[ext_resource type="Texture2D" uid="uid://bynkbt50b1evw" path="res://card_game/playing_field/card_mat/card_mat.png" id="1_3fl7o"]
+
+[node name="PlayingField" type="Node2D"]
+
+[node name="CardMat" type="Sprite2D" parent="."]
+position = Vector2(493, 354)
+scale = Vector2(0.717731, 0.717731)
+texture = ExtResource("1_3fl7o")

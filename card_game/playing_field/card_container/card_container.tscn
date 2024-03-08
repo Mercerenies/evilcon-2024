@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://h5g8x0023oq0"]
+
+[ext_resource type="Script" path="res://card_game/playing_field/card_container/card_container.gd" id="1_qeldo"]
+
+[node name="CardContainer" type="Node"]
+script = ExtResource("1_qeldo")

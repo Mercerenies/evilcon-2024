@@ -18,6 +18,7 @@ func _update_display() -> void:
     $CardIcon.frame = Rarity.to_icon_index(card_type.get_rarity())
     $CardFrame.frame = Rarity.to_frame_index(card_type.get_rarity())
     $StatsLabel.text = card_type.get_stats_text()
+    $IdLabel.text = "(Unique ID: %s)" % card_type.get_id()
 
     var archetypes_rect = $ArchetypesRow.get_rect()
     $ArchetypesTextLabel.position.x = archetypes_rect.end.x
