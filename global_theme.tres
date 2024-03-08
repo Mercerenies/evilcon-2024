@@ -1,0 +1,12 @@
+[gd_resource type="Theme" load_steps=3 format=3 uid="uid://bqxbmpg0ub86d"]
+
+[ext_resource type="FontFile" uid="uid://dydkaj4vrx6dq" path="res://fonts/Maximum Impact.ttf" id="1_cc4il"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_br33g"]
+bg_color = Color(0.545098, 0.545098, 0.545098, 1)
+
+[resource]
+OverlayLabel/base_type = &"Label"
+OverlayLabel/colors/font_color = Color(1, 1, 1, 1)
+OverlayLabel/fonts/font = ExtResource("1_cc4il")
+OverlayLabel/styles/normal = SubResource("StyleBoxFlat_br33g")

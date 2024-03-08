@@ -1,13 +1,9 @@
 [gd_scene load_steps=3 format=3 uid="uid://b4btsmsqpgldt"]
 
 [ext_resource type="Script" path="res://debug/debug_room.gd" id="1_jdag2"]
-[ext_resource type="PackedScene" uid="uid://d1hh31lpc0qp6" path="res://card_game/playing_card/playing_card_display/playing_card_display.tscn" id="2_fevnx"]
+[ext_resource type="PackedScene" uid="uid://pxp7u44hyyv2" path="res://card_game/playing_field/playing_field.tscn" id="2_ucbm5"]
 
 [node name="DebugRoom" type="Node2D"]
 script = ExtResource("1_jdag2")
 
-[node name="PlayingCardDisplay" parent="." instance=ExtResource("2_fevnx")]
-position = Vector2(207, 273)
-
-[node name="PlayingCardDisplay2" parent="." instance=ExtResource("2_fevnx")]
-position = Vector2(727, 269)
+[node name="PlayingField" parent="." instance=ExtResource("2_ucbm5")]
