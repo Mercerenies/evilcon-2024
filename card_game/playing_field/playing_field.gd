@@ -28,9 +28,9 @@ func get_hand(player: StringName):
 
 func get_minion_row(player: StringName):
     if player == CardPlayer.BOTTOM:
-        return $BottomMinionRow
+        return $BottomMinionStrip
     elif player == CardPlayer.TOP:
-        return $TopMinionRow
+        return $TopMinionStrip
     else:
         push_error("Bad card player %s" % player)
         return null
@@ -38,9 +38,9 @@ func get_minion_row(player: StringName):
 
 func get_effect_row(player: StringName):
     if player == CardPlayer.BOTTOM:
-        return $BottomEffectRow
+        return $BottomEffectStrip
     elif player == CardPlayer.TOP:
-        return $TopEffectRow
+        return $TopEffectStrip
     else:
         push_error("Bad card player %s" % player)
         return null

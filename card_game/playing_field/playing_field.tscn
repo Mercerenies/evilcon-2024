@@ -29,12 +29,12 @@ position = Vector2(520, 727)
 scale = Vector2(0.25, 0.25)
 card_display_scene = ExtResource("6_bd5kg")
 
-[node name="BottomEffectRow" parent="." instance=ExtResource("5_dckxn")]
+[node name="BottomEffectStrip" parent="." instance=ExtResource("5_dckxn")]
 position = Vector2(520, 580)
 scale = Vector2(0.25, 0.25)
 card_display_scene = ExtResource("6_bd5kg")
 
-[node name="BottomMinionRow" parent="." instance=ExtResource("5_dckxn")]
+[node name="BottomMinionStrip" parent="." instance=ExtResource("5_dckxn")]
 position = Vector2(520, 460)
 scale = Vector2(0.25, 0.25)
 card_display_scene = ExtResource("6_bd5kg")
@@ -53,13 +53,13 @@ rotation = 3.14159
 scale = Vector2(0.25, 0.25)
 card_display_scene = ExtResource("7_878nt")
 
-[node name="TopEffectRow" parent="." instance=ExtResource("5_dckxn")]
+[node name="TopEffectStrip" parent="." instance=ExtResource("5_dckxn")]
 position = Vector2(520, 180)
 rotation = -3.14159
 scale = Vector2(0.25, 0.25)
 card_display_scene = ExtResource("6_bd5kg")
 
-[node name="TopMinionRow" parent="." instance=ExtResource("5_dckxn")]
+[node name="TopMinionStrip" parent="." instance=ExtResource("5_dckxn")]
 position = Vector2(520, 300)
 rotation = -3.14159
 scale = Vector2(0.25, 0.25)
@@ -72,7 +72,7 @@ z_index = 10
 z_index = 20
 
 [connection signal="card_added" from="BottomHand" to="." method="_on_bottom_hand_card_added"]
-[connection signal="card_added" from="BottomEffectRow" to="." method="_on_bottom_hand_card_added"]
-[connection signal="card_added" from="BottomMinionRow" to="." method="_on_bottom_hand_card_added"]
-[connection signal="card_added" from="TopEffectRow" to="." method="_on_bottom_hand_card_added"]
-[connection signal="card_added" from="TopMinionRow" to="." method="_on_bottom_hand_card_added"]
+[connection signal="card_added" from="BottomEffectStrip" to="." method="_on_bottom_hand_card_added"]
+[connection signal="card_added" from="BottomMinionStrip" to="." method="_on_bottom_hand_card_added"]
+[connection signal="card_added" from="TopEffectStrip" to="." method="_on_bottom_hand_card_added"]
+[connection signal="card_added" from="TopMinionStrip" to="." method="_on_bottom_hand_card_added"]
