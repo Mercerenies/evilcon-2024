@@ -17,7 +17,7 @@ scale = Vector2(0.717731, 0.717731)
 texture = ExtResource("1_3fl7o")
 
 [node name="BottomCornerMat" type="Sprite2D" parent="."]
-position = Vector2(-55, 831)
+position = Vector2(-55, 781)
 scale = Vector2(0.717731, 0.717731)
 texture = ExtResource("2_2fr12")
 
@@ -40,7 +40,7 @@ scale = Vector2(0.25, 0.25)
 card_display_scene = ExtResource("6_bd5kg")
 
 [node name="TopCornerMat" type="Sprite2D" parent="."]
-position = Vector2(1076, -106)
+position = Vector2(1076, -20)
 scale = Vector2(0.717731, 0.717731)
 texture = ExtResource("2_2fr12")
 
