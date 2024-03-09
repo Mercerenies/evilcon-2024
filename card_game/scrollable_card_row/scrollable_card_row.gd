@@ -53,6 +53,8 @@ func _update_rect() -> void:
         Vector2(rect.end     .x, rect.end     .y),
         Vector2(rect.end     .x, rect.position.y),
     ])
+    $ButtonsRow.position.x = rect.position.x + rect.size.x / 2
+    $ButtonsRow.position.y = rect.end.y - margin_below / 2
 
 
 func _update_cards() -> void:
@@ -69,6 +71,15 @@ func _update_cards() -> void:
         card_node.on_added_to_row(self)
         card_added.emit(card_node)
         pos.x += card_distance
+
+
+func clear_buttons() -> void:
+    Util.free_all_children($ButtonsRow/HBoxContainer)
+
+
+func append_button(button: Button) -> void:
+    var container = $ButtonsRow/HBoxContainer
+    container.add_child(button)
 
 
 func _on_card_container_cards_modified():

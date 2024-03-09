@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://by4ylo3fbc308"]
+[gd_scene load_steps=4 format=3 uid="uid://by4ylo3fbc308"]
 
 [ext_resource type="Script" path="res://card_game/scrollable_card_row/scrollable_card_row.gd" id="1_ojdf8"]
 [ext_resource type="PackedScene" uid="uid://h5g8x0023oq0" path="res://card_game/playing_field/card_container/card_container.tscn" id="2_l2j3u"]
+[ext_resource type="Theme" uid="uid://bqxbmpg0ub86d" path="res://global_theme.tres" id="3_m8f4f"]
 
 [node name="ScrollableCardRow" type="Node2D"]
 script = ExtResource("1_ojdf8")
@@ -13,5 +14,21 @@ color = Color(0, 0, 0, 0.733333)
 polygon = PackedVector2Array(0, -225, 0, 225, 1024, 225, 1024, -225)
 
 [node name="AllCards" type="Node2D" parent="."]
+
+[node name="ButtonsRow" type="Node2D" parent="."]
+position = Vector2(512, 209)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ButtonsRow"]
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+theme = ExtResource("3_m8f4f")
+alignment = 1
 
 [connection signal="cards_modified" from="CardContainer" to="." method="_on_card_container_cards_modified"]

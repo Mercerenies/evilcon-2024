@@ -1,7 +1,9 @@
-[gd_resource type="Theme" load_steps=7 format=3 uid="uid://bqxbmpg0ub86d"]
+[gd_resource type="Theme" load_steps=8 format=3 uid="uid://bqxbmpg0ub86d"]
 
 [ext_resource type="FontFile" uid="uid://bcpx4sl5bfb53" path="res://fonts/Magical Childhood.ttf" id="1_31eni"]
 [ext_resource type="FontFile" uid="uid://dydkaj4vrx6dq" path="res://fonts/Maximum Impact.ttf" id="1_cc4il"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jh587"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q7xt4"]
 bg_color = Color(0.462745, 0.627451, 0.8, 1)
@@ -68,9 +70,11 @@ expand_margin_bottom = 3.0
 [resource]
 Button/font_sizes/font_size = 14
 Button/fonts/font = ExtResource("1_31eni")
+Button/styles/focus = SubResource("StyleBoxEmpty_jh587")
 Button/styles/hover = SubResource("StyleBoxFlat_q7xt4")
 Button/styles/normal = SubResource("StyleBoxFlat_5q2p1")
 Button/styles/pressed = SubResource("StyleBoxFlat_uamxp")
+HBoxContainer/constants/separation = 32
 OverlayLabel/base_type = &"Label"
 OverlayLabel/colors/font_color = Color(1, 1, 1, 1)
 OverlayLabel/fonts/font = ExtResource("1_cc4il")

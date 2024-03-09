@@ -84,14 +84,20 @@ func draw_cards(player: StringName, card_count: int = 1) -> void:
 
 
 func _on_bottom_hand_card_added(card_node):
-    card_node.card_clicked.connect(_on_card_node_card_clicked.bind(card_node))
+    card_node.card_clicked.connect(_on_hand_card_node_card_clicked.bind(card_node))
 
 
-func _on_card_node_card_clicked(card_node):
+func _on_hand_card_node_card_clicked(card_node):
     var viewport_size = get_viewport().get_visible_rect()
     var card_type = card_node.get_card()
     var card_row = ScrollableCardRow.instantiate()
     card_row.card_display_scene = PlayingCardDisplay
+    card_row.margin_below = 64
     $UILayer.add_child(card_row)
     card_row.cards().replace_cards([card_type])
     card_row.position = Vector2(0, viewport_size.size.y / 2)
+
+    # TODO Disable this button if we can't afford to play
+    var play_button = Button.new()
+    play_button.text = "Play"
+    card_row.append_button(play_button)
