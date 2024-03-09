@@ -44,3 +44,5 @@ scale = Vector2(0.25, 0.25)
 card_display_scene = ExtResource("7_878nt")
 
 [node name="AnimationLayer" type="Node2D" parent="."]
+
+[connection signal="card_added" from="BottomHand" to="." method="_on_bottom_hand_card_added"]

@@ -59,3 +59,11 @@ func draw_cards(player: StringName, card_count: int = 1) -> void:
     var hand = get_hand(player)
     for i in range(card_count):
         await move_card(deck, hand, opts)
+
+
+func _on_bottom_hand_card_added(card_node):
+    card_node.card_clicked.connect(_on_card_node_card_clicked.bind(card_node))
+
+
+func _on_card_node_card_clicked(card_node):
+    print("Clicked", card_node)  # TODO

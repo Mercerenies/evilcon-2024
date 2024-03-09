@@ -1,6 +1,9 @@
 extends Node2D
 
 
+signal card_clicked
+
+
 var _mouse_overlapping = false
 var _owning_strip = null
 
@@ -38,3 +41,8 @@ func _unhandled_input(event: InputEvent) -> void:
             scale = base_scale * 1.2
         else:
             scale = base_scale
+    elif event is InputEventMouseButton:
+        if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+            if _is_highlighted(event.global_position):
+                card_clicked.emit()
+                get_viewport().set_input_as_handled()

@@ -3,6 +3,8 @@ extends Node2D
 
 # A row of cards displayed in order.
 
+signal card_added(card_node)
+
 # The scene to display for each card. The root node of the scene must
 # have the following.
 #
@@ -52,6 +54,7 @@ func _on_card_container_cards_modified():
         card_node.set_card(card)
         $AllCards.add_child(card_node)
         card_node.on_added_to_strip(self)
+        card_added.emit(card_node)
         pos.x += card_distance
 
 
