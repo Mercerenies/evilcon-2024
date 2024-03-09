@@ -39,8 +39,10 @@ func _unhandled_input(event: InputEvent) -> void:
     if event is InputEventMouseMotion:
         if _is_highlighted(event.global_position):
             scale = base_scale * 1.2
+            z_index = 1
         else:
             scale = base_scale
+            z_index = 0
     elif event is InputEventMouseButton:
         if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
             if _is_highlighted(event.global_position):
