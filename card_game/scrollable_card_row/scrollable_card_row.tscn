@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://by4ylo3fbc308"]
+
+[ext_resource type="Script" path="res://card_game/scrollable_card_row/scrollable_card_row.gd" id="1_ojdf8"]
+[ext_resource type="PackedScene" uid="uid://h5g8x0023oq0" path="res://card_game/playing_field/card_container/card_container.tscn" id="2_l2j3u"]
+
+[node name="ScrollableCardRow" type="Node2D"]
+script = ExtResource("1_ojdf8")
+margin_horizontal = null
+
+[node name="CardContainer" parent="." instance=ExtResource("2_l2j3u")]
+
+[node name="VisualRect" type="Polygon2D" parent="."]
+color = Color(0, 0, 0, 0.733333)
+polygon = PackedVector2Array(0, -225, 0, 225, 1024, 225, 1024, -225)
+
+[node name="AllCards" type="Node2D" parent="."]
+
+[connection signal="cards_modified" from="CardContainer" to="." method="_on_card_container_cards_modified"]

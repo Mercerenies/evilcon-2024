@@ -1,7 +1,9 @@
 extends Node2D
 
 const CardMovingAnimation = preload("res://card_game/playing_field/animation/card_moving_animation.tscn")
+const PlayingCardDisplay = preload("res://card_game/playing_card/playing_card_display/playing_card_display.tscn")
 const HiddenCardDisplay = preload("res://card_game/playing_card/hidden_card_display/hidden_card_display.tscn")
+const ScrollableCardRow = preload("res://card_game/scrollable_card_row/scrollable_card_row.tscn")
 
 
 func get_deck(player: StringName):
@@ -66,4 +68,10 @@ func _on_bottom_hand_card_added(card_node):
 
 
 func _on_card_node_card_clicked(card_node):
-    print("Clicked", card_node)  # TODO
+    var viewport_size = get_viewport().get_visible_rect()
+    var card_type = card_node.get_card()
+    var card_row = ScrollableCardRow.instantiate()
+    card_row.card_display_scene = PlayingCardDisplay
+    $UILayer.add_child(card_row)
+    card_row.cards().replace_cards([card_type])
+    card_row.position = Vector2(0, viewport_size.size.y / 2)

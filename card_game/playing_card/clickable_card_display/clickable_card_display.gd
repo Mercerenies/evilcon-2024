@@ -14,6 +14,10 @@ func set_card(card) -> void:
     $PlayingCardDisplay.set_card(card)
 
 
+func get_card():
+    return $PlayingCardDisplay.card_type
+
+
 func on_added_to_strip(strip) -> void:
     _owning_strip = strip
 

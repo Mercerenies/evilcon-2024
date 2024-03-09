@@ -41,6 +41,11 @@ func on_added_to_strip(_strip) -> void:
     pass
 
 
+func on_added_to_row(_row) -> void:
+    # No-op, no reaction to being added to row.
+    pass
+
+
 func _on_card_frame_mouse_entered():
     # Propagate
     mouse_entered.emit()

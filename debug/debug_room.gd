@@ -12,8 +12,8 @@ func _ready():
     bottom_deck.cards().shuffle()
     top_deck.cards().shuffle()
 
-    await $PlayingField.draw_cards(CardPlayer.BOTTOM, 10)
-    await $PlayingField.draw_cards(CardPlayer.TOP, 10)
+    await $PlayingField.draw_cards(CardPlayer.BOTTOM, 3)
+    await $PlayingField.draw_cards(CardPlayer.TOP, 3)
 
 
 func _sample_deck():
