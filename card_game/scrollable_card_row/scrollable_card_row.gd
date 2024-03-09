@@ -3,6 +3,8 @@ extends Node2D
 
 signal card_added(card_node)
 
+# TODO Does not currently scroll
+
 
 @export var width: float = 1024:
     set(w):

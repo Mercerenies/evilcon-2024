@@ -5,7 +5,6 @@
 
 [node name="ScrollableCardRow" type="Node2D"]
 script = ExtResource("1_ojdf8")
-margin_horizontal = null
 
 [node name="CardContainer" parent="." instance=ExtResource("2_l2j3u")]
 

@@ -1,11 +1,76 @@
-[gd_resource type="Theme" load_steps=3 format=3 uid="uid://bqxbmpg0ub86d"]
+[gd_resource type="Theme" load_steps=7 format=3 uid="uid://bqxbmpg0ub86d"]
 
+[ext_resource type="FontFile" uid="uid://bcpx4sl5bfb53" path="res://fonts/Magical Childhood.ttf" id="1_31eni"]
 [ext_resource type="FontFile" uid="uid://dydkaj4vrx6dq" path="res://fonts/Maximum Impact.ttf" id="1_cc4il"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q7xt4"]
+bg_color = Color(0.462745, 0.627451, 0.8, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.86, 0.86, 1, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+expand_margin_left = 3.0
+expand_margin_top = 3.0
+expand_margin_right = 3.0
+expand_margin_bottom = 3.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5q2p1"]
+bg_color = Color(0.372549, 0.501961, 0.643137, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+expand_margin_left = 3.0
+expand_margin_top = 3.0
+expand_margin_right = 3.0
+expand_margin_bottom = 3.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uamxp"]
+bg_color = Color(0.0588235, 0.137255, 0.454902, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.278431, 0.278431, 0.278431, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+expand_margin_left = 3.0
+expand_margin_top = 3.0
+expand_margin_right = 3.0
+expand_margin_bottom = 3.0
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_br33g"]
-bg_color = Color(0.545098, 0.545098, 0.545098, 1)
+bg_color = Color(0.372549, 0.501961, 0.643137, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+expand_margin_left = 3.0
+expand_margin_top = 3.0
+expand_margin_right = 3.0
+expand_margin_bottom = 3.0
 
 [resource]
+Button/font_sizes/font_size = 14
+Button/fonts/font = ExtResource("1_31eni")
+Button/styles/hover = SubResource("StyleBoxFlat_q7xt4")
+Button/styles/normal = SubResource("StyleBoxFlat_5q2p1")
+Button/styles/pressed = SubResource("StyleBoxFlat_uamxp")
 OverlayLabel/base_type = &"Label"
 OverlayLabel/colors/font_color = Color(1, 1, 1, 1)
 OverlayLabel/fonts/font = ExtResource("1_cc4il")

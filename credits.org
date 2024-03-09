@@ -5,3 +5,4 @@
    + Merriweather :: https://fonts.google.com/specimen/Merriweather?stroke=Serif
    + Raleway :: https://fonts.google.com/specimen/Raleway
    + Maximum Impact :: https://www.dafont.com/maximum-impact.font
+   + Magical Childhood :: https://www.dafont.com/magical-childhood.font
