@@ -26,6 +26,26 @@ func get_hand(player: StringName):
         return null
 
 
+func get_minion_row(player: StringName):
+    if player == CardPlayer.BOTTOM:
+        return $BottomMinionRow
+    elif player == CardPlayer.TOP:
+        return $TopMinionRow
+    else:
+        push_error("Bad card player %s" % player)
+        return null
+
+
+func get_effect_row(player: StringName):
+    if player == CardPlayer.BOTTOM:
+        return $BottomEffectRow
+    elif player == CardPlayer.TOP:
+        return $TopEffectRow
+    else:
+        push_error("Bad card player %s" % player)
+        return null
+
+
 # Moves a card from one node to another. The referenced nodes must
 # have a method called cards() which returns a CardContainer.
 func move_card(source, destination, opts = {}) -> void:

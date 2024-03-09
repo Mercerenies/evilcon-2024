@@ -12,7 +12,7 @@
 script = ExtResource("1_cgwfb")
 
 [node name="CardMat" type="Sprite2D" parent="."]
-position = Vector2(511, 380)
+position = Vector2(520, 380)
 scale = Vector2(0.717731, 0.717731)
 texture = ExtResource("1_3fl7o")
 
@@ -26,6 +26,16 @@ position = Vector2(164, 701)
 
 [node name="BottomHand" parent="." instance=ExtResource("5_dckxn")]
 position = Vector2(520, 727)
+scale = Vector2(0.25, 0.25)
+card_display_scene = ExtResource("6_bd5kg")
+
+[node name="BottomEffectRow" parent="." instance=ExtResource("5_dckxn")]
+position = Vector2(520, 580)
+scale = Vector2(0.25, 0.25)
+card_display_scene = ExtResource("6_bd5kg")
+
+[node name="BottomMinionRow" parent="." instance=ExtResource("5_dckxn")]
+position = Vector2(520, 460)
 scale = Vector2(0.25, 0.25)
 card_display_scene = ExtResource("6_bd5kg")
 
@@ -43,6 +53,18 @@ rotation = 3.14159
 scale = Vector2(0.25, 0.25)
 card_display_scene = ExtResource("7_878nt")
 
+[node name="TopEffectRow" parent="." instance=ExtResource("5_dckxn")]
+position = Vector2(520, 180)
+rotation = -3.14159
+scale = Vector2(0.25, 0.25)
+card_display_scene = ExtResource("6_bd5kg")
+
+[node name="TopMinionRow" parent="." instance=ExtResource("5_dckxn")]
+position = Vector2(520, 300)
+rotation = -3.14159
+scale = Vector2(0.25, 0.25)
+card_display_scene = ExtResource("6_bd5kg")
+
 [node name="AnimationLayer" type="Node2D" parent="."]
 z_index = 10
 
@@ -50,3 +72,7 @@ z_index = 10
 z_index = 20
 
 [connection signal="card_added" from="BottomHand" to="." method="_on_bottom_hand_card_added"]
+[connection signal="card_added" from="BottomEffectRow" to="." method="_on_bottom_hand_card_added"]
+[connection signal="card_added" from="BottomMinionRow" to="." method="_on_bottom_hand_card_added"]
+[connection signal="card_added" from="TopEffectRow" to="." method="_on_bottom_hand_card_added"]
+[connection signal="card_added" from="TopMinionRow" to="." method="_on_bottom_hand_card_added"]
