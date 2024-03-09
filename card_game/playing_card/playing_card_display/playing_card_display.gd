@@ -2,6 +2,9 @@ extends Node2D
 
 const CardIcon = preload("res://card_game/playing_card/playing_card_display/card_icon/card_icon.gd")
 
+signal mouse_entered
+signal mouse_exited
+
 var card_type: CardType = null:
     set(v):
         card_type = v
@@ -31,3 +34,18 @@ func set_card(card):
     else:
         card_type = card
     _update_display()
+
+
+func on_added_to_strip(_strip) -> void:
+    # No-op, no reaction to being added to strip.
+    pass
+
+
+func _on_card_frame_mouse_entered():
+    # Propagate
+    mouse_entered.emit()
+
+
+func _on_card_frame_mouse_exited():
+    # Propagate
+    mouse_exited.emit()

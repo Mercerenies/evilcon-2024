@@ -82,3 +82,6 @@ theme = ExtResource("2_7d3ug")
 theme_override_font_sizes/font_size = 10
 text = "(Unique ID)"
 horizontal_alignment = 1
+
+[connection signal="mouse_entered" from="CardFrame" to="." method="_on_card_frame_mouse_entered"]
+[connection signal="mouse_exited" from="CardFrame" to="." method="_on_card_frame_mouse_exited"]

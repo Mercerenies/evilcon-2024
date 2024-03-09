@@ -4,8 +4,13 @@ extends Node2D
 # A row of cards displayed in order.
 
 # The scene to display for each card. The root node of the scene must
-# have a set_card(card) method which takes either a Card or a CardType
-# (compatible with the type of the CardStrip scene)
+# have the following.
+#
+# * set_card(card) takes a Card or CardType (compatible with the type
+#   of the CardStrip scene)
+#
+# * on_added_to_strip(strip) takes the CardStrip and can respond to the
+#   event of being added to it
 @export var card_display_scene: PackedScene
 
 @export var maximum_card_distance: float = Constants.CARD_SIZE.x + 128
@@ -24,6 +29,17 @@ func cards():
     return $CardContainer
 
 
+func nearest_card_node_to(local_pos: Vector2):
+    var best = null
+    var best_distance = INF
+    for card in $AllCards.get_children():
+        var distance = card.position.distance_squared_to(local_pos)
+        if distance < best_distance:
+            best_distance = distance
+            best = card
+    return best
+
+
 func _on_card_container_cards_modified():
     Util.free_all_children($AllCards)
     var cards_array = $CardContainer.card_array()
@@ -35,6 +51,7 @@ func _on_card_container_cards_modified():
         card_node.position = pos
         card_node.set_card(card)
         $AllCards.add_child(card_node)
+        card_node.on_added_to_strip(self)
         pos.x += card_distance
 
 
