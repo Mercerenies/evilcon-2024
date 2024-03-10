@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3 uid="uid://bvh50q457q3ko"]
+
+[ext_resource type="PackedScene" uid="uid://bg6xq0rg54ckl" path="res://card_game/playing_field/game_stat/game_stat.tscn" id="1_6vsdi"]
+[ext_resource type="Script" path="res://card_game/playing_field/game_stats_panel/game_stats_panel.gd" id="1_ge5wy"]
+
+[node name="GameStatsPanel" type="Node2D"]
+script = ExtResource("1_ge5wy")
+
+[node name="EvilPointsStat" parent="." instance=ExtResource("1_6vsdi")]
+position = Vector2(-90, -12)
+text = "2/2"
+
+[node name="HandLimitStat" parent="." instance=ExtResource("1_6vsdi")]
+position = Vector2(16, -12)
+icon = 18
+text = "5/5"
+
+[node name="FortDefenseStat" parent="." instance=ExtResource("1_6vsdi")]
+position = Vector2(-90, 12)
+icon = 17
+text = "100/100"
+
+[node name="DestinySongStat" parent="." instance=ExtResource("1_6vsdi")]
+position = Vector2(16, 12)
+icon = 20
+text = "3/3"

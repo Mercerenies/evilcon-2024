@@ -46,6 +46,16 @@ func get_effect_row(player: StringName):
         return null
 
 
+func get_stats(player: StringName):
+    if player == CardPlayer.BOTTOM:
+        return $BottomStats
+    elif player == CardPlayer.TOP:
+        return $TopStats
+    else:
+        push_error("Bad card player %s" % player)
+        return null
+
+
 # Moves a card from one node to another. The referenced nodes must
 # have a method called cards() which returns a CardContainer.
 func move_card(source, destination, opts = {}) -> void:
@@ -101,3 +111,11 @@ func _on_hand_card_node_card_clicked(card_node):
     var play_button = Button.new()
     play_button.text = "Play"
     card_row.append_button(play_button)
+
+
+func _on_bottom_hand_cards_modified():
+    $BottomStats.on_hand_size_updated($BottomHand.cards().card_count())
+
+
+func _on_top_hand_cards_modified():
+    $TopStats.on_hand_size_updated($TopHand.cards().card_count())
