@@ -21,3 +21,7 @@ func get_archetypes_row_text() -> String:
 
 func get_stats_text() -> String:
     return ""
+
+
+func get_destination_strip(playing_field, owner: StringName):
+    return playing_field.get_effect_strip(owner)

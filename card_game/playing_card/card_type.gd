@@ -32,6 +32,11 @@ func get_rarity() -> int:
     return 0
 
 
+func get_destination_strip(_playing_field, _owner: StringName):
+    push_warning("Forgot to override get_destination_strip!")
+    return null
+
+
 func get_icon_row() -> Array:
     if is_limited():
         return [CardIcon.Frame.LIMITED]

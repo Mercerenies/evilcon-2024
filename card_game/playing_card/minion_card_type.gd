@@ -23,3 +23,7 @@ func get_base_morale() -> int:
 
 func get_stats_text() -> String:
     return "Lvl %s / %s Mor" % [get_base_level(), get_base_morale()]
+
+
+func get_destination_strip(playing_field, owner: StringName):
+    return playing_field.get_minion_strip(owner)

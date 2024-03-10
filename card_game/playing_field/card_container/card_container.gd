@@ -69,3 +69,15 @@ func is_empty() -> bool:
 func shuffle() -> void:
     _array.shuffle()
     cards_modified.emit()
+
+
+func find_card(card):
+    var index = _array.find(card)
+    # Godot's find() method returns index -1 for "not found", which
+    # can be easily mistaken for "last element of the list", since
+    # many of our indexing functions accept that convention. So return
+    # null for "not found".
+    if index < 0:
+        return null
+    else:
+        return index

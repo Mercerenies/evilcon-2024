@@ -26,7 +26,7 @@ func get_hand(player: StringName):
         return null
 
 
-func get_minion_row(player: StringName):
+func get_minion_strip(player: StringName):
     if player == CardPlayer.BOTTOM:
         return $BottomMinionStrip
     elif player == CardPlayer.TOP:
@@ -36,7 +36,7 @@ func get_minion_row(player: StringName):
         return null
 
 
-func get_effect_row(player: StringName):
+func get_effect_strip(player: StringName):
     if player == CardPlayer.BOTTOM:
         return $BottomEffectStrip
     elif player == CardPlayer.TOP:
@@ -56,12 +56,31 @@ func get_stats(player: StringName):
         return null
 
 
-# Moves a card from one node to another. The referenced nodes must
-# have a method called cards() which returns a CardContainer.
+# Moves a card from one node to another.
+#
+# The source and destination nodes must have a method called cards()
+# which returns the appropriate CardContainer.
+#
+# Optional arguments are as follows:
+#
+# * source_index (int) - Index to draw from in the source node's
+#   CardContainer. Counts from the back if negative. Default = -1.
+#
+# * scale (Vector2) - Scale of the animation. Default = Vector2(0.25, 0.25).
+#
+# * custom_displayed_card (Callable) - A 0-argument Callable that
+#   returns a card display node (a node with a set_card() method) to
+#   use. If not provided, the default node type of PlayingCardDisplay
+#   is used.
+#
+# * destination_transform (Callable) - A 1-argument Callable that
+#   transforms the drawn card before it is stored in the destination.
+#   If not supplied, defaults to the identity function.
 func move_card(source, destination, opts = {}) -> void:
     var source_index = opts.get("source_index", -1)
     var animation_scale = opts.get("scale", Vector2(0.25, 0.25))
     var custom_displayed_card = opts.get("custom_displayed_card", null)
+    var destination_transform = opts.get("destination_transform", null)
 
     var source_cards = source.cards()
     var destination_cards = destination.cards()
@@ -77,6 +96,8 @@ func move_card(source, destination, opts = {}) -> void:
     await animation.animate(source.position, destination.position)
     animation.queue_free()
 
+    if destination_transform != null:
+        relevant_card = destination_transform.call(relevant_card)
     destination_cards.push_card(relevant_card)
 
 
@@ -93,6 +114,24 @@ func draw_cards(player: StringName, card_count: int = 1) -> void:
         await move_card(deck, hand, opts)
 
 
+func play_card(player: StringName, card_type: CardType) -> void:
+    if not card_type.can_play(self, player):
+        push_warning("Attempted to play card %s that cannot be played" % card_type)
+        return
+    var stats = get_stats(player)
+    var hand = get_hand(player)
+    var field = card_type.get_destination_strip(self, player)
+    var hand_index = hand.cards().find_card(card_type)
+    if hand_index == null:
+        push_warning("Cannot play card %s because it is not in hand" % card_type)
+        return
+    stats.evil_points -= card_type.get_star_cost()  # TODO Animate
+    await move_card(hand, field, {
+        "source_index": hand_index,
+        "destination_transform": DestinationTransform.instantiate_card(player),
+    })
+
+
 func _on_bottom_hand_card_added(card_node):
     card_node.card_clicked.connect(_on_hand_card_node_card_clicked.bind(card_node))
 
@@ -107,10 +146,12 @@ func _on_hand_card_node_card_clicked(card_node):
     card_row.cards().replace_cards([card_type])
     card_row.position = Vector2(0, viewport_size.size.y / 2)
 
-    # TODO Disable this button if we can't afford to play
     var play_button = Button.new()
     if card_type.can_play(self, CardPlayer.BOTTOM):
         play_button.text = "Play"
+        play_button.pressed.connect(func():
+            play_card(CardPlayer.BOTTOM, card_type)
+            card_row.queue_free())
     else:
         play_button.text = "(Can't afford)"
         play_button.disabled = true
