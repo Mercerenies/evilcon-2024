@@ -35,10 +35,16 @@ position = Vector2(520, 580)
 scale = Vector2(0.25, 0.25)
 card_display_scene = ExtResource("6_bd5kg")
 
+[node name="CardContainer" parent="BottomEffectStrip" index="0"]
+contained_type = "Card"
+
 [node name="BottomMinionStrip" parent="." instance=ExtResource("5_dckxn")]
 position = Vector2(520, 460)
 scale = Vector2(0.25, 0.25)
 card_display_scene = ExtResource("6_bd5kg")
+
+[node name="CardContainer" parent="BottomMinionStrip" index="0"]
+contained_type = "Card"
 
 [node name="BottomStats" parent="." instance=ExtResource("8_aoot7")]
 position = Vector2(125, 553)
@@ -63,11 +69,17 @@ rotation = -3.14159
 scale = Vector2(0.25, 0.25)
 card_display_scene = ExtResource("6_bd5kg")
 
+[node name="CardContainer" parent="TopEffectStrip" index="0"]
+contained_type = "Card"
+
 [node name="TopMinionStrip" parent="." instance=ExtResource("5_dckxn")]
 position = Vector2(520, 300)
 rotation = -3.14159
 scale = Vector2(0.25, 0.25)
 card_display_scene = ExtResource("6_bd5kg")
+
+[node name="CardContainer" parent="TopMinionStrip" index="0"]
+contained_type = "Card"
 
 [node name="TopStats" parent="." instance=ExtResource("8_aoot7")]
 position = Vector2(930, 187)
@@ -85,3 +97,8 @@ z_index = 20
 [connection signal="cards_modified" from="TopHand" to="." method="_on_top_hand_cards_modified"]
 [connection signal="card_added" from="TopEffectStrip" to="." method="_on_bottom_hand_card_added"]
 [connection signal="card_added" from="TopMinionStrip" to="." method="_on_bottom_hand_card_added"]
+
+[editable path="BottomEffectStrip"]
+[editable path="BottomMinionStrip"]
+[editable path="TopEffectStrip"]
+[editable path="TopMinionStrip"]
