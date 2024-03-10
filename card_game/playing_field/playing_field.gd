@@ -109,7 +109,11 @@ func _on_hand_card_node_card_clicked(card_node):
 
     # TODO Disable this button if we can't afford to play
     var play_button = Button.new()
-    play_button.text = "Play"
+    if card_type.can_play(self, CardPlayer.BOTTOM):
+        play_button.text = "Play"
+    else:
+        play_button.text = "(Can't afford)"
+        play_button.disabled = true
     card_row.append_button(play_button)
 
 

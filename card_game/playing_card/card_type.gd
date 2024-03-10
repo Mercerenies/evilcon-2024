@@ -66,3 +66,11 @@ func get_text_font() -> Font:
 
 func get_archetypes_row_text() -> String:
     return ""
+
+
+func can_play(playing_field, owner: StringName) -> bool:
+    # Default implementation simply checks EP, which should be
+    # sufficient in most, if not all, cases.
+    var card_cost = get_star_cost()
+    var user_evil_points = playing_field.get_stats(owner).evil_points
+    return user_evil_points >= card_cost
