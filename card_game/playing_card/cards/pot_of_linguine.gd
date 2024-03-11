@@ -27,3 +27,9 @@ func is_limited() -> bool:
 
 func get_rarity() -> int:
     return Rarity.UNCOMMON
+
+
+func on_play(playing_field, card) -> void:
+    var owner = card.owner
+    await playing_field.draw_cards(owner, 2)
+    # TODO Highlight this card and discard it
