@@ -32,6 +32,10 @@ func cards():
     return $CardContainer
 
 
+func get_card_node(index: int):
+    return $AllCards.get_child(index)
+
+
 func nearest_card_node_to(local_pos: Vector2):
     var best = null
     var best_distance = INF

@@ -1,10 +1,12 @@
 extends Node2D
 
 const CardMovingAnimation = preload("res://card_game/playing_field/animation/card_moving_animation.tscn")
-const NumberAnimation = preload("res://card_game/playing_field/animation/number_animation.tscn")
 const PlayingCardDisplay = preload("res://card_game/playing_card/playing_card_display/playing_card_display.tscn")
-const HiddenCardDisplay = preload("res://card_game/playing_card/hidden_card_display/hidden_card_display.tscn")
 const ScrollableCardRow = preload("res://card_game/scrollable_card_row/scrollable_card_row.tscn")
+
+
+func get_animation_layer() -> Node2D:
+    return $AnimationLayer
 
 
 func get_deck(player: StringName):
@@ -57,6 +59,10 @@ func get_stats(player: StringName):
         return null
 
 
+func field_strips() -> Array:
+    return [$BottomMinionStrip, $TopMinionStrip, $BottomEffectStrip, $TopEffectStrip]
+
+
 # Moves a card from one node to another.
 #
 # The source and destination nodes must have a method called cards()
@@ -103,43 +109,6 @@ func move_card(source, destination, opts = {}):
     return relevant_card
 
 
-func draw_cards(player: StringName, card_count: int = 1) -> void:
-    # TODO Deal with hand limit, and reshuffling the discard (if no
-    # discard exists, abort draw)
-    var opts = {}
-    if player == CardPlayer.TOP:
-        opts["custom_displayed_card"] = func (): return HiddenCardDisplay.instantiate()
-
-    var deck = get_deck(player)
-    var hand = get_hand(player)
-    for i in range(card_count):
-        await move_card(deck, hand, opts)
-
-
-func play_card(player: StringName, card_type: CardType) -> void:
-    if not card_type.can_play(self, player):
-        push_warning("Attempted to play card %s that cannot be played" % card_type)
-        return
-    var stats = get_stats(player)
-    var hand = get_hand(player)
-    var field = card_type.get_destination_strip(self, player)
-    var hand_index = hand.cards().find_card(card_type)
-    if hand_index == null:
-        push_warning("Cannot play card %s because it is not in hand" % card_type)
-        return
-
-    # Update stat and animate
-    var star_cost = card_type.get_star_cost()
-    stats.evil_points -= star_cost
-    play_animation_for_stat_change(stats.get_evil_points_node(), - star_cost)
-
-    var new_card = await move_card(hand, field, {
-        "source_index": hand_index,
-        "destination_transform": DestinationTransform.instantiate_card(player),
-    })
-    await new_card.on_play(self)
-
-
 func _on_bottom_hand_card_added(card_node):
     card_node.card_clicked.connect(_on_hand_card_node_card_clicked.bind(card_node))
 
@@ -158,7 +127,7 @@ func _on_hand_card_node_card_clicked(card_node) -> void:
     if card_type.can_play(self, CardPlayer.BOTTOM):
         play_button.text = "Play"
         play_button.pressed.connect(func():
-            play_card(CardPlayer.BOTTOM, card_type)
+            CardGameApi.play_card(self, CardPlayer.BOTTOM, card_type)
             card_row.queue_free())
     else:
         play_button.text = "(Can't afford)"
@@ -202,11 +171,3 @@ func _on_bottom_hand_cards_modified():
 
 func _on_top_hand_cards_modified():
     $TopStats.on_hand_size_updated($TopHand.cards().card_count())
-
-
-func play_animation_for_stat_change(stat_node: Node2D, delta: int) -> void:
-    var animation = NumberAnimation.instantiate()
-    animation.position = $AnimationLayer.to_local(stat_node.global_position)
-    animation.amount = delta
-    $AnimationLayer.add_child(animation)
-    await animation.animation_finished

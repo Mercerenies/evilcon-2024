@@ -31,5 +31,5 @@ func get_rarity() -> int:
 
 func on_play(playing_field, card) -> void:
     var owner = card.owner
-    await playing_field.draw_cards(owner, 2)
+    await CardGameApi.draw_cards(playing_field, owner, 2)
     # TODO Highlight this card and discard it

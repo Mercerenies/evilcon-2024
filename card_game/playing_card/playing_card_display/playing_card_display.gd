@@ -12,20 +12,20 @@ var card_type: CardType = null:
 
 
 func _update_display() -> void:
-    $TitleLabel.text = card_type.get_title()
-    $TextLabel.text = card_type.get_text()
-    $TextLabel.add_theme_font_override("font", card_type.get_text_font())
-    $ArchetypesRow.icons = card_type.get_icon_row()
-    $CostRow.icons = Util.filled_array(CardIcon.Frame.EVIL_STAR, card_type.get_star_cost())
-    $CardPicture.frame = card_type.get_picture_index()
-    $CardIcon.frame = Rarity.to_icon_index(card_type.get_rarity())
-    $CardFrame.frame = Rarity.to_frame_index(card_type.get_rarity())
-    $StatsLabel.text = card_type.get_stats_text()
-    $IdLabel.text = "(Unique ID: %s)" % card_type.get_id()
+    $Card/TitleLabel.text = card_type.get_title()
+    $Card/TextLabel.text = card_type.get_text()
+    $Card/TextLabel.add_theme_font_override("font", card_type.get_text_font())
+    $Card/ArchetypesRow.icons = card_type.get_icon_row()
+    $Card/CostRow.icons = Util.filled_array(CardIcon.Frame.EVIL_STAR, card_type.get_star_cost())
+    $Card/CardPicture.frame = card_type.get_picture_index()
+    $Card/CardIcon.frame = Rarity.to_icon_index(card_type.get_rarity())
+    $Card/CardFrame.frame = Rarity.to_frame_index(card_type.get_rarity())
+    $Card/StatsLabel.text = card_type.get_stats_text()
+    $Card/IdLabel.text = "(Unique ID: %s)" % card_type.get_id()
 
-    var archetypes_rect = $ArchetypesRow.get_rect()
-    $ArchetypesTextLabel.position.x = archetypes_rect.end.x
-    $ArchetypesTextLabel.text = card_type.get_archetypes_row_text()
+    var archetypes_rect = $Card/ArchetypesRow.get_rect()
+    $Card/ArchetypesTextLabel.position.x = archetypes_rect.end.x
+    $Card/ArchetypesTextLabel.text = card_type.get_archetypes_row_text()
 
 
 func set_card(card):
@@ -34,6 +34,14 @@ func set_card(card):
     else:
         card_type = card
     _update_display()
+
+
+func play_highlight_animation() -> void:
+    $AnimationPlayer.play(&"HighlightAnimation")
+    while true:
+        var anim = $AnimationPlayer.animation_finished.await()
+        if anim == &"HighlightAnimation":
+            break
 
 
 func on_added_to_strip(_strip) -> void:
