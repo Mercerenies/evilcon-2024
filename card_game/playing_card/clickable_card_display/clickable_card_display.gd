@@ -1,5 +1,4 @@
-extends Node2D
-
+extends "res://card_game/playing_card/playing_card_display/playing_card_display.gd"
 
 signal card_clicked
 
@@ -10,23 +9,15 @@ var _owning_strip = null
 @onready var base_scale = scale
 
 
-func set_card(card) -> void:
-    $PlayingCardDisplay.set_card(card)
-
-
-func get_card():
-    return $PlayingCardDisplay.card_type
-
-
 func on_added_to_strip(strip) -> void:
     _owning_strip = strip
 
 
-func _on_playing_card_display_mouse_entered():
+func _on_mouse_entered():
     _mouse_overlapping = true
 
 
-func _on_playing_card_display_mouse_exited():
+func _on_mouse_exited():
     _mouse_overlapping = false
 
 

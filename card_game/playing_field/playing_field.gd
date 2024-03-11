@@ -142,9 +142,13 @@ func _on_bottom_hand_card_added(card_node):
     card_node.card_clicked.connect(_on_hand_card_node_card_clicked.bind(card_node))
 
 
+func _on_play_strip_card_added(card_node):
+    pass # TODO card_node.card_clicked.connect(_on_played_card_node_card_clicked.bind(card_node))
+
+
 func _on_hand_card_node_card_clicked(card_node):
     var viewport_size = get_viewport().get_visible_rect()
-    var card_type = card_node.get_card()
+    var card_type = card_node.card_type
     var card_row = ScrollableCardRow.instantiate()
     card_row.card_display_scene = PlayingCardDisplay
     card_row.margin_below = 64
