@@ -143,18 +143,14 @@ func _on_bottom_hand_card_added(card_node):
 
 
 func _on_play_strip_card_added(card_node):
-    pass # TODO card_node.card_clicked.connect(_on_played_card_node_card_clicked.bind(card_node))
+    card_node.card_clicked.connect(_on_played_card_node_card_clicked.bind(card_node))
 
 
-func _on_hand_card_node_card_clicked(card_node):
-    var viewport_size = get_viewport().get_visible_rect()
+func _on_hand_card_node_card_clicked(card_node) -> void:
     var card_type = card_node.card_type
-    var card_row = ScrollableCardRow.instantiate()
-    card_row.card_display_scene = PlayingCardDisplay
-    card_row.margin_below = 64
-    $UILayer.add_child(card_row)
-    card_row.cards().replace_cards([card_type])
-    card_row.position = Vector2(0, viewport_size.size.y / 2)
+    var card_row = popup_display_card([card_type], {
+        "margin_below": 64.0,
+    })
 
     var play_button = Button.new()
     if card_type.can_play(self, CardPlayer.BOTTOM):
@@ -166,6 +162,36 @@ func _on_hand_card_node_card_clicked(card_node):
         play_button.text = "(Can't afford)"
         play_button.disabled = true
     card_row.append_button(play_button)
+
+
+func _on_played_card_node_card_clicked(card_node) -> void:
+    var card_type = card_node.card_type
+    popup_display_card([card_type])
+
+
+# Shows a ScrollableCardRow for the indicated card types (or cards, if
+# supported by the underlying display scene).
+#
+# Optional arguments are as follows:
+#
+# * margin_below (float) - Margin below the card row (in pixels).
+#
+# * margin_above (float) - Margin above the card row (in pixels).
+func popup_display_card(cards: Array, opts = {}) -> Node2D:
+    var margin_below = opts.get("margin_below", null)
+    var margin_above = opts.get("margin_above", null)
+
+    var viewport_size = get_viewport().get_visible_rect()
+    var card_row = ScrollableCardRow.instantiate()
+    card_row.card_display_scene = PlayingCardDisplay
+    if margin_below != null:
+        card_row.margin_below = margin_below
+    if margin_above != null:
+        card_row.margin_above = margin_above
+    $UILayer.add_child(card_row)
+    card_row.cards().replace_cards(cards)
+    card_row.position = Vector2(0, viewport_size.size.y / 2)
+    return card_row
 
 
 func _on_bottom_hand_cards_modified():
