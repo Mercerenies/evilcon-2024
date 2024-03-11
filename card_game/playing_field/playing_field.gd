@@ -19,6 +19,16 @@ func get_deck(player: StringName):
         return null
 
 
+func get_discard_pile(player: StringName):
+    if player == CardPlayer.BOTTOM:
+        return $BottomDiscardPile
+    elif player == CardPlayer.TOP:
+        return $TopDiscardPile
+    else:
+        push_error("Bad card player %s" % player)
+        return null
+
+
 func get_hand(player: StringName):
     if player == CardPlayer.BOTTOM:
         return $BottomHand
@@ -171,3 +181,16 @@ func _on_bottom_hand_cards_modified():
 
 func _on_top_hand_cards_modified():
     $TopStats.on_hand_size_updated($TopHand.cards().card_count())
+
+
+func _show_discard_pile(pile_node):
+    # TODO Start scrolled all the way to the right
+    popup_display_card(pile_node.cards().card_array())
+
+
+func _on_bottom_discard_pile_pile_clicked():
+    _show_discard_pile($BottomDiscardPile)
+
+
+func _on_top_discard_pile_pile_clicked():
+    _show_discard_pile($TopDiscardPile)

@@ -80,8 +80,22 @@ static func play_animation_for_stat_change(playing_field, stat_node: Node2D, del
 
 static func highlight_card(playing_field, card: Card) -> void:
     var card_node = find_card_node(playing_field, card)
-    if card_node != null:
-        var input_block = InputBlockAnimation.new()
-        playing_field.get_animation_layer().add_child(input_block)
-        await card_node.play_highlight_animation()
-        input_block.free()
+    if card_node == null:
+        push_warning("Cannot highlight card %s because it is not in play" % card)
+        return
+    var input_block = InputBlockAnimation.new()
+    playing_field.get_animation_layer().add_child(input_block)
+    await card_node.play_highlight_animation()
+    input_block.free()
+
+
+static func destroy_card(playing_field, card: Card) -> void:
+    var card_pos = find_card_on_field(playing_field, card)
+    if card_pos == null:
+        push_warning("Cannot destroy card %s because it is not in play" % card)
+        return
+    var discard_pile = playing_field.get_discard_pile(card.original_owner)
+    await playing_field.move_card(card_pos.card_strip, discard_pile, {
+        "source_index": card_pos.index,
+        "destination_transform": DestinationTransform.strip_to_card_type,
+    })

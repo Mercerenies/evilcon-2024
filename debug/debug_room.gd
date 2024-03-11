@@ -14,6 +14,12 @@ func _ready():
 
     await CardGameApi.draw_cards($PlayingField, CardPlayer.BOTTOM, 3)
     await CardGameApi.draw_cards($PlayingField, CardPlayer.TOP, 3)
+    $PlayingField.get_discard_pile(CardPlayer.BOTTOM).cards().push_card(MushroomMan.new())
+    $PlayingField.get_discard_pile(CardPlayer.BOTTOM).cards().push_card(MushroomMan.new())
+    $PlayingField.get_discard_pile(CardPlayer.BOTTOM).cards().push_card(MushroomMan.new())
+    $PlayingField.get_discard_pile(CardPlayer.BOTTOM).cards().push_card(MushroomMan.new())
+    $PlayingField.get_discard_pile(CardPlayer.BOTTOM).cards().push_card(MushroomMan.new())
+    $PlayingField.get_discard_pile(CardPlayer.BOTTOM).cards().push_card(MushroomMan.new())
 
 
 func _sample_deck():

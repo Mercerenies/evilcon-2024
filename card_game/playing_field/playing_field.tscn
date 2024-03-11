@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://pxp7u44hyyv2"]
+[gd_scene load_steps=10 format=3 uid="uid://pxp7u44hyyv2"]
 
 [ext_resource type="Texture2D" uid="uid://bynkbt50b1evw" path="res://card_game/playing_field/card_mat/card_mat.png" id="1_3fl7o"]
 [ext_resource type="Script" path="res://card_game/playing_field/playing_field.gd" id="1_cgwfb"]
 [ext_resource type="Texture2D" uid="uid://ba6n74del1dnm" path="res://card_game/playing_field/card_mat/player_corner_mat.png" id="2_2fr12"]
 [ext_resource type="PackedScene" uid="uid://d06m06mq1io2n" path="res://card_game/playing_field/deck/deck.tscn" id="3_5hleg"]
 [ext_resource type="PackedScene" uid="uid://7aew13ponkej" path="res://card_game/playing_field/card_strip/card_strip.tscn" id="5_dckxn"]
+[ext_resource type="PackedScene" uid="uid://ccrj1xc7vud25" path="res://card_game/playing_field/discard_pile/discard_pile.tscn" id="5_f0jxu"]
 [ext_resource type="PackedScene" uid="uid://duefqdwqjkkdl" path="res://card_game/playing_card/clickable_card_display/clickable_card_display.tscn" id="6_bd5kg"]
 [ext_resource type="PackedScene" uid="uid://cysmxvy2tf6p7" path="res://card_game/playing_card/hidden_card_display/hidden_card_display.tscn" id="7_878nt"]
 [ext_resource type="PackedScene" uid="uid://bvh50q457q3ko" path="res://card_game/playing_field/game_stats_panel/game_stats_panel.tscn" id="8_aoot7"]
@@ -24,6 +25,9 @@ texture = ExtResource("2_2fr12")
 
 [node name="BottomDeck" parent="." instance=ExtResource("3_5hleg")]
 position = Vector2(164, 701)
+
+[node name="BottomDiscardPile" parent="." instance=ExtResource("5_f0jxu")]
+position = Vector2(54, 701)
 
 [node name="BottomHand" parent="." instance=ExtResource("5_dckxn")]
 position = Vector2(520, 727)
@@ -56,6 +60,9 @@ texture = ExtResource("2_2fr12")
 
 [node name="TopDeck" parent="." instance=ExtResource("3_5hleg")]
 position = Vector2(860, 75)
+
+[node name="TopDiscardPile" parent="." instance=ExtResource("5_f0jxu")]
+position = Vector2(970, 75)
 
 [node name="TopHand" parent="." instance=ExtResource("5_dckxn")]
 position = Vector2(520, 41)
@@ -90,10 +97,12 @@ z_index = 10
 [node name="UILayer" type="Node2D" parent="."]
 z_index = 20
 
+[connection signal="pile_clicked" from="BottomDiscardPile" to="." method="_on_bottom_discard_pile_pile_clicked"]
 [connection signal="card_added" from="BottomHand" to="." method="_on_bottom_hand_card_added"]
 [connection signal="cards_modified" from="BottomHand" to="." method="_on_bottom_hand_cards_modified"]
 [connection signal="card_added" from="BottomEffectStrip" to="." method="_on_play_strip_card_added"]
 [connection signal="card_added" from="BottomMinionStrip" to="." method="_on_play_strip_card_added"]
+[connection signal="pile_clicked" from="TopDiscardPile" to="." method="_on_top_discard_pile_pile_clicked"]
 [connection signal="cards_modified" from="TopHand" to="." method="_on_top_hand_cards_modified"]
 [connection signal="card_added" from="TopEffectStrip" to="." method="_on_play_strip_card_added"]
 [connection signal="card_added" from="TopMinionStrip" to="." method="_on_play_strip_card_added"]

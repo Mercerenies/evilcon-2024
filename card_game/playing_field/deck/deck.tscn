@@ -10,13 +10,16 @@ script = ExtResource("1_73yum")
 
 [node name="CardContainer" parent="." instance=ExtResource("2_w0w5c")]
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="DisplayNode" type="Node2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="DisplayNode"]
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("1_f2fvy")
 hframes = 4
 frame = 3
 
 [node name="QuantityLabel" type="Label" parent="."]
+z_index = 1
 anchors_preset = -1
 anchor_right = 0.5
 anchor_bottom = 1.0
