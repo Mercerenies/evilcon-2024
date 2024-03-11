@@ -1,6 +1,7 @@
 extends Node2D
 
 const CardMovingAnimation = preload("res://card_game/playing_field/animation/card_moving_animation.tscn")
+const NumberAnimation = preload("res://card_game/playing_field/animation/number_animation.tscn")
 const PlayingCardDisplay = preload("res://card_game/playing_card/playing_card_display/playing_card_display.tscn")
 const HiddenCardDisplay = preload("res://card_game/playing_card/hidden_card_display/hidden_card_display.tscn")
 const ScrollableCardRow = preload("res://card_game/scrollable_card_row/scrollable_card_row.tscn")
@@ -125,7 +126,12 @@ func play_card(player: StringName, card_type: CardType) -> void:
     if hand_index == null:
         push_warning("Cannot play card %s because it is not in hand" % card_type)
         return
-    stats.evil_points -= card_type.get_star_cost()  # TODO Animate
+
+    # Update stat and animate
+    var star_cost = card_type.get_star_cost()
+    stats.evil_points -= star_cost
+    play_animation_for_stat_change(stats.get_evil_points_node(), - star_cost)
+
     await move_card(hand, field, {
         "source_index": hand_index,
         "destination_transform": DestinationTransform.instantiate_card(player),
@@ -164,3 +170,11 @@ func _on_bottom_hand_cards_modified():
 
 func _on_top_hand_cards_modified():
     $TopStats.on_hand_size_updated($TopHand.cards().card_count())
+
+
+func play_animation_for_stat_change(stat_node: Node2D, delta: int) -> void:
+    var animation = NumberAnimation.instantiate()
+    animation.position = $AnimationLayer.to_local(stat_node.global_position)
+    animation.amount = delta
+    $AnimationLayer.add_child(animation)
+    await animation.animation_finished

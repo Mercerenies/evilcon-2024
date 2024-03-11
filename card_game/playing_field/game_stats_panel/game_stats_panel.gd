@@ -49,6 +49,22 @@ func on_hand_size_updated(new_hand_size: int) -> void:
     _update_hand_limit()
 
 
+func get_evil_points_node() -> Node2D:
+    return $EvilPointsStat
+
+
+func get_hand_limit_node() -> Node2D:
+    return $HandLimitStat
+
+
+func get_fort_defense_node() -> Node2D:
+    return $FortDefenseStat
+
+
+func get_destiny_song_node() -> Node2D:
+    return $DestinySongStat
+
+
 func _update_evil_points() -> void:
     $EvilPointsStat.text = "%s/%s" % [evil_points, evil_points_per_turn]
 
