@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 gdscript/warnings/shadowed_variable=0
 gdscript/warnings/shadowed_global_identifier=0
+gdscript/warnings/redundant_await=0
 
 [display]
 
