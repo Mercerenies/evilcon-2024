@@ -27,3 +27,11 @@ func get_stats_text() -> String:
 
 func get_destination_strip(playing_field, owner: StringName):
     return playing_field.get_minion_strip(owner)
+
+
+func on_play(_playing_field, _card) -> void:
+    # Default implementation for minions is to have no "on play"
+    # effect. Specific minion card types can override this if they so
+    # choose.
+    pass
+

@@ -79,3 +79,7 @@ func can_play(playing_field, owner: StringName) -> bool:
     var card_cost = get_star_cost()
     var user_evil_points = playing_field.get_stats(owner).evil_points
     return user_evil_points >= card_cost
+
+
+func on_play(_playing_field, _card) -> void:
+    push_warning("Forgot to override on_play!")

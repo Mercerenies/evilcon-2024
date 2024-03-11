@@ -77,7 +77,7 @@ func get_stats(player: StringName):
 # * destination_transform (Callable) - A 1-argument Callable that
 #   transforms the drawn card before it is stored in the destination.
 #   If not supplied, defaults to the identity function.
-func move_card(source, destination, opts = {}) -> void:
+func move_card(source, destination, opts = {}):
     var source_index = opts.get("source_index", -1)
     var animation_scale = opts.get("scale", Vector2(0.25, 0.25))
     var custom_displayed_card = opts.get("custom_displayed_card", null)
@@ -100,6 +100,7 @@ func move_card(source, destination, opts = {}) -> void:
     if destination_transform != null:
         relevant_card = destination_transform.call(relevant_card)
     destination_cards.push_card(relevant_card)
+    return relevant_card
 
 
 func draw_cards(player: StringName, card_count: int = 1) -> void:
@@ -132,10 +133,11 @@ func play_card(player: StringName, card_type: CardType) -> void:
     stats.evil_points -= star_cost
     play_animation_for_stat_change(stats.get_evil_points_node(), - star_cost)
 
-    await move_card(hand, field, {
+    var new_card = await move_card(hand, field, {
         "source_index": hand_index,
         "destination_transform": DestinationTransform.instantiate_card(player),
     })
+    await new_card.on_play(self)
 
 
 func _on_bottom_hand_card_added(card_node):

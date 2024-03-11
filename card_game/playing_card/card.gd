@@ -12,4 +12,6 @@ func _init(card_type: CardType, owner: StringName) -> void:
     self.owner = owner
     self.original_owner = owner
 
-# Stub file (TODO)
+
+func on_play(playing_field) -> void:
+    await card_type.on_play(playing_field, self)
