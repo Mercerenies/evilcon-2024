@@ -39,7 +39,7 @@ func set_card(card):
 func play_highlight_animation() -> void:
     $AnimationPlayer.play(&"HighlightAnimation")
     while true:
-        var anim = $AnimationPlayer.animation_finished.await()
+        var anim = await $AnimationPlayer.animation_finished
         if anim == &"HighlightAnimation":
             break
 

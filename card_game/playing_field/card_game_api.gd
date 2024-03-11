@@ -5,6 +5,7 @@ extends Node
 
 const HiddenCardDisplay = preload("res://card_game/playing_card/hidden_card_display/hidden_card_display.tscn")
 const NumberAnimation = preload("res://card_game/playing_field/animation/number_animation.tscn")
+const InputBlockAnimation = preload("res://card_game/playing_field/animation/input_block_animation.gd")
 
 class CardPosition:
     var card_strip
@@ -75,3 +76,12 @@ static func play_animation_for_stat_change(playing_field, stat_node: Node2D, del
     animation.amount = delta
     animation_layer.add_child(animation)
     await animation.animation_finished
+
+
+static func highlight_card(playing_field, card: Card) -> void:
+    var card_node = find_card_node(playing_field, card)
+    if card_node != null:
+        var input_block = InputBlockAnimation.new()
+        playing_field.get_animation_layer().add_child(input_block)
+        await card_node.play_highlight_animation()
+        input_block.free()
