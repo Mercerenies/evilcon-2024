@@ -3,8 +3,6 @@ extends Node2D
 
 signal card_added(card_node)
 
-# TODO Does not currently scroll
-
 
 @export var width: float = 1024:
     set(w):
@@ -35,6 +33,20 @@ signal card_added(card_node)
 #   to the event of being added to it
 @export var card_display_scene: PackedScene
 
+# Monitoring clicks to distinguish them from drag gestures
+var _click_timer := 0.0
+var _click_pos := Vector2.ZERO
+var _dragging := false
+var _drag_pos := Vector2.ZERO
+
+
+func _ready() -> void:
+    $AllCards.position = Vector2(width / 2, 0)
+
+
+func _process(delta: float) -> void:
+    _click_timer -= delta
+
 
 func get_rect() -> Rect2:
     return Rect2(0, - margin_above - Constants.CARD_SIZE.y / 2, width, margin_above + Constants.CARD_SIZE.y + margin_below)
@@ -62,7 +74,7 @@ func _update_cards() -> void:
     var cards_array = $CardContainer.card_array()
     var card_distance = margin_horizontal * 2 + Constants.CARD_SIZE.x
 
-    var pos = Vector2(width / 2, 0)
+    var pos = Vector2(0, 0)
     for card in cards_array:
         var card_node = card_display_scene.instantiate()
         card_node.position = pos
@@ -71,6 +83,15 @@ func _update_cards() -> void:
         card_node.on_added_to_row(self)
         card_added.emit(card_node)
         pos.x += card_distance
+
+
+func _min_all_cards_x() -> float:
+    var card_distance = margin_horizontal * 2 + Constants.CARD_SIZE.x
+    return _max_all_cards_x() - card_distance * ($CardContainer.card_count() - 1)
+
+
+func _max_all_cards_x() -> float:
+    return width / 2
 
 
 func clear_buttons() -> void:
@@ -88,5 +109,26 @@ func _on_card_container_cards_modified():
 
 func _unhandled_input(event: InputEvent) -> void:
     if event is InputEventMouseButton and event.pressed:
-        queue_free()
+        _click_timer = 0.5
+        _click_pos = event.position
+        _maybe_start_dragging(event)
         get_viewport().set_input_as_handled()
+    elif event is InputEventMouseButton and not event.pressed:
+        if _click_timer > 0.0 and _click_pos.distance_squared_to(event.position) < 64.0:
+            queue_free()
+            get_viewport().set_input_as_handled()
+        _click_timer = 0.0
+        _dragging = false
+    elif event is InputEventMouseMotion:
+        if _dragging:
+            var mouse_pos = to_local(event.position)
+            $AllCards.position.x = mouse_pos.x - _drag_pos.x
+            $AllCards.position.x = clamp($AllCards.position.x, _min_all_cards_x(), _max_all_cards_x())
+            get_viewport().set_input_as_handled()
+
+
+func _maybe_start_dragging(event: InputEventMouseButton) -> void:
+    var rect = get_rect()
+    if rect.has_point(to_local(event.position)):
+        _dragging = true
+        _drag_pos = $AllCards.to_local(event.position)

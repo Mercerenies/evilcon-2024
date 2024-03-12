@@ -32,7 +32,7 @@ func _is_highlighted(global_mouse_position: Vector2) -> bool:
 
 func _unhandled_input(event: InputEvent) -> void:
     if event is InputEventMouseMotion:
-        if _is_highlighted(event.global_position):
+        if _is_highlighted(event.position):
             scale = base_scale * 1.2
             z_index = 1
         else:
@@ -40,6 +40,6 @@ func _unhandled_input(event: InputEvent) -> void:
             z_index = 0
     elif event is InputEventMouseButton:
         if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-            if _is_highlighted(event.global_position):
+            if _is_highlighted(event.position):
                 card_clicked.emit()
                 get_viewport().set_input_as_handled()
