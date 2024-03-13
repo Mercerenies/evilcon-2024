@@ -1,8 +1,8 @@
 [gd_scene load_steps=6 format=3 uid="uid://d06m06mq1io2n"]
 
 [ext_resource type="Script" path="res://card_game/playing_field/deck/deck.gd" id="1_73yum"]
-[ext_resource type="Texture2D" uid="uid://6sylej30a0ts" path="res://card_game/playing_field/deck/deck.png" id="1_f2fvy"]
 [ext_resource type="PackedScene" uid="uid://h5g8x0023oq0" path="res://card_game/playing_field/card_container/card_container.tscn" id="2_w0w5c"]
+[ext_resource type="PackedScene" uid="uid://dn473ijaek11b" path="res://card_game/playing_field/deck/deck_sprite.tscn" id="3_hm1p4"]
 [ext_resource type="Theme" uid="uid://bqxbmpg0ub86d" path="res://global_theme.tres" id="4_hfuib"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3r5t8"]
@@ -15,11 +15,7 @@ script = ExtResource("1_73yum")
 
 [node name="DisplayNode" type="Node2D" parent="."]
 
-[node name="Sprite2D" type="Sprite2D" parent="DisplayNode"]
-scale = Vector2(0.25, 0.25)
-texture = ExtResource("1_f2fvy")
-hframes = 4
-frame = 3
+[node name="DeckSprite" parent="DisplayNode" instance=ExtResource("3_hm1p4")]
 
 [node name="QuantityLabel" type="Label" parent="."]
 z_index = 1

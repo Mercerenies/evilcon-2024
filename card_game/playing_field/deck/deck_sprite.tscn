@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://dn473ijaek11b"]
+
+[ext_resource type="Texture2D" uid="uid://6sylej30a0ts" path="res://card_game/playing_field/deck/deck.png" id="1_lrb45"]
+
+[node name="DeckSprite" type="Sprite2D"]
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("1_lrb45")
+hframes = 4
+frame = 3

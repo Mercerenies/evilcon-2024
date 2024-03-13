@@ -7,18 +7,18 @@ var _mouse_over = false
 func update_display() -> void:
     var card_count = $CardContainer.card_count()
     if card_count == 0:
-        $DisplayNode/Sprite2D.frame = 0
+        $DisplayNode/DeckSprite.frame = 0
     elif card_count < 3:
-        $DisplayNode/Sprite2D.frame = 1
+        $DisplayNode/DeckSprite.frame = 1
     elif card_count < 6:
-        $DisplayNode/Sprite2D.frame = 2
+        $DisplayNode/DeckSprite.frame = 2
     else:
-        $DisplayNode/Sprite2D.frame = 3
+        $DisplayNode/DeckSprite.frame = 3
     $QuantityLabel.text = str(card_count)
 
 
 func get_sprite() -> Sprite2D:
-    return $DisplayNode/Sprite2D
+    return $DisplayNode/DeckSprite
 
 
 func _ready():
