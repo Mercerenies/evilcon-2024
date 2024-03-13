@@ -6,7 +6,7 @@ extends MinionCardType
 # to see)
 
 func get_id() -> int:
-    return 3
+    return 0  # Note: ID 0 does not show up in the shop, codex, or any player-facing environment
 
 
 func get_title() -> String:
