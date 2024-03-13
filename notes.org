@@ -117,7 +117,10 @@
      A player's turn starts with the Draw Phase. The player draws 3
      cards and then gains Evil Points, or EP for short. On the first
      turn, players get 2 EP each. On the second, they get 3, then 4,
-     and so on up to a maximum of 8 EP per turn.
+     and so on up to a maximum of 8 EP per turn. Then the player draws
+     cards. By default, he draws 3 cards per turn, though that can be
+     augmented with effects. Again, if he's already at his hand limit,
+     he does not draw.
 **** ATTACK PHASE
      All Minions on the turn player's side of the field attack the
      enemy's fort. Generally speaking, this bypasses enemy Minions and
