@@ -39,6 +39,11 @@ func card_array() -> Array:
     return _array.duplicate()
 
 
+func clear_cards() -> void:
+    _array.clear()
+    cards_modified.emit()
+
+
 func card_count() -> int:
     return len(_array)
 
