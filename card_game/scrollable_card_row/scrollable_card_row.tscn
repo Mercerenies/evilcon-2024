@@ -14,6 +14,7 @@ color = Color(0, 0, 0, 0.733333)
 polygon = PackedVector2Array(0, -225, 0, 225, 1024, 225, 1024, -225)
 
 [node name="AllCards" type="Node2D" parent="."]
+position = Vector2(512, 0)
 
 [node name="ButtonsRow" type="Node2D" parent="."]
 position = Vector2(512, 209)

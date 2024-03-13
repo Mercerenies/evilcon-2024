@@ -94,6 +94,11 @@ func _max_all_cards_x() -> float:
     return width / 2
 
 
+# amount = 0 is the far left, amount = 1 is the far right
+func set_scroll_position(amount: float) -> void:
+    $AllCards.position.x = lerp(_max_all_cards_x(), _min_all_cards_x(), amount)
+
+
 func clear_buttons() -> void:
     Util.free_all_children($ButtonsRow/HBoxContainer)
 

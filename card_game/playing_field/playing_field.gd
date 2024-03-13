@@ -184,8 +184,8 @@ func _on_top_hand_cards_modified():
 
 
 func _show_discard_pile(pile_node):
-    # TODO Start scrolled all the way to the right
-    popup_display_card(pile_node.cards().card_array())
+    var card_row = popup_display_card(pile_node.cards().card_array())
+    card_row.set_scroll_position(1.0)  # Scroll to the right
 
 
 func _on_bottom_discard_pile_pile_clicked():
