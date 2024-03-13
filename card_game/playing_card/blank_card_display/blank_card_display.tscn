@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://db62e7670wuu4"]
+
+[ext_resource type="PackedScene" uid="uid://bnpua7ivul3vs" path="res://card_game/playing_card/playing_card_display/card_frame/card_frame.tscn" id="1_1smdi"]
+[ext_resource type="Script" path="res://card_game/playing_card/blank_card_display/blank_card_display.gd" id="1_ewdu3"]
+
+[node name="BlankCardDisplay" type="Node2D"]
+script = ExtResource("1_ewdu3")
+
+[node name="CardFrame" parent="." instance=ExtResource("1_1smdi")]
+
+[node name="Sprite2D" parent="CardFrame" index="0"]
+frame = 5
+
+[editable path="CardFrame"]
