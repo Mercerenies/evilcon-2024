@@ -10,7 +10,7 @@ func set_card(card) -> void:
 
 
 func replace_displayed_card(new_card_node: Node) -> void:
-    _displayed_card.queue_free()
+    _displayed_card.free()
     add_child(new_card_node)
     _displayed_card = new_card_node
 
