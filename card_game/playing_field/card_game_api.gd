@@ -3,9 +3,13 @@ extends Node
 
 # Helpers built on top of the PlayingField API.
 
+const CardMovingAnimation = preload("res://card_game/playing_field/animation/card_moving_animation.tscn")
 const HiddenCardDisplay = preload("res://card_game/playing_card/hidden_card_display/hidden_card_display.tscn")
+const DeckCardDisplay = preload("res://card_game/playing_card/deck_card_display/deck_card_display.tscn")
 const NumberAnimation = preload("res://card_game/playing_field/animation/number_animation.tscn")
 const InputBlockAnimation = preload("res://card_game/playing_field/animation/input_block_animation.gd")
+const NullMinion = preload("res://card_game/playing_card/cards/null_minion.gd")
+
 
 class CardPosition:
     var card_strip
@@ -33,16 +37,51 @@ static func find_card_node(playing_field, card: Card):
 
 
 static func draw_cards(playing_field, player: StringName, card_count: int = 1) -> void:
-    # TODO Deal with hand limit, and reshuffling the discard (if no
-    # discard exists, abort draw)
     var opts = {}
     if player == CardPlayer.TOP:
         opts["custom_displayed_card"] = func (): return HiddenCardDisplay.instantiate()
 
     var deck = playing_field.get_deck(player)
     var hand = playing_field.get_hand(player)
+    var stats = playing_field.get_stats(player)
     for i in range(card_count):
+        # Don't draw if we're at our hand limit.
+        if hand.cards().card_count() >= stats.hand_limit:
+            break
+        # If we're out of cards, re-shuffle the discard pile.
+        if deck.cards().card_count() == 0:
+            await reshuffle_discard_pile(playing_field, player)
+        # If we're still out of cards, abort the draw.
+        if deck.cards().card_count() == 0:
+            break
+        # Else, draw.
         await playing_field.move_card(deck, hand, opts)
+
+
+static func reshuffle_discard_pile(playing_field, player: StringName) -> void:
+    var deck = playing_field.get_deck(player)
+    var discard_pile = playing_field.get_discard_pile(player)
+    if discard_pile.cards().card_count() == 0:
+        return  # Nothing to do
+    var animation_layer = playing_field.get_animation_layer()
+
+    var deck_array = deck.cards().card_array()
+    var discard_array = discard_pile.cards().card_array()
+
+    discard_pile.cards().clear_cards()
+
+    # Animate the deck moving
+    var animation = CardMovingAnimation.instantiate()
+    animation_layer.add_child(animation)
+    animation.replace_displayed_card(DeckCardDisplay.instantiate())
+    animation.set_card(NullMinion.new())
+    animation.animation_time = 0.125
+    await animation.animate(discard_pile.position, deck.position)
+    animation.queue_free()
+
+    deck_array.append_array(discard_array)
+    deck_array.shuffle()
+    deck.cards().replace_cards(deck_array)
 
 
 static func play_card(playing_field, player: StringName, card_type: CardType) -> void:
