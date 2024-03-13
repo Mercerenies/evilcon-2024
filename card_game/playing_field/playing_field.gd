@@ -126,8 +126,20 @@ func _on_bottom_hand_card_added(card_node):
     card_node.card_clicked.connect(_on_hand_card_node_card_clicked.bind(card_node))
 
 
+func _on_top_hand_card_added(card_node):
+    card_node.clickable = true
+    card_node.card_clicked.connect(_on_top_hand_card_node_card_clicked)
+
+
 func _on_play_strip_card_added(card_node):
     card_node.card_clicked.connect(_on_played_card_node_card_clicked.bind(card_node))
+
+
+func _on_top_hand_card_node_card_clicked() -> void:
+    popup_display_card([NullMinion.new()], {
+        "custom_displayed_card": func(): return HiddenCardDisplay,
+    })
+
 
 
 func _on_hand_card_node_card_clicked(card_node) -> void:
@@ -232,5 +244,3 @@ func _on_top_deck_pile_clicked():
 
 func _on_bottom_deck_pile_clicked():
     _show_deck($BottomDeck.cards().card_count())
-
-# TODO Show enemy hand as individual back-face cards

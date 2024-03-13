@@ -11,4 +11,7 @@ script = ExtResource("1_xwrpg")
 [node name="Sprite2D" parent="CardFrame" index="0"]
 frame = 4
 
+[connection signal="mouse_entered" from="CardFrame" to="." method="_on_card_frame_mouse_entered"]
+[connection signal="mouse_exited" from="CardFrame" to="." method="_on_card_frame_mouse_exited"]
+
 [editable path="CardFrame"]

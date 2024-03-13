@@ -105,6 +105,7 @@ z_index = 20
 [connection signal="card_added" from="BottomMinionStrip" to="." method="_on_play_strip_card_added"]
 [connection signal="pile_clicked" from="TopDeck" to="." method="_on_top_deck_pile_clicked"]
 [connection signal="pile_clicked" from="TopDiscardPile" to="." method="_on_top_discard_pile_pile_clicked"]
+[connection signal="card_added" from="TopHand" to="." method="_on_top_hand_card_added"]
 [connection signal="cards_modified" from="TopHand" to="." method="_on_top_hand_cards_modified"]
 [connection signal="card_added" from="TopEffectStrip" to="." method="_on_play_strip_card_added"]
 [connection signal="card_added" from="TopMinionStrip" to="." method="_on_play_strip_card_added"]
