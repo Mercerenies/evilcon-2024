@@ -7,6 +7,18 @@ const HiddenCardDisplay = preload("res://card_game/playing_card/hidden_card_disp
 const ScrollableCardRow = preload("res://card_game/scrollable_card_row/scrollable_card_row.tscn")
 const NullMinion = preload("res://card_game/playing_card/cards/null_minion.gd")
 
+# Emitted anytime the state of the board changes. This includes cards being added,
+# removed, or shuffled in any player's discard pile, deck, hand, minion strip, or
+# effect strip.
+signal cards_moved
+
+var turn_number = 0  # TODO Make sure this gets updated (also, a signal when this gets updated so we update stats)
+
+func _ready() -> void:
+    # Make sure initial stats are correct.
+    $BottomStats.update_stats_from(self, CardPlayer.BOTTOM)
+    $TopStats.update_stats_from(self, CardPlayer.TOP)
+
 
 func get_animation_layer() -> Node2D:
     return $AnimationLayer
@@ -105,6 +117,7 @@ func move_card(source, destination, opts = {}):
     var source_cards = source.cards()
     var destination_cards = destination.cards()
     var relevant_card = source_cards.pop_card(source_index)
+    emit_cards_moved()
 
     # Animate the card moving
     var animation = CardMovingAnimation.instantiate()
@@ -119,6 +132,7 @@ func move_card(source, destination, opts = {}):
     if destination_transform != null:
         relevant_card = destination_transform.call(relevant_card)
     destination_cards.push_card(relevant_card)
+    emit_cards_moved()
     return relevant_card
 
 
@@ -199,14 +213,6 @@ func popup_display_card(cards: Array, opts = {}) -> Node2D:
     return card_row
 
 
-func _on_bottom_hand_cards_modified():
-    $BottomStats.on_hand_size_updated($BottomHand.cards().card_count())
-
-
-func _on_top_hand_cards_modified():
-    $TopStats.on_hand_size_updated($TopHand.cards().card_count())
-
-
 func _show_discard_pile(pile_node):
     var array = pile_node.cards().card_array()
     var opts = {}
@@ -244,3 +250,12 @@ func _on_top_deck_pile_clicked():
 
 func _on_bottom_deck_pile_clicked():
     _show_deck($BottomDeck.cards().card_count())
+
+
+func emit_cards_moved() -> void:
+    cards_moved.emit()
+
+
+func _on_cards_moved():
+    $BottomStats.update_stats_from(self, CardPlayer.BOTTOM)
+    $TopStats.update_stats_from(self, CardPlayer.TOP)

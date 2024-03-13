@@ -12,6 +12,7 @@ func _ready():
     bottom_deck.cards().shuffle()
     top_deck.cards().shuffle()
 
+    await CardGameApi.draw_cards($PlayingField, CardPlayer.BOTTOM, 3)
     
 
 

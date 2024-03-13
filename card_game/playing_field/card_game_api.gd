@@ -43,10 +43,10 @@ static func draw_cards(playing_field, player: StringName, card_count: int = 1) -
 
     var deck = playing_field.get_deck(player)
     var hand = playing_field.get_hand(player)
-    var stats = playing_field.get_stats(player)
+    var hand_limit = StatsCalculator.get_hand_limit(playing_field, player)
     for i in range(card_count):
         # Don't draw if we're at our hand limit.
-        if hand.cards().card_count() >= stats.hand_limit:
+        if hand.cards().card_count() >= hand_limit:
             break
         # If we're out of cards, re-shuffle the discard pile.
         if deck.cards().card_count() == 0:
@@ -69,6 +69,7 @@ static func reshuffle_discard_pile(playing_field, player: StringName) -> void:
     var discard_array = discard_pile.cards().card_array()
 
     discard_pile.cards().clear_cards()
+    playing_field.emit_cards_moved()
 
     # Animate the deck moving
     var animation = CardMovingAnimation.instantiate()
@@ -82,6 +83,7 @@ static func reshuffle_discard_pile(playing_field, player: StringName) -> void:
     deck_array.append_array(discard_array)
     deck_array.shuffle()
     deck.cards().replace_cards(deck_array)
+    playing_field.emit_cards_moved()
 
 
 static func play_card(playing_field, player: StringName, card_type: CardType) -> void:
