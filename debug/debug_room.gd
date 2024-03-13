@@ -12,11 +12,7 @@ func _ready():
     bottom_deck.cards().shuffle()
     top_deck.cards().shuffle()
 
-    #for _i in range(6):
-    #    $PlayingField.get_discard_pile(CardPlayer.BOTTOM).cards().push_card(MushroomMan.new())
-
-    await CardGameApi.draw_cards($PlayingField, CardPlayer.BOTTOM, 3)
-    await CardGameApi.draw_cards($PlayingField, CardPlayer.TOP, 3)
+    
 
 
 func _sample_deck():
