@@ -1,0 +1,171 @@
+
+* EVILCON 2024
+  This is the game Evilcon 2024. I originally made a first draft of
+  this game in Game Maker for GMC Jam 51. I am now remaking it in
+  Godot and expanding massively on the concept.
+
+  Some of the below notes are revised from my original design
+  document. Most of it has been edited since then.
+** SETTING / STORY
+   You play as Ravengirl, one of the sidekicks to well-known superhero
+   and vigilante detective Ravenman. A convention of supervillains is
+   meeting at a local hotel / conference hall under the guise of an
+   International Clock Polishers' Association, to discuss some
+   unspecified evil plan. The rumor is that the head of the evil
+   convention will be there, and Ravenman wants to identify and arrest
+   him.
+
+   You will go undercover as the hotel's cleaning staff to infiltrate
+   the evil convention and identify their secret leader. To do so, you
+   must learn to play Evil Cards, the card game loved by supervillains
+   everywhere.
+
+   Once you earn the trust of the supervillains, you'll be able to
+   tackle an Elite Four style final boss gauntlet, where you must face
+   four enemies in a row without changing your deck in between. After
+   that, you learn that Ravenboy (Ravenman's /other/ sidekick) has
+   been secretly running the criminal underground.
+
+   Possibly multiple endings: You can choose to arrest Ravenboy or
+   work with him as a criminal?
+** GAMEPLAY
+   The main game takes place as a top-down RPG-style world (think old
+   Pokemon games). The entire game takes place in the hotel at which
+   the conference is taking place. Most characters you meet will want
+   to challenge you to a game of Evil Cards.
+
+   There are no consequences to losing a game of Evil Cards. If you
+   win, you get some money and a common or uncommon card from the
+   opponent's loot pool. Additionally, every villain has secondary
+   goals, and if you meet a secondary goal, you get a rare card
+   associated with that goal. These rare cards are renewable and can
+   be gotten multiple times. On top of that, if you've beaten every
+   secondary goal (not necessarily in one card game, just
+   cumulatively), you get an ultra rare card from that villain. The
+   ultra rare cards are non-renewable and can only be gotten once from
+   each villain. There is only one copy of each such card in the game,
+   and they will never show up in the shop.
+*** SHOPS
+    There are basic shops that sell common / uncommon cards for money.
+    There may also be trading-style shops where you can trade specific
+    common / uncommon cards for rarer cards. Some rare cards might
+    only be obtainable in this way.
+
+    You may sell cards to the shop, except ultra rare cards. Ultra
+    rare cards are non-renewable, so you may not sell them. (Addendum:
+    Maybe you can sell them, and if you do, then you can get another
+    copy from the original NPC that gave them to you? Could be a
+    decent late-game money farm)
+*** OTHER QUESTS
+    + Probably some RPG-style fetch quests.
+    + Some basic overworld puzzles like ice-sliding puzzles or
+      block-pushing puzzles.
+** CHARACTERS
+*** HEROES
+    + Ravengirl :: The protagonist.
+    + Ravenman :: Prominent superhero detective.
+    + Ravenboy :: Sidekick of Ravenman, secretly the leader of
+      Evilcon.
+    + Flying Brickman :: Super-strong superhero and a symbol of peace
+      and justice.
+*** VILLAINS
+    + Minionman :: Gimmick villain obsessed with armies of low-level
+      Minion cards.
+    + Dr. Badguy Doomcake :: Just Flying Brickman in a paper-thin
+      disguise.
+    + Barry the Brainless Overlord :: Robot-obsessed supervillain with
+      unworkable evil schemes.
+    + Icosaking :: Supervillain from the geometry world.
+    + Dr. Meguruku :: Town physician who is secretly a powerful ninja.
+    + Ninja Master :: The ninja master over Dr. Meguruku (TODO Name
+      this character properly)
+    + Mute Mischief Mime :: A completely silent, obsessive clown.
+    + Maxwell Sterling :: Not a supervillain, just a CEO, but he gets
+      invited to all of the important events anyway.
+    + Milkman Marauder :: Milk delivery man by day, master thief by
+      night.
+    + Count Carbonara :: Pasta-obsessed supervillain.
+    + Bristlegaze :: Weird alien floating eyeball thing.
+    + Venomatrix :: Human-sized queen bee, obsessed with replacing the
+      human race with bees.
+    + Catacomb Charmer :: Skeleton girl, was so obsessed with the
+      undead that she decided to become one herself.
+    + Chris Cogsworth :: Not a supervillain, just cleans clocks and
+      was disappointed to learn that the convention is about evil.
+    + Berry :: Barry the Brainless Overlord's much more competent
+      sister.
+    + B'aroni :: Barry the Brainless Overlord's great grandson, a time
+      traveller with futuristic technology.
+** CARD GAME RULES
+   The game proceeds on a turn-by-turn basis. The human player
+   character always goes first, and play alternates from there. As a
+   handicap, the CPU player always gets a +2 to their starting fort
+   defense.
+
+   The two players are trying to raid each others' forts. Whoever
+   drops the enemy's fort defense to zero first wins the game
+   immediately. Both players start with five cards in hand. Each
+   player's deck must have exactly 20 cards in it.
+
+   A player's hand limit is five, though cards can augment this. If a
+   player should draw from his deck and is already at the hand limit,
+   he does not draw. If a player ends up with more cards in hand than
+   the hand limit allows, nothing special happens (this can occur if a
+   card that /was/ augmenting the hand limit expires, for instance).
+*** PHASES
+**** DRAW PHASE
+     A player's turn starts with the Draw Phase. The player draws 3
+     cards and then gains Evil Points, or EP for short. On the first
+     turn, players get 2 EP each. On the second, they get 3, then 4,
+     and so on up to a maximum of 8 EP per turn.
+**** ATTACK PHASE
+     All Minions on the turn player's side of the field attack the
+     enemy's fort. Generally speaking, this bypasses enemy Minions and
+     goes straight for the fort. Each Minion, from left to right,
+     deals damage to the fort equal to their Level.
+**** MORALE PHASE
+     All Minions on the turn player's side of the field decrease in
+     Morale by 1. This includes Minions whose Attack Phase was skipped
+     for any reason.
+**** STANDBY PHASE
+     Any cards which "last X number of turns" tick down their counter
+     and are discarded if the counter has hit zero.
+**** MAIN PHASE
+     During this phase, the turn player can spend EP to play cards
+     from his hand in any order he chooses. He can play any number of
+     Minions and effect cards, provided he has the EP to do so. Cards
+     are played one-at-a-time, and effects are fully evaluated before
+     the next card is played.
+**** END PHASE
+     The player's turn ends. Any unspent EP is lost at this time.
+*** CARD TYPES
+**** MINIONS
+     Minion cards have a Level and a Morale. Level indicates attack
+     power and Morale indicates how many turns, by default, the Minion
+     will stay on the field before moving to the discard pile.
+**** EFFECTS
+     Effect cards have an effect. Effect cards are further subdivided
+     into Instant, Hero, and Ongoing effects.
+     + Instant effects have an immediate effect on the game board and
+       then move to the discard pile as soon as they're done.
+     + Hero effects are like Instant effects but generally involve
+       sabotaging or attacking the enemy's Minions. There are several
+       cards in play that specifically block or defend against Hero
+       effects.
+     + Ongoing effects remain on the field. Some Ongoing effects
+       explicitly last N turns, while others last until some condition
+       triggers them, after which time they expire.
+** CARDS
+   See ~library.ods~ for a list of cards that are planned for the
+   game.
+
+** RANDOM IDEAS
+   + Villain(s) from Three Rules Standing
+   + Costume shop for some cosmetic upgrades
+** CREDITS
+   Making notes of where I get certain assets, so I don't forget later.
+*** FONTS
+    + Merriweather :: https://fonts.google.com/specimen/Merriweather?stroke=Serif
+    + Raleway :: https://fonts.google.com/specimen/Raleway
+    + Maximum Impact :: https://www.dafont.com/maximum-impact.font
+    + Magical Childhood :: https://www.dafont.com/magical-childhood.font
