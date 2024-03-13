@@ -12,7 +12,12 @@ const NullMinion = preload("res://card_game/playing_card/cards/null_minion.gd")
 # effect strip.
 signal cards_moved
 
-var turn_number = 0  # TODO Make sure this gets updated (also, a signal when this gets updated so we update stats)
+signal turn_number_updated
+
+var turn_number: int = 0:
+    set(v):
+        turn_number = v
+        turn_number_updated.emit()
 
 func _ready() -> void:
     # Make sure initial stats are correct.
@@ -257,5 +262,10 @@ func emit_cards_moved() -> void:
 
 
 func _on_cards_moved():
+    $BottomStats.update_stats_from(self, CardPlayer.BOTTOM)
+    $TopStats.update_stats_from(self, CardPlayer.TOP)
+
+
+func _on_turn_number_updated():
     $BottomStats.update_stats_from(self, CardPlayer.BOTTOM)
     $TopStats.update_stats_from(self, CardPlayer.TOP)
