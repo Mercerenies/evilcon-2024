@@ -2,7 +2,10 @@ extends Node2D
 
 const CardMovingAnimation = preload("res://card_game/playing_field/animation/card_moving_animation.tscn")
 const PlayingCardDisplay = preload("res://card_game/playing_card/playing_card_display/playing_card_display.tscn")
+const BlankCardDisplay = preload("res://card_game/playing_card/blank_card_display/blank_card_display.tscn")
+const HiddenCardDisplay = preload("res://card_game/playing_card/hidden_card_display/hidden_card_display.tscn")
 const ScrollableCardRow = preload("res://card_game/scrollable_card_row/scrollable_card_row.tscn")
+const NullMinion = preload("res://card_game/playing_card/cards/null_minion.gd")
 
 
 func get_animation_layer() -> Node2D:
@@ -158,17 +161,26 @@ func _on_played_card_node_card_clicked(card_node) -> void:
 # * margin_below (float) - Margin below the card row (in pixels).
 #
 # * margin_above (float) - Margin above the card row (in pixels).
+#
+# * custom_displayed_card (Callable) - A 0-argument Callable that
+#   returns a card display node (a node with a set_card() method) to
+#   use. If not provided, the default node type of PlayingCardDisplay
+#   is used.
 func popup_display_card(cards: Array, opts = {}) -> Node2D:
     var margin_below = opts.get("margin_below", null)
     var margin_above = opts.get("margin_above", null)
+    var custom_displayed_card = opts.get("custom_displayed_card", null)
 
     var viewport_size = get_viewport().get_visible_rect()
     var card_row = ScrollableCardRow.instantiate()
-    card_row.card_display_scene = PlayingCardDisplay
     if margin_below != null:
         card_row.margin_below = margin_below
     if margin_above != null:
         card_row.margin_above = margin_above
+    if custom_displayed_card == null:
+        card_row.card_display_scene = PlayingCardDisplay
+    else:
+        card_row.card_display_scene = custom_displayed_card.call()
     $UILayer.add_child(card_row)
     card_row.cards().replace_cards(cards)
     card_row.position = Vector2(0, viewport_size.size.y / 2)
@@ -184,8 +196,26 @@ func _on_top_hand_cards_modified():
 
 
 func _show_discard_pile(pile_node):
-    var card_row = popup_display_card(pile_node.cards().card_array())
+    var array = pile_node.cards().card_array()
+    var opts = {}
+    if len(array) == 0:
+        array = [NullMinion.new()]
+        opts["custom_displayed_card"] = func(): return BlankCardDisplay
+    var card_row = popup_display_card(array, opts)
     card_row.set_scroll_position(1.0)  # Scroll to the right
+    return card_row
+
+
+func _show_deck(deck_size: int):
+    var array = []
+    array.resize(deck_size)
+    for i in range(deck_size):
+        array.push_back(NullMinion.new())
+    var card_row = popup_display_card(array, {
+        "custom_displayed_card": func(): return HiddenCardDisplay,
+    })
+    card_row.set_scroll_position(1.0)  # Scroll to the right
+    return card_row
 
 
 func _on_bottom_discard_pile_pile_clicked():
@@ -194,3 +224,13 @@ func _on_bottom_discard_pile_pile_clicked():
 
 func _on_top_discard_pile_pile_clicked():
     _show_discard_pile($TopDiscardPile)
+
+
+func _on_top_deck_pile_clicked():
+    _show_deck($TopDeck.cards().card_count())
+
+
+func _on_bottom_deck_pile_clicked():
+    _show_deck($BottomDeck.cards().card_count())
+
+# TODO Show enemy hand as individual back-face cards

@@ -1,19 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://ccrj1xc7vud25"]
+[gd_scene load_steps=3 format=3 uid="uid://ccrj1xc7vud25"]
 
 [ext_resource type="PackedScene" uid="uid://d06m06mq1io2n" path="res://card_game/playing_field/deck/deck.tscn" id="1_ritf0"]
 [ext_resource type="Script" path="res://card_game/playing_field/discard_pile/discard_pile.gd" id="2_mmtyq"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_ef75c"]
-size = Vector2(76, 101)
-
 [node name="DiscardPile" instance=ExtResource("1_ritf0")]
 script = ExtResource("2_mmtyq")
-
-[node name="Area2D" type="Area2D" parent="." index="3"]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" index="0"]
-position = Vector2(0, 0.5)
-shape = SubResource("RectangleShape2D_ef75c")
-
-[connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
-[connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]

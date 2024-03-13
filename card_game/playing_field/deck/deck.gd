@@ -1,6 +1,8 @@
 extends Node2D
 
-# TODO Make deck clickable, like the discard pile is
+signal pile_clicked
+
+var _mouse_over = false
 
 func update_display() -> void:
     var card_count = $CardContainer.card_count()
@@ -29,3 +31,21 @@ func _on_card_container_cards_modified():
 
 func cards():
     return $CardContainer
+
+
+func _on_area_2d_mouse_entered():
+    _mouse_over = true
+    $DisplayNode.scale = Vector2.ONE * 1.2
+
+
+func _on_area_2d_mouse_exited():
+    _mouse_over = false
+    $DisplayNode.scale = Vector2.ONE
+
+
+func _unhandled_input(event: InputEvent) -> void:
+    if event is InputEventMouseButton:
+        if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+            if _mouse_over:
+                pile_clicked.emit()
+                get_viewport().set_input_as_handled()
