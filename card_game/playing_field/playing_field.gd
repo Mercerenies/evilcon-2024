@@ -222,7 +222,7 @@ func _show_deck(deck_size: int):
     var array = []
     array.resize(deck_size)
     for i in range(deck_size):
-        array.push_back(NullMinion.new())
+        array[i] = NullMinion.new()
     var card_row = popup_display_card(array, {
         "custom_displayed_card": func(): return HiddenCardDisplay,
     })
