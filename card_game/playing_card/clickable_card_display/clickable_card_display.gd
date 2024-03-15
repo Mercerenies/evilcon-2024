@@ -6,8 +6,6 @@ signal card_clicked
 var _mouse_overlapping = false
 var _owning_strip = null
 
-@onready var base_scale = scale
-
 
 func on_added_to_strip(strip) -> void:
     _owning_strip = strip
@@ -33,10 +31,10 @@ func _is_highlighted(global_mouse_position: Vector2) -> bool:
 func _unhandled_input(event: InputEvent) -> void:
     if event is InputEventMouseMotion:
         if _is_highlighted(event.position):
-            scale = base_scale * 1.2
+            $Card.scale = Vector2.ONE * 1.2
             z_index = 1
         else:
-            scale = base_scale
+            $Card.scale = Vector2.ONE
             z_index = 0
     elif event is InputEventMouseButton:
         if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
