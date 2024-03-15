@@ -8,9 +8,10 @@ const ScrollableCardRow = preload("res://card_game/scrollable_card_row/scrollabl
 const NullMinion = preload("res://card_game/playing_card/cards/null_minion.gd")
 const NullEnemyAI = preload("res://card_game/playing_field/enemy_ai/null_enemy_ai.gd")
 
-# Emitted anytime the state of the board changes. This includes cards being added,
-# removed, or shuffled in any player's discard pile, deck, hand, minion strip, or
-# effect strip.
+# Emitted anytime the state of the board changes. This includes cards
+# being added, removed, shuffled, or having their stats modified in
+# any player's discard pile, deck, hand, minion strip, or effect
+# strip.
 signal cards_moved
 
 signal turn_number_updated
@@ -38,11 +39,11 @@ func _ready() -> void:
 
 
 func replace_enemy_ai(new_enemy_ai: Node) -> void:
-    if _enemy_ai.is_inside_tree():
-        push_error("Cannot replace enemy AI after the game has started")
-        return
+    var is_in_tree = _enemy_ai.is_inside_tree()
     _enemy_ai.free()
     _enemy_ai = new_enemy_ai
+    if is_in_tree:
+        $AILayer.add_child(_enemy_ai)
 
 
 func get_animation_layer() -> Node2D:

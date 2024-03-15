@@ -2,9 +2,11 @@ extends Node2D
 
 const MushroomMan = preload("res://card_game/playing_card/cards/mushroom_man.gd")
 const PotOfLinguine = preload("res://card_game/playing_card/cards/pot_of_linguine.gd")
+const GreedyEnemyAI = preload("res://card_game/playing_field/enemy_ai/greedy_enemy_ai.tscn")
 
 
 func _ready():
+    $PlayingField.replace_enemy_ai(GreedyEnemyAI.instantiate())
     var bottom_deck = $PlayingField.get_deck(CardPlayer.BOTTOM)
     var top_deck = $PlayingField.get_deck(CardPlayer.TOP)
     bottom_deck.cards().replace_cards(_sample_deck())
