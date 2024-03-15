@@ -6,6 +6,7 @@ const BlankCardDisplay = preload("res://card_game/playing_card/blank_card_displa
 const HiddenCardDisplay = preload("res://card_game/playing_card/hidden_card_display/hidden_card_display.tscn")
 const ScrollableCardRow = preload("res://card_game/scrollable_card_row/scrollable_card_row.tscn")
 const NullMinion = preload("res://card_game/playing_card/cards/null_minion.gd")
+const NullEnemyAI = preload("res://card_game/playing_field/enemy_ai/null_enemy_ai.gd")
 
 # Emitted anytime the state of the board changes. This includes cards being added,
 # removed, or shuffled in any player's discard pile, deck, hand, minion strip, or
@@ -13,16 +14,35 @@ const NullMinion = preload("res://card_game/playing_card/cards/null_minion.gd")
 signal cards_moved
 
 signal turn_number_updated
+signal turn_player_changed
 
-var turn_number: int = 0:
+# Note: This starts at -1 but will be set to 0 as soon as the game
+# starts. The first turn of the game is internally treated as Turn 0.
+var turn_number: int = -1:
     set(v):
         turn_number = v
         turn_number_updated.emit()
+
+var turn_player: StringName = CardPlayer.BOTTOM:
+    set(v):
+        turn_player = v
+        turn_player_changed.emit()
+
+var _enemy_ai: Node = NullEnemyAI.new()
 
 func _ready() -> void:
     # Make sure initial stats are correct.
     $BottomStats.update_stats_from(self, CardPlayer.BOTTOM)
     $TopStats.update_stats_from(self, CardPlayer.TOP)
+    $AILayer.add_child(_enemy_ai)
+
+
+func replace_enemy_ai(new_enemy_ai: Node) -> void:
+    if _enemy_ai.is_inside_tree():
+        push_error("Cannot replace enemy AI after the game has started")
+        return
+    _enemy_ai.free()
+    _enemy_ai = new_enemy_ai
 
 
 func get_animation_layer() -> Node2D:
@@ -269,3 +289,25 @@ func _on_cards_moved():
 func _on_turn_number_updated():
     $BottomStats.update_stats_from(self, CardPlayer.BOTTOM)
     $TopStats.update_stats_from(self, CardPlayer.TOP)
+
+
+func _on_turn_player_changed():
+    $EndTurnButton.disabled = (turn_player != CardPlayer.BOTTOM)
+
+
+func _on_end_turn_button_pressed():
+    await CardGameTurnTransitions.end_turn(self, CardPlayer.BOTTOM)
+    await CardGameTurnTransitions.begin_turn(self, CardPlayer.TOP)
+    _enemy_ai.start_enemy_turn(self)
+
+
+func end_enemy_turn() -> void:
+    # Do NOT call this directly from an EnemyAI subclass. Call
+    # EnemyAI.end_enemy_turn, which delegates to this method instead.
+    # (Yes, it's spaghetti and I should probably clean that up)
+    #
+    # TODO Good visuals for turn transitions
+    await CardGameTurnTransitions.end_turn(self, CardPlayer.TOP)
+    await CardGamePhases.end_of_full_turn(self)
+    await CardGamePhases.start_of_full_turn(self)
+    await CardGameTurnTransitions.begin_turn(self, CardPlayer.BOTTOM)

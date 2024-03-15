@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://pxp7u44hyyv2"]
+[gd_scene load_steps=11 format=3 uid="uid://pxp7u44hyyv2"]
 
 [ext_resource type="Texture2D" uid="uid://bynkbt50b1evw" path="res://card_game/playing_field/card_mat/card_mat.png" id="1_3fl7o"]
 [ext_resource type="Script" path="res://card_game/playing_field/playing_field.gd" id="1_cgwfb"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://duefqdwqjkkdl" path="res://card_game/playing_card/clickable_card_display/clickable_card_display.tscn" id="6_bd5kg"]
 [ext_resource type="PackedScene" uid="uid://cysmxvy2tf6p7" path="res://card_game/playing_card/hidden_card_display/hidden_card_display.tscn" id="7_878nt"]
 [ext_resource type="PackedScene" uid="uid://bvh50q457q3ko" path="res://card_game/playing_field/game_stats_panel/game_stats_panel.tscn" id="8_aoot7"]
+[ext_resource type="PackedScene" uid="uid://dgwt236eos2sb" path="res://card_game/playing_field/end_turn_button/end_turn_button.tscn" id="10_dkn10"]
 
 [node name="PlayingField" type="Node2D"]
 script = ExtResource("1_cgwfb")
@@ -91,6 +92,14 @@ contained_type = "Card"
 [node name="TopStats" parent="." instance=ExtResource("8_aoot7")]
 position = Vector2(930, 187)
 
+[node name="EndTurnButton" parent="." instance=ExtResource("10_dkn10")]
+offset_left = 867.0
+offset_top = 706.0
+offset_right = 985.0
+offset_bottom = 738.0
+
+[node name="AILayer" type="Node" parent="."]
+
 [node name="AnimationLayer" type="Node2D" parent="."]
 z_index = 10
 
@@ -99,6 +108,7 @@ z_index = 20
 
 [connection signal="cards_moved" from="." to="." method="_on_cards_moved"]
 [connection signal="turn_number_updated" from="." to="." method="_on_turn_number_updated"]
+[connection signal="turn_player_changed" from="." to="." method="_on_turn_player_changed"]
 [connection signal="pile_clicked" from="BottomDeck" to="." method="_on_bottom_deck_pile_clicked"]
 [connection signal="pile_clicked" from="BottomDiscardPile" to="." method="_on_bottom_discard_pile_pile_clicked"]
 [connection signal="card_added" from="BottomHand" to="." method="_on_bottom_hand_card_added"]
@@ -109,6 +119,7 @@ z_index = 20
 [connection signal="card_added" from="TopHand" to="." method="_on_top_hand_card_added"]
 [connection signal="card_added" from="TopEffectStrip" to="." method="_on_play_strip_card_added"]
 [connection signal="card_added" from="TopMinionStrip" to="." method="_on_play_strip_card_added"]
+[connection signal="pressed" from="EndTurnButton" to="." method="_on_end_turn_button_pressed"]
 
 [editable path="BottomEffectStrip"]
 [editable path="BottomMinionStrip"]

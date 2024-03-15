@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://dgwt236eos2sb"]
+
+[ext_resource type="Theme" uid="uid://bqxbmpg0ub86d" path="res://global_theme.tres" id="1_cgqm8"]
+
+[node name="EndTurnButton" type="Button"]
+theme = ExtResource("1_cgqm8")
+text = "End Turn"
