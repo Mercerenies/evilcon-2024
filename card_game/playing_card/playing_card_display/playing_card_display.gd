@@ -5,10 +5,26 @@ const CardIcon = preload("res://card_game/playing_card/playing_card_display/card
 signal mouse_entered
 signal mouse_exited
 
-var card_type: CardType = null:
+@export var overlay_rotates_with_node := false
+@export var overlay_scales_with_node := false
+
+# Do NOT re-assign these variables directly. These should only be
+# modified through set_card.
+var card_type: CardType = null
+var card: Card = null
+
+var overlay_text := "":
     set(v):
-        card_type = v
-        _update_display()
+        overlay_text = v
+        $OverlayTextNode/Label.text = v
+        $OverlayTextNode.visible = (v != "")
+
+
+func _process(_delta: float) -> void:
+    if not overlay_rotates_with_node:
+        $OverlayTextNode.global_rotation = 0
+    if not overlay_scales_with_node:
+        $OverlayTextNode.global_scale = Vector2.ONE
 
 
 func _update_display() -> void:
@@ -31,8 +47,10 @@ func _update_display() -> void:
 func set_card(card):
     if card is Card:
         card_type = card.card_type
+        card = card
     else:
         card_type = card
+        card = null
     _update_display()
 
 
