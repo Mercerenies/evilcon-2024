@@ -285,6 +285,20 @@ func emit_cards_moved() -> void:
 func _on_cards_moved():
     $BottomStats.update_stats_from(self, CardPlayer.BOTTOM)
     $TopStats.update_stats_from(self, CardPlayer.TOP)
+    # Update all cards in play
+    for card in $BottomMinionStrip.card_nodes():
+        _refresh_card_stats(card)
+    for card in $TopMinionStrip.card_nodes():
+        _refresh_card_stats(card)
+    for card in $BottomEffectStrip.card_nodes():
+        _refresh_card_stats(card)
+    for card in $TopEffectStrip.card_nodes():
+        _refresh_card_stats(card)
+
+
+func _refresh_card_stats(card_node):
+    var new_overlay_text = card_node.card.get_overlay_text(self)
+    card_node.overlay_text = new_overlay_text
 
 
 func _on_turn_number_updated():

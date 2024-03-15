@@ -46,11 +46,11 @@ func _update_display() -> void:
 
 func set_card(card):
     if card is Card:
-        card_type = card.card_type
-        card = card
+        self.card_type = card.card_type
+        self.card = card
     else:
-        card_type = card
-        card = null
+        self.card_type = card
+        self.card = null
     _update_display()
 
 

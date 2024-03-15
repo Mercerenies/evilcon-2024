@@ -21,6 +21,18 @@ func get_base_morale() -> int:
     return 0
 
 
+func get_level(_playing_field, card) -> int:
+    # TODO Card effects that passively modify this (as opposed to
+    # instants that do so actively)
+    return card.metadata[CardMeta.LEVEL]
+
+
+func get_morale(_playing_field, card) -> int:
+    # TODO Card effects that passively modify this (as opposed to
+    # instants that do so actively)
+    return card.metadata[CardMeta.MORALE]
+
+
 func get_stats_text() -> String:
     return "Lvl %s / %s Mor" % [get_base_level(), get_base_morale()]
 
@@ -35,3 +47,15 @@ func on_play(_playing_field, _card) -> void:
     # choose.
     pass
 
+
+func on_instantiate(card) -> void:
+    super.on_instantiate(card)
+    # Initialize Level and Morale.
+    card.metadata[CardMeta.LEVEL] = get_base_level()
+    card.metadata[CardMeta.MORALE] = get_base_morale()
+
+
+func get_overlay_text(playing_field, card) -> String:
+    var level = get_level(playing_field, card)
+    var morale = get_morale(playing_field, card)
+    return "%s / %s" % [level, morale]
