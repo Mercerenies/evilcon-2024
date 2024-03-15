@@ -32,6 +32,10 @@ func cards():
     return $CardContainer
 
 
+func card_nodes():
+    return $AllCards.get_children()
+
+
 func get_card_node(index: int):
     return $AllCards.get_child(index)
 
