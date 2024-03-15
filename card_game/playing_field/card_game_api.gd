@@ -36,6 +36,19 @@ static func find_card_node(playing_field, card: Card):
     return position.card_strip.get_card_node(position.index)
 
 
+# Returns the turn player's cards first, then the opponent's cards.
+# This is the order that effects generally evaluate in. For each
+# player, returns minions first then effects.
+static func get_cards_in_play(playing_field) -> Array:
+    var turn_player = playing_field.turn_player
+    var cards = []
+    cards.append_array(playing_field.get_minion_strip(turn_player).cards().card_array())
+    cards.append_array(playing_field.get_effect_strip(turn_player).cards().card_array())
+    cards.append_array(playing_field.get_minion_strip(CardPlayer.other(turn_player)).cards().card_array())
+    cards.append_array(playing_field.get_effect_strip(CardPlayer.other(turn_player)).cards().card_array())
+    return cards
+
+
 static func draw_cards(playing_field, player: StringName, card_count: int = 1) -> void:
     var opts = {}
     if player == CardPlayer.TOP:

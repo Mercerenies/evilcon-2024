@@ -101,3 +101,23 @@ func get_overlay_text(_playing_field, _card) -> String:
     # if any. Any game action which has the potential to update the
     # result of this method should emit PlayingField.cards_moved.
     return ""
+
+
+func on_draw_phase(_playing_field, _card) -> void:
+    pass
+
+
+func on_attack_phase(_playing_field, _card) -> void:
+    pass
+
+
+func on_morale_phase(_playing_field, _card) -> void:
+    pass
+
+
+func on_standby_phase(_playing_field, _card) -> void:
+    pass
+
+
+func on_end_phase(_playing_field, _card) -> void:
+    pass
