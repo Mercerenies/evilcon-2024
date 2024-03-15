@@ -83,3 +83,21 @@ func can_play(playing_field, owner: StringName) -> bool:
 
 func on_play(_playing_field, _card) -> void:
     push_warning("Forgot to override on_play!")
+
+
+func on_instantiate(_card) -> void:
+    # This optional method is called when the card is first
+    # instantiated. This usually happens right before the card is put
+    # into play, but that should not be assumed. Note that this method
+    # does NOT have access to a PlayingField, as it should only set up
+    # properties intrinsic to the card, not calculate things that
+    # depend on the state of the board. Use on_play for global effects
+    # that should happen when the card is put onto the playing field.
+    pass
+
+
+func get_overlay_text(_playing_field, _card) -> String:
+    # Returns the overlay text to show on the card while it's in play,
+    # if any. Any game action which has the potential to update the
+    # result of this method should emit PlayingField.cards_moved.
+    return ""
