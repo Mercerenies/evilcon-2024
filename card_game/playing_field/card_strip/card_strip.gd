@@ -72,6 +72,8 @@ func _update_debug_rect() -> void:
     # The node $DebugVisualRect is just for the editor. It has
     # no purpose at runtime but is used at edit time to better
     # visualize the bounds of the CardStrip.
+    if not Engine.is_editor_hint():
+        return
     var node = $DebugVisualRect
     node.polygon = PackedVector2Array([
         Vector2(- total_width / 2, - Constants.CARD_SIZE.y / 2),

@@ -15,7 +15,7 @@ const CardIcon = preload("res://card_game/playing_card/playing_card_display/card
 
 
 func _update_row():
-    Util.queue_free_all_children(self)
+    Util.free_all_children(self)
     var pos = Vector2.ZERO
     var iterable = icons.duplicate()
     var delta = Vector2(CardIcon.ICON_WIDTH, 0)
