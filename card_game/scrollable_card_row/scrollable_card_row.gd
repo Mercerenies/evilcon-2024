@@ -70,6 +70,8 @@ func _update_rect() -> void:
 
 
 func _update_cards() -> void:
+    if Engine.is_editor_hint():
+        return
     Util.queue_free_all_children($AllCards)
     var cards_array = $CardContainer.card_array()
     var card_distance = margin_horizontal * 2 + Constants.CARD_SIZE.x
