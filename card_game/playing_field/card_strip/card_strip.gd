@@ -52,7 +52,7 @@ func nearest_card_node_to(local_pos: Vector2):
 
 
 func _on_card_container_cards_modified():
-    Util.free_all_children($AllCards)
+    Util.queue_free_all_children($AllCards)
     var cards_array = $CardContainer.card_array()
     var card_distance = min((total_width - Constants.CARD_SIZE.x) / max(len(cards_array) - 1, 1), maximum_card_distance)
     var total_distance = card_distance * max(len(cards_array) - 1, 0)

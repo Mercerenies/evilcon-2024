@@ -59,3 +59,23 @@ func get_overlay_text(playing_field, card) -> String:
     var level = get_level(playing_field, card)
     var morale = get_morale(playing_field, card)
     return "%s / %s" % [level, morale]
+
+
+func on_attack_phase(playing_field, card) -> void:
+    # By default, a Minion of Level > 0 attacks during the attack
+    # phase.
+    if playing_field.turn_player == card.owner:
+        var level = get_level(playing_field, card)
+        if level > 0:
+            var opponent = CardPlayer.other(card.owner)
+            await CardGameApi.highlight_card(playing_field, card)
+            Stats.add_fort_defense(playing_field, opponent, - level)
+            # TODO Check if fort defense has hit zero
+
+
+func on_morale_phase(playing_field, card) -> void:
+    # By default, a Minion decreases Morale during the morale phase.
+    if playing_field.turn_player == card.owner:
+        card.metadata[CardMeta.MORALE] -= 1
+        if card.metadata[CardMeta.MORALE] <= 0:
+            await CardGameApi.destroy_card(playing_field, card)

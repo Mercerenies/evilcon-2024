@@ -70,7 +70,7 @@ func _update_rect() -> void:
 
 
 func _update_cards() -> void:
-    Util.free_all_children($AllCards)
+    Util.queue_free_all_children($AllCards)
     var cards_array = $CardContainer.card_array()
     var card_distance = margin_horizontal * 2 + Constants.CARD_SIZE.x
 
@@ -100,7 +100,7 @@ func set_scroll_position(amount: float) -> void:
 
 
 func clear_buttons() -> void:
-    Util.free_all_children($ButtonsRow/HBoxContainer)
+    Util.queue_free_all_children($ButtonsRow/HBoxContainer)
 
 
 func append_button(button: Button) -> void:
