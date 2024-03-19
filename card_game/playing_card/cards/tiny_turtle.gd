@@ -2,15 +2,15 @@ extends MinionCardType
 
 
 func get_id() -> int:
-    return 1
+    return 4
 
 
 func get_title() -> String:
-    return "Mushroom Man"
+    return "Tiny Turtle"
 
 
 func get_text() -> String:
-    return "An adorable little mushroom. He doesn't look too threatening."
+    return "A little turtle who wouldn't hurt a fly. He doesn't work for money. He just wants a big hug."
 
 
 func is_text_flavor() -> bool:
@@ -18,15 +18,15 @@ func is_text_flavor() -> bool:
 
 
 func get_star_cost() -> int:
-    return 2
-
-
-func get_picture_index() -> int:
     return 1
 
 
+func get_picture_index() -> int:
+    return 25
+
+
 func get_base_level() -> int:
-    return 2
+    return 1
 
 
 func get_base_morale() -> int:
@@ -34,7 +34,7 @@ func get_base_morale() -> int:
 
 
 func get_archetypes() -> Array:
-    return [Archetype.FUNGUS]
+    return [Archetype.TURTLE]
 
 
 func get_rarity() -> int:

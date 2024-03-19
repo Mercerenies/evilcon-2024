@@ -12,7 +12,7 @@ const ROBOT = 7
 const BEE = 8
 const NINJA = 9
 const BOSS = 11
-const ZOMBIE = 12
+const UNDEAD = 12
 
 
 static func to_icon_index(archetype: int) -> int:
