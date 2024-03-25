@@ -17,12 +17,12 @@ func get_text() -> String:
     return "Null Card"
 
 
-func get_star_cost() -> int:
-    return 8
-
-
 func get_picture_index() -> int:
     return 0
+
+
+func get_star_cost() -> int:
+    return 8
 
 
 func get_base_level() -> int:

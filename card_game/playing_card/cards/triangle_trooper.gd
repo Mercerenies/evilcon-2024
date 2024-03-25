@@ -17,12 +17,12 @@ func is_text_flavor() -> bool:
     return true
 
 
-func get_star_cost() -> int:
-    return 1
-
-
 func get_picture_index() -> int:
     return 4
+
+
+func get_star_cost() -> int:
+    return 1
 
 
 func get_base_level() -> int:
