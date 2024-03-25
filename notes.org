@@ -96,6 +96,22 @@
       sister.
     + B'aroni :: Barry the Brainless Overlord's great grandson, a time
       traveller with futuristic technology.
+** WORLD MAP
+   You first face a tutorial character (probably Minionman), who gives
+   you your first stamp. You need to get all N stamps and then face
+   off against the Final Four.
+*** THE STAMPS
+    THIS IS A DRAFT! Might modify it later!
+
+    + Minionman and his lair of minions
+    + Barry the Brainless Overlord (but it's really his sister Berry
+      who's in charge)
+    + Dr. Meguruku and the Ninja Master
+    + Count Carbonara (and the Milkman Marauder?)
+    + Bristlegaze
+    + Catacomb Charmer
+    + Venomatrix
+    + Mute Mischief Mime
 ** CARD GAME RULES
    The game proceeds on a turn-by-turn basis. The human player
    character always goes first, and play alternates from there. As a
