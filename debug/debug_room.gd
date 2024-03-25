@@ -24,10 +24,22 @@ func _ready():
 
 func _sample_deck():
     return [
-        MushroomMan.new(), MushroomMan.new(), MushroomMan.new(),
-        SpikyMushroomMan.new(), SpikyMushroomMan.new(), SpikyMushroomMan.new(),
-        TinyTurtle.new(), TinyTurtle.new(), TinyTurtle.new(),
-        ZanyZombie.new(), ZanyZombie.new(), ZanyZombie.new(),
-        SergeantSquare.new(), SergeantSquare.new(), TriangleTrooper.new(),
-        TriangleTrooper.new(), TriangleTrooper.new(), PotOfLinguine.new(),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.MUSHROOM_MAN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.MUSHROOM_MAN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.MUSHROOM_MAN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.SPIKY_MUSHROOM_MAN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.SPIKY_MUSHROOM_MAN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.SPIKY_MUSHROOM_MAN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.TINY_TURTLE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.TINY_TURTLE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.TINY_TURTLE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.ZANY_ZOMBIE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.PENTAGON_PROTECTOR),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CAPTAIN_CIRCLE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.RHOMBUS_RANGER),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.SERGEANT_SQUARE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.RHOMBUS_RANGER),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.TRIANGLE_TROOPER),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.TRIANGLE_TROOPER),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.POT_OF_LINGUINE),
     ]
