@@ -5,6 +5,8 @@ const PotOfLinguine = preload("res://card_game/playing_card/cards/pot_of_linguin
 const SpikyMushroomMan = preload("res://card_game/playing_card/cards/spiky_mushroom_man.gd")
 const TinyTurtle = preload("res://card_game/playing_card/cards/tiny_turtle.gd")
 const ZanyZombie = preload("res://card_game/playing_card/cards/zany_zombie.gd")
+const SergeantSquare = preload("res://card_game/playing_card/cards/sergeant_square.gd")
+const TriangleTrooper = preload("res://card_game/playing_card/cards/triangle_trooper.gd")
 const GreedyEnemyAI = preload("res://card_game/playing_field/enemy_ai/greedy_enemy_ai.tscn")
 
 
@@ -26,6 +28,6 @@ func _sample_deck():
         SpikyMushroomMan.new(), SpikyMushroomMan.new(), SpikyMushroomMan.new(),
         TinyTurtle.new(), TinyTurtle.new(), TinyTurtle.new(),
         ZanyZombie.new(), ZanyZombie.new(), ZanyZombie.new(),
-        PotOfLinguine.new(), PotOfLinguine.new(), PotOfLinguine.new(),
-        PotOfLinguine.new(), PotOfLinguine.new(), PotOfLinguine.new(),
+        SergeantSquare.new(), SergeantSquare.new(), TriangleTrooper.new(),
+        TriangleTrooper.new(), TriangleTrooper.new(), PotOfLinguine.new(),
     ]
