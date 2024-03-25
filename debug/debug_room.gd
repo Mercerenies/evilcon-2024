@@ -39,7 +39,7 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.RHOMBUS_RANGER),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.SERGEANT_SQUARE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.RHOMBUS_RANGER),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.TRIANGLE_TROOPER),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.TRIANGLE_TROOPER),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.RAVIOLI_RUNT),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.RAVIOLI_RUNT),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.POT_OF_LINGUINE),
     ]
