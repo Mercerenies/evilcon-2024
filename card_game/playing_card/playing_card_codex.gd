@@ -23,6 +23,14 @@ enum ID {
     ROBOT_MITE = 15,
     MEATBALL_MAN = 16,
     UNPAID_INTERN = 17,
+    BABY_CLOWN = 18,
+    SPAGHETTI_MONSTER = 19,
+    PENNE_PIKEMAN = 20,
+    PENNE_SHARPSHOOTER = 21,
+    TEMP_WORKER = 22,
+    IT_WORKER = 23,
+    CONTRACTOR = 24,
+    MIDDLE_MANAGER = 25,
 }
 
 static func get_entity_script(n: int) -> GDScript:
@@ -63,6 +71,22 @@ static func get_entity_script(n: int) -> GDScript:
             return load("./card_game/playing_card/cards/meatball_man.gd") as GDScript
         ID.UNPAID_INTERN:
             return load("./card_game/playing_card/cards/unpaid_intern.gd") as GDScript
+        ID.BABY_CLOWN:
+            return load("./card_game/playing_card/cards/baby_clown.gd") as GDScript
+        ID.SPAGHETTI_MONSTER:
+            return load("./card_game/playing_card/cards/spaghetti_monster.gd") as GDScript
+        ID.PENNE_PIKEMAN:
+            return load("./card_game/playing_card/cards/penne_pikeman.gd") as GDScript
+        ID.PENNE_SHARPSHOOTER:
+            return load("./card_game/playing_card/cards/penne_sharpshooter.gd") as GDScript
+        ID.TEMP_WORKER:
+            return load("./card_game/playing_card/cards/temp_worker.gd") as GDScript
+        ID.IT_WORKER:
+            return load("./card_game/playing_card/cards/it_worker.gd") as GDScript
+        ID.CONTRACTOR:
+            return load("./card_game/playing_card/cards/contractor.gd") as GDScript
+        ID.MIDDLE_MANAGER:
+            return load("./card_game/playing_card/cards/middle_manager.gd") as GDScript
         _:
             push_warning("Invalid ID value: %d" % n)
             return null
