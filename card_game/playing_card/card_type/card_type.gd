@@ -103,6 +103,16 @@ func get_overlay_text(_playing_field, _card) -> String:
     return ""
 
 
+func do_influence_check(playing_field, target_card, source_card) -> void:
+    # Called when the source_card is about to affect the target_card
+    # in some way. This method should return true if the source card
+    # is permitted to affect the target card (which is usually the
+    # case), or false if something blocks the effect. This method is
+    # permitted to be a coroutine (i.e. to "await"), in order to play
+    # animations, if needed.
+    return true
+
+
 func on_draw_phase(_playing_field, _card) -> void:
     pass
 
