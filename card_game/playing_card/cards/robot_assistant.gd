@@ -10,7 +10,7 @@ func get_title() -> String:
 
 
 func get_text() -> String:
-    return "He can tell you the weather, make jokes, play your favorite playlists, and slaughter your enemies."
+    return "[i]He can tell you the weather, make jokes, play your favorite playlists, and slaughter your enemies.[/i]"
 
 
 func is_text_flavor() -> bool:

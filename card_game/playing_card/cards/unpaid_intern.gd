@@ -10,7 +10,7 @@ func get_title() -> String:
 
 
 func get_text() -> String:
-    return "Just three more years of experience and he'll be promoted to an unpaid temp worker."
+    return "[i]Just three more years of experience and he'll be promoted to an unpaid temp worker.[/i]"
 
 
 func is_text_flavor() -> bool:

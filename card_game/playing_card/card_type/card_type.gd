@@ -62,13 +62,6 @@ func is_limited() -> bool:
     return false
 
 
-func get_text_font() -> Font:
-    if is_text_flavor():
-        return FlavorTextFont
-    else:
-        return EffectTextFont
-
-
 func get_archetypes_row_text() -> String:
     return ""
 

@@ -57,14 +57,14 @@ theme = ExtResource("2_7d3ug")
 theme_type_variation = &"TitleLabel"
 text = "Card Title"
 
-[node name="TextLabel" type="Label" parent="Card"]
+[node name="TextLabel" type="RichTextLabel" parent="Card"]
 offset_left = -137.0
 offset_top = 56.0
 offset_right = 142.0
 offset_bottom = 142.0
 theme = ExtResource("2_7d3ug")
+bbcode_enabled = true
 text = "Card Description"
-autowrap_mode = 3
 
 [node name="ArchetypesRow" parent="Card" instance=ExtResource("4_o5fv1")]
 position = Vector2(-122, -82)

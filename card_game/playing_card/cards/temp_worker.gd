@@ -10,7 +10,7 @@ func get_title() -> String:
 
 
 func get_text() -> String:
-    return "His spreadsheet powers are unmatched... for the next six to eight weeks anyway."
+    return "[i]His spreadsheet powers are unmatched... for the next six to eight weeks anyway.[/i]"
 
 
 func is_text_flavor() -> bool:

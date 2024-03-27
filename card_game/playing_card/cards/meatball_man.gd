@@ -10,7 +10,7 @@ func get_title() -> String:
 
 
 func get_text() -> String:
-    return "That red hue is the marinara sauce dripping from his last victims."
+    return "[i]That red hue is the marinara sauce dripping from his last victims.[/i]"
 
 
 func is_text_flavor() -> bool:

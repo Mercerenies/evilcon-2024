@@ -10,7 +10,7 @@ func get_title() -> String:
 
 
 func get_text() -> String:
-    return "He's never off the clock. He even carries his work phone into his dreams."
+    return "[i]He's never off the clock. He even carries his work phone into his dreams.[/i]"
 
 
 func is_text_flavor() -> bool:

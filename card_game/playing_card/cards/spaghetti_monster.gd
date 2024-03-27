@@ -10,7 +10,7 @@ func get_title() -> String:
 
 
 func get_text() -> String:
-    return "A strange being made of pure spaghetti. His mysterious aura has attracted something of a religious devotion."
+    return "[i]A strange being made of pure spaghetti. His mysterious aura has attracted something of a religious devotion.[/i]"
 
 
 func is_text_flavor() -> bool:

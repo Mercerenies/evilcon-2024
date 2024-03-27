@@ -10,7 +10,7 @@ func get_title() -> String:
 
 
 func get_text() -> String:
-    return "One of the Icosaking's footsoldiers. They're untrained, but don't underestimate their strength in numbers."
+    return "[i]One of the Icosaking's footsoldiers. They're untrained, but don't underestimate their strength in numbers.[/i]"
 
 
 func is_text_flavor() -> bool:

@@ -10,7 +10,7 @@ func get_title() -> String:
 
 
 func get_text() -> String:
-    return "A sentient noodle with a keen eye and sharp aim. Nobody expects their pasta to be their assassin."
+    return "[i]A sentient noodle with a keen eye and sharp aim. Nobody expects their pasta to be their assassin.[/i]"
 
 
 func is_text_flavor() -> bool:

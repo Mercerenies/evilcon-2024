@@ -30,7 +30,6 @@ func _process(_delta: float) -> void:
 func _update_display() -> void:
     $Card/TitleLabel.text = card_type.get_title()
     $Card/TextLabel.text = card_type.get_text()
-    $Card/TextLabel.add_theme_font_override("font", card_type.get_text_font())
     $Card/ArchetypesRow.icons = card_type.get_icon_row()
     $Card/CostRow.icons = Util.filled_array(CardIcon.Frame.EVIL_STAR, card_type.get_star_cost())
     $Card/CardPicture.frame = card_type.get_picture_index()

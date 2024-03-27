@@ -10,7 +10,7 @@ func get_title() -> String:
 
 
 func get_text() -> String:
-    return "A cute little robot bug, powered by several raspberries. Or something like that."
+    return "[i]A cute little robot bug, powered by several raspberries. Or something like that.[/i]"
 
 
 func is_text_flavor() -> bool:

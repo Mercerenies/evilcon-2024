@@ -10,7 +10,7 @@ func get_title() -> String:
 
 
 func get_text() -> String:
-    return "A cute little mushroom with a spiky helmet. They say the helmet improves morale."
+    return "[i]A cute little mushroom with a spiky helmet. They say the helmet improves morale.[/i]"
 
 
 func is_text_flavor() -> bool:

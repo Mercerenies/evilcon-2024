@@ -10,7 +10,7 @@ func get_title() -> String:
 
 
 func get_text() -> String:
-    return "An extremely rare variant of the Corny Acorn. His jokes have the power to stop, and subsequently start, wars."
+    return "[i]An extremely rare variant of the Corny Acorn. His jokes have the power to stop, and subsequently start, wars.[/i]"
 
 
 func is_text_flavor() -> bool:

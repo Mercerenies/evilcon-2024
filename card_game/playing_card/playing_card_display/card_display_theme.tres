@@ -1,12 +1,18 @@
-[gd_resource type="Theme" load_steps=3 format=3 uid="uid://e72ukg4v02e7"]
+[gd_resource type="Theme" load_steps=4 format=3 uid="uid://e72ukg4v02e7"]
 
 [ext_resource type="FontFile" uid="uid://scb5s1g4kehp" path="res://fonts/Merriweather-Black.ttf" id="1_epq3h"]
 [ext_resource type="FontFile" uid="uid://ca2dtjmfynt0v" path="res://fonts/Raleway-Regular.ttf" id="1_o7cmi"]
+[ext_resource type="FontFile" uid="uid://32krbtratptc" path="res://fonts/Raleway-Italic.ttf" id="2_6htmq"]
 
 [resource]
 Label/colors/font_color = Color(0, 0, 0, 1)
 Label/font_sizes/font_size = 14
 Label/fonts/font = ExtResource("1_o7cmi")
+RichTextLabel/colors/default_color = Color(0, 0, 0, 1)
+RichTextLabel/font_sizes/italics_font_size = 14
+RichTextLabel/font_sizes/normal_font_size = 14
+RichTextLabel/fonts/italics_font = ExtResource("2_6htmq")
+RichTextLabel/fonts/normal_font = ExtResource("1_o7cmi")
 TitleLabel/base_type = &"Label"
 TitleLabel/colors/font_color = Color(0, 0, 0, 1)
 TitleLabel/font_sizes/font_size = 18

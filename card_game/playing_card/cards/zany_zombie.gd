@@ -10,7 +10,7 @@ func get_title() -> String:
 
 
 func get_text() -> String:
-    return "He's not unreasonable. I mean, no one's gonna eat your eyes."
+    return "[i]He's not unreasonable. I mean, no one's gonna eat your eyes.[/i]"
 
 
 func is_text_flavor() -> bool:

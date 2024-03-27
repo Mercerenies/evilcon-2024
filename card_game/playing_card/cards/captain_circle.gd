@@ -10,7 +10,7 @@ func get_title() -> String:
 
 
 func get_text() -> String:
-    return "A high-ranking military officer. Often regarded as the most logical and strategic soldiers in the Icosaking's army."
+    return "[i]A high-ranking military officer. Often regarded as the most logical and strategic soldiers in the Icosaking's army.[/i]"
 
 
 func is_text_flavor() -> bool:

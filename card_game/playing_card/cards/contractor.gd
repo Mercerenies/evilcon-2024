@@ -10,7 +10,7 @@ func get_title() -> String:
 
 
 func get_text() -> String:
-    return "He's cheaper than a regular employee, and you don't have to cover his dental plan. It's win-win!"
+    return "[i]He's cheaper than a regular employee, and you don't have to cover his dental plan. It's win-win![/i]"
 
 
 func is_text_flavor() -> bool:

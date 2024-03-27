@@ -10,7 +10,7 @@ func get_title() -> String:
 
 
 func get_text() -> String:
-    return "After a near-death experience, he was augmented with metal parts. The laser guns were his idea, though."
+    return "[i]After a near-death experience, he was augmented with metal parts. The laser guns were his idea, though.[/i]"
 
 
 func is_text_flavor() -> bool:

@@ -10,7 +10,7 @@ func get_title() -> String:
 
 
 func get_text() -> String:
-    return "A very small number of babies are born with the unusual genetic defect of makeup and a red button nose."
+    return "[i]A very small number of babies are born with the unusual genetic defect of makeup and a red button nose.[/i]"
 
 
 func is_text_flavor() -> bool:

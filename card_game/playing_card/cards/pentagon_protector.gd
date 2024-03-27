@@ -10,7 +10,7 @@ func get_title() -> String:
 
 
 func get_text() -> String:
-    return "The Pentagon Protectors are a renowned league of sentries, respected by the top officials of the Icosaking's army."
+    return "[i]The Pentagon Protectors are a renowned league of sentries, respected by the top officials of the Icosaking's army.[/i]"
 
 
 func is_text_flavor() -> bool:
