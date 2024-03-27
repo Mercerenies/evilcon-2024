@@ -24,9 +24,9 @@ func _ready():
 
 func _sample_deck():
     return [
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CORNY_ACORN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.DEATH_CYBORG),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.ROBOT_ASSISTANT),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.TODDLER_CLOWN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CONTRACTOR),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.IT_WORKER),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.MIDDLE_MANAGER),
