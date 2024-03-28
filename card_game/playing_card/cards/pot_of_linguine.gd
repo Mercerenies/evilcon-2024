@@ -10,7 +10,7 @@ func get_title() -> String:
 
 
 func get_text() -> String:
-    return "Draw two cards; limit 1 per deck"
+    return "Draw two cards; limit 1 per deck."
 
 
 func get_star_cost() -> int:
