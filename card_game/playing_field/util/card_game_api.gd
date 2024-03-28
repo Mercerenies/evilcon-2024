@@ -123,7 +123,7 @@ static func play_card(playing_field, player: StringName, card_type: CardType) ->
     if hand_index == null:
         push_warning("Cannot play card %s because it is not in hand" % card_type)
         return
-    Stats.add_evil_points(playing_field, player, - card_type.get_star_cost())
+    await Stats.add_evil_points(playing_field, player, - card_type.get_star_cost())
     var new_card = await playing_field.move_card(hand, field, {
         "source_index": hand_index,
         "destination_transform": DestinationTransform.instantiate_card(player),

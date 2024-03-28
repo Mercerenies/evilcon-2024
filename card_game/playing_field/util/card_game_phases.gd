@@ -9,7 +9,7 @@ static func start_of_full_turn(playing_field) -> void:
 
 static func draw_phase(playing_field, player: StringName) -> void:
     var evil_points_to_gain = StatsCalculator.get_evil_points_per_turn(playing_field, player)
-    Stats.set_evil_points(playing_field, player, evil_points_to_gain)
+    await Stats.set_evil_points(playing_field, player, evil_points_to_gain)
 
     var cards_to_draw = StatsCalculator.get_cards_per_turn(playing_field, player)
     await CardGameApi.draw_cards(playing_field, player, cards_to_draw)
@@ -30,7 +30,7 @@ static func standby_phase(playing_field, _player: StringName) -> void:
 
 
 static func end_phase(playing_field, player: StringName) -> void:
-    Stats.set_evil_points(playing_field, player, 0)
+    await Stats.set_evil_points(playing_field, player, 0)
 
     await _execute_phase_for_cards(playing_field, "on_end_phase")
 

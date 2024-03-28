@@ -37,7 +37,8 @@ static func set_evil_points(playing_field, player: StringName, new_value: int) -
     var stats = playing_field.get_stats(player)
     var old_value = stats.evil_points
     stats.evil_points = new_value
-    await play_animation_for_stat_change(playing_field, stats.get_evil_points_node(), new_value - old_value)
+    # Fire and forget
+    play_animation_for_stat_change(playing_field, stats.get_evil_points_node(), new_value - old_value)
 
 
 static func add_evil_points(playing_field, player: StringName, delta: int) -> void:
@@ -49,7 +50,8 @@ static func set_fort_defense(playing_field, player: StringName, new_value: int) 
     var stats = playing_field.get_stats(player)
     var old_value = stats.fort_defense
     stats.fort_defense = new_value
-    await play_animation_for_stat_change(playing_field, stats.get_fort_defense_node(), new_value - old_value)
+    # Fire and forget
+    play_animation_for_stat_change(playing_field, stats.get_fort_defense_node(), new_value - old_value)
 
 
 static func add_fort_defense(playing_field, player: StringName, delta: int) -> void:
@@ -61,7 +63,8 @@ static func set_destiny_song(playing_field, player: StringName, new_value: int) 
     var stats = playing_field.get_stats(player)
     var old_value = stats.destiny_song
     stats.destiny_song = new_value
-    await play_animation_for_stat_change(playing_field, stats.get_destiny_song_node(), new_value - old_value)
+    # Fire and forget
+    play_animation_for_stat_change(playing_field, stats.get_destiny_song_node(), new_value - old_value)
 
 
 static func add_destiny_song(playing_field, player: StringName, delta: int) -> void:
@@ -74,7 +77,8 @@ static func set_morale(playing_field, card, new_value: int) -> void:
     var card_node = CardGameApi.find_card_node(playing_field, card)
     var old_value = card.metadata[CardMeta.MORALE]
     card.metadata[CardMeta.MORALE] = new_value
-    await play_animation_for_stat_change(playing_field, card_node, new_value - old_value, {
+    # Fire and forget
+    play_animation_for_stat_change(playing_field, card_node, new_value - old_value, {
         "custom_label_text": "%+d Morale" % (new_value - old_value),
     })
     if new_value <= 0:
@@ -90,7 +94,8 @@ static func set_level(playing_field, card, new_value: int) -> void:
     var card_node = CardGameApi.find_card_node(playing_field, card)
     var old_value = card.metadata[CardMeta.LEVEL]
     card.metadata[CardMeta.LEVEL] = new_value
-    await play_animation_for_stat_change(playing_field, card_node, new_value - old_value, {
+    # Fire and forget
+    play_animation_for_stat_change(playing_field, card_node, new_value - old_value, {
         "custom_label_text": "%+d Level" % (new_value - old_value),
     })
 

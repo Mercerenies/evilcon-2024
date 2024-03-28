@@ -14,14 +14,14 @@ static func power_up_archetype(playing_field, source_card, archetype) -> void:
             continue
         var can_influence = await minion.card_type.do_influence_check(playing_field, minion, source_card)
         if can_influence:
-            Stats.add_level(playing_field, minion, 1)
+            await Stats.add_level(playing_field, minion, 1)
 
 
 # Performs the ninja influence check for the specified card.
 static func do_ninja_influence_check(playing_field, target_card, source_card) -> bool:
     if target_card.owner != source_card.owner:
         var card_node = CardGameApi.find_card_node(playing_field, target_card)
-        Stats.play_animation_for_stat_change(playing_field, card_node, 0, {
+        await Stats.play_animation_for_stat_change(playing_field, card_node, 0, {
             "custom_label_text": "Blocked!",
             "custom_label_color": Color.BLACK,
         })

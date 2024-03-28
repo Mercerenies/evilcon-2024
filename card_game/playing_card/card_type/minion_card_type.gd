@@ -75,11 +75,11 @@ func on_attack_phase(playing_field, card) -> void:
         if level > 0:
             var opponent = CardPlayer.other(card.owner)
             await CardGameApi.highlight_card(playing_field, card)
-            Stats.add_fort_defense(playing_field, opponent, - level)
+            await Stats.add_fort_defense(playing_field, opponent, - level)
             # TODO Check if fort defense has hit zero
 
 
 func on_morale_phase(playing_field, card) -> void:
     # By default, a Minion decreases Morale during the morale phase.
     if playing_field.turn_player == card.owner:
-        Stats.add_morale(playing_field, card, -1)
+        await Stats.add_morale(playing_field, card, -1)
