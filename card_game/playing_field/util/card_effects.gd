@@ -12,4 +12,4 @@ static func power_up_archetype(playing_field, source_card, archetype) -> void:
             continue
         var can_influence = await minion.card_type.do_influence_check(playing_field, minion, source_card)
         if can_influence:
-            minion.metadata[CardMeta.LEVEL] += 1 # TODO Animate (////)
+            Stats.add_level(playing_field, minion, 1)

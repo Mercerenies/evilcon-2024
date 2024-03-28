@@ -82,6 +82,4 @@ func on_attack_phase(playing_field, card) -> void:
 func on_morale_phase(playing_field, card) -> void:
     # By default, a Minion decreases Morale during the morale phase.
     if playing_field.turn_player == card.owner:
-        card.metadata[CardMeta.MORALE] -= 1 # TODO Animate (////)
-        if card.metadata[CardMeta.MORALE] <= 0:
-            await CardGameApi.destroy_card(playing_field, card)
+        Stats.add_morale(playing_field, card, -1)

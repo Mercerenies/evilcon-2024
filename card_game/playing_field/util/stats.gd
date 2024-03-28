@@ -12,11 +12,18 @@ const NumberAnimation = preload("res://card_game/playing_field/animation/number_
 # No semantic change to stats, just the animation. This function can
 # be called directly, but it usually makes more sense to call one of
 # the other helpers, which also performs the semantic change.
-static func play_animation_for_stat_change(playing_field, stat_node: Node2D, delta: int) -> void:
+#
+# Accepted options:
+#
+# * custom_label_text (String) - Overrides the default label text on
+#   the animation.
+static func play_animation_for_stat_change(playing_field, stat_node: Node2D, delta: int, opts = {}) -> void:
     var animation_layer = playing_field.get_animation_layer()
     var animation = NumberAnimation.instantiate()
     animation.position = animation_layer.to_local(stat_node.global_position)
     animation.amount = delta
+    if opts.has("custom_label_text"):
+        animation.custom_label_text = opts["custom_label_text"]
     animation_layer.add_child(animation)
     await animation.animation_finished
 
@@ -55,3 +62,33 @@ static func set_destiny_song(playing_field, player: StringName, new_value: int) 
 static func add_destiny_song(playing_field, player: StringName, delta: int) -> void:
     var stats = playing_field.get_stats(player)
     await set_destiny_song(playing_field, player, stats.destiny_song + delta)
+
+
+static func set_morale(playing_field, card, new_value: int) -> void:
+    new_value = maxi(new_value, 0)
+    var card_node = CardGameApi.find_card_node(playing_field, card)
+    var old_value = card.metadata[CardMeta.MORALE]
+    card.metadata[CardMeta.MORALE] = new_value
+    await play_animation_for_stat_change(playing_field, card_node, new_value - old_value, {
+        "custom_label_text": "%+d Morale" % (new_value - old_value),
+    })
+    if new_value <= 0:
+        await CardGameApi.destroy_card(playing_field, card)
+
+
+static func add_morale(playing_field, card, delta: int) -> void:
+    await set_morale(playing_field, card, card.metadata[CardMeta.MORALE] + delta)
+
+
+static func set_level(playing_field, card, new_value: int) -> void:
+    new_value = maxi(new_value, 0)
+    var card_node = CardGameApi.find_card_node(playing_field, card)
+    var old_value = card.metadata[CardMeta.LEVEL]
+    card.metadata[CardMeta.LEVEL] = new_value
+    await play_animation_for_stat_change(playing_field, card_node, new_value - old_value, {
+        "custom_label_text": "%+d Level" % (new_value - old_value),
+    })
+
+
+static func add_level(playing_field, card, delta: int) -> void:
+    await set_level(playing_field, card, card.metadata[CardMeta.LEVEL] + delta)
