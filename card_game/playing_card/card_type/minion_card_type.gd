@@ -7,6 +7,12 @@ func get_base_archetypes() -> Array:
     return []
 
 
+func get_archetypes(_playing_field, _card) -> Array:
+    var base = get_base_archetypes()
+    # TODO Consider extra archetypes added to the specific card
+    return base
+
+
 func get_icon_row() -> Array:
     return super.get_icon_row() + get_base_archetypes().map(Archetype.to_icon_index)
 
@@ -76,6 +82,6 @@ func on_attack_phase(playing_field, card) -> void:
 func on_morale_phase(playing_field, card) -> void:
     # By default, a Minion decreases Morale during the morale phase.
     if playing_field.turn_player == card.owner:
-        card.metadata[CardMeta.MORALE] -= 1
+        card.metadata[CardMeta.MORALE] -= 1 # TODO Animate (////)
         if card.metadata[CardMeta.MORALE] <= 0:
             await CardGameApi.destroy_card(playing_field, card)
