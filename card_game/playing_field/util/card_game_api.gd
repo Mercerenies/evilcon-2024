@@ -47,6 +47,22 @@ static func get_cards_in_play(playing_field) -> Array:
     return cards
 
 
+static func get_minions_in_play(playing_field) -> Array:
+    var turn_player = playing_field.turn_player
+    var cards = []
+    cards.append_array(playing_field.get_minion_strip(turn_player).cards().card_array())
+    cards.append_array(playing_field.get_minion_strip(CardPlayer.other(turn_player)).cards().card_array())
+    return cards
+
+
+static func get_effects_in_play(playing_field) -> Array:
+    var turn_player = playing_field.turn_player
+    var cards = []
+    cards.append_array(playing_field.get_effect_strip(turn_player).cards().card_array())
+    cards.append_array(playing_field.get_effect_strip(CardPlayer.other(turn_player)).cards().card_array())
+    return cards
+
+
 static func draw_cards(playing_field, player: StringName, card_count: int = 1) -> void:
     var opts = {}
     if player == CardPlayer.TOP:
