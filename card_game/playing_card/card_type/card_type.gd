@@ -103,6 +103,8 @@ func do_influence_check(_playing_field, _target_card, _source_card) -> bool:
     # case), or false if something blocks the effect. This method is
     # permitted to be a coroutine (i.e. to "await"), in order to play
     # animations, if needed.
+    #
+    # TODO Check other objects in the scene as well
     return true
 
 

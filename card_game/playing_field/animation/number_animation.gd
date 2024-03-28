@@ -19,6 +19,11 @@ var custom_label_text = null:
         custom_label_text = v
         _update_label()
 
+var custom_label_color = null:
+    set(v):
+        custom_label_color = v
+        _update_label()
+
 
 func _ready() -> void:
     _update_label()
@@ -38,7 +43,11 @@ func _update_label() -> void:
         $Label.text = custom_label_text
     else:
         $Label.text = "%+d" % amount
-    var color = POSITIVE_COLOR if amount >= 0 else NEGATIVE_COLOR
+    var color
+    if custom_label_color != null:
+        color = custom_label_color
+    else:
+        color = POSITIVE_COLOR if amount >= 0 else NEGATIVE_COLOR
     $Label.add_theme_color_override(&"font_color", color)
 
 

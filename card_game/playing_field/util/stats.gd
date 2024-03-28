@@ -17,6 +17,9 @@ const NumberAnimation = preload("res://card_game/playing_field/animation/number_
 #
 # * custom_label_text (String) - Overrides the default label text on
 #   the animation.
+#
+# * custom_label_color (Color) - Overrides the default label color on
+#   the animation.
 static func play_animation_for_stat_change(playing_field, stat_node: Node2D, delta: int, opts = {}) -> void:
     var animation_layer = playing_field.get_animation_layer()
     var animation = NumberAnimation.instantiate()
@@ -24,6 +27,8 @@ static func play_animation_for_stat_change(playing_field, stat_node: Node2D, del
     animation.amount = delta
     if opts.has("custom_label_text"):
         animation.custom_label_text = opts["custom_label_text"]
+    if opts.has("custom_label_color"):
+        animation.custom_label_color = opts["custom_label_color"]
     animation_layer.add_child(animation)
     await animation.animation_finished
 
