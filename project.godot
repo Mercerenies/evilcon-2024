@@ -18,6 +18,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 RootHelper="*res://root_helper.gd"
+BBCodeModifier="*res://card_game/playing_card/playing_card_display/bbcode_modifier.gd"
 
 [debug]
 

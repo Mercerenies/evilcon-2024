@@ -4,6 +4,8 @@ extends Node2D
 const ICON_WIDTH = 28
 const ICON_HEIGHT = 28
 
+const ICONS_PER_ROW = 5
+
 enum Frame {
     EVIL_STAR = 0,
     HUMAN = 1,

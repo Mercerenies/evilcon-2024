@@ -12,7 +12,7 @@ func get_title() -> String:
 
 
 func get_text() -> String:
-    return "+1 Level to all PASTA cards currently in play, regardless of owner."
+    return "+1 Level to all [icon]PASTA[/icon] PASTA cards currently in play, regardless of owner."
 
 
 func get_star_cost() -> int:

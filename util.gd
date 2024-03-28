@@ -24,3 +24,16 @@ static func filled_array(value, size: int) -> Array:
     array.resize(size)
     array.fill(value)
     return array
+
+
+static func splice_string(string: String, start: int, end: int, replacement: String = "") -> String:
+    return string.substr(0, start) + replacement + string.substr(end)
+
+
+static func replace_all_by_function(string: String, regex: RegEx, function: Callable) -> String:
+    var result = regex.search(string)
+    while result != null:
+        var replacement = function.call(result)
+        string = splice_string(string, result.get_start(), result.get_end(), replacement)
+        result = regex.search(string)
+    return string

@@ -37,9 +37,9 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.PENNE_SHARPSHOOTER),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.SPAGHETTI_MONSTER),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.MEATBALL_MAN),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.TEMP_WORKER),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.PASTA_POWER),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.RHOMBUS_RANGER),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.RAVIOLI_RUNT),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.RAVIOLI_RUNT),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.PASTA_POWER),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.POT_OF_LINGUINE),
     ]
