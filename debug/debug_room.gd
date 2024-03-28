@@ -24,7 +24,7 @@ func _ready():
 
 func _sample_deck():
     return [
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CHICKEN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.NINJA_ASSASSIN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.GIANT_PIG),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CHICKEN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.PIG),
@@ -38,7 +38,7 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.ANCIENT_SCROLL),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.ANCIENT_SCROLL),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.PASTA_POWER),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.RHOMBUS_RANGER),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.NINJA_ASSASSIN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.RAVIOLI_RUNT),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.PASTA_POWER),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.POT_OF_LINGUINE),
