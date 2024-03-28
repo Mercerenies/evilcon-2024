@@ -16,7 +16,8 @@ static func queue_free_all_children(node: Node):
     var children = node.get_children()
     await RootHelper.get_tree().process_frame
     for child in children:
-        child.free()
+        if is_instance_valid(child):
+            child.free()
 
 
 static func filled_array(value, size: int) -> Array:
