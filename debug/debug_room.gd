@@ -24,12 +24,12 @@ func _ready():
 
 func _sample_deck():
     return [
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.SPIKY_TURTLE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.ROBOT_ASSISTANT),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.SPIKY_TURTLE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.HIRED_NINJA),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.SPIKY_TURTLE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.MIDDLE_MANAGER),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CHICKEN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.GIANT_PIG),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CHICKEN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.PIG),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.METAL_SPIDER),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.METAL_SPIDER),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.BUSY_BEE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.HIRED_NINJA),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.PENNE_PIKEMAN),
