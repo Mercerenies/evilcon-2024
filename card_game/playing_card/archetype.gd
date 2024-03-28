@@ -13,6 +13,7 @@ const BEE = 8
 const NINJA = 9
 const BOSS = 11
 const UNDEAD = 12
+const FARM = 22
 
 
 static func to_icon_index(archetype: int) -> int:
