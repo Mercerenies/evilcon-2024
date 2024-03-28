@@ -33,7 +33,7 @@ func get_base_morale() -> int:
     return 2
 
 
-func get_archetypes() -> Array:
+func get_base_archetypes() -> Array:
     return [Archetype.PASTA]
 
 
