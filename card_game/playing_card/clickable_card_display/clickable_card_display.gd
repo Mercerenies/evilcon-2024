@@ -1,6 +1,7 @@
 extends "res://card_game/playing_card/playing_card_display/playing_card_display.gd"
 
 signal card_clicked
+signal card_right_clicked
 
 
 var _mouse_overlapping = false
@@ -40,4 +41,8 @@ func _unhandled_input(event: InputEvent) -> void:
         if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
             if _is_highlighted(event.position):
                 card_clicked.emit()
+                get_viewport().set_input_as_handled()
+        elif event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+            if _is_highlighted(event.position):
+                card_right_clicked.emit()
                 get_viewport().set_input_as_handled()

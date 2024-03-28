@@ -163,7 +163,8 @@ func move_card(source, destination, opts = {}):
 
 
 func _on_bottom_hand_card_added(card_node):
-    card_node.card_clicked.connect(_on_hand_card_node_card_clicked.bind(card_node))
+    card_node.card_clicked.connect(_on_bottom_hand_card_node_card_clicked.bind(card_node))
+    card_node.card_right_clicked.connect(_on_bottom_hand_card_node_card_right_clicked.bind(card_node))
 
 
 func _on_top_hand_card_added(card_node):
@@ -182,7 +183,7 @@ func _on_top_hand_card_node_card_clicked() -> void:
 
 
 
-func _on_hand_card_node_card_clicked(card_node) -> void:
+func _on_bottom_hand_card_node_card_clicked(card_node) -> void:
     var card_type = card_node.card_type
     var card_row = popup_display_card([card_type], {
         "margin_below": 64.0,
@@ -198,6 +199,12 @@ func _on_hand_card_node_card_clicked(card_node) -> void:
         play_button.text = "(Can't afford)"
         play_button.disabled = true
     card_row.append_button(play_button)
+
+
+func _on_bottom_hand_card_node_card_right_clicked(card_node) -> void:
+    var card_type = card_node.card_type
+    if card_type.can_play(self, CardPlayer.BOTTOM):
+        CardGameApi.play_card(self, CardPlayer.BOTTOM, card_type)
 
 
 func _on_played_card_node_card_clicked(card_node) -> void:
