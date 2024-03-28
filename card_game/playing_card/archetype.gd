@@ -3,7 +3,7 @@ extends Node
 
 
 const HUMAN = 1
-const FUNGUS = 2
+const NATURE = 2
 const TURTLE = 3
 const SHAPE = 4
 const PASTA = 5

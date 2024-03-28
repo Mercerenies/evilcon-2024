@@ -9,7 +9,7 @@ const ICONS_PER_ROW = 5
 enum Frame {
     EVIL_STAR = 0,
     HUMAN = 1,
-    FUNGUS = 2,
+    NATURE = 2,
     TURTLE = 3,
     SHAPE = 4,
     PASTA = 5,
