@@ -82,6 +82,8 @@ static func set_morale(playing_field, card, new_value: int) -> void:
         "custom_label_text": "%+d Morale" % (new_value - old_value),
     })
     if new_value <= 0:
+        await CardGameApi.on_expire(playing_field, card)
+        # TODO Check if the on_expire event saved the card.
         await CardGameApi.destroy_card(playing_field, card)
 
 

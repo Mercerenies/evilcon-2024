@@ -54,6 +54,10 @@ func on_instantiate(card) -> void:
     card.metadata[CardMeta.MORALE] = get_base_morale()
 
 
+func on_expire(playing_field, card) -> void:
+    pass
+
+
 func get_overlay_text(playing_field, card) -> String:
     var level = get_level(playing_field, card)
     var morale = get_morale(playing_field, card)
