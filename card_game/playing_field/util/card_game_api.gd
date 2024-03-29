@@ -152,6 +152,11 @@ static func highlight_card(playing_field, card: Card) -> void:
 
 
 static func destroy_card(playing_field, card: Card) -> void:
+    if card.is_token:
+        # Tokens are exiled instead
+        await exile_card(playing_field, card)
+        return
+
     var card_pos = find_card_on_field(playing_field, card)
     if card_pos == null:
         push_warning("Cannot destroy card %s because it is not in play" % card)
@@ -175,3 +180,18 @@ static func create_card(playing_field, player: StringName, card_type: CardType, 
     await play_smoke_animation(playing_field, card_node)
 
     return new_card
+
+
+static func exile_card(playing_field, card: Card) -> void:
+    var card_pos = find_card_on_field(playing_field, card)
+    if card_pos == null:
+        push_warning("Cannot exile card %s because it is not in play" % card)
+        return
+
+    # Now animate the exile
+    var card_node = find_card_node(playing_field, card)
+    card_node.play_fade_out_animation()
+    await play_smoke_animation(playing_field, card_node)
+
+    card_pos.card_strip.cards().pop_card(card_pos.index)
+    playing_field.emit_cards_moved()
