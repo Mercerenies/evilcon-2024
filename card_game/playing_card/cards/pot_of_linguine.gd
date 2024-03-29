@@ -30,6 +30,7 @@ func get_rarity() -> int:
 
 
 func on_play(playing_field, card) -> void:
+    super.on_play(playing_field, card)
     var owner = card.owner
     await CardGameApi.highlight_card(playing_field, card)
     await CardGameApi.draw_cards(playing_field, owner, 2)

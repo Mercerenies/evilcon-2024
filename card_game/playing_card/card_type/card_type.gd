@@ -75,7 +75,7 @@ func can_play(playing_field, owner: StringName) -> bool:
 
 
 func on_play(_playing_field, _card) -> void:
-    push_warning("Forgot to override on_play!")
+    pass
 
 
 func on_instantiate(_card) -> void:

@@ -26,6 +26,7 @@ func get_rarity() -> int:
 
 
 func on_play(playing_field, card) -> void:
+    super.on_play(playing_field, card)
     await CardGameApi.highlight_card(playing_field, card)
     await CardEffects.power_up_archetype(playing_field, card, Archetype.TURTLE)
     await CardGameApi.destroy_card(playing_field, card)
