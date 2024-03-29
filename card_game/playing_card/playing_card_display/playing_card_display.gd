@@ -70,6 +70,14 @@ func play_highlight_animation() -> void:
             break
 
 
+func play_fade_in_animation() -> void:
+    $AnimationPlayer.play(&"FadeInAnimation")
+    while true:
+        var anim = await $AnimationPlayer.animation_finished
+        if anim == &"FadeInAnimation":
+            break
+
+
 func on_added_to_strip(_strip) -> void:
     # No-op, no reaction to being added to strip.
     pass

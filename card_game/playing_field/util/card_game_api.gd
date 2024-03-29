@@ -171,6 +171,7 @@ static func create_card(playing_field, player: StringName, card_type: CardType, 
 
     # Now animate the creation
     var card_node = find_card_node(playing_field, new_card)
+    card_node.play_fade_in_animation()
     await play_smoke_animation(playing_field, card_node)
 
     return new_card
