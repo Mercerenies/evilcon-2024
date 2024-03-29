@@ -7,6 +7,7 @@ const CardMovingAnimation = preload("res://card_game/playing_field/animation/car
 const HiddenCardDisplay = preload("res://card_game/playing_card/hidden_card_display/hidden_card_display.tscn")
 const DeckCardDisplay = preload("res://card_game/playing_card/deck_card_display/deck_card_display.tscn")
 const InputBlockAnimation = preload("res://card_game/playing_field/animation/input_block_animation.gd")
+const PuffOfSmokeAnimation = preload("res://card_game/playing_field/animation/puff_of_smoke_animation.tscn")
 const NullMinion = preload("res://card_game/playing_card/cards/null_minion.gd")
 
 class CardPosition:
@@ -61,6 +62,14 @@ static func get_effects_in_play(playing_field) -> Array:
     cards.append_array(playing_field.get_effect_strip(turn_player).cards().card_array())
     cards.append_array(playing_field.get_effect_strip(CardPlayer.other(turn_player)).cards().card_array())
     return cards
+
+
+static func play_smoke_animation(playing_field, target_node) -> void:
+    var animation_layer = playing_field.get_animation_layer()
+    var animation_node = PuffOfSmokeAnimation.instantiate()
+    animation_layer.add_child(animation_node)
+    animation_node.position = animation_layer.to_local(target_node.global_position)
+    await animation_node.tree_exited
 
 
 static func draw_cards(playing_field, player: StringName, card_count: int = 1) -> void:
@@ -152,3 +161,16 @@ static func destroy_card(playing_field, card: Card) -> void:
         "source_index": card_pos.index,
         "destination_transform": DestinationTransform.strip_to_card_type,
     })
+
+
+static func create_card(playing_field, player: StringName, card_type: CardType, is_token: bool = true) -> Card:
+    var new_card = Card.new(card_type, player, { "is_token": is_token })
+    var field = card_type.get_destination_strip(playing_field, player)
+    field.cards().push_card(new_card)
+    playing_field.emit_cards_moved()
+
+    # Now animate the creation
+    var card_node = find_card_node(playing_field, new_card)
+    await play_smoke_animation(playing_field, card_node)
+
+    return new_card

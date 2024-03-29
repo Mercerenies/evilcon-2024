@@ -37,7 +37,13 @@ func card_nodes():
 
 
 func get_card_node(index: int):
-    return $AllCards.get_child(index)
+    # When a CardContainer is modified, there's a one-frame window
+    # where some card nodes exist but are queued for deletion, so we
+    # need to explicitly exclude those from consideration here, so we
+    # don't get race conditions when trying to access nodes just after
+    # modifying the card list.
+    var card_nodes = $AllCards.get_children().filter(func (node): return not node.is_queued_for_deletion())
+    return card_nodes[index]
 
 
 func nearest_card_node_to(local_pos: Vector2):

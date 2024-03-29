@@ -42,14 +42,8 @@ func get_rarity() -> int:
 
 
 func on_end_phase(playing_field, card) -> void:
-    if card.owner != playing_field.turn_player:
-        return
-
-    var minion_strip = playing_field.get_minion_strip(card.owner)
-
-    await CardGameApi.highlight_card(playing_field, card)
-
-    var chosen_card_type = playing_field.randomness.choose([BusyBee, WorkerBee]).new()
-    # TODO Animate
-    var new_card = Card.new(chosen_card_type, card.owner, { "is_token": true })
-    minion_strip.cards().push_card(new_card)
+    if card.owner == playing_field.turn_player:
+        await CardGameApi.highlight_card(playing_field, card)
+        var chosen_card_type = playing_field.randomness.choose([BusyBee, WorkerBee]).new()
+        await CardGameApi.create_card(playing_field, card.owner, chosen_card_type)
+    super.on_end_phase(playing_field, card)
