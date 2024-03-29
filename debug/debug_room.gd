@@ -26,8 +26,8 @@ func _sample_deck():
     return [
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CATACOMB_CHARMER),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.SPIKY_MUSHROOM_MAN),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.TINY_TURTLE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.TINY_TURTLE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.BEEHIVE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.BEEHIVE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.WORKER_BEE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.WORKER_BEE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.BUSY_BEE),

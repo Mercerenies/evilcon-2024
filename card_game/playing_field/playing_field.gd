@@ -7,6 +7,7 @@ const HiddenCardDisplay = preload("res://card_game/playing_card/hidden_card_disp
 const ScrollableCardRow = preload("res://card_game/scrollable_card_row/scrollable_card_row.tscn")
 const NullMinion = preload("res://card_game/playing_card/cards/null_minion.gd")
 const NullEnemyAI = preload("res://card_game/playing_field/enemy_ai/null_enemy_ai.gd")
+const Randomness = preload("res://card_game/playing_field/randomness.gd")
 
 # Emitted anytime the state of the board changes. This includes cards
 # being added, removed, shuffled, or having their stats modified in
@@ -30,6 +31,8 @@ var turn_player: StringName = CardPlayer.BOTTOM:
         turn_player_changed.emit()
 
 var _enemy_ai: Node = NullEnemyAI.new()
+
+var randomness = Randomness.new()
 
 func _ready() -> void:
     # Make sure initial stats are correct.

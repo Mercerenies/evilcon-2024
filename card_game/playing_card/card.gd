@@ -25,11 +25,14 @@ var is_token: bool
 var metadata: Dictionary
 
 
-func _init(card_type: CardType, owner: StringName, is_token: bool = false) -> void:
+# Accepted opts:
+#
+# * is_token (Boolean) - true if this is a temporary token
+func _init(card_type: CardType, owner: StringName, opts = {}) -> void:
     self.card_type = card_type
     self.owner = owner
     self.original_owner = owner
-    self.is_token = is_token
+    self.is_token = opts.get("is_token", false)
     self.metadata = {}
     self.card_type.on_instantiate(self)
 
