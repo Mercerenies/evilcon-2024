@@ -304,8 +304,8 @@ func _on_cards_moved():
 
 
 func _refresh_card_stats(card_node):
-    var new_overlay_text = card_node.card.get_overlay_text(self)
-    card_node.overlay_text = new_overlay_text
+    card_node.overlay_text = card_node.card.get_overlay_text(self)
+    card_node.overlay_icons = card_node.card.get_overlay_icons(self)
 
 
 func _on_turn_number_updated():

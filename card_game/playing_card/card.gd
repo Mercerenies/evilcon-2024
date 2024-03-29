@@ -1,6 +1,8 @@
 class_name Card
 extends RefCounted
 
+const CardIcon = preload("res://card_game/playing_card/playing_card_display/card_icon/card_icon.gd")
+
 
 var card_type: CardType
 var owner: StringName
@@ -38,3 +40,13 @@ func on_play(playing_field) -> void:
 
 func get_overlay_text(playing_field) -> String:
     return card_type.get_overlay_text(playing_field, self)
+
+
+func get_overlay_icons(_playing_field) -> Array:
+    # NOTE: This method does NOT delegate to the card_type. Instead,
+    # the overlay icons are entirely determined by modifiers to the
+    # card itself, in a uniform way.
+    var icons = []
+    if is_token:
+        icons.append(CardIcon.Frame.TOKEN)
+    return icons

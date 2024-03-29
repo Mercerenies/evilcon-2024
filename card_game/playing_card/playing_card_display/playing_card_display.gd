@@ -20,11 +20,20 @@ var overlay_text := "":
         $OverlayTextNode.visible = (v != "")
 
 
+var overlay_icons: Array = []:
+    set(v):
+        overlay_icons = v
+        $OverlayIconRow.icons = v
+        $OverlayIconRow.visible = (len(v) > 0)
+
+
 func _process(_delta: float) -> void:
     if not overlay_rotates_with_node:
         $OverlayTextNode.global_rotation = 0
+        $OverlayIconRow.global_rotation = 0
     if not overlay_scales_with_node:
         $OverlayTextNode.global_scale = Vector2.ONE
+        $OverlayIconRow.global_scale = Vector2.ONE
 
 
 func _update_display() -> void:
