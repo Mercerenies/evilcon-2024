@@ -30,6 +30,7 @@ enum Frame {
     SONG = 20,
     LIMITED = 21,
     FARM = 22,
+    TOKEN = 23,
 }
 
 var frame: int = 0:

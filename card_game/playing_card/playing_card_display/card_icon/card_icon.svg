@@ -93,8 +93,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="5.6568543"
-     inkscape:cx="8.4852814"
-     inkscape:cy="115.96551"
+     inkscape:cx="51.618795"
+     inkscape:cy="78.842405"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
@@ -1704,5 +1704,28 @@
        style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:none;fill-opacity:1;stroke:#fbf7f7;stroke-width:0.101178;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1"
        d="M 20.089357,35.133808 16.75282,36.264623"
        id="path14266" />
+    <circle
+       style="fill:#766730;fill-opacity:1;stroke:#645829;stroke-width:0.0742647;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000"
+       id="path3314"
+       cx="25.94383"
+       cy="33.148117"
+       r="2.6845541" />
+    <circle
+       style="fill:#9e8b42;fill-opacity:1;stroke:none;stroke-width:0.0628082;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000"
+       id="circle6106"
+       cx="25.94383"
+       cy="33.148117"
+       r="2.2704206" />
+    <text
+       xml:space="preserve"
+       style="font-size:4.81064px;line-height:1.25;font-family:'TeX Gyre Termes';-inkscape-font-specification:'TeX Gyre Termes';font-variation-settings:normal;opacity:1;vector-effect:none;fill:#766730;fill-opacity:1;stroke:#6f612d;stroke-width:0.0742647;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1"
+       x="24.424145"
+       y="34.72702"
+       id="text6216"><tspan
+         sodipodi:role="line"
+         id="tspan6214"
+         style="font-variation-settings:normal;vector-effect:none;fill:#766730;fill-opacity:1;stroke:#6f612d;stroke-width:0.0742647;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1"
+         x="24.424145"
+         y="34.72702">T</tspan></text>
   </g>
 </svg>
