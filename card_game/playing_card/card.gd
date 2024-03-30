@@ -51,5 +51,5 @@ func get_overlay_icons(_playing_field) -> Array:
     # card itself, in a uniform way.
     var icons = []
     if is_token:
-        icons.append(CardIcon.Frame.TOKEN)  # TODO //// Make tokens properly exile on removal
+        icons.append(CardIcon.Frame.TOKEN)
     return icons
