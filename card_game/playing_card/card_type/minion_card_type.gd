@@ -54,7 +54,7 @@ func on_instantiate(card) -> void:
     card.metadata[CardMeta.MORALE] = get_base_morale()
 
 
-func on_expire(playing_field, card) -> void:
+func on_expire(_playing_field, _card) -> void:
     pass
 
 
