@@ -49,6 +49,7 @@ module Codex
     end
 
     def build_entry(path)
+      godot_path = path.gsub(/^\.\/?/, "res://")
       id = find_id(path)
       case id
       when :ignore
@@ -58,7 +59,7 @@ module Codex
       when nil
         raise "No ID value at #{path}"
       else
-        Entry.new(id:, path:)
+        Entry.new(id:, path: godot_path)
       end
     end
 
