@@ -53,3 +53,11 @@ func get_overlay_icons(_playing_field) -> Array:
     if is_token:
         icons.append(CardIcon.Frame.TOKEN)
     return icons
+
+
+func has_archetype(playing_field, archetype: int) -> bool:
+    if not (card_type is MinionCardType):
+        push_warning("Attempt to check Archetype of non-Minion card %s" % self)
+        return false
+    var archetypes = card_type.get_archetypes(playing_field, self)
+    return archetype in archetypes

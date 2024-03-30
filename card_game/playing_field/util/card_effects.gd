@@ -6,11 +6,10 @@ extends Node
 
 # Powers up all Minions on the field which have the specified
 # archetype.
-static func power_up_archetype(playing_field, source_card, archetype) -> void:
+static func power_up_archetype(playing_field, source_card, archetype: int) -> void:
     var minions = CardGameApi.get_minions_in_play(playing_field)
     for minion in minions:
-        var archetypes = minion.card_type.get_archetypes(playing_field, minion)
-        if not archetype in archetypes:
+        if not minion.has_archetype(playing_field, archetype):
             continue
         var can_influence = await minion.card_type.do_influence_check(playing_field, minion, source_card)
         if can_influence:

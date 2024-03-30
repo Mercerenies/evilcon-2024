@@ -16,7 +16,7 @@ func get_text() -> String:
 func get_level(playing_field, card) -> int:
     var friendly_minions = playing_field.get_minion_strip(card.owner).cards().card_array()
     var friendly_bees = friendly_minions.filter(func(minion):
-        return Archetype.BEE in minion.card_type.get_archetypes(playing_field, minion))
+        return minion.has_archetype(playing_field, Archetype.BEE))
     var starting_level = super.get_level(playing_field, card)
     return starting_level + len(friendly_bees)
 
