@@ -10,7 +10,7 @@ func get_title() -> String:
 
 
 func get_text() -> String:
-    return "Your most powerful Robot gets +1 Level and +1 Morale."
+    return "Your most powerful [icon]ROBOT[/icon] ROBOT Minion gets +1 Level and +1 Morale."
 
 
 func get_star_cost() -> int:

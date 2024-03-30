@@ -10,7 +10,7 @@ func get_title() -> String:
 
 
 func get_text() -> String:
-    return "+1 Level to Queen Bee for each friendly Bee (including Queen Bee)."
+    return "+1 Level to Queen Bee for each friendly [icon]BEE[/icon] BEE Minion in play (including Queen Bee)."
 
 
 func get_level(playing_field, card) -> int:

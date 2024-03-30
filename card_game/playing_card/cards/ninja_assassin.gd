@@ -10,7 +10,7 @@ func get_title() -> String:
 
 
 func get_text() -> String:
-    return "Immune to enemy card effects."
+    return "Ninja Assassin is immune to enemy card effects."
 
 
 func get_picture_index() -> int:

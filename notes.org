@@ -178,6 +178,49 @@
    See ~library.ods~ for a list of cards that are planned for the
    game.
 
+** CARD DESCRIPTIONS
+   Here are the conventions for card description text, so we can try
+   to be consistent.
+
+   Cards which have no effect shall feature flavortext in italics.
+   This flavortext shall consist of one or more complete sentences, properly
+   punctuated.
+
+   Cards which have an effect shall instead describe the effect, in
+   non-italic font.
+   + Effect text may EITHER be in the form of a mathematical operation
+     (e.g., "+1 Level to all Minions"), in the form of an imperative
+     statement (e.g., "Summon a Chicken from your deck"), or in the
+     form of a complete sentence describing a passive circumstance
+     (e.g., "Hired Ninja is immune to enemy card effects").
+   + Effect text shall NOT be written in the form of a passive verb
+     phrase (e.g., prefer "Summon a Chicken" to "Summons a Chicken")
+   + Effect text shall end in proper punctuation (such as a period),
+     even in situations where it is not a complete sentence.
+   + Effect text may consist of multiple sentences. These may be
+     separated by punctuation, or may be separated by a semicolon if
+     they are closely related.
+   + Card names should be capitalized consistently in the same way
+     they're capitalized in the card's title itself.
+   + Cards shall prefer to refer to themselves in the third person by
+     name. A phrase such as "this card" may be used if it makes more
+     grammatical sense.
+   + Cards may use "[icon]...[/icon]" formatting to indicate
+     archetypes or other designators. Such designators shall ONLY be
+     used to refer to their intended archetype or usage (for example,
+     do NOT use [icon]HUMAN[/icon] simply to represent a generic
+     person's face, only use it to refer to the HUMAN archetype).
+   + When referencing an archetype, including both the icon and the
+     archetype name (e.g., "All [icon]ROBOT[/icon] ROBOT Minions are
+     destroyed"). Additionally, archetype names shall be written in
+     ALL CAPS.
+   + The following words are capitalized: Minion, Effect (in the
+     context of an Effect card).
+   + The following words needn't be capitalized: Card.
+   + "Limited" cards (i.e. those that can only exist once per deck)
+     shall indicate their status using the "LIMITED" icon in the icon
+     row, as well as a sentence "Limit 1 per deck." at the end of the
+     card effect description.
 ** RANDOM IDEAS
    + Villain(s) from Three Rules Standing
    + Costume shop for some cosmetic upgrades
