@@ -24,12 +24,12 @@ func _ready():
 
 func _sample_deck():
     return [
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CATACOMB_CHARMER),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.SPIKY_MUSHROOM_MAN),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.BEEHIVE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.BEEHIVE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.WORKER_BEE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.WORKER_BEE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.ZANY_ZOMBIE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.ZANY_ZOMBIE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.ZANY_ZOMBIE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.FURIOUS_PHANTOM),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.FURIOUS_PHANTOM),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.FURIOUS_PHANTOM),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.BUSY_BEE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.REINFORCED_SHELL),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.BUSY_BEE),
