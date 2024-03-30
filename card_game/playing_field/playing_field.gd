@@ -195,7 +195,7 @@ func _on_bottom_hand_card_node_card_clicked(card_node) -> void:
     var play_button = Button.new()
     if card_type.can_play(self, CardPlayer.BOTTOM):
         play_button.text = "Play"
-        play_button.pressed.connect(func():
+        play_button.pressed.connect(func play_card_and_free_ui():
             CardGameApi.play_card(self, CardPlayer.BOTTOM, card_type)
             card_row.queue_free())
     else:

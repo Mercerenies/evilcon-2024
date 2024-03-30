@@ -76,10 +76,10 @@ static func broadcast_to_cards(playing_field, method, binds = []) -> Array:
     if method is String:
         var method_name = method  # Anchor to variable so we can close around it.
         if len(binds) > 0:
-            method = func(playing_field_, card):
+            method = func broadcast_lambda_with_bindings(playing_field_, card):
                 return await card.card_type.callv(method_name, [playing_field_, card] + binds)
         else:
-            method = func(playing_field_, card):
+            method = func broadcast_lambda(playing_field_, card):
                 return await card.card_type.call(method_name, playing_field_, card)
     elif len(binds) > 0:
         method = method.bindv(binds)

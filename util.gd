@@ -36,7 +36,7 @@ static func replace_all_by_function(string: String, regex: RegEx, function: Call
 static func max_by(array: Array, less_than: Callable):
     if len(array) == 0:
         return null  # No elements in array, so no maximum
-    return array.reduce(func(acc, b):
+    return array.reduce(func (acc, b):
         if less_than.call(acc, b):
             return b
         else:
