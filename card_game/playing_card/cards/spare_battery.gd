@@ -41,7 +41,6 @@ func on_play(playing_field, card) -> void:
         Stats.play_animation_for_stat_change(playing_field, card_node, 0, {
             "custom_label_text": "No Target!",
             "custom_label_color": Color.BLACK,
-            "offset": Vector2(0, -32),  # Don't overlap with the "-1 Morale" message.
         })
     else:
         var most_powerful_robot = Util.max_by(minions, CardEffects.card_power_less_than(playing_field))
