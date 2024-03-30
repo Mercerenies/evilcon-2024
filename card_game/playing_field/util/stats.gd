@@ -37,6 +37,7 @@ static func set_evil_points(playing_field, player: StringName, new_value: int) -
     var stats = playing_field.get_stats(player)
     var old_value = stats.evil_points
     stats.evil_points = new_value
+    playing_field.emit_cards_moved()
     # Fire and forget
     play_animation_for_stat_change(playing_field, stats.get_evil_points_node(), new_value - old_value)
 
@@ -50,6 +51,7 @@ static func set_fort_defense(playing_field, player: StringName, new_value: int) 
     var stats = playing_field.get_stats(player)
     var old_value = stats.fort_defense
     stats.fort_defense = new_value
+    playing_field.emit_cards_moved()
     # Fire and forget
     play_animation_for_stat_change(playing_field, stats.get_fort_defense_node(), new_value - old_value)
 
@@ -63,6 +65,7 @@ static func set_destiny_song(playing_field, player: StringName, new_value: int) 
     var stats = playing_field.get_stats(player)
     var old_value = stats.destiny_song
     stats.destiny_song = new_value
+    playing_field.emit_cards_moved()
     # Fire and forget
     play_animation_for_stat_change(playing_field, stats.get_destiny_song_node(), new_value - old_value)
 
@@ -77,13 +80,14 @@ static func set_morale(playing_field, card, new_value: int) -> void:
     var card_node = CardGameApi.find_card_node(playing_field, card)
     var old_value = card.metadata[CardMeta.MORALE]
     card.metadata[CardMeta.MORALE] = new_value
+    playing_field.emit_cards_moved()
     # Fire and forget
     play_animation_for_stat_change(playing_field, card_node, new_value - old_value, {
         "custom_label_text": "%+d Morale" % (new_value - old_value),
     })
     if new_value <= 0:
         await card.card_type.on_expire(playing_field, card)
-        # TODO Check if the on_expire event saved the card.
+        # TODO Check if the on_expire event saved the card. (Also there should be an on_pre_expire so things don't get resurrected by this except in extreme circumstances; or maybe we should just go through with the expiry here, idk. Think about it)
         await CardGameApi.destroy_card(playing_field, card)
 
 
@@ -96,6 +100,7 @@ static func set_level(playing_field, card, new_value: int) -> void:
     var card_node = CardGameApi.find_card_node(playing_field, card)
     var old_value = card.metadata[CardMeta.LEVEL]
     card.metadata[CardMeta.LEVEL] = new_value
+    playing_field.emit_cards_moved()
     # Fire and forget
     play_animation_for_stat_change(playing_field, card_node, new_value - old_value, {
         "custom_label_text": "%+d Level" % (new_value - old_value),
