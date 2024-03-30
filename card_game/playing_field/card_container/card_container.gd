@@ -77,12 +77,15 @@ func shuffle() -> void:
 
 
 func find_card(card):
-    var index = _array.find(card)
     # Godot's find() method returns index -1 for "not found", which
     # can be easily mistaken for "last element of the list", since
     # many of our indexing functions accept that convention. So return
     # null for "not found".
-    if index < 0:
-        return null
-    else:
-        return index
+    return find_card_if(func (x): return card == x)
+
+
+func find_card_if(callable: Callable):
+    for i in range(len(_array)):
+        if callable.call(_array[i]):
+            return i
+    return null
