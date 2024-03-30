@@ -24,6 +24,6 @@ static func do_ninja_influence_check(playing_field, target_card, source_card) ->
         await Stats.play_animation_for_stat_change(playing_field, card_node, 0, {
             "custom_label_text": "Blocked!",
             "custom_label_color": Color.BLACK,
-        })
+        }) # TODO Do we await this, or just fire-and-forget?
         return false
     return true
