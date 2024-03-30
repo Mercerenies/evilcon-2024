@@ -19,7 +19,7 @@ enum Frame {
     NINJA = 9,
     SKULL_UNUSED_ICON = 10, # Unused icon
     BOSS = 11,
-    ZOMBIE = 12,
+    UNDEAD = 12,
     COMMON = 13,
     UNCOMMON = 14,
     RARE = 15,
