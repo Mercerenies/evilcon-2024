@@ -1,9 +1,7 @@
 extends MinionCardType
 
-
 const BusyBee = preload("res://card_game/playing_card/cards/busy_bee.gd")
 const WorkerBee = preload("res://card_game/playing_card/cards/worker_bee.gd")
-
 
 func get_id() -> int:
     return 47
