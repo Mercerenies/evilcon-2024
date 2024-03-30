@@ -168,6 +168,21 @@ static func play_card(playing_field, player: StringName, card_type: CardType) ->
     await new_card.on_play(playing_field)
 
 
+# Move from discard pile to deck.
+static func resurrect_card(playing_field, player: StringName, card_type: CardType) -> void:
+    var discard_pile = playing_field.get_discard_pile(player)
+    var field = card_type.get_destination_strip(playing_field, player)
+    var discard_index = discard_pile.cards().find_card(card_type)
+    if discard_index == null:
+        push_warning("Cannot resurrect card %s because it is not in discard pile" % card_type)
+        return
+    var _new_card = await playing_field.move_card(discard_pile, field, {
+        "source_index": discard_index,
+        "destination_transform": DestinationTransform.instantiate_card(player),
+    })
+    # TODO on_resurrect callback for this?
+
+
 static func highlight_card(playing_field, card: Card) -> void:
     var card_node = find_card_node(playing_field, card)
     if card_node == null:
