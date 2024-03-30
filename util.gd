@@ -31,3 +31,13 @@ static func replace_all_by_function(string: String, regex: RegEx, function: Call
         string = splice_string(string, result.get_start(), result.get_end(), replacement)
         result = regex.search(string)
     return string
+
+
+static func max_by(array: Array, less_than: Callable):
+    if len(array) == 0:
+        return null  # No elements in array, so no maximum
+    return array.reduce(func(acc, b):
+        if less_than.call(acc, b):
+            return b
+        else:
+            return acc)

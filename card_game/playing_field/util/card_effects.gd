@@ -26,3 +26,60 @@ static func do_ninja_influence_check(playing_field, target_card, source_card) ->
         }) # TODO Do we await this, or just fire-and-forget?
         return false
     return true
+
+
+# The "less than" comparison operator for Minion cards by their
+# "power" level. This is the comparison used by all of the card
+# effects that refer to the "most powerful" or "least powerful" Minion
+# in play. This is a valid total ordering, and two cards are
+# considered equivalent under this ordering if and only if they have
+# the same stats and the same card type.
+#
+# Specifically, this function takes a playing_field and returns a
+# binary comparison operator, since the calculation depends on the
+# state of the playing field (as some cards will influence the level
+# of other cards in play).
+#
+# The ordering used here is as follows:
+#
+# * Compare the Minions' power (= Level * Morale).
+#
+# * In cases of equal power, compare Morale alone.
+#
+# * If all stats are equal, compare card type ID (as an arbitrary but
+#   consistent tiebreaker).
+#
+# * If that fails, consider the two cards equivalent.
+#
+# This comparison only makes sense for Minions and shall not be
+# applied to Effect cards.
+static func card_power_less_than(playing_field) -> Callable:
+    return func less_than(a, b) -> bool:
+        var level_a = a.card_type.get_level(playing_field, a)
+        var level_b = a.card_type.get_level(playing_field, b)
+        var morale_a = a.card_type.get_morale(playing_field, a)
+        var morale_b = a.card_type.get_morale(playing_field, b)
+        if level_a * morale_a < level_b * morale_b:
+            return true
+        elif level_a * morale_a == level_b * morale_b:
+            if morale_a < morale_b:
+                return true
+            elif morale_a == morale_b:
+                return (a.card_type.get_id() < b.card_type.get_id())
+            else:
+                return false
+        else:
+            return false
+
+
+# Returns the most powerful Minion currently in play. If player is
+# non-null, only Minions belonging to that player will be considered.
+# Otherwise, all Minions in play are considered.
+#
+# Returns null if there are no minions in play satisfying the
+# condition.
+static func most_powerful_minion(playing_field, player):
+    var all_minions = CardGameApi.get_minions_in_play(playing_field)
+    if player != null:
+        all_minions = all_minions.filter(func (minion): return minion.owner == player)
+    return Util.max_by(all_minions, card_power_less_than(playing_field))
