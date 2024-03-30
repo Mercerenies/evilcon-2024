@@ -143,6 +143,10 @@ func move_card(source, destination, opts = {}):
     var custom_displayed_card = opts.get("custom_displayed_card", null)
     var destination_transform = opts.get("destination_transform", null)
 
+    # TODO In some situations we should consider rotating the
+    # animation 180 degrees, for instance if a card is being moved
+    # from enemy hand to field, or from enemy field to discard.
+
     var source_cards = source.cards()
     var destination_cards = destination.cards()
     var relevant_card = source_cards.pop_card(source_index)
