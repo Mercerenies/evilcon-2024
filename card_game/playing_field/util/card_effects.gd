@@ -11,19 +11,20 @@ static func power_up_archetype(playing_field, source_card, archetype: int) -> vo
     for minion in minions:
         if not minion.has_archetype(playing_field, archetype):
             continue
-        var can_influence = await minion.card_type.do_influence_check(playing_field, minion, source_card)
+        var can_influence = await minion.card_type.do_influence_check(playing_field, minion, source_card, false)
         if can_influence:
             await Stats.add_level(playing_field, minion, 1)
 
 
 # Performs the ninja influence check for the specified card.
-static func do_ninja_influence_check(playing_field, target_card, source_card) -> bool:
+static func do_ninja_influence_check(playing_field, target_card, source_card, silently) -> bool:
     if target_card.owner != source_card.owner:
         var card_node = CardGameApi.find_card_node(playing_field, target_card)
-        await Stats.play_animation_for_stat_change(playing_field, card_node, 0, {
-            "custom_label_text": "Blocked!",
-            "custom_label_color": Color.BLACK,
-        }) # TODO Do we await this, or just fire-and-forget?
+        if not silently:
+            Stats.play_animation_for_stat_change(playing_field, card_node, 0, {
+                "custom_label_text": "Blocked!",
+                "custom_label_color": Color.BLACK,
+            })
         return false
     return true
 

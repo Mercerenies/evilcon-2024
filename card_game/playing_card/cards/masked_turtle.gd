@@ -37,8 +37,8 @@ func get_rarity() -> int:
     return Rarity.COMMON
 
 
-func do_influence_check(playing_field, target_card, source_card) -> bool:
+func do_influence_check(playing_field, target_card, source_card, silently: bool) -> bool:
     return (
-        await CardEffects.do_ninja_influence_check(playing_field, target_card, source_card) and
-        await super.do_influence_check(playing_field, target_card, source_card)
+        await CardEffects.do_ninja_influence_check(playing_field, target_card, source_card, silently) and
+        await super.do_influence_check(playing_field, target_card, source_card, silently)
     )

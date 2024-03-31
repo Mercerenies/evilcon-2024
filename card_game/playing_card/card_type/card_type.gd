@@ -96,13 +96,16 @@ func get_overlay_text(_playing_field, _card) -> String:
     return ""
 
 
-func do_influence_check(_playing_field, _target_card, _source_card) -> bool:
+func do_influence_check(_playing_field, _target_card, _source_card, _silently: bool) -> bool:
     # Called when the source_card is about to affect the target_card
     # in some way. This method should return true if the source card
     # is permitted to affect the target card (which is usually the
-    # case), or false if something blocks the effect. This method is
-    # permitted to be a coroutine (i.e. to "await"), in order to play
-    # animations, if needed.
+    # case), or false if something blocks the effect.
+    #
+    # If the `silently` argument is false, this method is permitted to
+    # be a coroutine (i.e. to "await"), in order to play animations.
+    # If `silently` is true, this method must not perform any
+    # animations.
     #
     # TODO Check other objects in the scene as well
     return true
