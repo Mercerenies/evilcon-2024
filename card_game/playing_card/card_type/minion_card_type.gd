@@ -70,6 +70,7 @@ func get_overlay_text(playing_field, card) -> String:
 
 
 func on_attack_phase(playing_field, card) -> void:
+    super.on_attack_phase(playing_field, card)
     # By default, a Minion of Level > 0 attacks during the attack
     # phase.
     if playing_field.turn_player == card.owner:
@@ -82,6 +83,7 @@ func on_attack_phase(playing_field, card) -> void:
 
 
 func on_morale_phase(playing_field, card) -> void:
+    super.on_morale_phase(playing_field, card)
     # By default, a Minion decreases Morale during the morale phase.
     if playing_field.turn_player == card.owner:
         await Stats.add_morale(playing_field, card, -1)

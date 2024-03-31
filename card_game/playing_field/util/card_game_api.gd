@@ -68,7 +68,7 @@ static func get_effects_in_play(playing_field) -> Array:
 # called as a method on each card type. In either case, the first two
 # arguments are the playing field and the card itself. The result of
 # the callable or method will be `await`ed.
-static func broadcast_to_cards(playing_field, method, binds = []) -> Array:
+static func broadcast_to_cards_async(playing_field, method, binds = []) -> Array:
     # Normalize method and binds to a single callable that encompasses
     # all cases. We have to do this in several cases since I can't
     # just forward arguments with (*args, **kwargs) like I would in
@@ -90,6 +90,32 @@ static func broadcast_to_cards(playing_field, method, binds = []) -> Array:
         var result = await method.call(playing_field, card)
         results.append(result)
     return results
+
+
+# Same as broadcast_to_cards_async but forbids `await`ing.
+static func broadcast_to_cards(playing_field, method, binds = []) -> Array:
+    # Normalize method and binds to a single callable that encompasses
+    # all cases. We have to do this in several cases since I can't
+    # just forward arguments with (*args, **kwargs) like I would in
+    # Python.
+    if method is String:
+        var method_name = method  # Anchor to variable so we can close around it.
+        if len(binds) > 0:
+            method = func broadcast_lambda_with_bindings(playing_field_, card):
+                return card.card_type.callv(method_name, [playing_field_, card] + binds)
+        else:
+            method = func broadcast_lambda(playing_field_, card):
+                return card.card_type.call(method_name, playing_field_, card)
+    elif len(binds) > 0:
+        method = method.bindv(binds)
+
+    var results = []
+    var all_cards = get_cards_in_play(playing_field)
+    for card in all_cards:
+        var result = method.call(playing_field, card)
+        results.append(result)
+    return results
+
 
 
 static func play_smoke_animation(playing_field, target_node) -> void:

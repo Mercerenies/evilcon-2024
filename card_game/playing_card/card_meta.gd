@@ -6,4 +6,3 @@ extends Node
 const LEVEL = &"LEVEL"
 const MORALE = &"MORALE"
 const TURN_COUNTER = &"TURN_COUNTER"
-

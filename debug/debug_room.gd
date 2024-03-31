@@ -40,6 +40,6 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.MILK_DELIVERY),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.METAL_SPIDER),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.METAL_SPIDER),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.MILK_DELIVERY),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.ROBOT_MITE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.NUCLEAR_POWER_PLANT),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.NUCLEAR_FUSION_PLANT),
     ]

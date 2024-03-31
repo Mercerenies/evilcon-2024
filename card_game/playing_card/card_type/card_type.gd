@@ -126,3 +126,7 @@ func on_standby_phase(_playing_field, _card) -> void:
 
 func on_end_phase(_playing_field, _card) -> void:
     pass
+
+
+func get_ep_per_turn_modifier(_playing_field, _card, _player: StringName) -> int:
+    return 0
