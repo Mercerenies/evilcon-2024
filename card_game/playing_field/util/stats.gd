@@ -77,37 +77,41 @@ static func add_destiny_song(playing_field, player: StringName, delta: int) -> v
     await set_destiny_song(playing_field, player, stats.destiny_song + delta)
 
 
-static func set_morale(playing_field, card, new_value: int) -> void:
+static func set_morale(playing_field, card, new_value: int, opts = {}) -> void:
     new_value = maxi(new_value, 0)
     var card_node = CardGameApi.find_card_node(playing_field, card)
     var old_value = card.metadata[CardMeta.MORALE]
     card.metadata[CardMeta.MORALE] = new_value
     playing_field.emit_cards_moved()
     # Fire and forget
-    play_animation_for_stat_change(playing_field, card_node, new_value - old_value, {
+    var animation_opts = {
         "custom_label_text": "%+d Morale" % (new_value - old_value),
-    })
+    }
+    animation_opts.merge(opts, true)
+    play_animation_for_stat_change(playing_field, card_node, new_value - old_value, animation_opts)
     if new_value <= 0:
         await card.card_type.on_expire(playing_field, card)
         # TODO Check if the on_expire event saved the card. (Also there should be an on_pre_expire so things don't get resurrected by this except in extreme circumstances; or maybe we should just go through with the expiry here, idk. Think about it)
         await CardGameApi.destroy_card(playing_field, card)
 
 
-static func add_morale(playing_field, card, delta: int) -> void:
-    await set_morale(playing_field, card, card.metadata[CardMeta.MORALE] + delta)
+static func add_morale(playing_field, card, delta: int, opts = {}) -> void:
+    await set_morale(playing_field, card, card.metadata[CardMeta.MORALE] + delta, opts)
 
 
-static func set_level(playing_field, card, new_value: int) -> void:
+static func set_level(playing_field, card, new_value: int, opts = {}) -> void:
     new_value = maxi(new_value, 0)
     var card_node = CardGameApi.find_card_node(playing_field, card)
     var old_value = card.metadata[CardMeta.LEVEL]
     card.metadata[CardMeta.LEVEL] = new_value
     playing_field.emit_cards_moved()
     # Fire and forget
-    play_animation_for_stat_change(playing_field, card_node, new_value - old_value, {
+    var animation_opts = {
         "custom_label_text": "%+d Level" % (new_value - old_value),
-    })
+    }
+    animation_opts.merge(opts, true)
+    play_animation_for_stat_change(playing_field, card_node, new_value - old_value, animation_opts)
 
 
-static func add_level(playing_field, card, delta: int) -> void:
-    await set_level(playing_field, card, card.metadata[CardMeta.LEVEL] + delta)
+static func add_level(playing_field, card, delta: int, opts = {}) -> void:
+    await set_level(playing_field, card, card.metadata[CardMeta.LEVEL] + delta, opts)
