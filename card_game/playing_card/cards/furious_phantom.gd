@@ -51,7 +51,7 @@ func on_expire(playing_field, card) -> void:
     else:
         var card_node = CardGameApi.find_card_node(playing_field, card)
         Stats.play_animation_for_stat_change(playing_field, card_node, 0, {
-            "custom_label_text": "No Target!",
-            "custom_label_color": Color.BLACK,
-            "offset": Vector2(0, -32),  # Don't overlap with the "-1 Morale" message.
+            "custom_label_text": Stats.NO_TARGET_TEXT,
+            "custom_label_color": Stats.NO_TARGET_COLOR,
+            "offset": Stats.CARD_MULTI_UI_OFFSET,  # Don't overlap with the "-1 Morale" message.
         })

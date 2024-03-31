@@ -39,15 +39,15 @@ func on_play(playing_field, card) -> void:
     if len(minions) == 0:
         var card_node = CardGameApi.find_card_node(playing_field, card)
         Stats.play_animation_for_stat_change(playing_field, card_node, 0, {
-            "custom_label_text": "No Target!",
-            "custom_label_color": Color.BLACK,
+            "custom_label_text": Stats.NO_TARGET_TEXT,
+            "custom_label_color": Stats.NO_TARGET_COLOR,
         })
     else:
         var most_powerful_robot = Util.max_by(minions, CardEffects.card_power_less_than(playing_field))
         var can_influence = await most_powerful_robot.card_type.do_influence_check(playing_field, most_powerful_robot, card, false)
         if can_influence:
             await Stats.add_level(playing_field, most_powerful_robot, 1, {
-                "offset": Vector2(0, -32),
+                "offset": Stats.CARD_MULTI_UI_OFFSET,
             })
             await Stats.add_morale(playing_field, most_powerful_robot, 1)
     await CardGameApi.destroy_card(playing_field, card)

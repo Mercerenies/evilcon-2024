@@ -9,6 +9,17 @@ extends Node
 
 const NumberAnimation = preload("res://card_game/playing_field/animation/number_animation.tscn")
 
+# If you want to show two NumberAnimations on the same card at the
+# same time, this is the standard offset to show the second one at.
+# Pass this value as the { "offset": ... } keyword argument.
+const CARD_MULTI_UI_OFFSET := Vector2(0, -32)
+
+const NO_TARGET_TEXT := "No Target!"
+const NO_TARGET_COLOR := Color.BLACK
+
+const BLOCKED_TEXT := "Blocked!"
+const BLOCKED_COLOR := Color.BLACK
+
 # No semantic change to stats, just the animation. This function can
 # be called directly, but it usually makes more sense to call one of
 # the other helpers, which also performs the semantic change.
