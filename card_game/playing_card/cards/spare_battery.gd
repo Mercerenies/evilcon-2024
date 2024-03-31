@@ -44,7 +44,9 @@ func on_play(playing_field, card) -> void:
         })
     else:
         var most_powerful_robot = Util.max_by(minions, CardEffects.card_power_less_than(playing_field))
-        # TODO Make these two displays not overlap in the UI
-        await Stats.add_level(playing_field, most_powerful_robot, 1)
-        await Stats.add_morale(playing_field, most_powerful_robot, 1)
+        var can_influence = await most_powerful_robot.card_type.do_influence_check(playing_field, most_powerful_robot, card, false)
+        if can_influence:
+            # TODO Make these two displays not overlap in the UI
+            await Stats.add_level(playing_field, most_powerful_robot, 1)
+            await Stats.add_morale(playing_field, most_powerful_robot, 1)
     await CardGameApi.destroy_card(playing_field, card)
