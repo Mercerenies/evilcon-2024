@@ -96,7 +96,7 @@ func get_overlay_text(_playing_field, _card) -> String:
     return ""
 
 
-func do_influence_check(_playing_field, _target_card, _source_card, _silently: bool) -> bool:
+func do_influence_check(playing_field, target_card, source_card, silently: bool) -> bool:
     # Called when the source_card is about to affect the target_card
     # in some way. This method should return true if the source card
     # is permitted to affect the target card (which is usually the
@@ -106,8 +106,24 @@ func do_influence_check(_playing_field, _target_card, _source_card, _silently: b
     # be a coroutine (i.e. to "await"), in order to play animations.
     # If `silently` is true, this method must not perform any
     # animations.
-    #
-    # TODO Check other objects in the scene as well
+    var bind_args = [target_card, source_card, silently]
+    if silently:
+        return (
+            CardGameApi.broadcast_to_cards(playing_field, "do_broadcasted_influence_check", bind_args)
+            .reduce(Operator.and_, true)
+        )
+    else:
+        return (
+            (await CardGameApi.broadcast_to_cards_async(playing_field, "do_broadcasted_influence_check", bind_args))
+            .reduce(Operator.and_, true)
+        )
+
+
+func do_broadcasted_influence_check(_playing_field, _card, _target_card, _source_card, _silently: bool) -> bool:
+    # Called when the source_card is about to affect the target_card,
+    # giving a third party (the card argument) a chance to intervene.
+    # If it is always true that card == target_card, then you should
+    # be overriding do_influence_check instead.
     return true
 
 

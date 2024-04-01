@@ -19,8 +19,8 @@ static func power_up_archetype(playing_field, source_card, archetype: int) -> vo
 # Performs the ninja influence check for the specified card.
 static func do_ninja_influence_check(playing_field, target_card, source_card, silently) -> bool:
     if target_card.owner != source_card.owner:
-        var card_node = CardGameApi.find_card_node(playing_field, target_card)
         if not silently:
+            var card_node = CardGameApi.find_card_node(playing_field, target_card)
             Stats.play_animation_for_stat_change(playing_field, card_node, 0, {
                 "custom_label_text": Stats.BLOCKED_TEXT,
                 "custom_label_color": Stats.BLOCKED_COLOR,
