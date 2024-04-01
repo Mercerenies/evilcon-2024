@@ -198,8 +198,9 @@
    + Effect text shall end in proper punctuation (such as a period),
      even in situations where it is not a complete sentence.
    + Effect text may consist of multiple sentences. These may be
-     separated by punctuation, or may be separated by a semicolon if
-     they are closely related.
+     separated by punctuation.
+   + Semicolons shall be used to separate sequential effects (e.g.,
+     "Destroy an enemy Minion; then destroy this card.")
    + Card names should be capitalized consistently in the same way
      they're capitalized in the card's title itself.
    + Cards shall prefer to refer to themselves in the third person by
