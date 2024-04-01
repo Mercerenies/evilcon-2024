@@ -106,17 +106,20 @@ func do_influence_check(playing_field, target_card, source_card, silently: bool)
     # be a coroutine (i.e. to "await"), in order to play animations.
     # If `silently` is true, this method must not perform any
     # animations.
-    var bind_args = [target_card, source_card, silently]
+    #
+    # The default implementation behaves like
+    # CardGameApi.broadcast_to_cards (resp.
+    # CardGameApi.broadcast_to_cards_async) but will short-circuit
+    # when it finds the first card that blocks the influence.
     if silently:
-        return (
-            CardGameApi.broadcast_to_cards(playing_field, "do_broadcasted_influence_check", bind_args)
-            .reduce(Operator.and_, true)
-        )
+        for card in CardGameApi.get_cards_in_play(playing_field):
+            if not card.card_type.do_broadcasted_influence_check(playing_field, card, target_card, source_card, silently):
+                return false
     else:
-        return (
-            (await CardGameApi.broadcast_to_cards_async(playing_field, "do_broadcasted_influence_check", bind_args))
-            .reduce(Operator.and_, true)
-        )
+        for card in CardGameApi.get_cards_in_play(playing_field):
+            if not await card.card_type.do_broadcasted_influence_check(playing_field, card, target_card, source_card, silently):
+                return false
+    return true
 
 
 func do_broadcasted_influence_check(_playing_field, _card, _target_card, _source_card, _silently: bool) -> bool:
