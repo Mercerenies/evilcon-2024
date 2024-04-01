@@ -41,9 +41,3 @@ static func max_by(array: Array, less_than: Callable):
             return b
         else:
             return acc)
-
-
-# The "+" operator as a function, most commonly used in an
-# Array.reduce call.
-static func plus(a, b):
-    return a + b
