@@ -37,7 +37,7 @@ static func do_hero_check(playing_field, hero_card) -> bool:
         if not await card.card_type.do_passive_hero_check(playing_field, card, hero_card):
             return false
     for card in all_cards:
-        if await card.card_type.do_active_hero_check(playing_field, card, hero_card):
+        if not await card.card_type.do_active_hero_check(playing_field, card, hero_card):
             return false
     return true
 

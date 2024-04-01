@@ -221,6 +221,8 @@
      shall indicate their status using the "LIMITED" icon in the icon
      row, as well as a sentence "Limit 1 per deck." at the end of the
      card effect description.
+   + Card effects MAY use the second person "you". If used, the second
+     person pronoun always refers to the card's /current/ owner.
 ** RANDOM IDEAS
    + Villain(s) from Three Rules Standing
    + Costume shop for some cosmetic upgrades

@@ -19,6 +19,10 @@ func _ready():
     bottom_deck.cards().shuffle()
     top_deck.cards().shuffle()
 
+    $PlayingField.turn_number = 10  # Get extra EP :)
+    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.PLUMBERMAN))
+    $PlayingField.get_effect_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.COVER_OF_MOONLIGHT), CardPlayer.TOP))
+
     await CardGameTurnTransitions.begin_game($PlayingField)
 
 
@@ -41,5 +45,5 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.WITH_EXTRA_CHEESE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.METAL_SPIDER),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.IT_WORKER),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.WORKER_BEE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.PLUMBERMAN),
     ]
