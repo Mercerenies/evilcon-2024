@@ -41,3 +41,31 @@ static func max_by(array: Array, less_than: Callable):
             return b
         else:
             return acc)
+
+
+# Takes an array and acts like Array.reduce(method, accum), but at
+# each iteration, stop_condition is invoked with one argument (the
+# current accumulator). If stop_condition returns true, iteration
+# stops immediately and the current accumulator is true. In this way,
+# this function can short-circuit.
+static func reduce_while(array: Array, method: Callable, stop_condition: Callable, accum = null):
+    if accum == null:
+        accum = array[0]
+        array = array.slice(1)
+    for element in array:
+        if stop_condition.call(accum):
+            break
+        accum = method.call(accum, element)
+    return accum
+
+
+# As reduce_while but with `await`able method and stop_condition.
+static func reduce_while_async(array: Array, method: Callable, stop_condition: Callable, accum = null):
+    if accum == null:
+        accum = array[0]
+        array = array.slice(1)
+    for element in array:
+        if await stop_condition.call(accum):
+            break
+        accum = await method.call(accum, element)
+    return accum
