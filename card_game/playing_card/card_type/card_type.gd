@@ -130,6 +130,31 @@ func do_broadcasted_influence_check(_playing_field, _card, _target_card, _source
     return true
 
 
+func do_passive_hero_check(_playing_field, _card, _hero_card) -> bool:
+    # Called when a Hero card indicated by `hero_card` is about to
+    # perform its effect. This method should return true (the default)
+    # if the card is permitted to proceed as planned, and false if
+    # this card is blocking the hero card. This method may `await`.
+    #
+    # This method should only trigger for cards that block Hero cards
+    # passively and do not discard themselves when blocking. Use
+    # do_active_hero_check for cards which must tribute themselves to
+    # block.
+    return true
+
+
+func do_active_hero_check(_playing_field, _card, _hero_card) -> bool:
+    # Called when a Hero card indicated by `hero_card` is about to
+    # perform its effect. This method should return true (the default)
+    # if the card is permitted to proceed as planned, and false if
+    # this card is blocking the hero card. This method may `await`.
+    #
+    # This method should only trigger for cards that block Hero cards
+    # by sacrificing oneself or something else. Use
+    # do_passive_hero_check for cards which block Hero cards for free.
+    return true
+
+
 func on_draw_phase(_playing_field, _card) -> void:
     pass
 

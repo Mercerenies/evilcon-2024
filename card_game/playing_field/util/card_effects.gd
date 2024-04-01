@@ -29,6 +29,19 @@ static func do_ninja_influence_check(playing_field, target_card, source_card, si
     return true
 
 
+static func do_hero_check(playing_field, hero_card) -> bool:
+    # Do the passive check first, then the active one. Short-circuit
+    # if we find a match.
+    var all_cards = CardGameApi.get_cards_in_play(playing_field)
+    for card in all_cards:
+        if not await card.card_type.do_passive_hero_check(playing_field, card, hero_card):
+            return false
+    for card in all_cards:
+        if await card.card_type.do_active_hero_check(playing_field, card, hero_card):
+            return false
+    return true
+
+
 # The "less than" comparison operator for Minion cards by their
 # "power" level. This is the comparison used by all of the card
 # effects that refer to the "most powerful" or "least powerful" Minion
