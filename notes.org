@@ -68,6 +68,12 @@
       Evilcon.
     + Flying Brickman :: Super-strong superhero and a symbol of peace
       and justice.
+    + King Cannoli :: Count Carbonara's arch nemesis.
+    + Squaredude and Circlegirl
+    + Prisman
+    + Plumberman and Plumberman's Brother
+    + Clueless Man
+    + Wall Golem
 *** VILLAINS
     + Minionman :: Gimmick villain obsessed with armies of low-level
       Minion cards.
@@ -77,9 +83,10 @@
       unworkable evil schemes.
     + Icosaking :: Supervillain from the geometry world.
     + Dr. Meguruku :: Town physician who is secretly a powerful ninja.
-    + Ninja Master :: The ninja master over Dr. Meguruku (TODO Name
-      this character properly)
-    + Mute Mischief Mime :: A completely silent, obsessive clown.
+    + True Ninja Master :: The ninja master over Dr. Meguruku (TODO
+      Name this character properly)
+    + The Mastermime :: A completely silent, obsessive mime.
+    + Giggles Galore :: Mastermime's assistant
     + Maxwell Sterling :: Not a supervillain, just a CEO, but he gets
       invited to all of the important events anyway.
     + Milkman Marauder :: Milk delivery man by day, master thief by
