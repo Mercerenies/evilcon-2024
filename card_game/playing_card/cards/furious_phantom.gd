@@ -39,7 +39,7 @@ func get_rarity() -> int:
 
 
 func on_expire(playing_field, card) -> void:
-    super.on_expire(playing_field, card)
+    await super.on_expire(playing_field, card)
     var owner = card.owner
     var discard_pile = playing_field.get_discard_pile(owner)
     var zombie_index = discard_pile.cards().find_card_if(func (discarded_card):
