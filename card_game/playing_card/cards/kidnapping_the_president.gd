@@ -39,4 +39,4 @@ func do_active_hero_check(playing_field, card, hero_card) -> bool:
         })
         await CardGameApi.destroy_card(playing_field, card)
         return false
-    return super.do_active_hero_check(playing_field, card, hero_card)
+    return await super.do_active_hero_check(playing_field, card, hero_card)

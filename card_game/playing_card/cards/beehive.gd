@@ -44,4 +44,4 @@ func on_end_phase(playing_field, card) -> void:
         await CardGameApi.highlight_card(playing_field, card)
         var chosen_card_type = playing_field.randomness.choose([BusyBee, WorkerBee]).new()
         await CardGameApi.create_card(playing_field, card.owner, chosen_card_type)
-    super.on_end_phase(playing_field, card)
+    await super.on_end_phase(playing_field, card)

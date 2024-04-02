@@ -26,7 +26,7 @@ func get_rarity() -> int:
 
 
 func on_play(playing_field, card) -> void:
-    super.on_play(playing_field, card)
+    await super.on_play(playing_field, card)
     var owner = card.owner
 
     # Find owner's most powerful Robot.

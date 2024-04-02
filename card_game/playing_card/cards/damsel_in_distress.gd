@@ -37,4 +37,4 @@ func do_passive_hero_check(playing_field, card, hero_card) -> bool:
             "custom_label_color": Stats.BLOCKED_COLOR,
         })
         return false
-    return super.do_passive_hero_check(playing_field, card, hero_card)
+    return await super.do_passive_hero_check(playing_field, card, hero_card)
