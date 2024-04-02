@@ -175,6 +175,10 @@ func on_end_phase(_playing_field, _card) -> void:
     pass
 
 
+func on_expire_broadcasted(_playing_field, _card, _expiring_card) -> void:
+    pass
+
+
 func get_ep_per_turn_modifier(_playing_field, _card, _player: StringName) -> int:
     return 0
 

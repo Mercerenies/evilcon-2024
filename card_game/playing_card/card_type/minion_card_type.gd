@@ -59,8 +59,8 @@ func on_instantiate(card) -> void:
     card.metadata[CardMeta.MORALE] = get_base_morale()
 
 
-func on_expire(_playing_field, _card) -> void:
-    pass
+func on_expire(playing_field, card) -> void:
+    await CardGameApi.broadcast_to_cards_async(playing_field, "on_expire_broadcasted", [card])
 
 
 func get_overlay_text(playing_field, card) -> String:
