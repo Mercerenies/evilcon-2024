@@ -1,12 +1,5 @@
 extends Node2D
 
-const MushroomMan = preload("res://card_game/playing_card/cards/mushroom_man.gd")
-const PotOfLinguine = preload("res://card_game/playing_card/cards/pot_of_linguine.gd")
-const SpikyMushroomMan = preload("res://card_game/playing_card/cards/spiky_mushroom_man.gd")
-const TinyTurtle = preload("res://card_game/playing_card/cards/tiny_turtle.gd")
-const ZanyZombie = preload("res://card_game/playing_card/cards/zany_zombie.gd")
-const SergeantSquare = preload("res://card_game/playing_card/cards/sergeant_square.gd")
-const TriangleTrooper = preload("res://card_game/playing_card/cards/triangle_trooper.gd")
 const GreedyEnemyAI = preload("res://card_game/playing_field/enemy_ai/greedy_enemy_ai.tscn")
 
 
@@ -40,13 +33,13 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.BUSY_BEE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.ZANY_ZOMBIE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.ZOMBEE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.COVER_OF_MOONLIGHT),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.SPARE_BATTERY),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.SECOND_COURSE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.WITH_EXTRA_CHEESE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.METAL_SPIDER),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.IT_WORKER),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.ZOMBEE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.PLUMBERMAN),
     ]
