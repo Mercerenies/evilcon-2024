@@ -258,6 +258,30 @@
      card effect description.
    + Card effects MAY use the second person "you". If used, the second
      person pronoun always refers to the card's /current/ owner.
+** CARD RULINGS
+   Specific rulings on weird or potentially unintuitive interactions.
+*** INFLUENCE CHECKS
+    Influence checks for ninjas and ninja-themed effects apply
+    whenever a card of any kind attempts to change another card.
+    + "Change", in this context, includes modifying Level, Morale, or
+      archetypes, or moving the card to another location on or off the
+      field.
+    + Influence checks only apply when the target card is on the field
+      (minion or effect strip). Influence checks do NOT apply to
+      target cards in the discard pile, deck, or hand.
+    + Influence checks do not apply when a card /specifically/
+      self-targets, so no influence check can block an effect of the
+      form "This Minion is at +1 Level if <some condition>".
+      - Corollary: Influence checks DO apply when a blanket effect
+        happens to self-target. So influence checks /do/ apply, even
+        to the self-target, of a card with effect "All friendly
+        Minions are at +1 Level if <some condition>".
+*** MISCELLANEOUS
+    + When a card (usually a Clown-themed card) changes the archetype
+      of a Minion, that change always overwrites any other archetypes.
+      So, for instance, if a Masked Turtle (Ninja + Turtle) was
+      "turned into a Clown", then he is now /just/ a Clown, not a
+      Ninja or a Turtle anymore.
 ** RANDOM IDEAS
    + Villain(s) from Three Rules Standing
    + Costume shop for some cosmetic upgrades
