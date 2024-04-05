@@ -206,7 +206,7 @@ static func resurrect_card(playing_field, player: StringName, card_type: CardTyp
         "source_index": discard_index,
         "destination_transform": DestinationTransform.instantiate_card(player),
     })
-    # TODO on_resurrect callback for this?
+    await new_card.on_play(playing_field)
 
 
 static func highlight_card(playing_field, card: Card) -> void:
