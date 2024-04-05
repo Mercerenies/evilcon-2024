@@ -11,7 +11,7 @@ func get_title() -> String:
 
 
 func get_text() -> String:
-    return "When Furious Phantom expires, summon Zany Zombie from your discard pile."
+    return "When Furious Phantom expires, play a Zany Zombie from your discard pile."
 
 
 func get_picture_index() -> int:

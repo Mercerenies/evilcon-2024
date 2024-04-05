@@ -251,7 +251,7 @@
      destroyed"). Additionally, archetype names shall be written in
      ALL CAPS.
    + The following words are capitalized: Minion, Effect (in the
-     context of an Effect card), Hero.
+     context of an Effect card), Hero, Cost, Level, Morale.
    + The following words needn't be capitalized: card, discard pile,
      fortress.
    + "Limited" cards (i.e. those that can only exist once per deck)
@@ -262,6 +262,33 @@
      person pronoun always refers to the card's /current/ owner.
 ** CARD RULINGS
    Specific rulings on weird or potentially unintuitive interactions.
+*** DEFINITIONS
+    Miscellaneous definitions for words used on cards.
+    + Expire :: A Minion expires when its Morale hits zero. A Minion
+      is always destroyed immediately /after/ expiring. Effect cards
+      never expire, and a card removed from the field by means other
+      than having zero Morale is not considered to have expired.
+    + Destroy :: A card is destroyed when it moves from the field to
+      the discard pile for any reason.
+    + Discard :: A card is discarded when it moves from the hand to
+      the discard pile.
+    + Exile :: A card in any position on the board (field, hand, deck,
+      or discard pile) can be exiled. When a card is exiled, it is
+      completely removed from play for the remainder of this card
+      game. There is no way to recover an exiled card.
+    + Play :: A card is "played" when it moves from a position not on
+      the field (i.e. deck, hand, or discard pile) to being on the
+      field. When a card is played from the hand as part of a player's
+      normal turn, it costs EP to do so.
+    + Summon :: This is an outdated synonym for "Play". You may see it
+      in some old notes for this game, but card effects should NOT use
+      this word. Prefer the word "play" instead.
+    + Field :: The "field" consists of all cards in play. This
+      includes Minions and Effects that have been played but excludes
+      cards in hand, in deck, in the discard piles, or exiled.
+    + Board :: The "board" consists of all cards on the field, in
+      players' hands, in players' decks, and in discard piles. The
+      board explicitly excludes cards which have been exiled.
 *** INFLUENCE CHECKS
     Influence checks for ninjas and ninja-themed effects apply
     whenever a card of any kind attempts to change another card.
