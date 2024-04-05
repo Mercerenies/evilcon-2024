@@ -11,7 +11,7 @@ func on_enemy_turn_start(playing_field) -> void:
         var next_card_type = _get_next_card(playing_field)
         if next_card_type == null:
             break  # Turn is done
-        await CardGameApi.play_card(playing_field, CardPlayer.TOP, next_card_type)
+        await CardGameApi.play_card_from_hand(playing_field, CardPlayer.TOP, next_card_type)
     end_enemy_turn(playing_field)
 
 

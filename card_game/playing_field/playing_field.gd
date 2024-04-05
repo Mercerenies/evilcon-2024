@@ -200,7 +200,7 @@ func _on_bottom_hand_card_node_card_clicked(card_node) -> void:
     if card_type.can_play(self, CardPlayer.BOTTOM):
         play_button.text = "Play"
         play_button.pressed.connect(func play_card_and_free_ui():
-            CardGameApi.play_card(self, CardPlayer.BOTTOM, card_type)
+            CardGameApi.play_card_from_hand(self, CardPlayer.BOTTOM, card_type)
             card_row.queue_free())
     else:
         play_button.text = "(Can't afford)"
@@ -211,7 +211,7 @@ func _on_bottom_hand_card_node_card_clicked(card_node) -> void:
 func _on_bottom_hand_card_node_card_right_clicked(card_node) -> void:
     var card_type = card_node.card_type
     if card_type.can_play(self, CardPlayer.BOTTOM):
-        CardGameApi.play_card(self, CardPlayer.BOTTOM, card_type)
+        CardGameApi.play_card_from_hand(self, CardPlayer.BOTTOM, card_type)
 
 
 func _on_played_card_node_card_clicked(card_node) -> void:

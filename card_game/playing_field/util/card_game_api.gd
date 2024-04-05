@@ -176,7 +176,7 @@ static func reshuffle_discard_pile(playing_field, player: StringName) -> void:
     playing_field.emit_cards_moved()
 
 
-static func play_card(playing_field, player: StringName, card_type: CardType) -> void:
+static func play_card_from_hand(playing_field, player: StringName, card_type: CardType) -> void:
     if not card_type.can_play(playing_field, player):
         push_warning("Attempted to play card %s that cannot be played" % card_type)
         return
