@@ -7,10 +7,10 @@ func get_base_archetypes() -> Array:
     return []
 
 
-func get_archetypes(_playing_field, _card) -> Array:
+func get_archetypes(_playing_field, card) -> Array:
     var base = get_base_archetypes()
-    # TODO Consider extra archetypes added to the specific card
-    return base
+    var overrides = card.metadata[CardMeta.ARCHETYPE_OVERRIDES]
+    return overrides if overrides != null else base
 
 
 func get_icon_row() -> Array:
@@ -57,6 +57,8 @@ func on_instantiate(card) -> void:
     # Initialize Level and Morale.
     card.metadata[CardMeta.LEVEL] = get_base_level()
     card.metadata[CardMeta.MORALE] = get_base_morale()
+    # Minions initially have no archetype overrides.
+    card.metadata[CardMeta.ARCHETYPE_OVERRIDES] = null
 
 
 func on_expire(playing_field, card) -> void:
@@ -70,7 +72,7 @@ func get_overlay_text(playing_field, card) -> String:
 
 
 func on_attack_phase(playing_field, card) -> void:
-    super.on_attack_phase(playing_field, card)
+    await super.on_attack_phase(playing_field, card)
     # By default, a Minion of Level > 0 attacks during the attack
     # phase.
     if playing_field.turn_player == card.owner:
@@ -83,7 +85,7 @@ func on_attack_phase(playing_field, card) -> void:
 
 
 func on_morale_phase(playing_field, card) -> void:
-    super.on_morale_phase(playing_field, card)
+    await super.on_morale_phase(playing_field, card)
     # By default, a Minion decreases Morale during the morale phase.
     if playing_field.turn_player == card.owner:
         await Stats.add_morale(playing_field, card, -1)
