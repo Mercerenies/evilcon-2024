@@ -45,32 +45,33 @@
    ultra rare cards are non-renewable and can only be gotten once from
    each villain. There is only one copy of each such card in the game,
    and they will never show up in the shop.
-
-   There will be a non-card-player NPC who rewards you for extremely
-   difficult achievements. You can complete these achievements in any
-   card game against any character and then redeem them with him at a
-   later time. When you achieve one of his goals, the game will likely
-   pop up and inform you in the corner or something. Some ideas for
-   his achievements: (Some of these might also, on a smaller scale, be
-   secondary goals for other NPCs)
-   + Deal X damage to the fortress in one turn.
-   + Win a game in the first X turns.
-   + Win a game in the first X turns, using Destiny Song.
-   + Win a game without using any Effect cards.
-   + Win a game without using any Minion cards. (Doable with Pill
-     Capsule, Life Force Cannon, etc.; might add more support for this
-     strategy)
-   + Win a game using at most 4 EP each turn.
-   + Win a game using only Cost 2 or lower cards.
-   + Achieve a hand size limit of eight or more.
-   + Draw a total of eight cards in one turn. (Not necessarily during
-     the draw phase, so Pot of Linguine can help with this)
-   + Negate the effect of X Hero cards in one game. (Open question:
-     Does blocking with a Ninja count as negating, or do only hostage
-     cards suffice? I'm inclined to say blocking counts, but it is
-     more work to program it that way.)
-   + Have a total of at least X Minions in play at once.
-   + Have a total of at least X Effect cards in play at once.
+*** ACHIEVEMENT IDEAS
+    There will be a non-card-player NPC who rewards you for extremely
+    difficult achievements. You can complete these achievements in any
+    card game against any character and then redeem them with him at a
+    later time. When you achieve one of his goals, the game will
+    likely pop up and inform you in the corner or something. Some
+    ideas for his achievements: (Some of these might also, on a
+    smaller scale, be secondary goals for other NPCs)
+    + Deal X damage to the fortress in one turn.
+    + Win a game in the first X turns.
+    + Win a game in the first X turns, using Destiny Song.
+    + Win a game without using any Effect cards.
+    + Win a game without using any Minion cards. (Doable with Pill
+      Capsule, Life Force Cannon, etc.; might add more support for
+      this strategy)
+    + Win a game using at most 4 EP each turn.
+    + Win a game using only Cost 2 or lower cards.
+    + Achieve a hand size limit of eight or more.
+    + Draw a total of eight cards in one turn. (Not necessarily during
+      the draw phase, so Pot of Linguine can help with this)
+    + Negate the effect of X Hero cards in one game. (Open question:
+      Does blocking with a Ninja count as negating, or do only hostage
+      cards suffice? I'm inclined to say blocking counts, but it is
+      more work to program it that way.)
+    + Have a total of at least X Minions in play at once.
+    + Have a total of at least X Effect cards in play at once.
+    + Have at least 6 of your own cards exiled in one game.
 *** SHOPS
     There are basic shops that sell common / uncommon cards for money.
     There may also be trading-style shops where you can trade specific
