@@ -13,10 +13,7 @@ func _ready():
     top_deck.cards().shuffle()
 
     $PlayingField.turn_number = 10  # Get extra EP :)
-    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.CORDYCEPS))
-    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.MILITARY_ANDROID))
-    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.NINJA_MASTER))
-    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.SPIKY_ACORN))
+    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.METAL_TURTLE))
     #$PlayingField.get_effect_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.COVER_OF_MOONLIGHT), CardPlayer.TOP))
 
     await CardGameTurnTransitions.begin_game($PlayingField)
@@ -24,10 +21,10 @@ func _ready():
 
 func _sample_deck():
     return [
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.ZANY_ZOMBIE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.THE_INTERNET),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.GRAVESTONE_POLISHING),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.FURIOUS_PHANTOM),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.TINY_TURTLE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.TINY_TURTLE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.METAL_TURTLE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.SPIKY_METAL_TURTLE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.HONEY_JAR),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.FURIOUS_PHANTOM),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.BUSY_BEE),
@@ -40,6 +37,6 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.SECOND_COURSE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.WITH_EXTRA_CHEESE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.METAL_SPIDER),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.ZOMBEE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.MASKED_TURTLE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.PLUMBERMAN),
     ]

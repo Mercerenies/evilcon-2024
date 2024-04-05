@@ -111,8 +111,8 @@
     + Dr. Meguruku :: Town physician who is secretly a powerful ninja.
     + True Ninja Master :: The ninja master over Dr. Meguruku (TODO
       Name this character properly)
-    + The Mastermime :: A completely silent, obsessive mime.
-    + Giggles Galore :: Mastermime's assistant
+    + The Mastermime :: Giggles' assistant, a silent mime
+    + Giggles Galore :: Clown boss
     + Maxwell Sterling :: Not a supervillain, just a CEO, but he gets
       invited to all of the important events anyway.
     + Milkman Marauder :: Milk delivery man by day, master thief by
@@ -145,7 +145,7 @@
     + Bristlegaze
     + Catacomb Charmer
     + Venomatrix
-    + Mute Mischief Mime
+    + Giggles Galore
 ** CARD GAME RULES
    The game proceeds on a turn-by-turn basis. The human player
    character always goes first, and play alternates from there. As a
