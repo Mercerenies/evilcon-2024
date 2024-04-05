@@ -130,6 +130,7 @@
     + B'aroni :: Barry the Brainless Overlord's great grandson, a time
       traveller with futuristic technology.
     + Death :: The Pale Specter himself.
+    + Farmer Blue :: From Marty the Mole
 ** WORLD MAP
    You first face a tutorial character (probably Minionman), who gives
    you your first stamp. You need to get all N stamps and then face
