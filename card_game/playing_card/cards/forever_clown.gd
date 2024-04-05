@@ -10,7 +10,7 @@ func get_title() -> String:
 
 
 func get_text() -> String:
-    return "Instead of attacking, Forever Clown chooses a random enemy non-[icon]CLOWN[/icon] CLOWN Minion each turn; that Minion becomes a [icon]CLOWN[/icon] CLOWN."
+    return "[font_size=12]Instead of attacking, Forever Clown chooses a random enemy non-[icon]CLOWN[/icon] CLOWN Minion each turn; that Minion becomes a [icon]CLOWN[/icon] CLOWN.[/font_size]"
 
 
 func get_picture_index() -> int:
