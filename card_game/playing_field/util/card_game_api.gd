@@ -184,7 +184,7 @@ static func play_card_from_hand(playing_field, player: StringName, card_type: Ca
     var field = card_type.get_destination_strip(playing_field, player)
     var hand_index = hand.cards().find_card(card_type)
     if hand_index == null:
-        push_warning("Cannot play card %s because it is not in hand" % card_type)
+        push_warning("Cannot play card %s from hand because it is not in hand" % card_type)
         return
     await Stats.add_evil_points(playing_field, player, - card_type.get_star_cost())
     var new_card = await playing_field.move_card(hand, field, {
@@ -194,7 +194,7 @@ static func play_card_from_hand(playing_field, player: StringName, card_type: Ca
     await new_card.on_play(playing_field)
 
 
-# Move from discard pile to deck.
+# Move from discard pile to field.
 static func resurrect_card(playing_field, player: StringName, card_type: CardType) -> void:
     var discard_pile = playing_field.get_discard_pile(player)
     var field = card_type.get_destination_strip(playing_field, player)
@@ -202,8 +202,23 @@ static func resurrect_card(playing_field, player: StringName, card_type: CardTyp
     if discard_index == null:
         push_warning("Cannot resurrect card %s because it is not in discard pile" % card_type)
         return
-    var _new_card = await playing_field.move_card(discard_pile, field, {
+    var new_card = await playing_field.move_card(discard_pile, field, {
         "source_index": discard_index,
+        "destination_transform": DestinationTransform.instantiate_card(player),
+    })
+    await new_card.on_play(playing_field)
+
+
+# Move from deck to field.
+static func play_card_from_deck(playing_field, player: StringName, card_type: CardType) -> void:
+    var deck = playing_field.get_deck(player)
+    var field = card_type.get_destination_strip(playing_field, player)
+    var deck_index = deck.cards().find_card(card_type)
+    if deck_index == null:
+        push_warning("Cannot play card %s from deck because it is not in deck" % card_type)
+        return
+    var new_card = await playing_field.move_card(deck, field, {
+        "source_index": deck_index,
         "destination_transform": DestinationTransform.instantiate_card(player),
     })
     await new_card.on_play(playing_field)
