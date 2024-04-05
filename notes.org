@@ -251,7 +251,8 @@
      ALL CAPS.
    + The following words are capitalized: Minion, Effect (in the
      context of an Effect card), Hero.
-   + The following words needn't be capitalized: card, discard pile.
+   + The following words needn't be capitalized: card, discard pile,
+     fortress.
    + "Limited" cards (i.e. those that can only exist once per deck)
      shall indicate their status using the "LIMITED" icon in the icon
      row, as well as a sentence "Limit 1 per deck." at the end of the
