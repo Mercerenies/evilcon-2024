@@ -156,22 +156,37 @@ func do_active_hero_check(_playing_field, _card, _hero_card) -> bool:
 
 
 func on_draw_phase(_playing_field, _card) -> void:
+    # NOTE: Does not broadcast, since the phase itself is already
+    # being broadcasted. If we change this behavior, MAKE SURE to
+    # check all subclasses for missing supers.
     pass
 
 
 func on_attack_phase(_playing_field, _card) -> void:
+    # NOTE: Does not broadcast, since the phase itself is already
+    # being broadcasted. If we change this behavior, MAKE SURE to
+    # check all subclasses for missing supers.
     pass
 
 
 func on_morale_phase(_playing_field, _card) -> void:
+    # NOTE: Does not broadcast, since the phase itself is already
+    # being broadcasted. If we change this behavior, MAKE SURE to
+    # check all subclasses for missing supers.
     pass
 
 
 func on_standby_phase(_playing_field, _card) -> void:
+    # NOTE: Does not broadcast, since the phase itself is already
+    # being broadcasted. If we change this behavior, MAKE SURE to
+    # check all subclasses for missing supers.
     pass
 
 
 func on_end_phase(_playing_field, _card) -> void:
+    # NOTE: Does not broadcast, since the phase itself is already
+    # being broadcasted. If we change this behavior, MAKE SURE to
+    # check all subclasses for missing supers.
     pass
 
 
