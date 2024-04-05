@@ -148,6 +148,21 @@ static func draw_cards(playing_field, player: StringName, card_count: int = 1) -
         await playing_field.move_card(deck, hand, opts)
 
 
+static func draw_specific_card(playing_field, player: StringName, card_type: CardType) -> void:
+    var deck = playing_field.get_deck(player)
+    var hand = playing_field.get_hand(player)
+    var deck_index = deck.cards().find_card(card_type)
+    if deck_index == null:
+        push_warning("Cannot draw card %s from deck because it is not in deck" % card_type)
+        return
+    var opts = {
+        "source_index": deck_index,
+    }
+    if player == CardPlayer.TOP:
+        opts["custom_displayed_card"] = func (): return HiddenCardDisplay.instantiate()
+    await playing_field.move_card(deck, hand, opts)
+
+
 static func reshuffle_discard_pile(playing_field, player: StringName) -> void:
     var deck = playing_field.get_deck(player)
     var discard_pile = playing_field.get_discard_pile(player)
