@@ -57,7 +57,9 @@ func on_instantiate(card) -> void:
     # Initialize Level and Morale.
     card.metadata[CardMeta.LEVEL] = get_base_level()
     card.metadata[CardMeta.MORALE] = get_base_morale()
-    # Minions initially have no archetype overrides.
+    # Minions initially have no archetype overrides. If this value
+    # becomes non-null, it must be an array of archetypes to replace
+    # the Minion's default archetypes.
     card.metadata[CardMeta.ARCHETYPE_OVERRIDES] = null
 
 

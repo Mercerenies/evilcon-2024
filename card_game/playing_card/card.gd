@@ -50,8 +50,17 @@ func get_overlay_icons(_playing_field) -> Array:
     # the overlay icons are entirely determined by modifiers to the
     # card itself, in a uniform way.
     var icons = []
+
+    # Token icon
     if is_token:
         icons.append(CardIcon.Frame.TOKEN)
+
+    # Archetype overrides
+    if card_type is MinionCardType:
+        var archetype_overrides = metadata[CardMeta.ARCHETYPE_OVERRIDES]
+        if archetype_overrides != null:
+            icons.append_array(archetype_overrides.map(Archetype.to_icon_index))
+
     return icons
 
 
