@@ -61,6 +61,12 @@ func on_instantiate(card) -> void:
     # becomes non-null, it must be an array of archetypes to replace
     # the Minion's default archetypes.
     card.metadata[CardMeta.ARCHETYPE_OVERRIDES] = null
+    # This flag is normally never set. But a few cards summon Minions
+    # during the Attack Phase, and it makes little sense to decrement
+    # their morale during the current turn in that case. So cards that
+    # do so (like Farmer Blue) will set this flag, which skips the
+    # Minion's first Morale Phase.
+    card.metadata[CardMeta.SKIP_MORALE] = false
 
 
 func on_expire(playing_field, card) -> void:
@@ -90,4 +96,7 @@ func on_morale_phase(playing_field, card) -> void:
     await super.on_morale_phase(playing_field, card)
     # By default, a Minion decreases Morale during the morale phase.
     if playing_field.turn_player == card.owner:
+        if card.metadata[CardMeta.SKIP_MORALE]:
+            card.metadata[CardMeta.SKIP_MORALE] = false
+            return
         await Stats.add_morale(playing_field, card, -1)
