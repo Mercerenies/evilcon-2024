@@ -18,7 +18,7 @@ func get_star_cost() -> int:
 
 
 func get_picture_index() -> int:
-    return 85
+    return 114  # TODO: I forgot to draw this one! Draw it!
 
 
 func get_rarity() -> int:

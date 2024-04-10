@@ -437,18 +437,18 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="4"
-     inkscape:cx="137.625"
-     inkscape:cy="596.5"
+     inkscape:zoom="2"
+     inkscape:cx="407.75"
+     inkscape:cy="1093.5"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
      showgrid="true"
      units="px"
      inkscape:window-width="1920"
-     inkscape:window-height="1043"
+     inkscape:window-height="979"
      inkscape:window-x="0"
-     inkscape:window-y="0"
+     inkscape:window-y="32"
      inkscape:window-maximized="1"
      inkscape:snap-global="false"
      inkscape:snap-grids="false"
@@ -22886,5 +22886,22 @@
        cx="167.60713"
        cy="122.34753"
        r="0.39917064" />
+    <text
+       xml:space="preserve"
+       style="font-size:4.91826px;line-height:1.25;font-family:'TeX Gyre Termes';-inkscape-font-specification:'TeX Gyre Termes';stroke-width:0.122957"
+       x="198.13258"
+       y="162.1487"
+       id="text3697"
+       transform="scale(0.54243089,1.8435528)"><tspan
+         sodipodi:role="line"
+         id="tspan3695"
+         style="stroke-width:0.122957"
+         x="198.13258"
+         y="162.1487">placeholder</tspan><tspan
+         sodipodi:role="line"
+         style="stroke-width:0.122957"
+         x="198.13258"
+         y="168.29652"
+         id="tspan3699">rhombicuboctahedron</tspan></text>
   </g>
 </svg>
