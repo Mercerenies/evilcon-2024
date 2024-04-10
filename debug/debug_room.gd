@@ -13,7 +13,8 @@ func _ready():
     top_deck.cards().shuffle()
 
     $PlayingField.turn_number = 10  # Get extra EP :)
-    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DR_BADGUY_DOOMCAKE))
+    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.FARMER_BLUE))
+    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.FARMER_BLUE))
     #$PlayingField.get_effect_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.COVER_OF_MOONLIGHT), CardPlayer.TOP))
 
     await CardGameTurnTransitions.begin_game($PlayingField)
@@ -36,7 +37,7 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.SPARE_BATTERY),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.SECOND_COURSE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.WITH_EXTRA_CHEESE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.STREET_MIME),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.MASKED_TURTLE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CHICKEN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNDEAD_PIG),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.PLUMBERMAN),
     ]

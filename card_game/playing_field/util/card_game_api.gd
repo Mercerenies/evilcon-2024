@@ -191,7 +191,7 @@ static func reshuffle_discard_pile(playing_field, player: StringName) -> void:
     playing_field.emit_cards_moved()
 
 
-static func play_card_from_hand(playing_field, player: StringName, card_type: CardType) -> void:
+static func play_card_from_hand(playing_field, player: StringName, card_type: CardType):
     if not card_type.can_play(playing_field, player):
         push_warning("Attempted to play card %s that cannot be played" % card_type)
         return
@@ -207,10 +207,11 @@ static func play_card_from_hand(playing_field, player: StringName, card_type: Ca
         "destination_transform": DestinationTransform.instantiate_card(player),
     })
     await new_card.on_play(playing_field)
+    return new_card
 
 
 # Move from discard pile to field.
-static func resurrect_card(playing_field, player: StringName, card_type: CardType) -> void:
+static func resurrect_card(playing_field, player: StringName, card_type: CardType):
     var discard_pile = playing_field.get_discard_pile(player)
     var field = card_type.get_destination_strip(playing_field, player)
     var discard_index = discard_pile.cards().find_card(card_type)
@@ -222,10 +223,11 @@ static func resurrect_card(playing_field, player: StringName, card_type: CardTyp
         "destination_transform": DestinationTransform.instantiate_card(player),
     })
     await new_card.on_play(playing_field)
+    return new_card
 
 
 # Move from deck to field.
-static func play_card_from_deck(playing_field, player: StringName, card_type: CardType) -> void:
+static func play_card_from_deck(playing_field, player: StringName, card_type: CardType):
     var deck = playing_field.get_deck(player)
     var field = card_type.get_destination_strip(playing_field, player)
     var deck_index = deck.cards().find_card(card_type)
@@ -237,6 +239,7 @@ static func play_card_from_deck(playing_field, player: StringName, card_type: Ca
         "destination_transform": DestinationTransform.instantiate_card(player),
     })
     await new_card.on_play(playing_field)
+    return new_card
 
 
 static func highlight_card(playing_field, card: Card) -> void:
