@@ -88,6 +88,7 @@ enum ID {
     MINIONMAN = 80,
     DR_BADGUY_DOOMCAKE = 81,
     FARMER_BLUE = 82,
+    RHOMBICUBOCTAHEDRON = 83,
 }
 
 static func get_entity_script(n: int) -> GDScript:
@@ -258,6 +259,8 @@ static func get_entity_script(n: int) -> GDScript:
             return load("res://card_game/playing_card/cards/dr_badguy_doomcake.gd") as GDScript
         ID.FARMER_BLUE:
             return load("res://card_game/playing_card/cards/farmer_blue.gd") as GDScript
+        ID.RHOMBICUBOCTAHEDRON:
+            return load("res://card_game/playing_card/cards/rhombicuboctahedron.gd") as GDScript
         _:
             push_warning("Invalid ID value: %d" % n)
             return null
