@@ -36,6 +36,7 @@ func do_broadcasted_influence_check(playing_field, card, target_card, source_car
             Stats.play_animation_for_stat_change(playing_field, card_node, 0, {
                 "custom_label_text": Stats.BLOCKED_TEXT,
                 "custom_label_color": Stats.BLOCKED_COLOR,
+                "offset": Stats.CARD_MULTI_UI_OFFSET,  # Just in case, since this can overlap "-1 Morale"
             })
         return false
     return await super.do_broadcasted_influence_check(playing_field, card, target_card, source_card, silently)
