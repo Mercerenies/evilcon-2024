@@ -51,6 +51,13 @@ func on_attack_phase(playing_field, card) -> void:
         .filter(func (minion): return not minion.has_archetype(playing_field, Archetype.CLOWN))
     )
     await CardGameApi.highlight_card(playing_field, card)
+
+
+    # Check if anything blocks the Attack Phase.
+    var should_proceed = await CardEffects.do_attack_phase_check(playing_field, card)
+    if not should_proceed:
+        return
+
     if len(enemy_targets) == 0:
         var card_node = CardGameApi.find_card_node(playing_field, card)
         Stats.play_animation_for_stat_change(playing_field, card_node, 0, {

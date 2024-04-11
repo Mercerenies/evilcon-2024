@@ -42,6 +42,16 @@ static func do_hero_check(playing_field, hero_card) -> bool:
     return true
 
 
+static func do_attack_phase_check(playing_field, attacking_card) -> bool:
+    # Check if there's anything stopping this card from performing its
+    # Attack Phase.
+    var all_cards = CardGameApi.get_cards_in_play(playing_field)
+    for card in all_cards:
+        if not await card.card_type.do_attack_phase_check(playing_field, card, attacking_card):
+            return false
+    return true
+
+
 # The "less than" comparison operator for Minion cards by their
 # "power" level. This is the comparison used by all of the card
 # effects that refer to the "most powerful" or "least powerful" Minion

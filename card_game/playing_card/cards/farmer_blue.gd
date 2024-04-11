@@ -47,6 +47,11 @@ func on_attack_phase(playing_field, card) -> void:
 
     await CardGameApi.highlight_card(playing_field, card)
 
+    # Check if anything blocks the Attack Phase.
+    var should_proceed = await CardEffects.do_attack_phase_check(playing_field, card)
+    if not should_proceed:
+        return
+
     var deck = playing_field.get_deck(owner)
     var valid_target_minions = deck.cards().card_array().filter(_is_farm_card_type)
     if len(valid_target_minions) == 0:

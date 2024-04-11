@@ -155,6 +155,16 @@ func do_active_hero_check(_playing_field, _card, _hero_card) -> bool:
     return true
 
 
+func do_attack_phase_check(_playing_field, _card, _attacking_card) -> bool:
+    # Called when the attacking_card is about to perform its Attack
+    # Phase. This method should return true if the attacking_card is
+    # permitted to proceed as planned, and false if the attacking_card
+    # should skip its Attack Phase.
+    #
+    # This method is permitted to `await`.
+    return true
+
+
 func on_draw_phase(_playing_field, _card) -> void:
     # NOTE: Does not broadcast, since the phase itself is already
     # being broadcasted. If we change this behavior, MAKE SURE to

@@ -81,20 +81,26 @@ func get_overlay_text(playing_field, card) -> String:
 
 func on_attack_phase(playing_field, card) -> void:
     await super.on_attack_phase(playing_field, card)
-    # By default, a Minion of Level > 0 attacks during the attack
-    # phase.
+    # By default, a Minion of Level > 0 attacks during the Attack
+    # Phase.
     if playing_field.turn_player == card.owner:
         var level = get_level(playing_field, card)
         if level > 0:
             var opponent = CardPlayer.other(card.owner)
             await CardGameApi.highlight_card(playing_field, card)
+
+            # Check if anything blocks the Attack Phase.
+            var should_proceed = await CardEffects.do_attack_phase_check(playing_field, card)
+            if not should_proceed:
+                return
+
             await Stats.add_fort_defense(playing_field, opponent, - level)
             # TODO Check if fort defense has hit zero
 
 
 func on_morale_phase(playing_field, card) -> void:
     await super.on_morale_phase(playing_field, card)
-    # By default, a Minion decreases Morale during the morale phase.
+    # By default, a Minion decreases Morale during the Morale Phase.
     if playing_field.turn_player == card.owner:
         if card.metadata[CardMeta.SKIP_MORALE]:
             card.metadata[CardMeta.SKIP_MORALE] = false
