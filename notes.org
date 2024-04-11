@@ -255,10 +255,10 @@
      "All [icon]BEE[/icon] BEE Minions", NOT simply "All
      [icon]BEE[/icon] BEEs".
    + The following words are capitalized: Minion, Effect (in the
-     context of an Effect card), Hero, Cost, Level, Morale, Phase (and
-     all of the phase names).
+     context of an Effect card), Hero, Cost, Level, Morale, each phase
+     name.
    + The following words needn't be capitalized: card, discard pile,
-     fortress.
+     fortress, phase (on its own).
    + "Limited" cards (i.e. those that can only exist once per deck)
      shall indicate their status using the "LIMITED" icon in the icon
      row, as well as a sentence "Limit 1 per deck." at the end of the
@@ -297,10 +297,13 @@
       board explicitly excludes cards which have been exiled.
 *** INFLUENCE CHECKS
     Influence checks for ninjas and ninja-themed effects apply
-    whenever a card of any kind attempts to change another card.
+    whenever a card of any kind attempts to change or block another
+    card.
     + "Change", in this context, includes modifying Level, Morale, or
       archetypes, or moving the card to another location on or off the
-      field.
+      field. (Examples: Rhombicuboctahedron, Forever Clown, Pasta Power)
+    + "Block", in this context, includes skipping a phase for the card
+      (Example: Hypercube Prison).
     + Influence checks only apply when the target card is on the field
       (minion or effect strip). Influence checks do NOT apply to
       target cards in the discard pile, deck, or hand.
