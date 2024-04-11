@@ -251,8 +251,12 @@
      archetype name (e.g., "All [icon]ROBOT[/icon] ROBOT Minions are
      destroyed"). Additionally, archetype names shall be written in
      ALL CAPS.
+   + Archetypes are adjectives. So for example effects should refer to
+     "All [icon]BEE[/icon] BEE Minions", NOT simply "All
+     [icon]BEE[/icon] BEEs".
    + The following words are capitalized: Minion, Effect (in the
-     context of an Effect card), Hero, Cost, Level, Morale.
+     context of an Effect card), Hero, Cost, Level, Morale, Phase (and
+     all of the phase names).
    + The following words needn't be capitalized: card, discard pile,
      fortress.
    + "Limited" cards (i.e. those that can only exist once per deck)
@@ -261,6 +265,7 @@
      card effect description.
    + Card effects MAY use the second person "you". If used, the second
      person pronoun always refers to the card's /current/ owner.
+   + Minions are always referred to with the pronoun "it".
 ** CARD RULINGS
    Specific rulings on weird or potentially unintuitive interactions.
 *** DEFINITIONS
