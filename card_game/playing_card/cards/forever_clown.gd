@@ -56,6 +56,7 @@ func on_attack_phase(playing_field, card) -> void:
         Stats.play_animation_for_stat_change(playing_field, card_node, 0, {
             "custom_label_text": Stats.NO_TARGET_TEXT,
             "custom_label_color": Stats.NO_TARGET_COLOR,
+            "offset": Stats.CARD_MULTI_UI_OFFSET,  # Don't overlap with the "-1 Morale" message.
         })
     else:
         var selected_target = playing_field.randomness.choose(enemy_targets)
