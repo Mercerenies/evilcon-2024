@@ -270,6 +270,19 @@ static func destroy_card(playing_field, card: Card) -> void:
     })
 
 
+# Move from hand to discard pile
+static func discard_card(playing_field, player: StringName, card_type: CardType) -> void:
+    var hand = playing_field.get_hand(player)
+    var discard_pile = playing_field.get_discard_pile(player)
+    var hand_index = hand.cards().find_card(card_type)
+    if hand_index == null:
+        push_warning("Cannot discard card %s from hand because it is not in hand" % card_type)
+        return
+    await playing_field.move_card(hand, discard_pile, {
+        "source_index": hand_index,
+    })
+
+
 static func create_card(playing_field, player: StringName, card_type: CardType, is_token: bool = true) -> Card:
     var new_card = Card.new(card_type, player, { "is_token": is_token })
     var field = card_type.get_destination_strip(playing_field, player)
