@@ -49,7 +49,7 @@ func _evaluate_effect(playing_field, card) -> bool:
         # Effect was blocked
         return true
 
-    # Destroy all enem Minions
+    # Destroy all enemy Minions
     var target_minions = playing_field.get_minion_strip(CardPlayer.other(owner)).cards().card_array()
     if len(target_minions) == 0:
         # No minions in play
