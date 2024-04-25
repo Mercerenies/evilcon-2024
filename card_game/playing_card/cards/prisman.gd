@@ -10,7 +10,7 @@ func get_title() -> String:
 
 
 func get_text() -> String:
-    return "Destroy your opponent's most powerful [icon=BOSS] BOSS Minion."
+    return "Destroy your opponent's most powerful [icon]BOSS[/icon] BOSS Minion."
 
 
 func get_star_cost() -> int:
