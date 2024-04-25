@@ -1,6 +1,8 @@
 class_name CardEffects
 extends Node
 
+const CardMovingAnimation = preload("res://card_game/playing_field/animation/card_moving_animation.tscn")
+
 # Helpers for code that gets reused across several playing card
 # effects.
 
@@ -50,6 +52,31 @@ static func do_attack_phase_check(playing_field, attacking_card) -> bool:
         if not await card.card_type.do_attack_phase_check(playing_field, card, attacking_card):
             return false
     return true
+
+
+static func exile_top_of_deck(playing_field, player: StringName) -> void:
+    var deck = playing_field.get_deck(player)
+    if deck.cards().card_count() == 0:
+        push_warning("Cannot exile top of empty deck")
+        return
+    var card = deck.cards().pop_card(-1)
+
+    # Custom animation to show the card that's being exiled.
+    var animation = CardMovingAnimation.instantiate()
+    var center_of_screen = playing_field.get_viewport().size / 2.0
+    playing_field.get_animation_layer().add_child(animation)
+    animation.scale = Vector2(0.25, 0.25)
+    animation.set_card(card)
+    await animation.animate(deck.position, center_of_screen)
+
+    await playing_field.get_tree().create_timer(0.25).timeout
+
+    var displayed_card = animation.get_displayed_card()
+    displayed_card.play_fade_out_animation()
+    await CardGameApi.play_smoke_animation(playing_field, displayed_card)
+    animation.queue_free()
+
+    playing_field.emit_cards_moved()
 
 
 # The "less than" comparison operator for Minion cards by their

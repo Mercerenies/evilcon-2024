@@ -15,6 +15,10 @@ func replace_displayed_card(new_card_node: Node) -> void:
     _displayed_card = new_card_node
 
 
+func get_displayed_card() -> Node:
+    return _displayed_card
+
+
 func animate(source: Vector2, destination: Vector2) -> void:
     var tween = create_tween()
     self.position = source
