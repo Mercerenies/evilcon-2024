@@ -89,3 +89,18 @@ func find_card_if(callable: Callable):
         if callable.call(_array[i]):
             return i
     return null
+
+
+func find_card_reversed(card):
+    # Godot's find() method returns index -1 for "not found", which
+    # can be easily mistaken for "last element of the list", since
+    # many of our indexing functions accept that convention. So return
+    # null for "not found".
+    return find_card_reversed_if(func (x): return card == x)
+
+
+func find_card_reversed_if(callable: Callable):
+    for i in range(len(_array) - 1, -1, -1):
+        if callable.call(_array[i]):
+            return i
+    return null

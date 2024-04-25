@@ -11,7 +11,7 @@ func get_title() -> String:
 
 
 func get_text() -> String:
-    return "When Furious Phantom expires, play a Zany Zombie from your discard pile."
+    return "When Furious Phantom expires, play the top Zany Zombie from your discard pile."
 
 
 func get_picture_index() -> int:
@@ -42,7 +42,7 @@ func on_expire(playing_field, card) -> void:
     await super.on_expire(playing_field, card)
     var owner = card.owner
     var discard_pile = playing_field.get_discard_pile(owner)
-    var zombie_index = discard_pile.cards().find_card_if(func (discarded_card):
+    var zombie_index = discard_pile.cards().find_card_reversed_if(func (discarded_card):
         return discarded_card is ZanyZombie)
     if zombie_index != null:
         await CardGameApi.highlight_card(playing_field, card)
