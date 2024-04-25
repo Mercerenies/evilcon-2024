@@ -330,6 +330,8 @@
 ** RANDOM IDEAS
    + Villain(s) from Three Rules Standing
    + Costume shop for some cosmetic upgrades
+   + Turtle support: block enemy damage
+   + Fungus support: Progressively increase in power the longer effects stay in play
 ** CREDITS
    Making notes of where I get certain assets, so I don't forget later.
 *** FONTS
