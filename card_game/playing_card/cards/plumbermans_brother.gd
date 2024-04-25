@@ -43,7 +43,7 @@ func _evaluate_effect(playing_field, card) -> void:
         # Effect was blocked
         return
 
-    # Destroy enemy's most powerful Minion
+    # Destroy enemy's second most powerful Minion
     var target_minion = _get_second_most_powerful_minion(playing_field, CardPlayer.other(owner))
     if target_minion == null:
         # Zero or one minions in play
