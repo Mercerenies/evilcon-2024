@@ -285,16 +285,22 @@
     + Play :: A card is "played" when it moves from a position not on
       the field (i.e. deck, hand, or discard pile) to being on the
       field. When a card is played from the hand as part of a player's
-      normal turn, it costs EP to do so.
-    + Summon :: This is an outdated synonym for "Play". You may see it
-      in some old notes for this game, but card effects should NOT use
-      this word. Prefer the word "play" instead.
+      normal turn, it costs EP to do so. Creating a token card from
+      nothing does /not/ count as playing that card, since the card is
+      not being moved from anywhere else.
+    + Summon :: This is a synonym for "Play". You may see it in some
+      old notes for this game. Generally the word "Play" should be
+      preferred over "Summon", but in some cases this word makes
+      better grammatical sense.
     + Field :: The "field" consists of all cards in play. This
       includes Minions and Effects that have been played but excludes
       cards in hand, in deck, in the discard piles, or exiled.
     + Board :: The "board" consists of all cards on the field, in
       players' hands, in players' decks, and in discard piles. The
       board explicitly excludes cards which have been exiled.
+    + Token :: A token is a card created from thin air which was not
+      part of your original deck. When a token is removed from the
+      field for any reason, it is exiled.
 *** INFLUENCE CHECKS
     Influence checks for ninjas and ninja-themed effects apply
     whenever a card of any kind attempts to change or block another
