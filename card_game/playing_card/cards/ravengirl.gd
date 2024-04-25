@@ -53,5 +53,15 @@ func _evaluate_effect(playing_field, card) -> bool:
         # Effect was blocked
         return true
 
+    var enemy_deck = playing_field.get_deck(CardPlayer.other(owner))
+    if enemy_deck.cards().card_count() == 0:
+        # No cards in opponent's deck
+        var card_node = CardGameApi.find_card_node(playing_field, card)
+        Stats.play_animation_for_stat_change(playing_field, card_node, 0, {
+            "custom_label_text": Stats.NO_TARGET_TEXT,
+            "custom_label_color": Stats.NO_TARGET_COLOR,
+        })
+        return false
+
     await CardEffects.exile_top_of_deck(playing_field, CardPlayer.other(owner))
     return false
