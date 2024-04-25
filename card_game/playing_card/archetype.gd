@@ -14,6 +14,7 @@ const NINJA = 9
 const BOSS = 11
 const UNDEAD = 12
 const FARM = 22
+const DEMON = 24
 
 
 static func to_icon_index(archetype: int) -> int:

@@ -31,6 +31,7 @@ enum Frame {
     LIMITED = 21,
     FARM = 22,
     TOKEN = 23,
+    DEMON = 24
 }
 
 var frame: int = 0:
