@@ -44,8 +44,8 @@ func on_expire(playing_field, card) -> void:
     var discard_pile = playing_field.get_discard_pile(owner)
     var zombie_index = discard_pile.cards().find_card_reversed_if(func (discarded_card):
         return discarded_card is ZanyZombie)
+    await CardGameApi.highlight_card(playing_field, card)
     if zombie_index != null:
-        await CardGameApi.highlight_card(playing_field, card)
         var zombie_card_type = discard_pile.cards().peek_card(zombie_index)
         await CardGameApi.resurrect_card(playing_field, owner, zombie_card_type)
     else:
