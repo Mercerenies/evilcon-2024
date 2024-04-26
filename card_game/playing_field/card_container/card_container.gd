@@ -76,6 +76,10 @@ func shuffle() -> void:
     cards_modified.emit()
 
 
+func has_card(card):
+    return (find_card(card) != null)
+
+
 func find_card(card):
     # Godot's find() method returns index -1 for "not found", which
     # can be easily mistaken for "last element of the list", since
