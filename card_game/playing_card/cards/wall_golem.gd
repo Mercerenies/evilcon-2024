@@ -14,7 +14,7 @@ func get_text() -> String:
 
 
 func get_star_cost() -> int:
-    return 3
+    return 2
 
 
 func get_picture_index() -> int:
