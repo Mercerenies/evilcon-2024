@@ -11,9 +11,8 @@
    and vigilante detective Ravenman. A convention of supervillains is
    meeting at a local hotel / conference hall under the guise of an
    International Clock Polishers' Association, to discuss some
-   unspecified evil plan. The rumor is that the head of the evil
-   convention will be there, and Ravenman wants to identify and arrest
-   him.
+   unspecified evil plan. The rumor is that the fabled King of Evil
+   will be there, and Ravenman wants to identify and arrest him.
 
    You will go undercover as the hotel's cleaning staff to infiltrate
    the evil convention and identify their secret leader. To do so, you
@@ -24,7 +23,8 @@
    tackle an Elite Four style final boss gauntlet, where you must face
    four enemies in a row without changing your deck in between. After
    that, you learn that Ravenboy (Ravenman's /other/ sidekick) has
-   been secretly running the criminal underground.
+   been secretly running the criminal underground and is the King of
+   Evil.
 
    Possibly multiple endings: You can choose to arrest Ravenboy or
    work with him as a criminal?
@@ -102,43 +102,122 @@
     + Clueless Man
     + Wall Golem
 *** VILLAINS
-    + Minionman :: Gimmick villain obsessed with armies of low-level
-      Minion cards.
-    + Dr. Badguy Doomcake :: Just Flying Brickman in a paper-thin
-      disguise.
-    + Barry the Brainless Overlord :: Robot-obsessed supervillain with
-      unworkable evil schemes.
-    + Icosaking :: Supervillain from the geometry world.
-    + Dr. Meguruku :: Town physician who is secretly a powerful ninja.
-    + True Ninja Master :: The ninja master over Dr. Meguruku (TODO
-      Name this character properly)
-    + The Mastermime :: Giggles' assistant, a silent mime
-    + Giggles Galore :: Clown boss
-    + Maxwell Sterling :: Not a supervillain, just a CEO, but he gets
-      invited to all of the important events anyway.
-    + Milkman Marauder :: Milk delivery man by day, master thief by
-      night.
-    + Count Carbonara :: Pasta-obsessed supervillain.
-    + Bristlegaze :: Weird alien floating eyeball thing.
-    + Venomatrix :: Human-sized queen bee, obsessed with replacing the
-      human race with bees.
-    + Catacomb Charmer :: Skeleton girl, was so obsessed with the
-      undead that she decided to become one herself.
-    + Chris Cogsworth :: Not a supervillain, just cleans clocks and
-      was disappointed to learn that the convention is about evil.
-    + Berry :: Barry the Brainless Overlord's much more competent
-      sister.
-    + B'aroni :: Barry the Brainless Overlord's great grandson, a time
-      traveller with futuristic technology.
-    + Death :: The Pale Specter himself.
-    + Devil :: Works for Death
-    + Farmer Blue :: From Marty the Mole
+**** STAMP VILLAINS
+     (TODO Narrow this down to eight)
+     + Minionman :: Gimmick villain obsessed with armies of low-level
+       Minion cards. Minionman is the first character you face in the
+       hotel and will later give you the Minion Stamp once you raid
+       his Lair of Minions.
+     + Icosaking :: Supervillain from the geometry world. Holder of
+       the Geometry Stamp, operating in a tower of geometry with his
+       loyal Icosaklones.
+     + Berry :: Barry the Brainless Overlord's much more competent
+       sister. The true leader of the factory / robot lair, and holder
+       of the Engineers' Stamp.
+     + True Ninja Master :: The ninja master over Dr. Meguruku. Holder
+       of the Silent Stamp and true leader of the ninja lair.
+     + Giggles Galore :: Clown boss. Leader of the clown lair and
+       holder of the Funny Stamp.
+     + Count Carbonara :: Pasta-obsessed supervillain and holder of
+       the Spaghetti Stamp.
+     + Venomatrix :: Human-sized queen bee, obsessed with replacing
+       the human race with bees. Holder of the Insect Stamp.
+     + Catacomb Charmer :: Skeleton girl, was so obsessed with the
+       undead that she decided to become one herself. Holder of the
+       Graveyard Stamp out in the graveyard behind the hotel.
+**** STAMP VILLAIN SIDEKICKS
+     + Barry the Brainless Overlord :: Robot-obsessed supervillain
+       with unworkable evil schemes. He runs the robotic lair but
+       doesn't have a Stamp. After you beat him, a doorway opens to
+       his sister's factory.
+     + Dr. Meguruku :: Town physician who is secretly a powerful
+       ninja. Guardian of the ninja lair. Once defeated, he will tell
+       you how to find the True Ninja Master.
+     + The Mastermime :: Giggles Galores' assistant, a silent mime in
+       the clown lair.
+     + Milkman Marauder :: Milk delivery man by day, master thief by
+       night. Often works for Count Carbonara but maintains a civilian
+       identity to make a living.
+**** THE FINAL GAUNTLET
+     The four villains you must face before meeting the King of Evil.
+     Must be faced in order with no deck changes in betwee.
+     + Minionman :: again but with his mask off and going by his real
+       identity; he's actually a powerful card player and just puts on
+       the "Minionman" gimmick for show
+     + Devil :: From Nail. A devil from the fiery pits who makes deals
+       for people's souls.
+     + Bristlegaze :: Weird alien floating eyeball thing.
+     + ??? :: ???
+**** RECURRING RIVALS
+     + Dr. Badguy Doomcake :: Just Flying Brickman in a paper-thin
+       disguise.
+     + Maxwell Sterling :: Not a supervillain, just a CEO, but he gets
+       invited to all of the important events anyway.
+     + Chris Cogsworth :: Not a supervillain, just cleans clocks and
+       was disappointed to learn that the convention is about evil.
+     + Farmer Blue :: From Marty the Mole. There's a farmer's
+       convention next week. He got the week wrong and showed up this
+       week instead.
+**** OPTIONAL BONUS BOSSES
+     + B'aroni :: Barry the Brainless Overlord's great grandson, a
+       time traveller with futuristic technology. Crashed into the
+       present day in a time machine and is hiding out near Barry's
+       robot lair. For obvious reasons, he doesn't want Barry or Berry
+       seeing him. Not a Stamp-holder, but is a powerful optional
+       boss.
+     + Death :: The Pale Specter himself. He's just at the hotel
+       collecting dying people's souls. But he'll play cards against
+       you if you want. Powerful optional boss.
+     + Maybe the boss from Mars God of War?
+     + Someone from Three Rules?
+     + Inquisitor from Suspicious City?
+*** VILLAINS BY ARCHETYPE
+    + Human
+      - Maxwell Sterling
+    + Nature
+    + Turtle
+    + Shape
+      - Icosaking
+    + Pasta
+      - Count Carbonara
+    + Clown
+      - Giggles Galore
+      - The Mastermime
+    + Robot
+      - Barry the Brainless Overlord
+      - B'aroni
+    + Bee
+      - Venomatrix
+    + Ninja
+      - True Ninja Master
+      - Dr. Meguruku
+    + Undead
+      - Catacomb Charmer
+      - Death
+    + Farm
+      - Farmer Blue
+    + Demon
+      - Devil
+    + (Milk)
+      - Milkman Marauder
+    + (Hero)
+      - Dr. Badguy Doomcake
+    + (Hostage)
+      - (Maybe Minionman's second appearance)
+    + (Factory)
+      - Berry
+      - B'aroni
+    + (Unplaced)
+      - Minionman
+      - Bristlegaze
+      - Chris Cogsworth
 ** WORLD MAP
-   You first face a tutorial character (probably Minionman), who gives
-   you your first stamp. You need to get all N stamps and then face
-   off against the Final Four.
-*** THE STAMPS
-    THIS IS A DRAFT! Might modify it later!
+   You first face a tutorial character (probably Minionman), who
+   fights you and then, upon your victory, tells you about the stamps.
+   You need to get all eight stamps and then face off against the
+   Final Four.
+*** THE STAMPS (FIRST DRAFT FROM MARCH 2024)
+    THIS IS A DRAFT (3/25/2024)! Might modify it later!
 
     + Minionman and his lair of minions
     + Barry the Brainless Overlord (but it's really his sister Berry
