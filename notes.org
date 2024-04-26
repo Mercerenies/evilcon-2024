@@ -338,7 +338,7 @@
      context of an Effect card), Hero, Cost, Level, Morale, each phase
      name.
    + The following words needn't be capitalized: card, discard pile,
-     fortress, phase (on its own).
+     fortress, phase (on its own), defense.
    + "Limited" cards (i.e. those that can only exist once per deck)
      shall indicate their status using the "LIMITED" icon in the icon
      row, as well as a sentence "Limit 1 per deck." at the end of the
@@ -346,6 +346,8 @@
    + Card effects MAY use the second person "you". If used, the second
      person pronoun always refers to the card's /current/ owner.
    + Minions are always referred to with the pronoun "it".
+   + The player's fortress should be referred to with the word
+     "fortress". Its health is called "defense" or "fortress defense".
 ** CARD RULINGS
    Specific rulings on weird or potentially unintuitive interactions.
 *** DEFINITIONS
