@@ -24,7 +24,7 @@ func _ready():
 
 func _sample_deck():
     return [
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.FINAL_CLOWN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.COUNT_CARBONARA),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.KING_TURTLE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.VENOMATRIX),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.WORKER_BEE),
