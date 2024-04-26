@@ -38,7 +38,8 @@ func on_end_phase(playing_field, card) -> void:
         if target_index != null:
             var undead_card_type = discard_pile.cards().peek_card(target_index)
             var undead_card = await CardGameApi.resurrect_card(playing_field, owner, undead_card_type)
-            await Stats.set_morale(playing_field, undead_card, 1)
+            if undead_card.card_type.get_morale(playing_field, undead_card) != 1:
+                await Stats.set_morale(playing_field, undead_card, 1)
         else:
             var card_node = CardGameApi.find_card_node(playing_field, card)
             Stats.play_animation_for_stat_change(playing_field, card_node, 0, {
