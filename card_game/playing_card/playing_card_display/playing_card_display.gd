@@ -70,6 +70,14 @@ func play_highlight_animation() -> void:
             break
 
 
+func play_rotate_animation() -> void:
+    $AnimationPlayer.play(&"RotateAnimation")
+    while true:
+        var anim = await $AnimationPlayer.animation_finished
+        if anim == &"RotateAnimation":
+            break
+
+
 func play_fade_in_animation() -> void:
     $AnimationPlayer.play(&"FadeInAnimation")
     while true:

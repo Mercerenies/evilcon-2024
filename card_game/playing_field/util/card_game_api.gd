@@ -259,6 +259,18 @@ static func highlight_card(playing_field, card: Card) -> void:
     input_block.free()
 
 
+# Rotation animation: Used for Vitamin Capsule.
+static func rotate_card(playing_field, card: Card) -> void:
+    var card_node = find_card_node(playing_field, card)
+    if card_node == null:
+        push_warning("Cannot rotate card %s because it is not in play" % card)
+        return
+    var input_block = InputBlockAnimation.new()
+    playing_field.get_animation_layer().add_child(input_block)
+    await card_node.play_rotate_animation()
+    input_block.free()
+
+
 static func destroy_card(playing_field, card: Card) -> void:
     if card.is_token:
         # Tokens are exiled instead
