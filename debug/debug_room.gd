@@ -13,7 +13,7 @@ func _ready():
     top_deck.cards().shuffle()
 
     $PlayingField.turn_number = 10  # Get extra EP :)
-    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.GRAVEYARD_DANCE))
+    #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.GRAVEYARD_DANCE))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.CATACOMB_CHARMER), CardPlayer.TOP))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.KING_TURTLE), CardPlayer.TOP))
     #$PlayingField.get_effect_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.KIDNAPPING_THE_PRESIDENT), CardPlayer.TOP))
@@ -25,7 +25,7 @@ func _ready():
 func _sample_deck():
     return [
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.COUNT_CARBONARA),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.KING_TURTLE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.VITAMIN_CAPSULE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.VENOMATRIX),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.WORKER_BEE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.HONEY_JAR),
@@ -34,12 +34,12 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.ZANY_ZOMBIE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.ZOMBEE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.GRAVEYARD_DANCE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.VITAMIN_CAPSULE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.BUSY_BEE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.ZANY_ZOMBIE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.SECOND_COURSE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.WITH_EXTRA_CHEESE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.ZANY_ZOMBIE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNDEAD_PIG),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.VITAMIN_CAPSULE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.PLUMBERMAN),
     ]
