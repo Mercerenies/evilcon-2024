@@ -49,7 +49,14 @@ func _get_all_vitamin_capsules(playing_field, owner) -> Array:
         return c.card_type.get_id() == self.get_id())
 
 
+func _play_animation_for_vitamin(playing_field, vitamin_card, promise) -> void:
+    await CardGameApi.rotate_card(playing_field, vitamin_card)
+    promise.resolve()
+
+
 func _play_vitamin_animation(playing_field, vitamins_in_play: Array) -> void:
-    var animations = vitamins_in_play.map(func (vitamin):
-        return func (): await CardGameApi.rotate_card(playing_field, vitamin))
-    await Util.await_all(animations)
+    var promises = vitamins_in_play.map(func (vitamin):
+        var promise = Promise.new()
+        _play_animation_for_vitamin(playing_field, vitamin, promise)
+        return promise)
+    await Promise.async_all(promises)
