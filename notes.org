@@ -413,6 +413,8 @@
    + Costume shop for some cosmetic upgrades
    + Turtle support: block enemy damage
    + Fungus support: Progressively increase in power the longer effects stay in play
+   + Provide "collectors' editions" of certain cards, when there's
+     original artwork from the source game that we can feature
 ** CREDITS
    Making notes of where I get certain assets, so I don't forget later.
 *** CODE LIBRARIES
