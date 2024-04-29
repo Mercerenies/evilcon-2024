@@ -272,7 +272,7 @@ static func rotate_card(playing_field, card: Card) -> void:
 
 
 static func destroy_card(playing_field, card: Card) -> void:
-    if card.is_token:
+    if card.is_token():
         # Tokens are exiled instead
         await exile_card(playing_field, card)
         return
@@ -302,7 +302,9 @@ static func discard_card(playing_field, player: StringName, card_type: CardType)
 
 
 static func create_card(playing_field, player: StringName, card_type: CardType, is_token: bool = true) -> Card:
-    var new_card = Card.new(card_type, player, { "is_token": is_token })
+    var new_card = Card.new(card_type, player)
+    if is_token:
+        new_card.metadata[CardMeta.IS_TOKEN] = true
     var field = card_type.get_destination_strip(playing_field, player)
     field.cards().push_card(new_card)
     playing_field.emit_cards_moved()
