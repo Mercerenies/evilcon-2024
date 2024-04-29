@@ -3,10 +3,25 @@ extends Node
 
 # Constant keys used in a card's metadata. All of the keys are kept
 # here for organization purposes and to avoid confusion.
+
+# Integer. A Minion's current base level. Includes permanent bonuses
+# but excludes passive modifiers fueled by cards in play.
 const LEVEL = &"LEVEL"
+
+# Integer. A Minion's current morale.
 const MORALE = &"MORALE"
+
+# Integer. An effect's turn counter, for cards that have one. Starts
+# at zero and counts up.
 const TURN_COUNTER = &"TURN_COUNTER"
+
+# Array of archetypes. Override for a Minion's archetypes. Replaces
+# all base archetypes if present.
 const ARCHETYPE_OVERRIDES = &"ARCHETYPE_OVERRIDES"
+
+# Boolean. Set to true if the next Morale Phase should be skipped for
+# this card. This value is almost always false. See
+# MinionCardType.on_instantiate for the rationale behind this field.
 const SKIP_MORALE = &"SKIP_MORALE"
 
 # A token card is a card that does not belong in a player's deck. A
