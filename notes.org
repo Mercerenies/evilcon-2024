@@ -72,6 +72,7 @@
     + Have a total of at least X Minions in play at once.
     + Have a total of at least X Effect cards in play at once.
     + Have at least 6 of your own cards exiled in one game.
+    + Successfully activate Ultimate Fusion.
 *** SHOPS
     There are basic shops that sell common / uncommon cards for money.
     There may also be trading-style shops where you can trade specific
