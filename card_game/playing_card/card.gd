@@ -49,6 +49,10 @@ func get_overlay_icons(_playing_field) -> Array:
     if is_token():
         icons.append(CardIcon.Frame.TOKEN)
 
+    # Immunity icon
+    if metadata.get(CardMeta.HAS_SPECIAL_IMMUNITY, false):
+        icons.append(CardIcon.Frame.IMMUNITY)
+
     # Archetype overrides
     if card_type is MinionCardType:
         var archetype_overrides = metadata[CardMeta.ARCHETYPE_OVERRIDES]
