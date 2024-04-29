@@ -111,14 +111,22 @@ func do_influence_check(playing_field, target_card, source_card, silently: bool)
     # CardGameApi.broadcast_to_cards (resp.
     # CardGameApi.broadcast_to_cards_async) but will short-circuit
     # when it finds the first card that blocks the influence.
-    if silently:
-        for card in CardGameApi.get_cards_in_play(playing_field):
-            if not card.card_type.do_broadcasted_influence_check(playing_field, card, target_card, source_card, silently):
-                return false
-    else:
-        for card in CardGameApi.get_cards_in_play(playing_field):
-            if not await card.card_type.do_broadcasted_influence_check(playing_field, card, target_card, source_card, silently):
-                return false
+    # Additionally, the default implementation respects
+    # CardMeta.HAS_SPECIAL_IMMUNITY.
+
+    # NOTE: If silently = true, these `await` calls SHOULD do nothing.
+
+    # Special immunity check
+    if target_card.metadata.get(CardMeta.HAS_SPECIAL_IMMUNITY, false):
+        if not await CardEffects.do_ninja_influence_check(playing_field, target_card, source_card, silently):
+            return false
+
+    # Broadcast check
+    for card in CardGameApi.get_cards_in_play(playing_field):
+        if not card.card_type.do_broadcasted_influence_check(playing_field, card, target_card, source_card, silently):
+            return false
+
+    # Effect is permitted
     return true
 
 

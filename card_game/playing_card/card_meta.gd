@@ -24,9 +24,16 @@ const ARCHETYPE_OVERRIDES = &"ARCHETYPE_OVERRIDES"
 # MinionCardType.on_instantiate for the rationale behind this field.
 const SKIP_MORALE = &"SKIP_MORALE"
 
-# A token card is a card that does not belong in a player's deck. A
-# token is created from nothing and, when removed from the field for
-# any reason, is exiled. That is, a token can never be placed in the
-# deck, hand, or discard pile, and any attempts to do so will result
-# in exiling the card instead.
+# Boolean. A token card is a card that does not belong in a player's
+# deck. A token is created from nothing and, when removed from the
+# field for any reason, is exiled. That is, a token can never be
+# placed in the deck, hand, or discard pile, and any attempts to do so
+# will result in exiling the card instead.
 const IS_TOKEN = &"IS_TOKEN"
+
+# Boolean. Cards such as Ninjas naturally have immunity from enemy
+# card effects. Those cards should NOT use this meta field. However,
+# some effects will give cards immunity, when they didn't have it
+# before. Those cards should use this field to indicate that the
+# immunity modifier is present.
+const HAS_SPECIAL_IMMUNITY = &"HAS_SPECIAL_IMMUNITY"
