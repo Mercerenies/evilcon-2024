@@ -194,6 +194,7 @@ text = "Overlay"
 [node name="OverlayIconRow" parent="." instance=ExtResource("4_o5fv1")]
 visible = false
 position = Vector2(0, 172)
+alignment = "Center"
 
 [connection signal="mouse_entered" from="Card/CardFrame" to="." method="_on_card_frame_mouse_entered"]
 [connection signal="mouse_exited" from="Card/CardFrame" to="." method="_on_card_frame_mouse_exited"]
