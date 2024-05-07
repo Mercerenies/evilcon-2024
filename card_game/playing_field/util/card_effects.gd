@@ -54,6 +54,16 @@ static func do_attack_phase_check(playing_field, attacking_card) -> bool:
     return true
 
 
+static func do_morale_phase_check(playing_field, attacking_card) -> bool:
+    # Check if there's anything stopping this card from performing its
+    # Morale Phase.
+    var all_cards = CardGameApi.get_cards_in_play(playing_field)
+    for card in all_cards:
+        if not await card.card_type.do_morale_phase_check(playing_field, card, attacking_card):
+            return false
+    return true
+
+
 static func exile_top_of_deck(playing_field, player: StringName) -> void:
     var deck = playing_field.get_deck(player)
     if deck.cards().card_count() == 0:

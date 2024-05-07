@@ -13,7 +13,7 @@ func _ready():
     top_deck.cards().shuffle()
 
     $PlayingField.turn_number = 10  # Get extra EP :)
-    #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.ULTIMATE_FUSION))
+    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.MANDATORY_OVERTIME))
     #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DUCK))
     #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.TURKEY))
     #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.CHICKEN))
@@ -31,9 +31,9 @@ func _sample_deck():
     return [
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.COUNT_CARBONARA),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.PET_COW),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CHICKEN),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.TURKEY),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.DUCK),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.MANDATORY_OVERTIME),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CONTRACTOR),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.FURIOUS_PHANTOM),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.BUSY_BEE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN),

@@ -105,4 +105,9 @@ func on_morale_phase(playing_field, card) -> void:
         if card.metadata[CardMeta.SKIP_MORALE]:
             card.metadata[CardMeta.SKIP_MORALE] = false
             return
+
+        var should_proceed = await CardEffects.do_morale_phase_check(playing_field, card)
+        if not should_proceed:
+            return
+
         await Stats.add_morale(playing_field, card, -1)

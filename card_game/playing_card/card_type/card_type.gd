@@ -173,6 +173,16 @@ func do_attack_phase_check(_playing_field, _card, _attacking_card) -> bool:
     return true
 
 
+func do_morale_phase_check(_playing_field, _this_card, _performing_card) -> bool:
+    # Called when the performing_card is about to perform its Morale
+    # Phase. This method should return true if the performing_card is
+    # permitted to proceed as planned, and false if the
+    # performing_card should skip its Morale Phase.
+    #
+    # This method is permitted to `await`.
+    return true
+
+
 func on_draw_phase(_playing_field, _card) -> void:
     # NOTE: Does not broadcast, since the phase itself is already
     # being broadcasted. If we change this behavior, MAKE SURE to
