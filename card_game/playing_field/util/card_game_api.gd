@@ -140,7 +140,7 @@ static func play_musical_note_animation(playing_field, target_node) -> void:
     var animation_node = MusicalNoteAnimation.instantiate()
     animation_layer.add_child(animation_node)
     animation_node.position = animation_layer.to_local(target_node.global_position)
-    await animation_node.tree_exited
+    await animation_node.main_animation_completed
 
     input_block.free()
 
