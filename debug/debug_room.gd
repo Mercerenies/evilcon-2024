@@ -30,7 +30,7 @@ func _ready():
 func _sample_deck():
     return [
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.COUNT_CARBONARA),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.VITAMIN_CAPSULE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.PET_COW),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CHICKEN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.TURKEY),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.DUCK),
@@ -39,12 +39,12 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.ZANY_ZOMBIE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.ULTIMATE_FUSION),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.VITAMIN_CAPSULE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.BUSY_BEE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.SPIRIT_FLUTE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.TURDUCKEN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.SECOND_COURSE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.WITH_EXTRA_CHEESE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.ZANY_ZOMBIE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.VITAMIN_CAPSULE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.ZANY_ZOMBIE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.PLUMBERMAN),
     ]
