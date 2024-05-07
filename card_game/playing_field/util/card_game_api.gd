@@ -8,6 +8,7 @@ const HiddenCardDisplay = preload("res://card_game/playing_card/hidden_card_disp
 const DeckCardDisplay = preload("res://card_game/playing_card/deck_card_display/deck_card_display.tscn")
 const InputBlockAnimation = preload("res://card_game/playing_field/animation/input_block_animation.gd")
 const PuffOfSmokeAnimation = preload("res://card_game/playing_field/animation/puff_of_smoke_animation.tscn")
+const MusicalNoteAnimation = preload("res://card_game/playing_field/animation/musical_note_animation.tscn")
 const NullMinion = preload("res://card_game/playing_card/cards/null_minion.gd")
 
 class CardPosition:
@@ -130,6 +131,18 @@ static func play_smoke_animation(playing_field, target_node) -> void:
 
     input_block.free()
 
+
+static func play_musical_note_animation(playing_field, target_node) -> void:
+    var input_block = InputBlockAnimation.new()
+    playing_field.get_animation_layer().add_child(input_block)
+
+    var animation_layer = playing_field.get_animation_layer()
+    var animation_node = MusicalNoteAnimation.instantiate()
+    animation_layer.add_child(animation_node)
+    animation_node.position = animation_layer.to_local(target_node.global_position)
+    await animation_node.tree_exited
+
+    input_block.free()
 
 
 static func draw_cards(playing_field, player: StringName, card_count: int = 1) -> void:

@@ -1,0 +1,59 @@
+[gd_scene load_steps=8 format=3 uid="uid://beaqvknoxix0q"]
+
+[ext_resource type="Texture2D" uid="uid://80ksdjko2ef6" path="res://card_game/playing_field/animation/musical_note.png" id="1_1bstm"]
+[ext_resource type="Script" path="res://card_game/playing_field/animation/musical_note_animation.gd" id="1_ee87k"]
+
+[sub_resource type="Curve" id="Curve_lepjg"]
+_data = [Vector2(0.00355873, 1), 0.0, 0.0, 0, 0, Vector2(0.505338, 0.698113), -0.589099, -0.589099, 0, 0, Vector2(1, 0), -1.74404, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_78dbr"]
+curve = SubResource("Curve_lepjg")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_hg07f"]
+particle_flag_disable_z = true
+angle_min = -10.0
+angle_max = 10.0
+direction = Vector3(1, -1, 0)
+spread = 5.0
+initial_velocity_min = 96.0
+initial_velocity_max = 96.0
+gravity = Vector3(0, 0, 0)
+alpha_curve = SubResource("CurveTexture_78dbr")
+
+[sub_resource type="Animation" id="Animation_le52e"]
+resource_name = "MusicalNoteAnimation"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("GPUParticles2D:emitting")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_h3ju1"]
+_data = {
+"MusicalNoteAnimation": SubResource("Animation_le52e")
+}
+
+[node name="MusicalNoteAnimation" type="Node2D"]
+script = ExtResource("1_ee87k")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+amount = 3
+process_material = SubResource("ParticleProcessMaterial_hg07f")
+texture = ExtResource("1_1bstm")
+lifetime = 2.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_h3ju1")
+}
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
