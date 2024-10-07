@@ -13,7 +13,7 @@ func _ready():
     top_deck.cards().shuffle()
 
     $PlayingField.turn_number = 10  # Get extra EP :)
-    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DESTINYS_SONG))
+    #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DESTINYS_SONG))
     #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DUCK))
     #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.TURKEY))
     #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.CHICKEN))
@@ -41,10 +41,10 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.ULTIMATE_FUSION),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.RED_TURTLE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.SPIRIT_FLUTE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.TURDUCKEN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.FAIRY),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.SECOND_COURSE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.WITH_EXTRA_CHEESE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.SPIKY_RED_TURTLE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.DESTINYS_SONG),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.PLUMBERMAN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.TREE_NYMPH),
     ]
