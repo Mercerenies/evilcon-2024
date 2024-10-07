@@ -94,8 +94,12 @@ func on_attack_phase(playing_field, card) -> void:
             if not should_proceed:
                 return
 
-            await Stats.add_fort_defense(playing_field, opponent, - level)
-            # TODO Check if fort defense has hit zero
+            var damage = level
+            for augmentation in await CardGameApi.broadcast_to_cards_async(playing_field, "augment_attack_damage", [card]):
+                damage += augmentation
+            if damage > 0:
+                await Stats.add_fort_defense(playing_field, opponent, - damage)
+                # TODO Check if fort defense has hit zero
 
 
 func on_morale_phase(playing_field, card) -> void:

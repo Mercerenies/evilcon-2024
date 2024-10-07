@@ -163,7 +163,7 @@ func do_active_hero_check(_playing_field, _card, _hero_card) -> bool:
     return true
 
 
-func do_attack_phase_check(_playing_field, _card, _attacking_card) -> bool:
+func do_attack_phase_check(_playing_field, _this_card, _attacking_card) -> bool:
     # Called when the attacking_card is about to perform its Attack
     # Phase. This method should return true if the attacking_card is
     # permitted to proceed as planned, and false if the attacking_card
@@ -181,6 +181,22 @@ func do_morale_phase_check(_playing_field, _this_card, _performing_card) -> bool
     #
     # This method is permitted to `await`.
     return true
+
+
+func augment_attack_damage(_playing_field, _this_card, _attacking_card) -> int:
+    # Called when attacking_card is about to perform a standard attack
+    # during its Attack Phase (as opposed to cards which have a custom
+    # action during their Attack Phase). This method is only called if
+    # do_attack_phase_check already passed for the particular
+    # attacking card. Should return an amount to add or subtract
+    # (temporarily) from the attacker's Level during damage
+    # calculation. A positive return value will increase the damage
+    # dealt, while a negative return value will decrease the damage
+    # dealt. The damage dealt will be capped at zero and will not go
+    # into the negative as a result of these augmentations.
+    #
+    # This method is permitted to `await`.
+    return 0
 
 
 func on_draw_phase(_playing_field, _card) -> void:

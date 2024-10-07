@@ -1,41 +1,48 @@
-extends TimedCardType
+extends MinionCardType
 
 
 func get_id() -> int:
-    return 84
+    return 113
 
 
 func get_title() -> String:
-    return "Hypercube Prison"
+    return "Icosaking"
 
 
 func get_text() -> String:
-    return "Your opponent's most powerful Minion skips its Attack Phase. Lasts 1 turns."
-
-
-func get_total_turn_count() -> int:
-    return 1
-
-
-func get_star_cost() -> int:
-    return 2
+    return "Enemy Level 1 Minions deal no damage to your fortress."
 
 
 func get_picture_index() -> int:
-    return 85
+    return 9
+
+
+func get_star_cost() -> int:
+    return 6
+
+
+func get_base_level() -> int:
+    return 2
+
+
+func get_base_morale() -> int:
+    return 2
+
+
+func get_base_archetypes() -> Array:
+    return [Archetype.SHAPE, Archetype.BOSS]
 
 
 func get_rarity() -> int:
-    return Rarity.COMMON
+    return Rarity.ULTRA_RARE
 
 
-func do_attack_phase_check(playing_field, this_card, attacking_card) -> bool:
+func augment_attack_damage(playing_field, this_card, attacking_card) -> int:
     if attacking_card.owner == this_card.owner:
         # Do not block attacks originating from the same player as
-        # Hypercube Prison.
-        return super.do_attack_phase_check(playing_field, this_card, attacking_card)
-    var most_powerful_minion = CardEffects.most_powerful_minion(playing_field, attacking_card.owner)
-    if most_powerful_minion == attacking_card:
+        # the Icosaking
+        return super.augment_attack_damage(playing_field, this_card, attacking_card)
+    if attacking_card.card_type.get_level(playing_field, attacking_card) <= 1:
         await CardGameApi.highlight_card(playing_field, this_card)
         var card_node = CardGameApi.find_card_node(playing_field, attacking_card)
         var can_influence = await attacking_card.card_type.do_influence_check(playing_field, attacking_card, this_card, false)
@@ -45,5 +52,5 @@ func do_attack_phase_check(playing_field, this_card, attacking_card) -> bool:
                 "custom_label_color": Stats.BLOCKED_COLOR,
                 "offset": Stats.CARD_MULTI_UI_OFFSET,  # Don't overlap with the "-1 Morale" message.
             })
-            return false
-    return super.do_attack_phase_check(playing_field, this_card, attacking_card)
+            return -99999
+    return super.augment_attack_damage(playing_field, this_card, attacking_card)
