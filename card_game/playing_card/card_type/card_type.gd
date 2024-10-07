@@ -74,7 +74,11 @@ func can_play(playing_field, owner: StringName) -> bool:
     return user_evil_points >= card_cost
 
 
-func on_play(_playing_field, _card) -> void:
+func on_play(playing_field, card) -> void:
+    await CardGameApi.broadcast_to_cards_async(playing_field, "on_play_broadcasted", [card])
+
+
+func on_play_broadcasted(_playing_field, _this_card, _played_card) -> void:
     pass
 
 
