@@ -145,9 +145,10 @@
      Must be faced in order with no deck changes in betwee.
      + Minionman :: again but with his mask off and going by his real
        identity; he's actually a powerful card player and just puts on
-       the "Minionman" gimmick for show
+       the "Minionman" gimmick for show (TODO Do we need an ultra rare
+       card for his unmasked variant?)
      + Devil :: From Nail. A devil from the fiery pits who makes deals
-       for people's souls.
+       for people's souls. Possibly obsessed with Death.
      + Bristlegaze :: Weird alien floating eyeball thing.
      + ??? :: ???
 **** RECURRING RIVALS
@@ -169,7 +170,8 @@
        boss.
      + Death :: The Pale Specter himself. He's just at the hotel
        collecting dying people's souls. But he'll play cards against
-       you if you want. Powerful optional boss.
+       you if you want. Powerful optional boss. (Potentially put him
+       in the Final Gauntlet in place of Death?)
      + Maybe the boss from Mars God of War?
      + Someone from Three Rules?
      + Inquisitor from Suspicious City?
@@ -420,7 +422,8 @@
 ** CREDITS
    Making notes of where I get certain assets, so I don't forget later.
 *** CODE LIBRARIES
-    + GDScript Promise Async Utils (kuruk-mm) :: https://godotengine.org/asset-library/asset/2351 and https://github.com/kuruk-mm/gdscript-promise-async-utils
+    + GDScript Promise Async Utils (kuruk-mm) :: https://godotengine.org/asset-library/asset/2351
+      and https://github.com/kuruk-mm/gdscript-promise-async-utils
 *** FONTS
     + Merriweather :: https://fonts.google.com/specimen/Merriweather?stroke=Serif
     + Raleway :: https://fonts.google.com/specimen/Raleway
