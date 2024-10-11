@@ -343,6 +343,10 @@
      name.
    + The following words needn't be capitalized: card, discard pile,
      fortress, phase (on its own), defense.
+   + The word "Spiky", in the context of the pseudo-archetype of
+     cards, should be used as an adjective, capitalized, /and/
+     enclosed in quotation marks. Example: "All 'Spiky' Minions gain 1
+     Level.".
    + "Limited" cards (i.e. those that can only exist once per deck)
      shall indicate their status using the "LIMITED" icon in the icon
      row, as well as a sentence "Limit 1 per deck." at the end of the

@@ -52,6 +52,29 @@ func get_destination_strip(playing_field, owner: StringName):
     return playing_field.get_minion_strip(owner)
 
 
+func is_spiky(playing_field, this_card) -> bool:
+    # Returns true if this card counts as Spiky. "Spiky" is not an
+    # archetype. The general rule is: A card counts as Spiky if and
+    # only if the word "Spiky" appears in the card's name. However,
+    # this is a broadcasting method, so any and all cards in play have
+    # an opportunity to override this behavior.
+    #
+    # It is only possible to increase the spiky-ness of a card. It is
+    # not possible, under the current implementation, to "remove" the
+    # spiky-ness from a Minion card. If we decide to implement such
+    # effects, we will update this implementation to reflect the new
+    # functionality.
+    #
+    # This method MUST NOT await.
+    if "Spiky" in this_card.card_type.get_title():
+        return true
+    var all_cards = CardGameApi.get_cards_in_play(playing_field)
+    for card in all_cards:
+        if card.card_type.is_spiky_broadcasted(playing_field, card, this_card):
+            return true
+    return false
+
+
 func on_instantiate(card) -> void:
     super.on_instantiate(card)
     # Initialize Level and Morale.

@@ -252,3 +252,11 @@ func get_hand_limit_modifier(_playing_field, _card, _player: StringName) -> int:
 
 func get_cards_per_turn_modifier(_playing_field, _card, _player: StringName) -> int:
     return 0
+
+
+func is_spiky_broadcasted(_playing_field, _this_card, _candidate_card) -> bool:
+    # Broadcasted "Spiky" check for a Minion candidate card. See
+    # MinionCardType.is_spiky for details.
+    #
+    # This method MUST NOT await.
+    return false
