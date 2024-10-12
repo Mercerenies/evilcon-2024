@@ -13,6 +13,7 @@ func _ready():
     top_deck.cards().shuffle()
 
     $PlayingField.turn_number = 10  # Get extra EP :)
+    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.BRISTLEGAZE))
     $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.NEEDLE_STRIKE))
     #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.CHICKEN))
     #$PlayingField.get_minion_strip(CardPlayer.BOTTOM).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DUCK), CardPlayer.BOTTOM))
@@ -28,7 +29,7 @@ func _ready():
 func _sample_deck():
     return [
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.COUNT_CARBONARA),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.PET_COW),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.PLUMBERMAN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.ICOSAKING),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CONTRACTOR),
@@ -37,9 +38,9 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.ZANY_ZOMBIE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.ULTIMATE_FUSION),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.RED_TURTLE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.SPIRIT_FLUTE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.RED_TURTLE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.PLUMBERMANS_BROTHER),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.RAVENGIRL),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.RAVENMAN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.SPIKY_TURTLE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.WITH_EXTRA_CHEESE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.SPIKY_RED_TURTLE),
