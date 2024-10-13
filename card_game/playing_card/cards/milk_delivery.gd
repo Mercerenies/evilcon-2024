@@ -31,7 +31,7 @@ func on_play(playing_field, card) -> void:
     var minion_strip = playing_field.get_minion_strip(owner)
     await CardGameApi.highlight_card(playing_field, card)
 
-    if len(minions) == 0:
+    if minion_strip.cards().card_count() == 0:
         var card_node = CardGameApi.find_card_node(playing_field, card)
         Stats.play_animation_for_stat_change(playing_field, card_node, 0, {
             "custom_label_text": Stats.NO_TARGET_TEXT,
