@@ -104,9 +104,10 @@ static func set_morale(playing_field, card, new_value: int, opts = {}) -> void:
     animation_opts.merge(opts, true)
     play_animation_for_stat_change(playing_field, card_node, new_value - old_value, animation_opts)
     if new_value <= 0:
-        await card.card_type.on_expire(playing_field, card)
-        # TODO Check if the on_expire event saved the card. (Also there should be an on_pre_expire so things don't get resurrected by this except in extreme circumstances; or maybe we should just go through with the expiry here, idk. Think about it)
-        await CardGameApi.destroy_card(playing_field, card)
+        await card.card_type.on_pre_expire(playing_field, card)
+        if card.metadata[CardMeta.MORALE] <= 0:
+            await card.card_type.on_expire(playing_field, card)
+            await CardGameApi.destroy_card(playing_field, card)
 
 
 static func add_morale(playing_field, card, delta: int, opts = {}) -> void:

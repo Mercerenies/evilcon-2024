@@ -92,7 +92,56 @@ func on_instantiate(card) -> void:
     card.metadata[CardMeta.SKIP_MORALE] = false
 
 
+func on_pre_expire(playing_field, card) -> void:
+    # When a Minion hits zero Morale, it is normally destroyed. Before
+    # committing to the destruction, on_pre_expire is called. The
+    # default behavior of this method is to broadcast the
+    # intent-to-expire to all other Minion and Effect cards.
+    #
+    # This method is called prior to on_expire, before the Minion has
+    # committed to being destroyed. If on_pre_expire or
+    # on_pre_expire_broadcasted causes the Minion to re-gain Morale,
+    # then it will be preserved.
+    #
+    # All subclass implementations MUST invoke this superclass method,
+    # to ensure proper broadcasting. This method may await.
+    #
+    # See the documentation for on_expire for details on the
+    # expiration lifecycle.
+    await CardGameApi.broadcast_to_cards_async(playing_field, "on_pre_expire_broadcasted", [card])
+
+
 func on_expire(playing_field, card) -> void:
+    # When a Minion hits zero Morale, it is destroyed, and immediately
+    # before being destroyed in this fashion, on_expire is called. The
+    # default behavior of this method is to broadcast the expiration
+    # to all other cards (not just Minions but also Effect cards).
+    #
+    # Note that, when this method is called, the Minion has already
+    # committed to being destroyed. Even if the on_expire event causes
+    # the Minion to re-gain Morale, it will still be destroyed.
+    #
+    # All subclass implementations MUST invoke this superclass method,
+    # to ensure proper broadcasting. This method may await.
+    #
+    # The specific lifecycle for Minion expiration is as follows.
+    #
+    # 1. A Minion card has its Morale set to zero, either during the
+    # Morale Phase or due to some other effect.
+    #
+    # 2. The Minion recognizes that it has hit zero Morale and
+    # prepares to expire. The Minion invokes on_pre_expire, which also
+    # calls on_pre_expire_broadcasted on all cards in play.
+    #
+    # 3. The Minion checks if the pre-expire call caused it to gain
+    # Morale. If so, this process is terminated, and the Minion
+    # survived. Otherwise, the Minion commits to being destroyed.
+    #
+    # 4. The Minion calls on_expire, which in turn calls
+    # on_expire_broadcasted on all cards in play.
+    #
+    # 5. The Minion is destroyed, regardless of its final Morale
+    # value.
     await CardGameApi.broadcast_to_cards_async(playing_field, "on_expire_broadcasted", [card])
 
 

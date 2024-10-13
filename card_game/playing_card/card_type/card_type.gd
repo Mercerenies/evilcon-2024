@@ -238,7 +238,11 @@ func on_end_phase(_playing_field, _card) -> void:
     pass
 
 
-func on_expire_broadcasted(_playing_field, _card, _expiring_card) -> void:
+func on_pre_expire_broadcasted(_playing_field, _this_card, _expiring_card) -> void:
+    pass
+
+
+func on_expire_broadcasted(_playing_field, _this_card, _expiring_card) -> void:
     pass
 
 
