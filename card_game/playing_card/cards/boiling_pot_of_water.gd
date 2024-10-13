@@ -38,13 +38,6 @@ func _evaluate_effect(playing_field, this_card) -> void:
         playing_field.get_hand(owner).cards().card_array()
         .filter(_is_pasta_minion)
     )
-    if len(cards_to_discard) == 0:
-        var card_node = CardGameApi.find_card_node(playing_field, this_card)
-        Stats.play_animation_for_stat_change(playing_field, card_node, 0, {
-            "custom_label_text": Stats.NO_TARGET_TEXT,
-            "custom_label_color": Stats.NO_TARGET_COLOR,
-        })
-        return
     for card in cards_to_discard:
         CardGameApi.discard_card(playing_field, owner, card)
     await CardGameApi.draw_cards(playing_field, owner, len(cards_to_discard) + 1)
