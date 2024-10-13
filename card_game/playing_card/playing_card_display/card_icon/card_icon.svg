@@ -97,6 +97,16 @@
          stdDeviation="4.55606e-05"
          id="feGaussianBlur11988" />
     </filter>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath5031">
+      <circle
+         style="fill:none;stroke:#000000;stroke-width:0.478999;stroke-dasharray:0.478999, 0.478999;stop-color:#000000"
+         id="circle5033"
+         cx="11.234616"
+         cy="40.367619"
+         r="3.5991943" />
+    </clipPath>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -105,9 +115,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.4769268"
-     inkscape:cx="45.419186"
-     inkscape:cy="123.54019"
+     inkscape:zoom="3.1344107"
+     inkscape:cx="28.873051"
+     inkscape:cy="139.73919"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
@@ -115,7 +125,7 @@
      units="px"
      inkscape:window-width="1920"
      inkscape:window-height="979"
-     inkscape:window-x="1920"
+     inkscape:window-x="0"
      inkscape:window-y="32"
      inkscape:window-maximized="1"
      inkscape:snap-global="false"
@@ -2021,5 +2031,29 @@
        inkscape:transform-center-x="-0.0011225821"
        inkscape:transform-center-y="0.0027926625"
        transform="matrix(0.20017395,0,0,0.20017395,-13.31834,38.028967)" />
+    <path
+       id="path40231"
+       style="font-variation-settings:normal;fill:#dbd3bd;fill-opacity:1;stroke:#9a9a9a;stroke-width:0.188804;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;filter:url(#filter8798);stop-color:#000000"
+       d="m 11.103561,37.293713 c -3.4899121,-0.210151 -3.7347113,6.510348 -0.6737,7.658295 3.170765,1.944081 -0.4656832,4.424383 -0.416781,6.649944 2.578106,2.196322 4.408275,-3.873006 2.83323,-5.658143 -1.467988,-2.909424 2.297315,-3.992242 1.225927,-6.634414 -0.514441,-1.129143 -1.668418,-2.109676 -2.968642,-2.015682 z"
+       sodipodi:nodetypes="sccccss"
+       clip-path="url(#clipPath5031)" />
+    <circle
+       style="font-variation-settings:normal;vector-effect:none;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.24894;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000"
+       id="circle40253"
+       cx="11.232782"
+       cy="41.851891"
+       r="0.81411684" />
+    <circle
+       style="font-variation-settings:normal;vector-effect:none;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.17171;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000"
+       id="circle40255"
+       cx="9.7245922"
+       cy="39.19487"
+       r="0.56154823" />
+    <circle
+       style="font-variation-settings:normal;vector-effect:none;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.17171;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;-inkscape-stroke:none;stop-color:#000000"
+       id="circle40257"
+       cx="12.569714"
+       cy="39.086201"
+       r="0.56154823" />
   </g>
 </svg>
