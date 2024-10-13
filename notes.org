@@ -598,6 +598,11 @@
    + Fungus support: Progressively increase in power the longer effects stay in play
    + Provide "collectors' editions" of certain cards, when there's
      original artwork from the source game that we can feature
+   + A card that prevents the opponent from winning (for any reason)
+     while in play
+     - If the opponent plays the third Destiny Song while this card is
+       in play, they win as soon as the card goes out of play.
+   + The "thug" character from Nail?
 ** CREDITS
    Making notes of where I get certain assets, so I don't forget later.
 *** CODE LIBRARIES
