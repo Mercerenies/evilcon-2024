@@ -314,6 +314,19 @@ static func discard_card(playing_field, player: StringName, card_type: CardType)
     })
 
 
+# Move from discard pile to deck
+static func move_card_from_discard_to_deck(playing_field, player: StringName, card_type: CardType) -> void:
+    var discard_pile = playing_field.get_discard_pile(player)
+    var deck = playing_field.get_deck(player)
+    var discard_pile_index = discard_pile.cards().find_card(card_type)
+    if discard_pile_index == null:
+        push_warning("Cannot move card %s from discard pile to deck, because it is not in discard pile" % card_type)
+        return
+    await playing_field.move_card(discard_pile, deck, {
+        "source_index": discard_pile_index,
+    })
+
+
 static func create_card(playing_field, player: StringName, card_type: CardType, is_token: bool = true) -> Card:
     var new_card = Card.new(card_type, player)
     if is_token:

@@ -39,7 +39,7 @@ func _evaluate_effect(playing_field, this_card) -> void:
         .filter(_is_pasta_minion)
     )
     for card in cards_to_discard:
-        CardGameApi.discard_card(playing_field, owner, card)
+        await CardGameApi.discard_card(playing_field, owner, card)
     await CardGameApi.draw_cards(playing_field, owner, len(cards_to_discard) + 1)
 
 
