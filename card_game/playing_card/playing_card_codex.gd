@@ -65,8 +65,8 @@ enum ID {
     WITH_EXTRA_CHEESE = 57,
     COVER_OF_MOONLIGHT = 58,
     PLUMBERMAN = 59,
-    KIDNAPPING_THE_PRESIDENT = 60,
-    DAMSEL_IN_DISTRESS = 61,
+    DAMSEL_IN_DISTRESS = 60,
+    KIDNAPPING_THE_PRESIDENT = 61,
     ZOMBEE = 62,
     MIMEDROID = 63,
     NINJA_MASTER = 64,
@@ -248,10 +248,10 @@ static func get_entity_script(n: int) -> GDScript:
             return load("res://card_game/playing_card/cards/cover_of_moonlight.gd") as GDScript
         ID.PLUMBERMAN:
             return load("res://card_game/playing_card/cards/plumberman.gd") as GDScript
-        ID.KIDNAPPING_THE_PRESIDENT:
-            return load("res://card_game/playing_card/cards/kidnapping_the_president.gd") as GDScript
         ID.DAMSEL_IN_DISTRESS:
             return load("res://card_game/playing_card/cards/damsel_in_distress.gd") as GDScript
+        ID.KIDNAPPING_THE_PRESIDENT:
+            return load("res://card_game/playing_card/cards/kidnapping_the_president.gd") as GDScript
         ID.ZOMBEE:
             return load("res://card_game/playing_card/cards/zombee.gd") as GDScript
         ID.MIMEDROID:

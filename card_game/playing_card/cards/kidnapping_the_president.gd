@@ -1,8 +1,8 @@
-extends EffectCardType
+extends TimedCardType
 
 
 func get_id() -> int:
-    return 60
+    return 61
 
 
 func get_title() -> String:
@@ -10,15 +10,15 @@ func get_title() -> String:
 
 
 func get_text() -> String:
-    return "Next time your opponent plays a Hero card, negate its effect; then destroy this card."
+    return "Hero cards played by your opponent have no effect. Lasts 2 turns."
 
 
-func is_ongoing() -> bool:
-    return true
+func get_total_turn_count() -> int:
+    return 2
 
 
 func get_star_cost() -> int:
-    return 3
+    return 2
 
 
 func get_picture_index() -> int:
@@ -29,14 +29,12 @@ func get_rarity() -> int:
     return Rarity.UNCOMMON
 
 
-func do_active_hero_check(playing_field, card, hero_card) -> bool:
+func do_passive_hero_check(playing_field, card, hero_card) -> bool:
     if card.owner != hero_card.owner:
         var card_node = CardGameApi.find_card_node(playing_field, card)
-        await CardGameApi.highlight_card(playing_field, card)
         Stats.play_animation_for_stat_change(playing_field, card_node, 0, {
             "custom_label_text": Stats.BLOCKED_TEXT,
             "custom_label_color": Stats.BLOCKED_COLOR,
         })
-        await CardGameApi.destroy_card(playing_field, card)
         return false
-    return await super.do_active_hero_check(playing_field, card, hero_card)
+    return await super.do_passive_hero_check(playing_field, card, hero_card)
