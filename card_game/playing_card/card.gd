@@ -39,6 +39,10 @@ func is_token() -> bool:
     return metadata.get(CardMeta.IS_TOKEN, false)
 
 
+func is_doomed() -> bool:
+    return metadata.get(CardMeta.IS_DOOMED, false)
+
+
 func get_overlay_icons(_playing_field) -> Array:
     # NOTE: This method does NOT delegate to the card_type. Instead,
     # the overlay icons are entirely determined by modifiers to the
@@ -48,6 +52,10 @@ func get_overlay_icons(_playing_field) -> Array:
     # Token icon
     if is_token():
         icons.append(CardIcon.Frame.TOKEN)
+
+    # Doomed icon
+    if is_doomed():
+        icons.append(CardIcon.Frame.DOOMED)
 
     # Immunity icon
     if metadata.get(CardMeta.HAS_SPECIAL_IMMUNITY, false):

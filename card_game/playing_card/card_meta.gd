@@ -37,3 +37,10 @@ const IS_TOKEN = &"IS_TOKEN"
 # before. Those cards should use this field to indicate that the
 # immunity modifier is present.
 const HAS_SPECIAL_IMMUNITY = &"HAS_SPECIAL_IMMUNITY"
+
+# Boolean. A doomed card is a card which will be exiled when it is
+# removed from the field for any reason. A doomed card is similar to a
+# token card, except that token cards do not originally belong to the
+# player's deck, while a doomed card is a soon-to-be-exiled card that
+# started out in the player's deck.
+const IS_DOOMED = &"IS_DOOMED"

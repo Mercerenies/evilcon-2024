@@ -285,8 +285,8 @@ static func rotate_card(playing_field, card: Card) -> void:
 
 
 static func destroy_card(playing_field, card: Card) -> void:
-    if card.is_token():
-        # Tokens are exiled instead
+    if card.is_token() or card.is_doomed():
+        # Tokens and doomed cards are exiled instead
         await exile_card(playing_field, card)
         return
 
