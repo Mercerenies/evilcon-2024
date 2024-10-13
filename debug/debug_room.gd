@@ -30,9 +30,9 @@ func _ready():
 func _sample_deck():
     return [
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.COUNT_CARBONARA),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.PLUMBERMAN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.LAST_STAND),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.ICOSAKING),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.LAST_STAND),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CONTRACTOR),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.FURIOUS_PHANTOM),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.BUSY_BEE),

@@ -233,7 +233,7 @@ static func play_card_from_hand(playing_field, player: StringName, card_type: Ca
 static func resurrect_card(playing_field, player: StringName, card_type: CardType):
     var discard_pile = playing_field.get_discard_pile(player)
     var field = card_type.get_destination_strip(playing_field, player)
-    var discard_index = discard_pile.cards().find_card(card_type)
+    var discard_index = discard_pile.cards().find_card_reversed(card_type)
     if discard_index == null:
         push_warning("Cannot resurrect card %s because it is not in discard pile" % card_type)
         return
@@ -249,7 +249,7 @@ static func resurrect_card(playing_field, player: StringName, card_type: CardTyp
 static func play_card_from_deck(playing_field, player: StringName, card_type: CardType):
     var deck = playing_field.get_deck(player)
     var field = card_type.get_destination_strip(playing_field, player)
-    var deck_index = deck.cards().find_card(card_type)
+    var deck_index = deck.cards().find_card_reversed(card_type)
     if deck_index == null:
         push_warning("Cannot play card %s from deck because it is not in deck" % card_type)
         return
