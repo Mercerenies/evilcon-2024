@@ -101,7 +101,7 @@ module Codex
             return get_entity_script(n).new()
 
         static func get_all_ids() -> Array:
-            return range(#{max_id})
+            return range(#{max_id + 1})
       CODE
     end
   end
