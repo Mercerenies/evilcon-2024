@@ -28,3 +28,6 @@ Style/PercentLiteralDelimiters:
 
 Style/GuardClause:
   MinBodyLength: 2
+
+Style/EmptyCaseCondition:
+  Enabled: false

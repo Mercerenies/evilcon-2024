@@ -3,6 +3,7 @@
 require 'active_support/inflector'
 
 require_relative './entry'
+require_relative './entry_file'
 require_relative './helpers'
 
 module Codex
@@ -35,31 +36,19 @@ module Codex
       output_file entries
     end
 
-    def find_id(file_path)
-      File.open(file_path, "r") do |f|
-        lines = f.each_line.to_a
-        return :ignore if lines.any?(/CODEX: \s* IGNORE/x)
-
-        idx = lines.find_index { |x| x =~ /func get_id()/ }
-        return nil unless idx
-
-        lines[idx + 1] =~ /return (-?\d+)/
-        $1.to_i
-      end
-    end
-
     def build_entry(path)
-      godot_path = path.gsub(/^\.\/?/, "res://")
-      id = find_id(path)
-      case id
-      when :ignore
+      godot_path = path.gsub(%r{^\./?}, "res://")
+      entry_file = EntryFile.new(path)
+
+      case
+      when entry_file.ignored?
         # Ignore, by definition. Do not warn, since we opted into
         # this behavior.
         nil
-      when nil
+      when entry_file.id.nil?
         raise "No ID value at #{path}"
       else
-        Entry.new(id:, path: godot_path)
+        Entry.new(id: entry_file.id, path: godot_path)
       end
     end
 
