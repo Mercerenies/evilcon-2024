@@ -400,3 +400,6 @@ static func get_entity_script(n: int) -> GDScript:
 
 static func get_entity(n: int):
     return get_entity_script(n).new()
+
+static func get_all_ids() -> Array:
+    return range(127)
