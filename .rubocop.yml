@@ -8,6 +8,9 @@ Layout/LeadingEmptyLines:
 Layout/FirstArrayElementIndentation:
   EnforcedStyle: consistent
 
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
 Style/PerlBackrefs:
   Enabled: false
 
