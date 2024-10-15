@@ -23,6 +23,9 @@ const BLOCKED_COLOR := Color.BLACK
 const CLOWNED_TEXT := "Clowned!"
 const CLOWNED_COLOR := Color.WEB_PURPLE
 
+const DEMONED_TEXT := "Bedeviled!"
+const DEMONED_COLOR := Color.WEB_PURPLE
+
 # No semantic change to stats, just the animation. This function can
 # be called directly, but it usually makes more sense to call one of
 # the other helpers, which also performs the semantic change.
