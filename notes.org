@@ -57,14 +57,16 @@
     + Win a game in the first X turns.
     + Win a game in the first X turns, using Destiny Song.
     + Win a game without using any Effect cards.
-    + Win a game without using any Minion cards. (Doable with Pill
-      Capsule, Life Force Cannon, etc.; might add more support for
-      this strategy)
+    + Reduce enemy fort to zero using only Effect cards. (Doable with
+      Pill Capsule, Life Force Cannon, etc.; might add more support
+      for this strategy; phrased this way to carefully carve out
+      Destiny's Song strats as forbidden)
     + Win a game using at most 4 EP each turn.
     + Win a game using only Cost 2 or lower cards.
     + Achieve a hand size limit of eight or more.
     + Draw a total of eight cards in one turn. (Not necessarily during
-      the draw phase, so Pot of Linguine can help with this)
+      the draw phase, so Pot of Linguine or Boiling Pot of Water can
+      help with this)
     + Negate the effect of X Hero cards in one game. (Open question:
       Does blocking with a Ninja count as negating, or do only hostage
       cards suffice? I'm inclined to say blocking counts, but it is
@@ -73,6 +75,17 @@
     + Have a total of at least X Effect cards in play at once.
     + Have at least 6 of your own cards exiled in one game.
     + Successfully activate Ultimate Fusion.
+*** VARIANT IDEAS
+    In addition to the achievements, there may be an NPC who lets you
+    play "variants" of the main game against him, as a sort of
+    challenge mode. All achievements are disabled in variants (since
+    variants trivialize a lot of the achievements).
+
+    Variant ideas:
+    + Both players' fort defense is insanely high
+    + Both players' fort defense is insanely high, and Destiny's Song
+      is forbidden
+    + All cards cost 1 EP to play
 *** SHOPS
     There are basic shops that sell common / uncommon cards for money.
     There may also be trading-style shops where you can trade specific
@@ -592,17 +605,17 @@
    + Hero + Factory
    + Hostage + Factory
 ** RANDOM IDEAS
-   + Villain(s) from Three Rules Standing
-   + Costume shop for some cosmetic upgrades
-   + Turtle support: block enemy damage
-   + Fungus support: Progressively increase in power the longer effects stay in play
-   + Provide "collectors' editions" of certain cards, when there's
+   + [ ] Villain(s) from Three Rules Standing
+   + [ ] Costume shop for some cosmetic upgrades
+   + [ ] Turtle support: block enemy damage
+   + [ ] Fungus support: Progressively increase in power the longer effects stay in play
+   + [ ] Provide "collectors' editions" of certain cards, when there's
      original artwork from the source game that we can feature
-   + A card that prevents the opponent from winning (for any reason)
-     while in play
+   + [ ] A card that prevents the opponent from winning (for any
+     reason) while in play
      - If the opponent plays the third Destiny Song while this card is
        in play, they win as soon as the card goes out of play.
-   + The "thug" character from Nail?
+   + [ ] The "thug" character from Nail?
 ** CREDITS
    Making notes of where I get certain assets, so I don't forget later.
 *** CODE LIBRARIES
