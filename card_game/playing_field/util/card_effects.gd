@@ -117,9 +117,9 @@ static func exile_top_of_deck(playing_field, player: StringName) -> void:
 static func card_power_less_than(playing_field) -> Callable:
     return func less_than(a, b) -> bool:
         var level_a = a.card_type.get_level(playing_field, a)
-        var level_b = a.card_type.get_level(playing_field, b)
+        var level_b = b.card_type.get_level(playing_field, b)
         var morale_a = a.card_type.get_morale(playing_field, a)
-        var morale_b = a.card_type.get_morale(playing_field, b)
+        var morale_b = b.card_type.get_morale(playing_field, b)
         if level_a * morale_a < level_b * morale_b:
             return true
         elif level_a * morale_a == level_b * morale_b:
