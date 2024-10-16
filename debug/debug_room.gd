@@ -13,9 +13,7 @@ func _ready():
     top_deck.cards().shuffle()
 
     $PlayingField.turn_number = 10  # Get extra EP :)
-    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.PACIFIER))
-    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.CHICK_INATOR))
-    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.BRAINWASHING_RAY))
+    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.NO_HONK_ZONE))
     #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DESTINYS_SONG))
     #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.KIDNAPPING_THE_PRESIDENT))
     #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DAMSEL_IN_DISTRESS))
@@ -42,16 +40,16 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CURSED_TALISMAN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.HAY_BALES),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CIRCUS_MAKEUP),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.NO_HONK_ZONE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.AGARIC_TURTLE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.TODDLER_CLOWN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.TODDLER_CLOWN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.MIDDLE_MANAGER),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CONTRACTOR),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CLOWN_NOSE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.PACIFIER),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.WITH_EXTRA_CHEESE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.BOILING_POT_OF_WATER),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.DESTINYS_SONG),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.NEEDLE_STRIKE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CHICK_INATOR),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.BRAINWASHING_RAY),
     ]
