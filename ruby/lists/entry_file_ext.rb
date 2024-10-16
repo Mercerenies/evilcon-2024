@@ -26,6 +26,12 @@ module Lists
         @rarity = with_file { |f| find_rarity f }
       end
 
+      def title
+        return @title unless @title.nil?
+
+        @title = with_file { |f| find_title f }
+      end
+
       private def find_cost(file)
         file.read =~ /^func get_star_cost\(\).*:\n\s+return (-?\d+)/ or return nil
         $1.to_i
@@ -39,6 +45,11 @@ module Lists
       private def find_rarity(file)
         file.read =~ /^func get_rarity\(\).*:\n\s+return (.+)/ or return nil
         $1.gsub(/^Rarity\./, '')
+      end
+
+      private def find_title(file)
+        file.read =~ /^func get_title\(\).*:\n\s+return "([^"]+)"/ or return nil
+        $1
       end
     end
   end

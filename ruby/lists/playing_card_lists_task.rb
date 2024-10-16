@@ -21,7 +21,7 @@ module Lists
 
       lists_file = ListsFile.new([
         CardList.new("BARRYS_ROBOTS") { |entry| entry.archetype?("ROBOT") and entry.cost == 2 },
-        CardList.new("MYSTERY_BOX_TARGETS") { |entry| entry.id.positive? and entry.rarity != "ULTRA_RARE" },
+        CardList.new("MYSTERY_BOX_TARGETS") { |entry| entry.id.positive? and entry.rarity != "ULTRA_RARE" and entry.title != "Mystery Box" },
       ])
       IO.write output_path, lists_file
     end
