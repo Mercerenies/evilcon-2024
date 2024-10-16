@@ -141,6 +141,7 @@ enum ID {
     ANCIENT_DEMON = 133,
     AGARIC_TURTLE = 134,
     REPLACEABLE_PARTS = 135,
+    PET_COWN = 136,
 }
 
 static func get_entity_script(n: int) -> GDScript:
@@ -417,6 +418,8 @@ static func get_entity_script(n: int) -> GDScript:
             return load("res://card_game/playing_card/cards/agaric_turtle.gd") as GDScript
         ID.REPLACEABLE_PARTS:
             return load("res://card_game/playing_card/cards/replaceable_parts.gd") as GDScript
+        ID.PET_COWN:
+            return load("res://card_game/playing_card/cards/pet_cown.gd") as GDScript
         _:
             push_warning("Invalid ID value: %d" % n)
             return null
@@ -426,4 +429,4 @@ static func get_entity(n: int):
     return get_entity_script(n).new()
 
 static func get_all_ids() -> Array:
-    return range(136)
+    return range(137)
