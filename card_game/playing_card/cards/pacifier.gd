@@ -12,7 +12,7 @@ func get_title() -> String:
 
 
 func get_text() -> String:
-    return "All enemy [icon]CLOWN[/icon] CLOWN Minions are replaced with Baby Clown Minions."
+    return "All enemy [icon]CLOWN[/icon] CLOWN Minions are replaced with Baby Clowns."
 
 
 func get_star_cost() -> int:
@@ -51,8 +51,12 @@ func _perform_effect(playing_field, this_card) -> void:
         })
         return
 
+    var successful_destructions = 0
     for minion in minions:
-        await CardGameApi.destroy_card(playing_field, minion)
+        var can_influence = await minion.card_type.do_influence_check(playing_field, minion, this_card, false)
+        if can_influence:
+            await CardGameApi.destroy_card(playing_field, minion)
+            successful_destructions += 1
 
-    for _i in range(len(minions)):
+    for _i in successful_destructions:
         await CardGameApi.create_card(playing_field, opponent, BabyClown.new())
