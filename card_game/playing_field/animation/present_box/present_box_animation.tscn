@@ -6,7 +6,7 @@
 
 [sub_resource type="Animation" id="Animation_vqfyr"]
 resource_name = "PresentBoxAnimation"
-length = 4.5
+length = 3.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -26,7 +26,7 @@ tracks/1/path = NodePath("PresentBox/FrontSprite:frame")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 1.1, 2.8),
+"times": PackedFloat32Array(0, 1.1, 2.5),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [2, 3, 4]
@@ -38,7 +38,7 @@ tracks/2/path = NodePath("PresentBox/BackSprite:frame")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 1.1, 2.8),
+"times": PackedFloat32Array(0, 1.1, 2.5),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [4, 5, 1]
@@ -74,7 +74,7 @@ tracks/5/path = NodePath("PresentBox:modulate")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
-"times": PackedFloat32Array(2.8, 4),
+"times": PackedFloat32Array(2.5, 3.4),
 "transitions": PackedFloat32Array(0.5, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
