@@ -13,7 +13,10 @@ func _ready():
     top_deck.cards().shuffle()
 
     $PlayingField.turn_number = 10  # Get extra EP :)
-    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.AGARIC_TURTLE))
+    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.REPLACEABLE_PARTS))
+    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DEATH_CYBORG))
+    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.ROBOT_MITE))
+    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.METAL_SPIDER))
     #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DESTINYS_SONG))
     #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.KIDNAPPING_THE_PRESIDENT))
     #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DAMSEL_IN_DISTRESS))
@@ -38,7 +41,7 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CURSED_TALISMAN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.HAY_BALES),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CIRCUS_MAKEUP),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.AGARIC_TURTLE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.TODDLER_CLOWN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.TODDLER_CLOWN),
