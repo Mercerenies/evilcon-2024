@@ -10,7 +10,7 @@ func get_title() -> String:
 
 
 func get_text() -> String:
-    return "Discard all [icon]PASTA[/icon] Minions from your hand; then draw one more card than the number of cards discarded."
+    return "Discard all [icon]PASTA[/icon] Minions from your hand; then draw one more card than the number of cards discarded. Limit 1 per deck."
 
 
 func get_star_cost() -> int:
@@ -23,6 +23,10 @@ func get_picture_index() -> int:
 
 func get_rarity() -> int:
     return Rarity.UNCOMMON
+
+
+func is_limited() -> bool:
+    return true
 
 
 func on_play(playing_field, card) -> void:
