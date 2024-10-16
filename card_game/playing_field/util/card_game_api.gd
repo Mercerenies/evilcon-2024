@@ -261,6 +261,35 @@ static func play_card_from_deck(playing_field, player: StringName, card_type: Ca
     return new_card
 
 
+# Put a card in the field, as though from nowhere. This is usually
+# preceded by a custom animation to create the card object, such as
+# that seen in the Mystery Box effect.
+#
+# Optional arguments are as follows:
+#
+# * is_token (boolean) - Whether or not the new card is a token.
+# * Defaults to true.
+static func play_card_from_nowhere(playing_field, player: StringName, card_type: CardType, origin: Vector2, opts = {}):
+    var is_token = opts.get("is_token", true)
+    var field = card_type.get_destination_strip(playing_field, player)
+
+    var animation = CardMovingAnimation.instantiate()
+    playing_field.get_animation_layer().add_child(animation)
+    animation.scale = Vector2(0.25, 0.25)
+    animation.set_card(card_type)
+    await animation.animate(origin, field.position)
+    animation.queue_free()
+
+    var new_card = Card.new(card_type, player)
+    if is_token:
+        new_card.metadata[CardMeta.IS_TOKEN] = true
+    field.cards().push_card(new_card)
+    await new_card.on_play(playing_field)
+    playing_field.emit_cards_moved()
+
+    return new_card
+
+
 static func highlight_card(playing_field, card: Card) -> void:
     var card_node = find_card_node(playing_field, card)
     if card_node == null:
