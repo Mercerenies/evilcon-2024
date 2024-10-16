@@ -258,6 +258,13 @@ func get_cards_per_turn_modifier(_playing_field, _card, _player: StringName) -> 
     return 0
 
 
+func is_nuclear() -> bool:
+    # Returns true if this card has the word "Nuclear" in the name.
+    #
+    # This method MUST NOT await.
+    return "Nuclear" in get_title()
+
+
 func is_spiky_broadcasted(_playing_field, _this_card, _candidate_card) -> bool:
     # Broadcasted "Spiky" check for a Minion candidate card. See
     # MinionCardType.is_spiky for details.

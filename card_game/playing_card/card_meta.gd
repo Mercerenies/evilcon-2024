@@ -12,7 +12,9 @@ const LEVEL = &"LEVEL"
 const MORALE = &"MORALE"
 
 # Integer. An effect's turn counter, for cards that have one. Starts
-# at zero and counts up.
+# at zero by default and counts up, though some effects (such as
+# Foreman) can decrease this number below zero to make cards last
+# longer.
 const TURN_COUNTER = &"TURN_COUNTER"
 
 # Array of archetypes. Override for a Minion's archetypes. Replaces

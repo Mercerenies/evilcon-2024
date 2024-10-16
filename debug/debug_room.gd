@@ -13,7 +13,7 @@ func _ready():
     top_deck.cards().shuffle()
 
     $PlayingField.turn_number = 10  # Get extra EP :)
-    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.SILENT_CLOWN))
+    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.FOREMAN))
     #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DESTINYS_SONG))
     #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.KIDNAPPING_THE_PRESIDENT))
     #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DAMSEL_IN_DISTRESS))
@@ -34,15 +34,15 @@ func _ready():
 
 func _sample_deck():
     return [
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.FOREMAN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.INFERNAL_IMP),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.FOREVER_CLOWN),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.NUCLEAR_FUSION_PLANT),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.NUCLEAR_POWER_PLANT),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CURSED_TALISMAN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.HAY_BALES),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.NO_HONK_ZONE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.AGARIC_TURTLE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.MUSHROOM_MAN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.NO_HONK_ZONE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.MASKED_TURTLE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.SILENT_CLOWN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.MIDDLE_MANAGER),
