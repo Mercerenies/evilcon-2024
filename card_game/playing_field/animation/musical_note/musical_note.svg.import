@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://jriv5j1mt4nq"
-path="res://.godot/imported/musical_note.svg-718b7ac22c76e6916a7d319a1d9d2bd9.ctex"
+path="res://.godot/imported/musical_note.svg-585cca83719b5ca958956f64894fbc85.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://card_game/playing_field/animation/musical_note.svg"
-dest_files=["res://.godot/imported/musical_note.svg-718b7ac22c76e6916a7d319a1d9d2bd9.ctex"]
+source_file="res://card_game/playing_field/animation/musical_note/musical_note.svg"
+dest_files=["res://.godot/imported/musical_note.svg-585cca83719b5ca958956f64894fbc85.ctex"]
 
 [params]
 

@@ -3,12 +3,12 @@ extends Node
 
 # Helpers built on top of the PlayingField API.
 
-const CardMovingAnimation = preload("res://card_game/playing_field/animation/card_moving_animation.tscn")
+const CardMovingAnimation = preload("res://card_game/playing_field/animation/card_moving/card_moving_animation.tscn")
 const HiddenCardDisplay = preload("res://card_game/playing_card/hidden_card_display/hidden_card_display.tscn")
 const DeckCardDisplay = preload("res://card_game/playing_card/deck_card_display/deck_card_display.tscn")
 const InputBlockAnimation = preload("res://card_game/playing_field/animation/input_block_animation.gd")
-const PuffOfSmokeAnimation = preload("res://card_game/playing_field/animation/puff_of_smoke_animation.tscn")
-const MusicalNoteAnimation = preload("res://card_game/playing_field/animation/musical_note_animation.tscn")
+const PuffOfSmokeAnimation = preload("res://card_game/playing_field/animation/puff_of_smoke/puff_of_smoke_animation.tscn")
+const MusicalNoteAnimation = preload("res://card_game/playing_field/animation/musical_note/musical_note_animation.tscn")
 const NullMinion = preload("res://card_game/playing_card/cards/null_minion.gd")
 
 class CardPosition:

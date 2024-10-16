@@ -1,7 +1,7 @@
 class_name CardEffects
 extends Node
 
-const CardMovingAnimation = preload("res://card_game/playing_field/animation/card_moving_animation.tscn")
+const CardMovingAnimation = preload("res://card_game/playing_field/animation/card_moving/card_moving_animation.tscn")
 
 # Helpers for code that gets reused across several playing card
 # effects.

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://kvhs50r50nak"
-path="res://.godot/imported/puff_of_smoke.png-ba32f9163ededcf9bbf844140da98000.ctex"
+uid="uid://80ksdjko2ef6"
+path="res://.godot/imported/musical_note.png-96b9b71018f749b0678ce8a924a9c4a2.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://card_game/playing_field/animation/puff_of_smoke.png"
-dest_files=["res://.godot/imported/puff_of_smoke.png-ba32f9163ededcf9bbf844140da98000.ctex"]
+source_file="res://card_game/playing_field/animation/musical_note/musical_note.png"
+dest_files=["res://.godot/imported/musical_note.png-96b9b71018f749b0678ce8a924a9c4a2.ctex"]
 
 [params]
 

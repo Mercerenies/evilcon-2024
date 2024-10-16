@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://u2o0mr2ut32f"
-path="res://.godot/imported/puff_of_smoke.svg-de6469830e71738c67ff04f4ec8106d2.ctex"
+uid="uid://c2m724b5h4v76"
+path="res://.godot/imported/present_box.png-e7a0bc4ce5cf93d032248c8d19966d73.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://card_game/playing_field/animation/puff_of_smoke.svg"
-dest_files=["res://.godot/imported/puff_of_smoke.svg-de6469830e71738c67ff04f4ec8106d2.ctex"]
+source_file="res://card_game/playing_field/animation/present_box/present_box.png"
+dest_files=["res://.godot/imported/present_box.png-e7a0bc4ce5cf93d032248c8d19966d73.ctex"]
 
 [params]
 
@@ -32,6 +32,3 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
-svg/scale=1.0
-editor/scale_with_editor_scale=false
-editor/convert_colors_with_editor_theme=false

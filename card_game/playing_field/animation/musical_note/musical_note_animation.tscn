@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://beaqvknoxix0q"]
 
-[ext_resource type="Texture2D" uid="uid://80ksdjko2ef6" path="res://card_game/playing_field/animation/musical_note.png" id="1_1bstm"]
-[ext_resource type="Script" path="res://card_game/playing_field/animation/musical_note_animation.gd" id="1_ee87k"]
+[ext_resource type="Script" path="res://card_game/playing_field/animation/musical_note/musical_note_animation.gd" id="1_p3or8"]
+[ext_resource type="Texture2D" uid="uid://80ksdjko2ef6" path="res://card_game/playing_field/animation/musical_note/musical_note.png" id="2_tvpv5"]
 
 [sub_resource type="Curve" id="Curve_lepjg"]
 _data = [Vector2(0.00355873, 1), 0.0, 0.0, 0, 0, Vector2(0.505338, 0.698113), -0.589099, -0.589099, 0, 0, Vector2(1, 0), -1.74404, 0.0, 0, 0]
@@ -57,12 +57,12 @@ _data = {
 }
 
 [node name="MusicalNoteAnimation" type="Node2D"]
-script = ExtResource("1_ee87k")
+script = ExtResource("1_p3or8")
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="."]
 amount = 3
 process_material = SubResource("ParticleProcessMaterial_hg07f")
-texture = ExtResource("1_1bstm")
+texture = ExtResource("2_tvpv5")
 lifetime = 2.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

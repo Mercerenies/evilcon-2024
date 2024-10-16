@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c2m724b5h4v76"
-path="res://.godot/imported/present_box.png-7a27eb7623b6220f2afa196bd69417fd.ctex"
+uid="uid://uvvplkn7qfw5"
+path="res://.godot/imported/present_box.svg-83cde9734be3d51b115c828c208653d8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://card_game/playing_field/animation/present_box.png"
-dest_files=["res://.godot/imported/present_box.png-7a27eb7623b6220f2afa196bd69417fd.ctex"]
+source_file="res://card_game/playing_field/animation/present_box/present_box.svg"
+dest_files=["res://.godot/imported/present_box.svg-83cde9734be3d51b115c828c208653d8.ctex"]
 
 [params]
 
@@ -32,3 +32,6 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
+svg/scale=1.0
+editor/scale_with_editor_scale=false
+editor/convert_colors_with_editor_theme=false

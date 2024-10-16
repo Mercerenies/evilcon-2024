@@ -1,6 +1,6 @@
 extends Node2D
 
-const CardMovingAnimation = preload("res://card_game/playing_field/animation/card_moving_animation.tscn")
+const CardMovingAnimation = preload("res://card_game/playing_field/animation/card_moving/card_moving_animation.tscn")
 const PlayingCardDisplay = preload("res://card_game/playing_card/playing_card_display/playing_card_display.tscn")
 const BlankCardDisplay = preload("res://card_game/playing_card/blank_card_display/blank_card_display.tscn")
 const HiddenCardDisplay = preload("res://card_game/playing_card/hidden_card_display/hidden_card_display.tscn")

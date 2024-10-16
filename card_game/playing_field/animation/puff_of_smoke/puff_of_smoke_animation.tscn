@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://d2ofb3pgrl0mt"]
 
-[ext_resource type="Script" path="res://card_game/playing_field/animation/puff_of_smoke_animation.gd" id="1_0yqbv"]
-[ext_resource type="Texture2D" uid="uid://kvhs50r50nak" path="res://card_game/playing_field/animation/puff_of_smoke.png" id="2_khtkg"]
+[ext_resource type="Script" path="res://card_game/playing_field/animation/puff_of_smoke/puff_of_smoke_animation.gd" id="1_8ohdx"]
+[ext_resource type="Texture2D" uid="uid://kvhs50r50nak" path="res://card_game/playing_field/animation/puff_of_smoke/puff_of_smoke.png" id="2_xtcl3"]
 
 [sub_resource type="Curve" id="Curve_q8ur0"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.733333, 0.802198), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -42,12 +42,12 @@ _data = {
 }
 
 [node name="PuffOfSmokeAnimation" type="Node2D"]
-script = ExtResource("1_0yqbv")
+script = ExtResource("1_8ohdx")
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="."]
 amount = 32
 process_material = SubResource("ParticleProcessMaterial_n7fl7")
-texture = ExtResource("2_khtkg")
+texture = ExtResource("2_xtcl3")
 lifetime = 0.5
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

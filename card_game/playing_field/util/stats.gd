@@ -7,7 +7,7 @@ extends Node
 # fire-and-forget them. All semantic changes to the game state are
 # instantaneous, and only the animation is awaitable.
 
-const NumberAnimation = preload("res://card_game/playing_field/animation/number_animation.tscn")
+const NumberAnimation = preload("res://card_game/playing_field/animation/number/number_animation.tscn")
 
 # If you want to show two NumberAnimations on the same card at the
 # same time, this is the standard offset to show the second one at.
