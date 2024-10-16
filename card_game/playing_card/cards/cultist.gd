@@ -38,8 +38,8 @@ func get_rarity() -> int:
 
 
 func on_attack_phase(playing_field, this_card) -> void:
-    # Overrides and does NOT call super. Farmer Cultist does not
-    # perform a regular attack, even if he has a nonzero Level.
+    # Overrides and does NOT call super. Cultist does not perform a
+    # regular attack, even if it has a nonzero Level.
     var owner = this_card.owner
     if playing_field.turn_player != owner:
         return
