@@ -13,7 +13,7 @@ func _ready():
     top_deck.cards().shuffle()
 
     $PlayingField.turn_number = 10  # Get extra EP :)
-    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.NO_HONK_ZONE))
+    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.SILENT_CLOWN))
     #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DESTINYS_SONG))
     #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.KIDNAPPING_THE_PRESIDENT))
     #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DAMSEL_IN_DISTRESS))
@@ -42,9 +42,9 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.HAY_BALES),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.NO_HONK_ZONE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.AGARIC_TURTLE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.TODDLER_CLOWN),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.TODDLER_CLOWN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.MUSHROOM_MAN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.MASKED_TURTLE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.SILENT_CLOWN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.MIDDLE_MANAGER),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CLOWN_NOSE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.PACIFIER),
