@@ -6,7 +6,7 @@ func get_id() -> int:
 
 
 func get_title() -> String:
-    return "Fairy"
+    return "Fanciful Fairy"
 
 
 func get_text() -> String:

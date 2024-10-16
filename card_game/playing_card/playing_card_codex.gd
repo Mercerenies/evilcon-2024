@@ -117,7 +117,7 @@ enum ID {
     RED_TURTLE = 109,
     SPIKY_RED_TURTLE = 110,
     TREE_NYMPH = 111,
-    FAIRY = 112,
+    FANCIFUL_FAIRY = 112,
     ICOSAKING = 113,
     TRUE_NINJA_MASTER = 114,
     THE_MASTERMIME = 115,
@@ -136,6 +136,9 @@ enum ID {
     BARRY = 128,
     THE_DEVIL = 129,
     MYSTERY_BOX = 130,
+    INFERNAL_IMP = 131,
+    GREEDY_GOBLIN = 132,
+    ANCIENT_DEMON = 133,
 }
 
 static func get_entity_script(n: int) -> GDScript:
@@ -364,8 +367,8 @@ static func get_entity_script(n: int) -> GDScript:
             return load("res://card_game/playing_card/cards/spiky_red_turtle.gd") as GDScript
         ID.TREE_NYMPH:
             return load("res://card_game/playing_card/cards/tree_nymph.gd") as GDScript
-        ID.FAIRY:
-            return load("res://card_game/playing_card/cards/fairy.gd") as GDScript
+        ID.FANCIFUL_FAIRY:
+            return load("res://card_game/playing_card/cards/fanciful_fairy.gd") as GDScript
         ID.ICOSAKING:
             return load("res://card_game/playing_card/cards/icosaking.gd") as GDScript
         ID.TRUE_NINJA_MASTER:
@@ -402,6 +405,12 @@ static func get_entity_script(n: int) -> GDScript:
             return load("res://card_game/playing_card/cards/the_devil.gd") as GDScript
         ID.MYSTERY_BOX:
             return load("res://card_game/playing_card/cards/mystery_box.gd") as GDScript
+        ID.INFERNAL_IMP:
+            return load("res://card_game/playing_card/cards/infernal_imp.gd") as GDScript
+        ID.GREEDY_GOBLIN:
+            return load("res://card_game/playing_card/cards/greedy_goblin.gd") as GDScript
+        ID.ANCIENT_DEMON:
+            return load("res://card_game/playing_card/cards/ancient_demon.gd") as GDScript
         _:
             push_warning("Invalid ID value: %d" % n)
             return null
@@ -411,4 +420,4 @@ static func get_entity(n: int):
     return get_entity_script(n).new()
 
 static func get_all_ids() -> Array:
-    return range(131)
+    return range(134)
