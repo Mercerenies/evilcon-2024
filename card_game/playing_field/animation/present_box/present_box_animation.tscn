@@ -1,0 +1,86 @@
+[gd_scene load_steps=4 format=3 uid="uid://c6kj7arnsu2kp"]
+
+[ext_resource type="Texture2D" uid="uid://c2m724b5h4v76" path="res://card_game/playing_field/animation/present_box/present_box.png" id="1_cm7hn"]
+
+[sub_resource type="Animation" id="Animation_vqfyr"]
+resource_name = "PresentBoxAnimation"
+length = 4.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PresentBox:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(-2, 1),
+"update": 0,
+"values": [Vector2(0, 480), Vector2(0, 100)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PresentBox/FrontSprite:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [2, 3]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("PresentBox/BackSprite:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [4, 5]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("CardNode2D:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 1.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_nqqo2"]
+_data = {
+"PresentBoxAnimation": SubResource("Animation_vqfyr")
+}
+
+[node name="PresentBoxAnimation" type="Node2D"]
+
+[node name="PresentBox" type="Node2D" parent="."]
+position = Vector2(0, 100)
+
+[node name="FrontSprite" type="Sprite2D" parent="PresentBox"]
+z_index = 1
+texture = ExtResource("1_cm7hn")
+hframes = 2
+vframes = 3
+frame = 3
+
+[node name="BackSprite" type="Sprite2D" parent="PresentBox"]
+texture = ExtResource("1_cm7hn")
+hframes = 2
+vframes = 3
+frame = 5
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_nqqo2")
+}
+
+[node name="CardNode2D" type="Node2D" parent="."]
+visible = false
