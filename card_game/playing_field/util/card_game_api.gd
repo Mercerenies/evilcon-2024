@@ -301,7 +301,7 @@ static func highlight_card(playing_field, card: Card) -> void:
     input_block.free()
 
 
-# Rotation animation: Used for Vitamin Capsule.
+# Rotation animation: Used for Vitamin Capsule and Ultimate Fusion.
 static func rotate_card(playing_field, card: Card) -> void:
     var card_node = find_card_node(playing_field, card)
     if card_node == null:
