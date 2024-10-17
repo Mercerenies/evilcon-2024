@@ -10,7 +10,7 @@ func get_title() -> String:
 
 
 func get_text() -> String:
-    return "Instead of attacking, Cultist gains 1 Level."
+    return "Instead of attacking, Cultist gains 1 Level. Cultist is immune to enemy card effects."
 
 
 func get_picture_index() -> int:
@@ -53,3 +53,10 @@ func on_attack_phase(playing_field, this_card) -> void:
     await Stats.add_level(playing_field, this_card, 1, {
         "offset": Stats.CARD_MULTI_UI_OFFSET,  # Don't overlap with the "-1 Morale" message.
     })
+
+
+func do_influence_check(playing_field, target_card, source_card, silently: bool) -> bool:
+    return (
+        await CardEffects.do_ninja_influence_check(playing_field, target_card, source_card, silently) and
+        await super.do_influence_check(playing_field, target_card, source_card, silently)
+    )
