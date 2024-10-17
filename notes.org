@@ -616,6 +616,33 @@
      - If the opponent plays the third Destiny Song while this card is
        in play, they win as soon as the card goes out of play.
    + [ ] The "thug" character from Nail?
+** SCRAPPED IDEAS
+   Various ideas that didn't end up working out or were cut for one
+   reason or another.
+*** FIELD EFFECTS
+    Every archetype has an Instant +1 effect that benefits every
+    Minion of its type (regardless of owner). These include "Pasta
+    Power!", "Rain Dance", etc.
+
+    Originally, we were going to have a Field Effect, which is an
+    Ongoing +1 to all Minions of that type, but you can only have one
+    field effect in play per player. I didn't really like that idea,
+    since it required no strategy (you play a field effect, then
+    forget about it forever and get a permanent +1). The field effect
+    card names are listed below for historical purposes. Many of these
+    names have been repurposed to do something else.
+    + Italian Restaurant: Pasta Field Effect
+    + Pentagon Palace: Shape Field Effect
+    + Mushroom Fields: Nature Field Effect
+    + Coastal Shore: Turtle Field Effect
+    + Circus Tent: Clown Field Effect
+    + Mainframe Room: Robot Field Effect
+    + Ancient Training Grounds: Ninja Field Effect
+    + Treetops: Bee Field Effect
+    + Dismal Cemetery: Undead Field Effect
+    + Office Building: Human Field Effect
+    + Greener Pastures: Farm Field Effect
+    + River Styx: Demon Field Effect
 ** CREDITS
    Making notes of where I get certain assets, so I don't forget later.
 *** CODE LIBRARIES
