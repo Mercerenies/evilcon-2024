@@ -6,16 +6,23 @@ const CardMovingAnimation = preload("res://card_game/playing_field/animation/car
 # Helpers for code that gets reused across several playing card
 # effects.
 
-# Powers up all Minions on the field which have the specified
-# archetype.
-static func power_up_archetype(playing_field, source_card, archetype: int) -> void:
+# Powers up all Minions on the field which have at least one of the
+# specified archetypes. The `archetypes` argument can either be a
+# single Archetype constant or an array of them.
+static func power_up_archetype(playing_field, source_card, archetypes) -> void:
+    if archetypes is int:
+        archetypes = [archetypes]
     var minions = CardGameApi.get_minions_in_play(playing_field)
     for minion in minions:
-        if not minion.has_archetype(playing_field, archetype):
+        if not _has_any_archetype(playing_field, minion, archetypes):
             continue
         var can_influence = await minion.card_type.do_influence_check(playing_field, minion, source_card, false)
         if can_influence:
             await Stats.add_level(playing_field, minion, 1)
+
+
+static func _has_any_archetype(playing_field, minion, archetypes: Array) -> bool:
+    return archetypes.any(func (a): return minion.has_archetype(playing_field, a))
 
 
 # Performs the ninja influence check for the specified card.
