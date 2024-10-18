@@ -13,7 +13,7 @@ func _ready():
     top_deck.cards().shuffle()
 
     $PlayingField.turn_number = 10  # Get extra EP :)
-    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.CIRCUS_MAKEUP))
+    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.GREENER_PASTURES))
     #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.BEEKEEPER))
     #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.QUEEN_BEE))
     #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DESTINYS_SONG))
@@ -48,10 +48,10 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.MASKED_TURTLE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.SILENT_CLOWN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.MIDDLE_MANAGER),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CLOWN_NOSE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.PACIFIER),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.WITH_EXTRA_CHEESE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CHICKEN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.BUSY_BEE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.WORKER_BEE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.BOILING_POT_OF_WATER),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CHICK_INATOR),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.BRAINWASHING_RAY),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CHICKEN),
     ]
