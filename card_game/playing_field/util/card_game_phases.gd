@@ -9,7 +9,7 @@ static func start_of_full_turn(playing_field) -> void:
 
 static func draw_phase(playing_field, player: StringName) -> void:
     var evil_points_to_gain = StatsCalculator.get_evil_points_per_turn(playing_field, player)
-    await Stats.set_evil_points(playing_field, player, evil_points_to_gain)
+    await Stats.add_evil_points(playing_field, player, evil_points_to_gain)
 
     var cards_to_draw = StatsCalculator.get_cards_per_turn(playing_field, player)
     await CardGameApi.draw_cards(playing_field, player, cards_to_draw)
