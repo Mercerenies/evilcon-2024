@@ -13,7 +13,7 @@ func _ready():
     top_deck.cards().shuffle()
 
     $PlayingField.turn_number = 10  # Get extra EP :)
-    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.BERRY))
+    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.CHRIS_COGSWORTH))
     #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.QUEEN_BEE))
     #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DESTINYS_SONG))
     #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.KIDNAPPING_THE_PRESIDENT))
@@ -36,7 +36,7 @@ func _ready():
 func _sample_deck():
     return [
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.FOREMAN),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.INFERNAL_IMP),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CHRIS_COGSWORTH),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.NUCLEAR_FUSION_PLANT),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.NUCLEAR_POWER_PLANT),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN),
@@ -51,6 +51,6 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.RED_TURTLE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.SHELL_POLISHING),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.BOILING_POT_OF_WATER),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CHICK_INATOR),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CHICKEN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CHICKEN),
     ]

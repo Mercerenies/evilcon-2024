@@ -75,6 +75,17 @@
     + Have a total of at least X Effect cards in play at once.
     + Have at least 6 of your own cards exiled in one game.
     + Successfully activate Ultimate Fusion.
+    + Successfully activate Team Cobra.
+    + Have 20 EP at one time.
+      - Note: I think 36 is the legit maximum with a deck fully
+        structured around EP-generation. (36 = 8 Regular + 3 from
+        Nuclear Power Plants + 3 from Nuclear Fusion Plants + 18 from
+        Deals with Devil + 4 from Berry expiring with good timing). If
+        we assume perfect Mystery Box luck, then you can get to 54
+        with three more Mystery Boxed Devil Deals. This isn't really
+        relevant to gameplay, but it's amusing. I wonder if you could
+        get higher with good draw from Pasta-themed cards.
+    + Have 11 EP per turn.
 *** VARIANT IDEAS
     In addition to the achievements, there may be an NPC who lets you
     play "variants" of the main game against him, as a sort of
