@@ -13,7 +13,7 @@ func _ready():
     top_deck.cards().shuffle()
 
     $PlayingField.turn_number = 10  # Get extra EP :)
-    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.STINGER_SWARM))
+    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.HIVEMIND))
     #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.QUEEN_BEE))
     #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DESTINYS_SONG))
     #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.KIDNAPPING_THE_PRESIDENT))
@@ -41,7 +41,7 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.NUCLEAR_POWER_PLANT),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.STINGER_SWARM),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.RED_TURTLE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.NO_HONK_ZONE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.HIVEMIND),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.ZOMBEE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.WORKER_BEE),
