@@ -2,15 +2,15 @@ extends EffectCardType
 
 
 func get_id() -> int:
-    return 166
+    return 167
 
 
 func get_title() -> String:
-    return "Forbidden Fruit"
+    return "Cybernetic Enhancement"
 
 
 func get_text() -> String:
-    return "Your most powerful non-[icon]DEMON[/icon] DEMON Minion is now of type [icon]DEMON[/icon] DEMON."
+    return "Your most powerful [icon]HUMAN[/icon] HUMAN Minion is now of type [icon]ROBOT[/icon] ROBOT."
 
 
 func get_star_cost() -> int:
@@ -18,7 +18,7 @@ func get_star_cost() -> int:
 
 
 func get_picture_index() -> int:
-    return 174
+    return 159
 
 
 func get_rarity() -> int:
@@ -34,11 +34,11 @@ func on_play(playing_field, card) -> void:
 func _evaluate_effect(playing_field, this_card) -> void:
     await CardGameApi.highlight_card(playing_field, this_card)
     var owner = this_card.owner
-    var non_demons = (
+    var candidates = (
         playing_field.get_minion_strip(owner).cards().card_array()
-        .filter(func(c): return not c.has_archetype(playing_field, Archetype.DEMON))
+        .filter(func(c): return c.has_archetype(playing_field, Archetype.HUMAN) and not c.has_archetype(playing_field, Archetype.ROBOT))
     )
-    if len(non_demons) == 0:
+    if len(candidates) == 0:
         var card_node = CardGameApi.find_card_node(playing_field, this_card)
         Stats.play_animation_for_stat_change(playing_field, card_node, 0, {
             "custom_label_text": Stats.NO_TARGET_TEXT,
@@ -46,13 +46,13 @@ func _evaluate_effect(playing_field, this_card) -> void:
         })
         return
 
-    var most_powerful_non_demon = Util.max_by(non_demons, CardEffects.card_power_less_than(playing_field))
-    var can_influence = await most_powerful_non_demon.card_type.do_influence_check(playing_field, most_powerful_non_demon, this_card, false)
+    var most_powerful_candidate = Util.max_by(candidates, CardEffects.card_power_less_than(playing_field))
+    var can_influence = await most_powerful_candidate.card_type.do_influence_check(playing_field, most_powerful_candidate, this_card, false)
     if can_influence:
-        var card_node = CardGameApi.find_card_node(playing_field, most_powerful_non_demon)
+        var card_node = CardGameApi.find_card_node(playing_field, most_powerful_candidate)
         Stats.play_animation_for_stat_change(playing_field, card_node, 0, {
-            "custom_label_text": Stats.DEMONED_TEXT,
-            "custom_label_color": Stats.DEMONED_COLOR,
+            "custom_label_text": Stats.ROBOTED_TEXT,
+            "custom_label_color": Stats.ROBOTED_COLOR,
         })
-        most_powerful_non_demon.metadata[CardMeta.ARCHETYPE_OVERRIDES] = [Archetype.DEMON]
+        most_powerful_candidate.metadata[CardMeta.ARCHETYPE_OVERRIDES] = [Archetype.ROBOT]
     playing_field.emit_cards_moved()
