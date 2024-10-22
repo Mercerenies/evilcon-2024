@@ -13,7 +13,7 @@ func _ready():
     top_deck.cards().shuffle()
 
     $PlayingField.turn_number = 10  # Get extra EP :)
-    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.LAUGHING_GAS))
+    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.INVASIVE_PARASITES))
     $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.LAUGHING_GAS))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN), CardPlayer.TOP))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN), CardPlayer.TOP))
@@ -36,14 +36,14 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.NUCLEAR_FUSION_PLANT),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.NUCLEAR_POWER_PLANT),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.STINGER_SWARM),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.RED_TURTLE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.INVASIVE_PARASITES),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.HIVEMIND),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.ZOMBEE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.WORKER_BEE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.MUSHROOM_MAN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CORNY_ACORN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.BUSY_BEE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.BUSY_BEE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.BERRY),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CORNY_ACORN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.NINJA_MASK),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.SHELL_POLISHING),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.BOILING_POT_OF_WATER),

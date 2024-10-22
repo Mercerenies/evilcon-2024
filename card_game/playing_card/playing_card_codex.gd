@@ -162,6 +162,7 @@ enum ID {
     EXTENDED_WARRANTY = 154,
     NINJA_MASK = 155,
     LAUGHING_GAS = 156,
+    INVASIVE_PARASITES = 157,
 }
 
 static func get_entity_script(n: int) -> GDScript:
@@ -480,6 +481,8 @@ static func get_entity_script(n: int) -> GDScript:
             return load("res://card_game/playing_card/cards/ninja_mask.gd") as GDScript
         ID.LAUGHING_GAS:
             return load("res://card_game/playing_card/cards/laughing_gas.gd") as GDScript
+        ID.INVASIVE_PARASITES:
+            return load("res://card_game/playing_card/cards/invasive_parasites.gd") as GDScript
         _:
             push_warning("Invalid ID value: %d" % n)
             return null
@@ -489,4 +492,4 @@ static func get_entity(n: int):
     return get_entity_script(n).new()
 
 static func get_all_ids() -> Array:
-    return range(157)
+    return range(158)
