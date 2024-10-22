@@ -15,6 +15,8 @@ func _ready():
     $PlayingField.turn_number = 10  # Get extra EP :)
     $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.FOREMAN))
     $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.HYPERACTIVE_BEE))
+    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.GREEN_RANGER))
+    $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.LAUGHING_GAS))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN), CardPlayer.TOP))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN), CardPlayer.TOP))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN), CardPlayer.TOP))
@@ -44,7 +46,7 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.WIMPY),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.BUSY_BEE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CORNY_ACORN),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.NINJA_MASK),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.GREEN_RANGER),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.METAL_CHICKEN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.BOILING_POT_OF_WATER),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.EXTENDED_WARRANTY),
