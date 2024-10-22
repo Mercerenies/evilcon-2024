@@ -386,23 +386,55 @@
 *** DEFINITIONS
     Miscellaneous definitions for words used on cards.
     + Expire :: A Minion expires when its Morale hits zero. A Minion
-      is always destroyed immediately /after/ expiring. Effect cards
+      is normally destroyed immediately /after/ expiring. Effect cards
       never expire, and a card removed from the field by means other
       than having zero Morale is not considered to have expired.
+      - A Minion card can expire on the opponent's turn if a card
+        effect, such as Ice Moth, causes it to drop Morale outside of
+        its Morale Phase.
+      - During expiration, a Minion can occasionally re-gain Morale
+        from a card effect. If it does so, then it is not destroyed as
+        a result of the expiration.
+        * The exact mechanics of this are somewhat technical in
+          nature, and players usually needn't worry about the
+          specifics. A Minion whose Morale hits zero actually
+          undergoes two expiration phases: pre-expiration and proper
+          expiration. During pre-expiration, only effects which change
+          Morale run, and the Minion can still be saved. Once
+          pre-expiration is completed, the Minion checks its Morale
+          once more and cancels the process if ~Morale > 0~. If not,
+          then the Minion fully commits to expiring and runs the
+          proper expiration phase, where any other "When X expires"
+          effects run.
     + Destroy :: A card is destroyed when it moves from the field to
-      the discard pile for any reason.
-    + Discard :: A card is discarded when it moves from the hand to
-      the discard pile.
+      the discard pile for any reason, including as a result of the
+      normal expiration process for Minions.
+      - When a card is destroyed, it always goes to its /original/
+        owner's discard pile, even if it changed ownership while on
+        the field.
+    + Discard :: A card is discarded when it moves from the hand
+      directly to the discard pile.
     + Exile :: A card in any position on the board (field, hand, deck,
       or discard pile) can be exiled. When a card is exiled, it is
       completely removed from play for the remainder of this card
       game. There is no way to recover an exiled card.
     + Play :: A card is "played" when it moves from a position not on
       the field (i.e. deck, hand, or discard pile) to being on the
-      field. When a card is played from the hand as part of a player's
-      normal turn, it costs EP to do so. Creating a token card from
-      nothing does /not/ count as playing that card, since the card is
-      not being moved from anywhere else.
+      field.
+      - When a card is played from the hand as part of a player's
+        normal turn, that player must spend EP equal to the card's
+        cost in order to do so.
+      - Changing the ownership of a card that is already in play (such
+        as via Brainwashing Ray) does not count as playing that card a
+        second time.
+      - Creating a token card from nothing does /not/ count as playing
+        that card, since the card is not being moved from anywhere
+        else.
+      - As a singular exception to the above, Mystery Box creates
+        /and/ plays a random card as part of its effect. This
+        exception is carved out, since so many of the cards Mystery
+        Box can spawn /depend/ on being put into play in order to
+        trigger.
     + Summon :: This is a synonym for "Play". You may see it in some
       old notes for this game. Generally the word "Play" should be
       preferred over "Summon", but in some cases this word makes
@@ -441,6 +473,13 @@
       So, for instance, if a Masked Turtle (Ninja + Turtle) was
       "turned into a Clown", then he is now /just/ a Clown, not a
       Ninja or a Turtle anymore.
+    + When a card is removed from the field, any temporary changes
+      that were made to that card are reverted. These include, but are
+      not limited to, temporary increases or decreases to the Level,
+      changes to the archetype of a Minion, and immunity to effects
+      (e.g. Ninja Mask). Essentially, a card which is not on the field
+      reverts back to its factory condition and only has the stats and
+      abilities listed on the physical card.
 ** RANDOM IDEAS
    + [ ] Villain(s) from Three Rules Standing
    + [ ] Costume shop for some cosmetic upgrades
@@ -453,6 +492,7 @@
      - If the opponent plays the third Destiny Song while this card is
        in play, they win as soon as the card goes out of play.
    + [ ] The "thug" character from Nail?
+   + [ ] Representation (cameos?) from Growing Up?
 ** SCRAPPED IDEAS
    Various ideas that didn't end up working out or were cut for one
    reason or another.
