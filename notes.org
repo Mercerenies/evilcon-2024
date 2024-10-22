@@ -97,6 +97,7 @@
     + Both players' fort defense is insanely high, and Destiny's Song
       is forbidden
     + All cards cost 1 EP to play
+    + Both players start with completely randomized decks.
 *** SHOPS
     There are basic shops that sell common / uncommon cards for money.
     There may also be trading-style shops where you can trade specific
