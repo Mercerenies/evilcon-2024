@@ -74,3 +74,10 @@ static func reduce_while_async(array: Array, method: Callable, stop_condition: C
             break
         accum = await method.call(accum, element)
     return accum
+
+
+static func find_if(array: Array, predicate: Callable):
+    for i in range(len(array)):
+        if predicate.call(array[i]):
+            return i
+    return null

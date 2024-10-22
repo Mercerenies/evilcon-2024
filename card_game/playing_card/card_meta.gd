@@ -46,3 +46,7 @@ const HAS_SPECIAL_IMMUNITY = &"HAS_SPECIAL_IMMUNITY"
 # player's deck, while a doomed card is a soon-to-be-exiled card that
 # started out in the player's deck.
 const IS_DOOMED = &"IS_DOOMED"
+
+# Boolean. Only used for the Wimpy Minion card. True if the "Wimpy
+# Smash!" effect has been used on this particular Minion already.
+const WIMPY_SMASHING = &"WIMPY_SMASHING"
