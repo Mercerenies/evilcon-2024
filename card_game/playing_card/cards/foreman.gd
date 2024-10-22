@@ -10,7 +10,7 @@ func get_title() -> String:
 
 
 func get_text() -> String:
-    return "Cards you play with \"Nuclear\" in the name last 1 extra turn."
+    return "Cards you play which \"last X turns\" last an extra turn."
 
 
 func get_picture_index() -> int:
@@ -40,8 +40,6 @@ func get_rarity() -> int:
 func on_play_broadcasted(playing_field, this_card, played_card) -> void:
     super.on_play_broadcasted(playing_field, this_card, played_card)
     if this_card.owner != played_card.owner:
-        return
-    if not played_card.card_type.is_nuclear():
         return
     if not (CardMeta.TURN_COUNTER in played_card.metadata):
         return

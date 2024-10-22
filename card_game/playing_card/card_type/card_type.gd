@@ -260,6 +260,10 @@ func get_cards_per_turn_modifier(_playing_field, _card, _player: StringName) -> 
 
 func is_nuclear() -> bool:
     # Returns true if this card has the word "Nuclear" in the name.
+    # This method is currently unused, as it was only used for a
+    # previous version of the Foreman's effect (Foreman used to be
+    # restricted to "Nuclear" cards; now it applies to all timed
+    # effect cards).
     #
     # This method MUST NOT await.
     return "Nuclear" in get_title()
