@@ -28,7 +28,7 @@ module Codex
       input_files.each do |path|
         entry = build_entry(path)
         next if entry.nil?
-        raise "Duplicate ID value #{id} found at #{entries[entry.id].path} and #{path}" if entries.key?(entry.id)
+        raise "Duplicate ID value #{entry.id} found at #{entries[entry.id].path} and #{path}" if entries.key?(entry.id)
 
         entries[entry.id] = entry
       end
