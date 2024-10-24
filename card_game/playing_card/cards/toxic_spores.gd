@@ -37,11 +37,8 @@ func _perform_effect(playing_field, this_card) -> void:
     var opponent = CardPlayer.other(owner)
 
     if not _owner_has_nature_minion(playing_field, owner):
-        var card_node = CardGameApi.find_card_node(playing_field, this_card)
-        Stats.play_animation_for_stat_change(playing_field, card_node, 0, {
-            "custom_label_text": Stats.NO_TARGET_TEXT,
-            "custom_label_color": Stats.NO_TARGET_COLOR,
-        })  # TODO All of these cards that require a card to be present on owner's side should use a different word than "target". Maybe "trigger"?
+        # TODO All of these cards that require a card to be present on owner's side should use a different word than "target". Maybe "trigger"?
+        Stats.show_text(playing_field, this_card, PopupText.NO_TARGET)
         return
 
     var target_minion = CardEffects.most_powerful_minion(playing_field, opponent)
