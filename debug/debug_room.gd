@@ -13,7 +13,7 @@ func _ready():
     top_deck.cards().shuffle()
 
     $PlayingField.turn_number = 10  # Get extra EP :)
-    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.CYBERNETIC_ENHANCEMENT))
+    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.SHELL_SHIELD))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN), CardPlayer.TOP))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN), CardPlayer.TOP))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN), CardPlayer.TOP))
@@ -38,13 +38,13 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.INVASIVE_PARASITES),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.BULL_MARKET),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.WIMPY_SMASH),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CONTRACTOR),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.SPIKY_TURTLE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.FORBIDDEN_FRUIT),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.WIMPY),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.INFERNAL_IMP),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.TINY_TURTLE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CORNY_ACORN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.RED_TURTLE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.GREEN_RANGER),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.METAL_CHICKEN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.BOILING_POT_OF_WATER),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.ICE_MOTH),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CHICKEN),
