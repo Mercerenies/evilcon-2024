@@ -10,7 +10,7 @@ func get_title() -> String:
 
 
 func get_text() -> String:
-    return "If you control at least one [icon]TURTLE[/icon] Turtle Minion, then enemy Level 1 Minions deal no damage. Lasts 2 turns."
+    return "If you control at least one [icon]TURTLE[/icon] TURTLE Minion, then enemy Level 1 Minions deal no damage. Lasts 2 turns."
 
 
 func get_total_turn_count() -> int:
