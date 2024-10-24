@@ -41,11 +41,7 @@ func on_end_phase(playing_field, card) -> void:
             if undead_card.card_type.get_morale(playing_field, undead_card) != 1:
                 await Stats.set_morale(playing_field, undead_card, 1)
         else:
-            var card_node = CardGameApi.find_card_node(playing_field, card)
-            Stats.play_animation_for_stat_change(playing_field, card_node, 0, {
-                "custom_label_text": Stats.NO_TARGET_TEXT,
-                "custom_label_color": Stats.NO_TARGET_COLOR,
-            })
+            Stats.show_text(playing_field, card, PopupText.NO_TARGET)
     await super.on_end_phase(playing_field, card)
 
 

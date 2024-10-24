@@ -47,12 +47,9 @@ func on_expire(playing_field, card) -> void:
     var valid_targets = deck.cards().card_array().filter(func (deck_card):
         return deck_card is EffectCardType and deck_card.is_hero())
     if len(valid_targets) == 0:
-        var card_node = CardGameApi.find_card_node(playing_field, card)
-        Stats.play_animation_for_stat_change(playing_field, card_node, 0, {
-            "custom_label_text": Stats.NO_TARGET_TEXT,
-            "custom_label_color": Stats.NO_TARGET_COLOR,
-        })
-    else:
-        # Choose a target card and draw
-        var target_card = playing_field.randomness.choose(valid_targets)
-        await CardGameApi.draw_specific_card(playing_field, owner, target_card)
+        Stats.show_text(playing_field, card, PopupText.NO_TARGET)
+        return
+
+    # Choose a target card and draw
+    var target_card = playing_field.randomness.choose(valid_targets)
+    await CardGameApi.draw_specific_card(playing_field, owner, target_card)

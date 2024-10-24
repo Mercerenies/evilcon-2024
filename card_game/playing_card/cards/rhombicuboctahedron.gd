@@ -18,7 +18,7 @@ func get_star_cost() -> int:
 
 
 func get_picture_index() -> int:
-    return 114  # TODO: I forgot to draw this one! Draw it!
+    return 114
 
 
 func get_rarity() -> int:
@@ -41,12 +41,7 @@ func _do_effect(playing_field, card) -> void:
         .filter(func(target_card): return target_card.card_type.get_morale(playing_field, target_card) <= 1)
     )
     if len(opponent_minions_to_destroy) == 0:
-        var card_node = CardGameApi.find_card_node(playing_field, card)
-        Stats.play_animation_for_stat_change(playing_field, card_node, 0, {
-            "custom_label_text": Stats.NO_TARGET_TEXT,
-            "custom_label_color": Stats.NO_TARGET_COLOR,
-            "offset": Stats.CARD_MULTI_UI_OFFSET,  # Don't overlap with the "-1 Morale" message.
-        })
+        Stats.show_text(playing_field, card, PopupText.NO_TARGET)
     else:
         for minion in opponent_minions_to_destroy:
             var can_influence = await minion.card_type.do_influence_check(playing_field, minion, card, false)
