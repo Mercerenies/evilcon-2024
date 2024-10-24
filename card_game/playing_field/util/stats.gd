@@ -41,7 +41,8 @@ const ROBOTED_COLOR := Color.WEB_PURPLE
 # * custom_label_color (Color) - Overrides the default label color on
 #   the animation.
 #
-# * offset (Vector2) - Position offset from the target node.
+# * offset (Vector2) - Position offset from the target node. If
+#   supplied as a scalar, it is multiplied by CARD_MULTI_UI_OFFSET.
 static func play_animation_for_stat_change(playing_field, stat_node: Node2D, delta: int, opts = {}) -> void:
     var animation_layer = playing_field.get_animation_layer()
     var animation = NumberAnimation.instantiate()
@@ -53,6 +54,28 @@ static func play_animation_for_stat_change(playing_field, stat_node: Node2D, del
         animation.custom_label_color = opts["custom_label_color"]
     animation_layer.add_child(animation)
     await animation.animation_finished
+
+
+# Shows common card text. `text` should be a CardText.Text object or
+# one of the StringName constants from PopupText.
+#
+# Accepted options:
+#
+# * offset (Vector2 or float) - Position offset from the target node. If
+#   supplied as a scalar, it is multiplied by CARD_MULTI_UI_OFFSET.
+static func show_text(playing_field, card, text, opts = {}) -> void:
+    if text is StringName:
+        text = PopupText.get_text(text)
+    var offset = opts.get("offset", Vector2.ZERO)
+    if offset is int or offset is float:
+        offset = offset * CARD_MULTI_UI_OFFSET
+
+    var card_node = CardGameApi.find_card_node(playing_field, card)
+    await play_animation_for_stat_change(playing_field, card_node, 0, {
+        "custom_label_text": text.contents,
+        "custom_label_color": text.color,
+        "offset": offset,
+    })
 
 
 static func set_evil_points(playing_field, player: StringName, new_value: int) -> void:
