@@ -36,11 +36,7 @@ func _evaluate_effect(playing_field, card) -> void:
     var opponent = CardPlayer.other(card.owner)
     var own_minions = playing_field.get_minion_strip(card.owner).cards().card_array()
     if not own_minions.any(func (m): return m.card_type.is_spiky(playing_field, m)):
-        var card_node = CardGameApi.find_card_node(playing_field, card)
-        Stats.play_animation_for_stat_change(playing_field, card_node, 0, {
-            "custom_label_text": Stats.NO_TARGET_TEXT,
-            "custom_label_color": Stats.NO_TARGET_COLOR,
-        })
+        Stats.show_text(playing_field, card, PopupText.NO_TARGET)
         return
 
     for minion_card in own_minions:

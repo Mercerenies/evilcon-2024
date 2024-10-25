@@ -40,11 +40,7 @@ func _perform_effect(playing_field, this_card) -> void:
     # Choose a random Minion and destroy it.
     var minions = playing_field.get_minion_strip(opponent).cards().card_array()
     if len(minions) == 0:
-        var card_node = CardGameApi.find_card_node(playing_field, this_card)
-        Stats.play_animation_for_stat_change(playing_field, card_node, 0, {
-            "custom_label_text": Stats.NO_TARGET_TEXT,
-            "custom_label_color": Stats.NO_TARGET_COLOR,
-        })
+        Stats.show_text(playing_field, this_card, PopupText.NO_TARGET)
         return
     var chosen_minion = playing_field.randomness.choose(minions)
     var can_influence = await chosen_minion.card_type.do_influence_check(playing_field, chosen_minion, this_card, false)

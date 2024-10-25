@@ -47,11 +47,7 @@ func on_play(playing_field, card) -> void:
     var valid_target_minions = deck.cards().card_array().filter(func (deck_card):
         return deck_card is MinionCardType and deck_card.get_star_cost() <= 1)
     if len(valid_target_minions) == 0:
-        var card_node = CardGameApi.find_card_node(playing_field, card)
-        Stats.play_animation_for_stat_change(playing_field, card_node, 0, {
-            "custom_label_text": Stats.NO_TARGET_TEXT,
-            "custom_label_color": Stats.NO_TARGET_COLOR,
-        })
+        Stats.show_text(playing_field, card, PopupText.NO_TARGET)
     else:
         # Choose a target minion and play
         var target_minion = playing_field.randomness.choose(valid_target_minions)

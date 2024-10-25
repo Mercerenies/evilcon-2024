@@ -48,11 +48,7 @@ func on_expire(playing_field, this_card) -> void:
     var minions = minion_strip.cards().card_array().filter(func(m): return m != this_card)
 
     if len(minions) == 0:
-        var card_node = CardGameApi.find_card_node(playing_field, this_card)
-        Stats.play_animation_for_stat_change(playing_field, card_node, 0, {
-            "custom_label_text": Stats.NO_TARGET_TEXT,
-            "custom_label_color": Stats.NO_TARGET_COLOR,
-        })
+        Stats.show_text(playing_field, this_card, PopupText.NO_TARGET)
     else:
         for minion in minions:
             await Stats.add_morale(playing_field, minion, 1)

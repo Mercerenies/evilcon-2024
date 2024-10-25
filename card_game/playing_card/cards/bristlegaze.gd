@@ -39,11 +39,7 @@ func get_rarity() -> int:
 
 func do_passive_hero_check(playing_field, card, hero_card) -> bool:
     if card.owner != hero_card.owner:
-        var card_node = CardGameApi.find_card_node(playing_field, card)
-        Stats.play_animation_for_stat_change(playing_field, card_node, 0, {
-            "custom_label_text": Stats.BLOCKED_TEXT,
-            "custom_label_color": Stats.BLOCKED_COLOR,
-        })
+        Stats.show_text(playing_field, card, PopupText.BLOCKED)
         return false
     return await super.do_passive_hero_check(playing_field, card, hero_card)
 
