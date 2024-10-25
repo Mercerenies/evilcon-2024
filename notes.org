@@ -495,6 +495,8 @@
    + [ ] Representation (cameos?) from Growing Up?
    + [ ] Fast travel system is being dug by a new, original mole
      character who happens to know Marty the Mole.
+   + [ ] Boss support? The /only/ boss support right now is negative
+     in the form of Prisman.
 ** SCRAPPED IDEAS
    Various ideas that didn't end up working out or were cut for one
    reason or another.
