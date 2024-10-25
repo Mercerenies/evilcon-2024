@@ -127,9 +127,9 @@
     + Plumberman and Plumberman's Brother
     + Clueless Man
     + Wall Golem
+    + Team Cobra
 *** VILLAINS
 **** STAMP VILLAINS
-     (TODO Narrow this down to eight)
      + Minionman :: Gimmick villain obsessed with armies of low-level
        Minion cards. Minionman is the first character you face in the
        hotel and will later give you the Minion Stamp once you raid
@@ -165,6 +165,8 @@
      + Milkman Marauder :: Milk delivery man by day, master thief by
        night. Often works for Count Carbonara but maintains a civilian
        identity to make a living.
+     + Beeatrice :: A human who has dedicated her life to the
+       Venomatrix and seeks to make bees reign supreme.
 **** THE FINAL GAUNTLET
      The four villains you must face before meeting the King of Evil.
      Must be faced in order with no deck changes in betwee.
@@ -172,8 +174,9 @@
        identity; he's actually a powerful card player and just puts on
        the "Minionman" gimmick for show (TODO Do we need an ultra rare
        card for his unmasked variant?)
-     + Devil :: From Nail. A devil from the fiery pits who makes deals
-       for people's souls. Possibly obsessed with Death.
+     + Death :: The Pale Specter himself. He gets paid a hefty
+       commission to serve on the Final Gauntlet, and he's short on
+       cash.
      + Bristlegaze :: Weird alien floating eyeball thing.
      + ??? :: ???
 **** RECURRING RIVALS
@@ -193,13 +196,16 @@
        robot lair. For obvious reasons, he doesn't want Barry or Berry
        seeing him. Not a Stamp-holder, but is a powerful optional
        boss.
-     + Death :: The Pale Specter himself. He's just at the hotel
-       collecting dying people's souls. But he'll play cards against
-       you if you want. Powerful optional boss. (Potentially put him
-       in the Final Gauntlet in place of Death?)
+     + Devil :: From Nail. A devil from the fiery pits who makes deals
+       for people's souls. Obsessed with meeting Death and heard a
+       rumor that he was going to be at the convention.
      + Maybe the boss from Mars God of War?
      + Someone from Three Rules?
      + Inquisitor from Suspicious City?
+**** OTHER VILLAINOUS CHARACTERS
+     + Skunkman :: Doesn't actually appear in game, but has a card and
+       is mentioned as the reason that Ravenman cannot attent the
+       convention himself.
 *** VILLAINS BY ARCHETYPE
     + Human
       - Maxwell Sterling
@@ -217,6 +223,7 @@
       - B'aroni
     + Bee
       - Venomatrix
+      - Beeatrice
     + Ninja
       - True Ninja Master
       - Dr. Meguruku
@@ -448,6 +455,14 @@
     + Token :: A token is a card created from thin air which was not
       part of your original deck. When a token is removed from the
       field for any reason, it is exiled.
+    + Copy :: When a card that's already in play is copied, the new
+      card inherits all of the metadata of the original. This includes
+      Level, Morale, Doomed status, immunity from influence, and
+      several other stats. The new card counts as being created, /not/
+      played, and is always treated as a token, regardless of whether
+      or not the original was a token.
+      - At the time of writing this, the only card that /copies/
+        another card is Pollination.
 *** INFLUENCE CHECKS
     Influence checks for ninjas and ninja-themed effects apply
     whenever a card of any kind attempts to change or block another
