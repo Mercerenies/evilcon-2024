@@ -372,6 +372,27 @@ static func create_card(playing_field, player: StringName, card_type: CardType, 
     return new_card
 
 
+# Copies a card which is already in play. All metadata on that card is
+# copied, but the new card will always be a token if is_token is true
+# (the default value).
+static func copy_card(playing_field, player: StringName, original_card: Card, is_token: bool = true) -> Card:
+    var new_card = Card.new(original_card.card_type, player)
+    for key in original_card.metadata.keys():
+        new_card.metadata[key] = original_card.metadata[key]
+    if is_token:
+        new_card.metadata[CardMeta.IS_TOKEN] = true
+    var field = original_card.card_type.get_destination_strip(playing_field, player)
+    field.cards().push_card(new_card)
+    playing_field.emit_cards_moved()
+
+    # Now animate the creation
+    var card_node = find_card_node(playing_field, new_card)
+    card_node.play_fade_in_animation()
+    await play_smoke_animation(playing_field, card_node)
+
+    return new_card
+
+
 static func exile_card(playing_field, card: Card) -> void:
     var card_pos = find_card_on_field(playing_field, card)
     if card_pos == null:
