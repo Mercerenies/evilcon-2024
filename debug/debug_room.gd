@@ -4,6 +4,8 @@ const GreedyEnemyAI = preload("res://card_game/playing_field/enemy_ai/greedy_ene
 
 
 func _ready():
+    _load_all_cards()  # Comment when not using; it's slow.
+
     $PlayingField.replace_enemy_ai(GreedyEnemyAI.instantiate())
     var bottom_deck = $PlayingField.get_deck(CardPlayer.BOTTOM)
     var top_deck = $PlayingField.get_deck(CardPlayer.TOP)
@@ -13,7 +15,7 @@ func _ready():
     top_deck.cards().shuffle()
 
     $PlayingField.turn_number = 10  # Get extra EP :)
-    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.SPARE_BATTERY))
+    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.FURIOUS_PHANTOM))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN), CardPlayer.TOP))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN), CardPlayer.TOP))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN), CardPlayer.TOP))
@@ -49,3 +51,11 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.ICE_MOTH),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CHICKEN),
     ]
+
+
+func _load_all_cards():
+    # This is just a quick lint so that Godot has to load all of the
+    # cards and make sure variables exist in the code and whatnot.
+    # Just checking for typos and obvious stuff :)
+    for id in PlayingCardCodex.get_all_ids():
+        PlayingCardCodex.get_entity_script(id)
