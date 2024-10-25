@@ -4,7 +4,7 @@ const GreedyEnemyAI = preload("res://card_game/playing_field/enemy_ai/greedy_ene
 
 
 func _ready():
-    _load_all_cards()  # Comment when not using; it's slow.
+    #_load_all_cards()  # Comment when not using; it's slow.
 
     $PlayingField.replace_enemy_ai(GreedyEnemyAI.instantiate())
     var bottom_deck = $PlayingField.get_deck(CardPlayer.BOTTOM)
@@ -15,7 +15,7 @@ func _ready():
     top_deck.cards().shuffle()
 
     $PlayingField.turn_number = 10  # Get extra EP :)
-    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.FURIOUS_PHANTOM))
+    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.CIRCUS_TENT))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN), CardPlayer.TOP))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN), CardPlayer.TOP))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN), CardPlayer.TOP))

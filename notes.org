@@ -493,6 +493,8 @@
        in play, they win as soon as the card goes out of play.
    + [ ] The "thug" character from Nail?
    + [ ] Representation (cameos?) from Growing Up?
+   + [ ] Fast travel system is being dug by a new, original mole
+     character who happens to know Marty the Mole.
 ** SCRAPPED IDEAS
    Various ideas that didn't end up working out or were cut for one
    reason or another.
