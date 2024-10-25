@@ -39,20 +39,12 @@ func _evaluate_effect(playing_field, this_card) -> void:
         .filter(func(c): return not c.has_archetype(playing_field, Archetype.DEMON))
     )
     if len(non_demons) == 0:
-        var card_node = CardGameApi.find_card_node(playing_field, this_card)
-        Stats.play_animation_for_stat_change(playing_field, card_node, 0, {
-            "custom_label_text": Stats.NO_TARGET_TEXT,
-            "custom_label_color": Stats.NO_TARGET_COLOR,
-        })
+        Stats.show_text(playing_field, this_card, PopupText.NO_TARGET)
         return
 
     var most_powerful_non_demon = Util.max_by(non_demons, CardEffects.card_power_less_than(playing_field))
     var can_influence = await most_powerful_non_demon.card_type.do_influence_check(playing_field, most_powerful_non_demon, this_card, false)
     if can_influence:
-        var card_node = CardGameApi.find_card_node(playing_field, most_powerful_non_demon)
-        Stats.play_animation_for_stat_change(playing_field, card_node, 0, {
-            "custom_label_text": Stats.DEMONED_TEXT,
-            "custom_label_color": Stats.DEMONED_COLOR,
-        })
+        Stats.show_text(playing_field, most_powerful_non_demon, PopupText.DEMONED)
         most_powerful_non_demon.metadata[CardMeta.ARCHETYPE_OVERRIDES] = [Archetype.DEMON]
     playing_field.emit_cards_moved()

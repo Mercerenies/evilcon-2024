@@ -38,12 +38,7 @@ func _perform_effect(playing_field, this_card) -> void:
     var owner = this_card.owner
     var target_minion = _find_wimpy(playing_field, owner)
     if target_minion == null:
-        var card_node = CardGameApi.find_card_node(playing_field, this_card)
-        Stats.play_animation_for_stat_change(playing_field, card_node, 0, {
-            "custom_label_text": Stats.NO_TARGET_TEXT,
-            "custom_label_color": Stats.NO_TARGET_COLOR,
-            "offset": Stats.CARD_MULTI_UI_OFFSET,  # Don't overlap with the "-1 Morale" message.
-        })
+        Stats.show_text(playing_field, this_card, PopupText.NO_TARGET)
         return
     var can_influence = await target_minion.card_type.do_influence_check(playing_field, target_minion, this_card, false)
     if can_influence:

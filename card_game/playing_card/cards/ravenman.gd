@@ -57,11 +57,7 @@ func _evaluate_effect(playing_field, card) -> bool:
     var target_minion = CardEffects.most_powerful_minion(playing_field, CardPlayer.other(owner))
     if target_minion == null:
         # No minions in play
-        var card_node = CardGameApi.find_card_node(playing_field, card)
-        Stats.play_animation_for_stat_change(playing_field, card_node, 0, {
-            "custom_label_text": Stats.NO_TARGET_TEXT,
-            "custom_label_color": Stats.NO_TARGET_COLOR,
-        })
+        Stats.show_text(playing_field, card, PopupText.NO_TARGET)
         return false
 
     var can_influence = await target_minion.card_type.do_influence_check(playing_field, target_minion, card, false)

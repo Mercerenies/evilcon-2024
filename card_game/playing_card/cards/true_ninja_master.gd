@@ -48,11 +48,6 @@ func do_broadcasted_influence_check(playing_field, this_card, target_card, sourc
     if this_card.owner == target_card.owner and this_card.owner != source_card.owner:
         if target_card.has_archetype(playing_field, Archetype.HUMAN):
             if not silently:
-                var card_node = CardGameApi.find_card_node(playing_field, target_card)
-                Stats.play_animation_for_stat_change(playing_field, card_node, 0, {
-                    "custom_label_text": Stats.BLOCKED_TEXT,
-                    "custom_label_color": Stats.BLOCKED_COLOR,
-                    "offset": Stats.CARD_MULTI_UI_OFFSET,  # Just in case, since this can overlap "-1 Morale"
-                })
+                Stats.show_text(playing_field, target_card, PopupText.BLOCKED)
             return false
     return await super.do_broadcasted_influence_check(playing_field, this_card, target_card, source_card, silently)

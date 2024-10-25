@@ -40,11 +40,7 @@ func _perform_effect(playing_field, this_card) -> void:
         .filter(func (c): return c.has_archetype(playing_field, Archetype.TURTLE))
     )
     if len(target_minions) == 0:
-        var card_node = CardGameApi.find_card_node(playing_field, this_card)
-        Stats.play_animation_for_stat_change(playing_field, card_node, 0, {
-            "custom_label_text": Stats.NO_TARGET_TEXT,
-            "custom_label_color": Stats.NO_TARGET_COLOR,
-        })
+        Stats.show_text(playing_field, this_card, PopupText.NO_TARGET)
         return
     for minion in target_minions:
         await Stats.add_morale(playing_field, minion, 1)

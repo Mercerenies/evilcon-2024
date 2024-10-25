@@ -56,11 +56,7 @@ func on_attack_phase(playing_field, this_card) -> void:
         .filter(func (c): return c.has_archetype(playing_field, Archetype.BEE))
     )
     if len(friendly_bees) == 0:
-        var card_node = CardGameApi.find_card_node(playing_field, this_card)
-        Stats.play_animation_for_stat_change(playing_field, card_node, 0, {
-            "custom_label_text": Stats.NO_TARGET_TEXT,
-            "custom_label_color": Stats.NO_TARGET_COLOR,
-        })
+        Stats.show_text(playing_field, this_card, PopupText.NO_TARGET)
         return
 
     var most_powerful_bee = Util.max_by(friendly_bees, CardEffects.card_power_less_than(playing_field))

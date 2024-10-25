@@ -59,20 +59,11 @@ func on_attack_phase(playing_field, card) -> void:
         return
 
     if len(enemy_targets) == 0:
-        var card_node = CardGameApi.find_card_node(playing_field, card)
-        Stats.play_animation_for_stat_change(playing_field, card_node, 0, {
-            "custom_label_text": Stats.NO_TARGET_TEXT,
-            "custom_label_color": Stats.NO_TARGET_COLOR,
-            "offset": Stats.CARD_MULTI_UI_OFFSET,  # Don't overlap with the "-1 Morale" message.
-        })
+        Stats.show_text(playing_field, card, PopupText.NO_TARGET)
     else:
         var selected_target = playing_field.randomness.choose(enemy_targets)
         var can_influence = await selected_target.card_type.do_influence_check(playing_field, selected_target, card, false)
         if can_influence:
-            var card_node = CardGameApi.find_card_node(playing_field, selected_target)
-            Stats.play_animation_for_stat_change(playing_field, card_node, 0, {
-                "custom_label_text": Stats.CLOWNED_TEXT,
-                "custom_label_color": Stats.CLOWNED_COLOR,
-            })
+            Stats.show_text(playing_field, selected_target, PopupText.CLOWNED)
             selected_target.metadata[CardMeta.ARCHETYPE_OVERRIDES] = [Archetype.CLOWN]
     playing_field.emit_cards_moved()

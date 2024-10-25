@@ -41,11 +41,7 @@ func _evaluate_effect(playing_field, card) -> void:
     var owner = card.owner
     var tributes = _find_tribute_cards(playing_field, owner)
     if len(tributes) < 3:
-        var card_node = CardGameApi.find_card_node(playing_field, card)
-        Stats.play_animation_for_stat_change(playing_field, card_node, 0, {
-            "custom_label_text": Stats.NO_TARGET_TEXT,
-            "custom_label_color": Stats.NO_TARGET_COLOR,
-        })
+        Stats.show_text(playing_field, card, PopupText.NO_TARGET)
         return
     await _play_rotate_animation(playing_field, tributes)
     for tribute_card in tributes:

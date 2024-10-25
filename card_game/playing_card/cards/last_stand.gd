@@ -37,11 +37,7 @@ func _evaluate_effect(playing_field, this_card) -> void:
     await CardGameApi.highlight_card(playing_field, this_card)
     var target_index = _find_minion_card_in_discard_pile(playing_field, owner)
     if target_index == null:
-        var card_node = CardGameApi.find_card_node(playing_field, this_card)
-        Stats.play_animation_for_stat_change(playing_field, card_node, 0, {
-            "custom_label_text": Stats.NO_TARGET_TEXT,
-            "custom_label_color": Stats.NO_TARGET_COLOR,
-        })
+        Stats.show_text(playing_field, this_card, PopupText.NO_TARGET)
         return
     var target_card_type = discard_pile.cards().peek_card(target_index)
     var target_card = await CardGameApi.resurrect_card(playing_field, owner, target_card_type)

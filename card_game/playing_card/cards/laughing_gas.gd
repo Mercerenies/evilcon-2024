@@ -37,11 +37,7 @@ func _evaluate_effect(playing_field, this_card) -> void:
 
     var enemy_minions = playing_field.get_minion_strip(CardPlayer.other(owner)).cards().card_array()
     if len(enemy_minions) == 0:
-        var card_node = CardGameApi.find_card_node(playing_field, this_card)
-        Stats.play_animation_for_stat_change(playing_field, card_node, 0, {
-            "custom_label_text": Stats.NO_TARGET_TEXT,
-            "custom_label_color": Stats.NO_TARGET_COLOR,
-        })
+        Stats.show_text(playing_field, this_card, PopupText.NO_TARGET)
         return
 
     for minion in enemy_minions:
@@ -51,10 +47,6 @@ func _evaluate_effect(playing_field, this_card) -> void:
 func _try_to_clown(playing_field, this_card, target_card):
     var can_influence = await target_card.card_type.do_influence_check(playing_field, target_card, this_card, false)
     if can_influence:
-        var card_node = CardGameApi.find_card_node(playing_field, target_card)
-        Stats.play_animation_for_stat_change(playing_field, card_node, 0, {
-            "custom_label_text": Stats.CLOWNED_TEXT,
-            "custom_label_color": Stats.CLOWNED_COLOR,
-        })
+        Stats.show_text(playing_field, target_card, PopupText.CLOWNED)
         target_card.metadata[CardMeta.ARCHETYPE_OVERRIDES] = [Archetype.CLOWN]
     playing_field.emit_cards_moved()

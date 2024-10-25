@@ -55,12 +55,7 @@ func on_attack_phase(playing_field, card) -> void:
     var deck = playing_field.get_deck(owner)
     var valid_target_minions = deck.cards().card_array().filter(_is_farm_card_type)
     if len(valid_target_minions) == 0:
-        var card_node = CardGameApi.find_card_node(playing_field, card)
-        Stats.play_animation_for_stat_change(playing_field, card_node, 0, {
-            "custom_label_text": Stats.NO_TARGET_TEXT,
-            "custom_label_color": Stats.NO_TARGET_COLOR,
-            "offset": Stats.CARD_MULTI_UI_OFFSET,  # Don't overlap with the "-1 Morale" message.
-        })
+        Stats.show_text(playing_field, card, PopupText.NO_TARGET)
     else:
         # Choose a target minion and play
         var target_minion = valid_target_minions[-1]

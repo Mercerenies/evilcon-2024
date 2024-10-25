@@ -32,11 +32,7 @@ func on_play(playing_field, card) -> void:
     await CardGameApi.highlight_card(playing_field, card)
 
     if minion_strip.cards().card_count() == 0:
-        var card_node = CardGameApi.find_card_node(playing_field, card)
-        Stats.play_animation_for_stat_change(playing_field, card_node, 0, {
-            "custom_label_text": Stats.NO_TARGET_TEXT,
-            "custom_label_color": Stats.NO_TARGET_COLOR,
-        })
+        Stats.show_text(playing_field, card, PopupText.NO_TARGET)
     else:
         for minion in minion_strip.cards().card_array():
             await Stats.add_morale(playing_field, minion, 1)

@@ -43,12 +43,7 @@ func _evaluate_effect(playing_field, this_card) -> void:
     )
 
     if len(target_minions) == 0:
-        var card_node = CardGameApi.find_card_node(playing_field, this_card)
-        Stats.play_animation_for_stat_change(playing_field, card_node, 0, {
-            "custom_label_text": Stats.NO_TARGET_TEXT,
-            "custom_label_color": Stats.NO_TARGET_COLOR,
-            "offset": Stats.CARD_MULTI_UI_OFFSET,
-        })
+        Stats.show_text(playing_field, this_card, PopupText.NO_TARGET)
         return
 
     var successful_destructions = 0

@@ -42,11 +42,7 @@ func _perform_effect(playing_field, this_card) -> void:
         .filter(func (minion): return not minion.has_archetype(playing_field, Archetype.CLOWN))
     )
     if len(minions) == 0:
-        var card_node = CardGameApi.find_card_node(playing_field, this_card)
-        Stats.play_animation_for_stat_change(playing_field, card_node, 0, {
-            "custom_label_text": Stats.NO_TARGET_TEXT,
-            "custom_label_color": Stats.NO_TARGET_COLOR,
-        })
+        Stats.show_text(playing_field, this_card, PopupText.NO_TARGET)
         return
 
     var most_powerful_minion = Util.max_by(minions, CardEffects.card_power_less_than(playing_field))
@@ -54,9 +50,5 @@ func _perform_effect(playing_field, this_card) -> void:
     if not can_influence:
         return
 
-    var target_card_node = CardGameApi.find_card_node(playing_field, most_powerful_minion)
-    Stats.play_animation_for_stat_change(playing_field, target_card_node, 0, {
-        "custom_label_text": Stats.CLOWNED_TEXT,
-        "custom_label_color": Stats.CLOWNED_COLOR,
-    })
+    Stats.show_text(playing_field, most_powerful_minion, PopupText.CLOWNED)
     most_powerful_minion.metadata[CardMeta.ARCHETYPE_OVERRIDES] = [Archetype.CLOWN]

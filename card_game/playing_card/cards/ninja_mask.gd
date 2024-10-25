@@ -37,11 +37,7 @@ func _evaluate_effect(playing_field, this_card) -> void:
 
     var most_powerful_minion = CardEffects.most_powerful_minion(playing_field, owner)
     if most_powerful_minion == null:
-        var card_node = CardGameApi.find_card_node(playing_field, this_card)
-        Stats.play_animation_for_stat_change(playing_field, card_node, 0, {
-            "custom_label_text": Stats.NO_TARGET_TEXT,
-            "custom_label_color": Stats.NO_TARGET_COLOR,
-        })
+        Stats.show_text(playing_field, this_card, PopupText.NO_TARGET)
         return
     most_powerful_minion.metadata[CardMeta.HAS_SPECIAL_IMMUNITY] = true
     playing_field.emit_cards_moved()

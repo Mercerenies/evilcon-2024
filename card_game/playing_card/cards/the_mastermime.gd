@@ -47,10 +47,6 @@ func on_play_broadcasted(playing_field, this_card, played_card) -> void:
     await CardGameApi.highlight_card(playing_field, this_card)
     var can_influence = await played_card.card_type.do_influence_check(playing_field, played_card, this_card, false)
     if can_influence:
-        var card_node = CardGameApi.find_card_node(playing_field, played_card)
-        Stats.play_animation_for_stat_change(playing_field, card_node, 0, {
-            "custom_label_text": Stats.CLOWNED_TEXT,
-            "custom_label_color": Stats.CLOWNED_COLOR,
-        })
+        Stats.show_text(playing_field, played_card, PopupText.CLOWNED)
         played_card.metadata[CardMeta.ARCHETYPE_OVERRIDES] = [Archetype.CLOWN]
     playing_field.emit_cards_moved()

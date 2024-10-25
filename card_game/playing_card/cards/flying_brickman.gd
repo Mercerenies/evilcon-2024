@@ -53,11 +53,7 @@ func _evaluate_effect(playing_field, card) -> bool:
     var target_minions = playing_field.get_minion_strip(CardPlayer.other(owner)).cards().card_array()
     if len(target_minions) == 0:
         # No minions in play
-        var card_node = CardGameApi.find_card_node(playing_field, card)
-        Stats.play_animation_for_stat_change(playing_field, card_node, 0, {
-            "custom_label_text": Stats.NO_TARGET_TEXT,
-            "custom_label_color": Stats.NO_TARGET_COLOR,
-        })
+        Stats.show_text(playing_field, card, PopupText.NO_TARGET)
         return false  # Effect was not blocked, you just played it at a dumb moment.
 
     for target_minion in target_minions:
