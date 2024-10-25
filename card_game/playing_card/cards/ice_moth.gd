@@ -10,7 +10,7 @@ func get_title() -> String:
 
 
 func get_text() -> String:
-    return "When Ice Moth enters the field, your opponent's most powerful Minion loses 1 Morale."
+    return "When Ice Moth is played, your opponent's most powerful Minion loses 1 Morale."
 
 
 func get_picture_index() -> int:
