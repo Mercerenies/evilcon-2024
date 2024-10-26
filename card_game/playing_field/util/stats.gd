@@ -44,16 +44,16 @@ const ROBOTED_COLOR := Color.WEB_PURPLE
 # * offset (Vector2) - Position offset from the target node. If
 #   supplied as a scalar, it is multiplied by CARD_MULTI_UI_OFFSET.
 static func play_animation_for_stat_change(playing_field, stat_node: Node2D, delta: int, opts = {}) -> void:
-    var animation_layer = playing_field.get_animation_layer()
-    var animation = NumberAnimation.instantiate()
-    animation.position = animation_layer.to_local(stat_node.global_position) + opts.get("offset", Vector2.ZERO)
-    animation.amount = delta
-    if opts.has("custom_label_text"):
-        animation.custom_label_text = opts["custom_label_text"]
-    if opts.has("custom_label_color"):
-        animation.custom_label_color = opts["custom_label_color"]
-    animation_layer.add_child(animation)
-    await animation.animation_finished
+    await playing_field.with_animation(func(animation_layer):
+        var animation = NumberAnimation.instantiate()
+        animation.position = animation_layer.to_local(stat_node.global_position) + opts.get("offset", Vector2.ZERO)
+        animation.amount = delta
+        if opts.has("custom_label_text"):
+            animation.custom_label_text = opts["custom_label_text"]
+        if opts.has("custom_label_color"):
+            animation.custom_label_color = opts["custom_label_color"]
+        animation_layer.add_child(animation)
+        await animation.animation_finished)
 
 
 # Shows common card text. `text` should be a CardText.Text object or
