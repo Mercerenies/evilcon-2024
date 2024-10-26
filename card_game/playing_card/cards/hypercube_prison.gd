@@ -37,13 +37,10 @@ func do_attack_phase_check(playing_field, this_card, attacking_card) -> bool:
     var most_powerful_minion = CardEffects.most_powerful_minion(playing_field, attacking_card.owner)
     if most_powerful_minion == attacking_card:
         await CardGameApi.highlight_card(playing_field, this_card)
-        var card_node = CardGameApi.find_card_node(playing_field, attacking_card)
         var can_influence = await attacking_card.card_type.do_influence_check(playing_field, attacking_card, this_card, false)
         if can_influence:  # TODO Consider if we can show this in the UI better, it's confusing right now
-            Stats.play_animation_for_stat_change(playing_field, card_node, 0, {
-                "custom_label_text": Stats.BLOCKED_TEXT,
-                "custom_label_color": Stats.BLOCKED_COLOR,
-                "offset": Stats.CARD_MULTI_UI_OFFSET,  # Don't overlap with the "-1 Morale" message.
+            Stats.show_text(playing_field, attacking_card, PopupText.BLOCKED, {
+                "offset": 1,
             })
             return false
     return super.do_attack_phase_check(playing_field, this_card, attacking_card)
