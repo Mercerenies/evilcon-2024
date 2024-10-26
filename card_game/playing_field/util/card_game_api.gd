@@ -201,7 +201,10 @@ static func reshuffle_discard_pile(playing_field, player: StringName) -> void:
     animation.replace_displayed_card(DeckCardDisplay.instantiate())
     animation.set_card(NullMinion.new())
     animation.animation_time = 0.125
-    await animation.animate(discard_pile.position, deck.position)
+    await animation.animate(discard_pile.position, deck.position, {
+        "start_angle": discard_pile.global_rotation,
+        "end_angle": deck.global_rotation,
+    })
     animation.queue_free()
 
     deck_array.append_array(discard_array)
@@ -277,7 +280,10 @@ static func play_card_from_nowhere(playing_field, player: StringName, card_type:
     playing_field.get_animation_layer().add_child(animation)
     animation.scale = Vector2(0.25, 0.25)
     animation.set_card(card_type)
-    await animation.animate(origin, field.position)
+    await animation.animate(origin, field.position, {
+        "start_angle": 0.0,
+        "end_angle": field.global_rotation,
+    })
     animation.queue_free()
 
     var new_card = Card.new(card_type, player)

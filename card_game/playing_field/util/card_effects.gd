@@ -84,7 +84,10 @@ static func exile_top_of_deck(playing_field, player: StringName) -> void:
     playing_field.get_animation_layer().add_child(animation)
     animation.scale = Vector2(0.25, 0.25)
     animation.set_card(card)
-    await animation.animate(deck.position, center_of_screen)
+    await animation.animate(deck.position, center_of_screen, {
+        "start_angle": deck.global_rotation,
+        "end_angle": 0.0,
+    })
 
     await playing_field.get_tree().create_timer(0.25).timeout
 
