@@ -90,7 +90,7 @@ static func exile_top_of_deck(playing_field, player: StringName) -> void:
             "end_angle": 0.0,
         })
 
-        await playing_field.get_tree().create_timer(0.25).timeout
+        await playing_field.get_tree().create_timer(0.50).timeout
 
         var displayed_card = animation.get_displayed_card()
         displayed_card.play_fade_out_animation()
