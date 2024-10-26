@@ -374,9 +374,10 @@ static func create_card(playing_field, player: StringName, card_type: CardType, 
     playing_field.emit_cards_moved()
 
     # Now animate the creation
-    var card_node = find_card_node(playing_field, new_card)
-    card_node.play_fade_in_animation()
-    await play_smoke_animation(playing_field, card_node)
+    await playing_field.with_animation(func(_animation_layer):
+        var card_node = find_card_node(playing_field, new_card)
+        card_node.play_fade_in_animation()
+        await play_smoke_animation(playing_field, card_node))
 
     return new_card
 
@@ -395,9 +396,10 @@ static func copy_card(playing_field, player: StringName, original_card: Card, is
     playing_field.emit_cards_moved()
 
     # Now animate the creation
-    var card_node = find_card_node(playing_field, new_card)
-    card_node.play_fade_in_animation()
-    await play_smoke_animation(playing_field, card_node)
+    await playing_field.with_animation(func(_animation_layer):
+        var card_node = find_card_node(playing_field, new_card)
+        card_node.play_fade_in_animation()
+        await play_smoke_animation(playing_field, card_node))
 
     return new_card
 
@@ -409,9 +411,10 @@ static func exile_card(playing_field, card: Card) -> void:
         return
 
     # Now animate the exile
-    var card_node = find_card_node(playing_field, card)
-    card_node.play_fade_out_animation()
-    await play_smoke_animation(playing_field, card_node)
+    await playing_field.with_animation(func(_animation_layer):
+        var card_node = find_card_node(playing_field, card)
+        card_node.play_fade_out_animation()
+        await play_smoke_animation(playing_field, card_node))
 
     card_pos.card_strip.cards().pop_card(card_pos.index)
     playing_field.emit_cards_moved()

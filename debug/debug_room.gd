@@ -15,9 +15,8 @@ func _ready():
     top_deck.cards().shuffle()
 
     $PlayingField.turn_number = 10  # Get extra EP :)
-    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.ICOSAKING))
-    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.HYPERCUBE_PRISON))
-    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.SHELL_SHIELD))
+    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.RAVENMAN))
+    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.BEEHIVE))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN), CardPlayer.TOP))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN), CardPlayer.TOP))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN), CardPlayer.TOP))
@@ -35,14 +34,14 @@ func _ready():
 func _sample_deck():
     return [
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.BUSY_BEE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.KIDNAPPING_THE_PRESIDENT),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.RED_TURTLE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.POLLINATION),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.PLUMBERMANS_BROTHER),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CORNY_ACORN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.HIRED_NINJA),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.HIRED_NINJA),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.VITAMIN_CAPSULE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.VITAMIN_CAPSULE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CLUELESS_MAN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.MASKED_TURTLE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.VITAMIN_CAPSULE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.SPIKY_TURTLE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.TINY_TURTLE),

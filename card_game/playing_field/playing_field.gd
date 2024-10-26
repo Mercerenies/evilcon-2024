@@ -51,10 +51,6 @@ func replace_enemy_ai(new_enemy_ai: Node) -> void:
         $AILayer.add_child(_enemy_ai)
 
 
-func get_animation_layer() -> Node2D:
-    return $AnimationLayer
-
-
 # Runs the given callable with the parent animation node as its sole
 # argument, awaiting the result. This method should be called to wrap
 # any animation-based code, so that PlayingField-like mock objects can
@@ -166,17 +162,18 @@ func move_card(source, destination, opts = {}):
     emit_cards_moved()
 
     # Animate the card moving
-    var animation = CardMovingAnimation.instantiate()
-    $AnimationLayer.add_child(animation)
-    animation.scale = animation_scale
-    if custom_displayed_card != null:
-        animation.replace_displayed_card(custom_displayed_card.call())
-    animation.set_card(relevant_card)
-    await animation.animate(source.position, destination.position, {
-        "start_angle": source.global_rotation,
-        "end_angle": destination.global_rotation,
-    })
-    animation.queue_free()
+    with_animation(func(animation_layer):
+        var animation = CardMovingAnimation.instantiate()
+        animation_layer.add_child(animation)
+        animation.scale = animation_scale
+        if custom_displayed_card != null:
+            animation.replace_displayed_card(custom_displayed_card.call())
+        animation.set_card(relevant_card)
+        await animation.animate(source.position, destination.position, {
+            "start_angle": source.global_rotation,
+            "end_angle": destination.global_rotation,
+        })
+        animation.queue_free())
 
     if destination_transform != null:
         relevant_card = destination_transform.call(relevant_card)
