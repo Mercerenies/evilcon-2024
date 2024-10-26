@@ -38,24 +38,29 @@ func on_play(playing_field, card) -> void:
 func _evaluate_effect(playing_field, this_card) -> void:
     await CardGameApi.highlight_card(playing_field, this_card)
 
-    var input_block = InputBlockAnimation.new()
-    playing_field.get_animation_layer().add_child(input_block)
+    var input_block = await playing_field.with_animation(func(animation_layer):
+        @warning_ignore("confusable_local_declaration")
+        var input_block = InputBlockAnimation.new()
+        animation_layer.add_child(input_block)
+        return input_block)
 
     var chosen_card_id = playing_field.randomness.choose(PlayingCardLists.MYSTERY_BOX_TARGETS)
     var chosen_card_type = PlayingCardCodex.get_entity(chosen_card_id)
 
-    await _play_present_box_animation(playing_field, chosen_card_type)
+    await playing_field.with_animation(func(animation_layer):
+        await _play_present_box_animation(animation_layer, chosen_card_type))
     await CardGameApi.play_card_from_nowhere(playing_field, this_card.owner, chosen_card_type, _get_origin(playing_field))
-    input_block.queue_free()
+    await playing_field.with_animation(func(_animation_layer):
+        input_block.queue_free())
 
 
-func _play_present_box_animation(playing_field, chosen_card_type) -> void:
+func _play_present_box_animation(animation_layer, chosen_card_type) -> void:
     var animation = PresentBoxAnimation.instantiate()
-    animation.position = _get_origin(playing_field)
+    animation.position = _get_origin(animation_layer)
     animation.set_card(chosen_card_type)
-    playing_field.get_animation_layer().add_child(animation)
+    animation_layer.add_child(animation)
     await animation.main_animation_completed
 
 
-func _get_origin(playing_field) -> Vector2:
-    return playing_field.get_viewport_rect().size / 2
+func _get_origin(any_node) -> Vector2:
+    return any_node.get_viewport_rect().size / 2

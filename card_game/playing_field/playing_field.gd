@@ -55,6 +55,14 @@ func get_animation_layer() -> Node2D:
     return $AnimationLayer
 
 
+# Runs the given callable with the parent animation node as its sole
+# argument, awaiting the result. This method should be called to wrap
+# any animation-based code, so that PlayingField-like mock objects can
+# skip that code when simulating the game.
+func with_animation(callable):
+    return await callable.call($AnimationLayer)
+
+
 func get_deck(player: StringName):
     if player == CardPlayer.BOTTOM:
         return $BottomDeck
