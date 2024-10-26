@@ -110,6 +110,9 @@ z_index = 10
 [node name="UILayer" type="Node2D" parent="."]
 z_index = 20
 
+[connection signal="cards_moved" from="." to="." method="_on_cards_moved"]
+[connection signal="turn_number_updated" from="." to="." method="_on_turn_number_updated"]
+[connection signal="turn_player_changed" from="." to="." method="_on_turn_player_changed"]
 [connection signal="pile_clicked" from="BottomDeck" to="." method="_on_bottom_deck_pile_clicked"]
 [connection signal="pile_clicked" from="BottomDiscardPile" to="." method="_on_bottom_discard_pile_pile_clicked"]
 [connection signal="card_added" from="BottomHand" to="." method="_on_bottom_hand_card_added"]
