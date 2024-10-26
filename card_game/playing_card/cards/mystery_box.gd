@@ -38,11 +38,9 @@ func on_play(playing_field, card) -> void:
 func _evaluate_effect(playing_field, this_card) -> void:
     await CardGameApi.highlight_card(playing_field, this_card)
 
-    var input_block = await playing_field.with_animation(func(animation_layer):
-        @warning_ignore("confusable_local_declaration")
-        var input_block = InputBlockAnimation.new()
-        animation_layer.add_child(input_block)
-        return input_block)
+    var input_block = InputBlockAnimation.new()
+    await playing_field.with_animation(func(animation_layer):
+        animation_layer.add_child(input_block))
 
     var chosen_card_id = playing_field.randomness.choose(PlayingCardLists.MYSTERY_BOX_TARGETS)
     var chosen_card_type = PlayingCardCodex.get_entity(chosen_card_id)
@@ -50,8 +48,7 @@ func _evaluate_effect(playing_field, this_card) -> void:
     await playing_field.with_animation(func(animation_layer):
         await _play_present_box_animation(animation_layer, chosen_card_type))
     await CardGameApi.play_card_from_nowhere(playing_field, this_card.owner, chosen_card_type, _get_origin(playing_field))
-    await playing_field.with_animation(func(_animation_layer):
-        input_block.queue_free())
+    input_block.queue_free()
 
 
 func _play_present_box_animation(animation_layer, chosen_card_type) -> void:

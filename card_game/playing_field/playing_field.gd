@@ -59,6 +59,10 @@ func get_animation_layer() -> Node2D:
 # argument, awaiting the result. This method should be called to wrap
 # any animation-based code, so that PlayingField-like mock objects can
 # skip that code when simulating the game.
+#
+# Callers should take care that, if the callable returns a value, that
+# value is only ever used in subsequent with_animation blocks, as its
+# value is undefined when using other PlayingField implementations.
 func with_animation(callable):
     return await callable.call($AnimationLayer)
 
