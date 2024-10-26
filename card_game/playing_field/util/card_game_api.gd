@@ -187,7 +187,6 @@ static func reshuffle_discard_pile(playing_field, player: StringName) -> void:
     var discard_pile = playing_field.get_discard_pile(player)
     if discard_pile.cards().card_count() == 0:
         return  # Nothing to do
-    var animation_layer = playing_field.get_animation_layer()
 
     var deck_array = deck.cards().card_array()
     var discard_array = discard_pile.cards().card_array()
@@ -196,16 +195,17 @@ static func reshuffle_discard_pile(playing_field, player: StringName) -> void:
     playing_field.emit_cards_moved()
 
     # Animate the deck moving
-    var animation = CardMovingAnimation.instantiate()
-    animation_layer.add_child(animation)
-    animation.replace_displayed_card(DeckCardDisplay.instantiate())
-    animation.set_card(NullMinion.new())
-    animation.animation_time = 0.125
-    await animation.animate(discard_pile.position, deck.position, {
-        "start_angle": discard_pile.global_rotation,
-        "end_angle": deck.global_rotation,
-    })
-    animation.queue_free()
+    await playing_field.with_animation(func(animation_layer):
+        var animation = CardMovingAnimation.instantiate()
+        animation_layer.add_child(animation)
+        animation.replace_displayed_card(DeckCardDisplay.instantiate())
+        animation.set_card(NullMinion.new())
+        animation.animation_time = 0.125
+        await animation.animate(discard_pile.position, deck.position, {
+            "start_angle": discard_pile.global_rotation,
+            "end_angle": deck.global_rotation,
+        })
+        animation.queue_free())
 
     deck_array.append_array(discard_array)
     deck_array.shuffle()
