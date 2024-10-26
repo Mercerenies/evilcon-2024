@@ -15,8 +15,7 @@ func _ready():
     top_deck.cards().shuffle()
 
     $PlayingField.turn_number = 10  # Get extra EP :)
-    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.BARONI))
-    $PlayingField.get_minion_strip(CardPlayer.BOTTOM).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.BARONI), CardPlayer.BOTTOM))
+    #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.BARONI))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN), CardPlayer.TOP))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN), CardPlayer.TOP))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN), CardPlayer.TOP))
@@ -34,13 +33,13 @@ func _ready():
 func _sample_deck():
     return [
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.EVIL_LAIR),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.POLLINATION),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.BARONI),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.MYSTERY_BOX),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CORNY_ACORN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.TURTLES_UNITE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.HIRED_NINJA),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.HIRED_NINJA),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.ROBOT_MITE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.ROBOT_MITE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.TINY_TURTLE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.TINY_TURTLE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.MASKED_TURTLE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.ROBOT_MITE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.SPIKY_TURTLE),
