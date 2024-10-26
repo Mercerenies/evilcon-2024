@@ -463,6 +463,11 @@
       or not the original was a token.
       - At the time of writing this, the only card that /copies/
         another card is Pollination.
+    + Most Powerful / Least Powerful :: When a card refers to your
+      "most powerful" or "least powerful" Minion, Minions are compared
+      by Level first, then by Morale as a tiebreaker if necessary. If
+      two Minions have the same Level and Morale, the one with the
+      higher unique identifier is considered more powerful.
 *** INFLUENCE CHECKS
     Influence checks for ninjas and ninja-themed effects apply
     whenever a card of any kind attempts to change or block another
