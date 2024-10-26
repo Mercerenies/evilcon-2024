@@ -43,6 +43,7 @@ func on_play(playing_field, this_card) -> void:
 
 
 func _try_to_perform_effect(playing_field, this_card) -> void:
+    await CardGameApi.highlight_card(playing_field, this_card)
     var opponent = CardPlayer.other(this_card.owner)
     var target_minion = CardEffects.most_powerful_minion(playing_field, opponent)
     if target_minion == null:
