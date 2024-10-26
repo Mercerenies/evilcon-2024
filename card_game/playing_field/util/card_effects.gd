@@ -79,22 +79,23 @@ static func exile_top_of_deck(playing_field, player: StringName) -> void:
     var card = deck.cards().pop_card(-1)
 
     # Custom animation to show the card that's being exiled.
-    var animation = CardMovingAnimation.instantiate()
-    var center_of_screen = playing_field.get_viewport().size / 2.0
-    playing_field.get_animation_layer().add_child(animation)
-    animation.scale = Vector2(0.25, 0.25)
-    animation.set_card(card)
-    await animation.animate(deck.position, center_of_screen, {
-        "start_angle": deck.global_rotation,
-        "end_angle": 0.0,
-    })
+    await playing_field.with_animation(func(animation_layer):
+        var animation = CardMovingAnimation.instantiate()
+        var center_of_screen = playing_field.get_viewport().size / 2.0
+        animation_layer.add_child(animation)
+        animation.scale = Vector2(0.25, 0.25)
+        animation.set_card(card)
+        await animation.animate(deck.position, center_of_screen, {
+            "start_angle": deck.global_rotation,
+            "end_angle": 0.0,
+        })
 
-    await playing_field.get_tree().create_timer(0.25).timeout
+        await playing_field.get_tree().create_timer(0.25).timeout
 
-    var displayed_card = animation.get_displayed_card()
-    displayed_card.play_fade_out_animation()
-    await CardGameApi.play_smoke_animation(playing_field, displayed_card)
-    animation.queue_free()
+        var displayed_card = animation.get_displayed_card()
+        displayed_card.play_fade_out_animation()
+        await CardGameApi.play_smoke_animation(playing_field, displayed_card)
+        animation.queue_free())
 
     playing_field.emit_cards_moved()
 

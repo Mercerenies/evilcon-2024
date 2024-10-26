@@ -276,15 +276,16 @@ static func play_card_from_nowhere(playing_field, player: StringName, card_type:
     var is_token = opts.get("is_token", true)
     var field = card_type.get_destination_strip(playing_field, player)
 
-    var animation = CardMovingAnimation.instantiate()
-    playing_field.get_animation_layer().add_child(animation)
-    animation.scale = Vector2(0.25, 0.25)
-    animation.set_card(card_type)
-    await animation.animate(origin, field.position, {
-        "start_angle": 0.0,
-        "end_angle": field.global_rotation,
-    })
-    animation.queue_free()
+    await playing_field.with_animation(func(animation_layer):
+        var animation = CardMovingAnimation.instantiate()
+        animation_layer.add_child(animation)
+        animation.scale = Vector2(0.25, 0.25)
+        animation.set_card(card_type)
+        await animation.animate(origin, field.position, {
+            "start_angle": 0.0,
+            "end_angle": field.global_rotation,
+        })
+        animation.queue_free())
 
     var new_card = Card.new(card_type, player)
     if is_token:
