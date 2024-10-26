@@ -29,11 +29,7 @@ static func _has_any_archetype(playing_field, minion, archetypes: Array) -> bool
 static func do_ninja_influence_check(playing_field, target_card, source_card, silently) -> bool:
     if target_card.owner != source_card.owner:
         if not silently:
-            var card_node = CardGameApi.find_card_node(playing_field, target_card)
-            Stats.play_animation_for_stat_change(playing_field, card_node, 0, {
-                "custom_label_text": Stats.BLOCKED_TEXT,
-                "custom_label_color": Stats.BLOCKED_COLOR,
-            })
+            Stats.show_text(playing_field, target_card, PopupText.BLOCKED)
         return false
     return true
 
