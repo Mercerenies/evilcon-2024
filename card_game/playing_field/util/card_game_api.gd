@@ -121,13 +121,13 @@ static func broadcast_to_cards(playing_field, method, binds = []) -> Array:
 
 static func play_smoke_animation(playing_field, target_node) -> void:
     var input_block = InputBlockAnimation.new()
-    playing_field.get_animation_layer().add_child(input_block)
 
-    var animation_layer = playing_field.get_animation_layer()
-    var animation_node = PuffOfSmokeAnimation.instantiate()
-    animation_layer.add_child(animation_node)
-    animation_node.position = animation_layer.to_local(target_node.global_position)
-    await animation_node.tree_exited
+    playing_field.with_animation(func(animation_layer):
+        animation_layer.add_child(input_block)
+        var animation_node = PuffOfSmokeAnimation.instantiate()
+        animation_layer.add_child(animation_node)
+        animation_node.position = animation_layer.to_local(target_node.global_position)
+        await animation_node.tree_exited)
 
     input_block.free()
 
