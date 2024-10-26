@@ -28,9 +28,6 @@ func get_base_morale() -> int:
 
 
 func get_level(_playing_field, card) -> int:
-    # TODO Card effects that passively modify this (as opposed to
-    # instants that do so actively)
-    #
     # IMPORTANT NOTE: Unlike many methods on CardType, get_level must
     # NOT `await`, as it will be called from contexts that cannot be
     # delayed, such as inside of Array.sort_custom.
