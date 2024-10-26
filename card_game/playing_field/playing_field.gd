@@ -162,7 +162,7 @@ func move_card(source, destination, opts = {}):
     emit_cards_moved()
 
     # Animate the card moving
-    with_animation(func(animation_layer):
+    await with_animation(func(animation_layer):
         var animation = CardMovingAnimation.instantiate()
         animation_layer.add_child(animation)
         animation.scale = animation_scale
