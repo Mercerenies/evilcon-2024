@@ -4,6 +4,13 @@ signal pile_clicked
 
 var _mouse_over = false
 
+## Whether or not the deck sprite should use the second
+## row of images, intended to be shown upside-down.
+@export var flipped := false
+
+@export var overlay_rotates_with_node := false
+@export var overlay_scales_with_node := false
+
 func update_display() -> void:
     var card_count = $CardContainer.card_count()
     if card_count == 0:
@@ -14,7 +21,9 @@ func update_display() -> void:
         $DisplayNode/DeckSprite.frame = 2
     else:
         $DisplayNode/DeckSprite.frame = 3
-    $QuantityLabel.text = str(card_count)
+    if flipped:
+        $DisplayNode/DeckSprite.frame += 4
+    %QuantityLabel.text = str(card_count)
 
 
 func get_sprite() -> Sprite2D:
@@ -23,6 +32,13 @@ func get_sprite() -> Sprite2D:
 
 func _ready():
     update_display()
+
+
+func _process(_delta: float):
+    if not overlay_rotates_with_node:
+        $QuantityLabelNode2D.global_rotation = 0
+    if not overlay_scales_with_node:
+        $QuantityLabelNode2D.global_scale = Vector2.ONE
 
 
 func _on_card_container_cards_modified():

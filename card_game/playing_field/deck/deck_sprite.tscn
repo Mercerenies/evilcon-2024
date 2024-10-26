@@ -6,4 +6,5 @@
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("1_lrb45")
 hframes = 4
+vframes = 2
 frame = 3

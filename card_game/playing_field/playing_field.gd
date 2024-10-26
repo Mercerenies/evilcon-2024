@@ -121,8 +121,8 @@ func field_strips() -> Array:
 
 # Moves a card from one node to another.
 #
-# The source and destination nodes must have a method called cards()
-# which returns the appropriate CardContainer.
+# The source and destination nodes must be Node2Ds and must have a
+# method called cards() which returns the appropriate CardContainer.
 #
 # Optional arguments are as follows:
 #
@@ -145,9 +145,8 @@ func move_card(source, destination, opts = {}):
     var custom_displayed_card = opts.get("custom_displayed_card", null)
     var destination_transform = opts.get("destination_transform", null)
 
-    # TODO In some situations we should consider rotating the
-    # animation 180 degrees, for instance if a card is being moved
-    # from enemy hand to field, or from enemy field to discard.
+    # TODO Consider finding the exact position within the row, if one
+    # exists. :)
 
     var source_cards = source.cards()
     var destination_cards = destination.cards()
@@ -161,7 +160,10 @@ func move_card(source, destination, opts = {}):
     if custom_displayed_card != null:
         animation.replace_displayed_card(custom_displayed_card.call())
     animation.set_card(relevant_card)
-    await animation.animate(source.position, destination.position)
+    await animation.animate(source.position, destination.position, {
+        "start_angle": source.global_rotation,
+        "end_angle": destination.global_rotation,
+    })
     animation.queue_free()
 
     if destination_transform != null:

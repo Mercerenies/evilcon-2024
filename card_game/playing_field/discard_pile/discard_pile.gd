@@ -16,6 +16,12 @@ func update_display() -> void:
                 node.position = Vector2(0, 2)
             2:
                 node.position = Vector2(0, -2)
-            _:
+            3:
                 node.position = Vector2(0, -5)
+            4, 5:
+                node.position = Vector2(0, -2)
+            6:
+                node.position = Vector2(0, 2)
+            7:
+                node.position = Vector2(0, 5)
         $DisplayNode.add_child(node)

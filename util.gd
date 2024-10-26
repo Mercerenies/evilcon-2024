@@ -81,3 +81,7 @@ static func find_if(array: Array, predicate: Callable):
         if predicate.call(array[i]):
             return i
     return null
+
+
+static func normalize_angle(angle: float) -> float:
+    return fmod(fmod(angle, 2 * PI) + 2 * PI, 2 * PI)

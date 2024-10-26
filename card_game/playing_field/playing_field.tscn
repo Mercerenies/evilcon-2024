@@ -61,9 +61,13 @@ texture = ExtResource("2_2fr12")
 
 [node name="TopDeck" parent="." instance=ExtResource("3_5hleg")]
 position = Vector2(860, 75)
+rotation = 3.14159
+flipped = true
 
 [node name="TopDiscardPile" parent="." instance=ExtResource("5_f0jxu")]
 position = Vector2(970, 75)
+rotation = 3.14159
+flipped = true
 
 [node name="TopHand" parent="." instance=ExtResource("5_dckxn")]
 position = Vector2(520, 41)

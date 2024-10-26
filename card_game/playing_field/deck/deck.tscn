@@ -17,15 +17,19 @@ script = ExtResource("1_73yum")
 
 [node name="DeckSprite" parent="DisplayNode" instance=ExtResource("3_hm1p4")]
 
-[node name="QuantityLabel" type="Label" parent="."]
+[node name="QuantityLabelNode2D" type="Node2D" parent="."]
+position = Vector2(0, 23)
+
+[node name="QuantityLabel" type="Label" parent="QuantityLabelNode2D"]
+unique_name_in_owner = true
 z_index = 1
 anchors_preset = -1
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -5.0
-offset_top = 15.0
-offset_right = 6.0
-offset_bottom = 36.0
+offset_left = -5.5
+offset_top = -11.0
+offset_right = 6.5
+offset_bottom = 13.0
 grow_horizontal = 2
 grow_vertical = 0
 size_flags_horizontal = 4
