@@ -362,6 +362,8 @@ func _on_turn_player_changed():
 
 
 func _on_end_turn_button_pressed():
+    # TODO This button doesn't always end BOTTOM's turn, it might end
+    # TOP if TOP is human-controlled.
     await CardGameTurnTransitions.end_turn(self, CardPlayer.BOTTOM)
     await CardGameTurnTransitions.begin_turn(self, CardPlayer.TOP)
     _enemy_ai.start_enemy_turn(self)

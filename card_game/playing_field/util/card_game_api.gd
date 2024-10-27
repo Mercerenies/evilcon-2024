@@ -177,7 +177,7 @@ static func draw_specific_card(playing_field, player: StringName, card_type: Car
     var opts = {
         "source_index": deck_index,
     }
-    if player == CardPlayer.TOP:
+    if playing_field.hand_cards_are_hidden(player):
         opts["custom_displayed_card"] = func (): return HiddenCardDisplay.instantiate()
     await playing_field.move_card(deck, hand, opts)
 
