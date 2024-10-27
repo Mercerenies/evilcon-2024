@@ -379,6 +379,7 @@ static func create_card(playing_field, player: StringName, card_type: CardType, 
         card_node.play_fade_in_animation()
         await play_smoke_animation(playing_field, card_node))
 
+    await new_card.card_type.on_enter_ownership(playing_field, new_card)
     return new_card
 
 
@@ -401,6 +402,7 @@ static func copy_card(playing_field, player: StringName, original_card: Card, is
         card_node.play_fade_in_animation()
         await play_smoke_animation(playing_field, card_node))
 
+    await new_card.card_type.on_enter_ownership(playing_field, new_card)
     return new_card
 
 

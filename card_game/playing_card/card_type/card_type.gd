@@ -76,9 +76,27 @@ func can_play(playing_field, owner: StringName) -> bool:
 
 func on_play(playing_field, card) -> void:
     await CardGameApi.broadcast_to_cards_async(playing_field, "on_play_broadcasted", [card])
+    await on_enter_ownership(playing_field, card)
 
 
 func on_play_broadcasted(_playing_field, _this_card, _played_card) -> void:
+    pass
+
+
+# Called when the card adopts an owner. This method is called anytime
+# the card takes on an owner (either for the first time or sometime
+# after), whether that's because the card was just played (on_play),
+# because the card was just created (as a token), or because the card
+# moved owners due to Brainwashing Ray.
+#
+# This method MAY await. Subclass implementations MUST call super.
+func on_enter_ownership(playing_field, card) -> void:
+    await CardGameApi.broadcast_to_cards_async(playing_field, "on_enter_ownership_broadcasted", [card])
+
+
+# Called (broadcasted on all cards) just after the target card changes
+# alignment due to an effect like Brainwashing Ray.
+func on_enter_ownership_broadcasted(_playing_field, _this_card, _brainwashed_card) -> void:
     pass
 
 

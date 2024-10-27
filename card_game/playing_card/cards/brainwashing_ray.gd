@@ -50,3 +50,5 @@ func _perform_effect(playing_field, this_card) -> void:
             "source_index": chosen_minion_index,
         })
         chosen_minion.owner = this_card.owner
+        await chosen_minion.card_type.on_enter_ownership(playing_field, chosen_minion)
+    playing_field.emit_cards_moved()
