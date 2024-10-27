@@ -10,13 +10,13 @@ func run_one_turn(playing_field) -> void:
         var next_card_type = _get_next_card(playing_field)
         if next_card_type == null:
             break  # Turn is done
-        await CardGameApi.play_card_from_hand(playing_field, CardPlayer.TOP, next_card_type)
+        await CardGameApi.play_card_from_hand(playing_field, controlled_player, next_card_type)
 
 
 func _get_next_card(playing_field):
-    var hand = playing_field.get_hand(CardPlayer.TOP)
+    var hand = playing_field.get_hand(controlled_player)
     var playable_cards = hand.cards().card_array().filter(
-        func(card_type): return card_type.can_play(playing_field, CardPlayer.TOP)
+        func(card_type): return card_type.can_play(playing_field, controlled_player)
     )
     if playable_cards.is_empty():
         return null

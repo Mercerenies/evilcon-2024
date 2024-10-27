@@ -2,6 +2,8 @@ extends Node2D
 
 const DESTINY_SONG_LIMIT := 3
 
+const DEFAULT_FORT_DEFENSE := 60
+
 # Note: Stats which are themselves stateful (e.g., fort defense, max
 # fort defense, current evil point count, and current destiny song
 # count) are stored here as instance variables. That is, this object
@@ -21,12 +23,12 @@ var evil_points: int = 0:
 # update the UI when evil_points gets changed.
 var _evil_points_per_turn: int = 0
 
-var fort_defense: int = 100:
+var fort_defense: int = DEFAULT_FORT_DEFENSE:
     set(v):
         fort_defense = clampi(v, 0, max_fort_defense)
         _update_fort_defense()
 
-var max_fort_defense: int = 100:
+var max_fort_defense: int = DEFAULT_FORT_DEFENSE:
     set(v):
         max_fort_defense = maxi(v, 0)
         self.fort_defense = fort_defense  # Refresh value with new limit

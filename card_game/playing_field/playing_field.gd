@@ -10,6 +10,10 @@ const NullAIAgent = preload("res://card_game/playing_field/player_agent/null_ai_
 const Randomness = preload("res://card_game/playing_field/randomness.gd")
 const EventLogger = preload("res://card_game/playing_field/event_logger.gd")
 
+# The extra amount of fort defense, given to the second player to go,
+# since they don't have first player advantage.
+const SECOND_PLAYER_FORT_ADVANTAGE := 2
+
 # Emitted anytime the state of the board changes. This includes cards
 # being added, removed, shuffled, or having their stats modified in
 # any player's discard pile, deck, hand, minion strip, or effect
@@ -46,6 +50,8 @@ var event_logger = EventLogger.new()
 
 func _ready() -> void:
     # Make sure initial stats are correct.
+    $TopStats.max_fort_defense += SECOND_PLAYER_FORT_ADVANTAGE
+    $TopStats.fort_defense += SECOND_PLAYER_FORT_ADVANTAGE
     $BottomStats.update_stats_from(self, CardPlayer.BOTTOM)
     $TopStats.update_stats_from(self, CardPlayer.TOP)
     $AILayer.add_child(_top_agent)
