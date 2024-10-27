@@ -71,7 +71,8 @@ func _find_target_cards(playing_field, owner):
 
 func _find_card_by_class(playing_field, owner, card_class):
     # On the offchance we find multiple matches (e.g. you have
-    # multiple Turkeys in play), we take the weakest one for tribute.
+    # multiple Ice Moths in play), we take the weakest one for
+    # tribute.
     var target_id = card_class.new().get_id()
     var minions_in_play = playing_field.get_minion_strip(owner).cards().card_array()
     var matching_minions = minions_in_play.filter(func (c): return c.card_type.get_id() == target_id)
