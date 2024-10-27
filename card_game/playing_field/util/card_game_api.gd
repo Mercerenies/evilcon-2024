@@ -147,7 +147,7 @@ static func play_musical_note_animation(playing_field, target_node) -> void:
 
 static func draw_cards(playing_field, player: StringName, card_count: int = 1) -> void:
     var opts = {}
-    if player == CardPlayer.TOP:
+    if playing_field.hand_cards_are_hidden(player):
         opts["custom_displayed_card"] = func (): return HiddenCardDisplay.instantiate()
 
     var deck = playing_field.get_deck(player)

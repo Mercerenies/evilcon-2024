@@ -36,11 +36,24 @@ var _enemy_ai: Node = NullEnemyAI.new()
 var randomness = Randomness.new()
 var event_logger = EventLogger.new()
 
+# Determines which cards to visually hide from the human player. The
+# default is to assume the card player at the top is an AI (and should
+# have cards hidden), while the card player at the bottom is
+# controlled by the human player.
+@export var top_cards_are_hidden := true
+@export var bottom_cards_are_hidden := false
+
 func _ready() -> void:
     # Make sure initial stats are correct.
     $BottomStats.update_stats_from(self, CardPlayer.BOTTOM)
     $TopStats.update_stats_from(self, CardPlayer.TOP)
     $AILayer.add_child(_enemy_ai)
+
+    # Hide player hands not controlled by a human.
+    if top_cards_are_hidden:
+        $TopHand.card_display_scene = HiddenCardDisplay
+    if bottom_cards_are_hidden:
+        $BottomHand.card_display_scene = HiddenCardDisplay
 
 
 func replace_enemy_ai(new_enemy_ai: Node) -> void:
@@ -183,37 +196,48 @@ func move_card(source, destination, opts = {}):
 
 
 func _on_bottom_hand_card_added(card_node):
-    card_node.card_clicked.connect(_on_bottom_hand_card_node_card_clicked.bind(card_node))
-    card_node.card_right_clicked.connect(_on_bottom_hand_card_node_card_right_clicked.bind(card_node))
+    if bottom_cards_are_hidden:
+        card_node.clickable = true
+        card_node.card_clicked.connect(_on_blind_card_clicked)
+    else:
+        card_node.card_clicked.connect(_on_visible_hand_card_node_card_clicked.bind(card_node, CardPlayer.BOTTOM))
+        card_node.card_right_clicked.connect(_on_visible_hand_card_node_card_right_clicked.bind(card_node, CardPlayer.BOTTOM))
 
 
 func _on_top_hand_card_added(card_node):
-    card_node.clickable = true
-    card_node.card_clicked.connect(_on_top_hand_card_node_card_clicked)
+    if top_cards_are_hidden:
+        card_node.clickable = true
+        card_node.card_clicked.connect(_on_blind_card_clicked)
+    else:
+        card_node.card_clicked.connect(_on_visible_hand_card_node_card_clicked.bind(card_node, CardPlayer.TOP))
+        card_node.card_right_clicked.connect(_on_visible_hand_card_node_card_right_clicked.bind(card_node, CardPlayer.TOP))
 
 
 func _on_play_strip_card_added(card_node):
     card_node.card_clicked.connect(_on_played_card_node_card_clicked.bind(card_node))
 
 
-func _on_top_hand_card_node_card_clicked() -> void:
+func _on_blind_card_clicked() -> void:
     popup_display_card([NullMinion.new()], {
         "custom_displayed_card": func(): return HiddenCardDisplay,
     })
 
 
 
-func _on_bottom_hand_card_node_card_clicked(card_node) -> void:
+func _on_visible_hand_card_node_card_clicked(card_node, player) -> void:
     var card_type = card_node.card_type
     var card_row = popup_display_card([card_type], {
         "margin_below": 64.0,
     })
 
     var play_button = Button.new()
-    if card_type.can_play(self, CardPlayer.BOTTOM):
+    if player != turn_player:
+        play_button.text = "(Not your turn)"
+        play_button.disabled = true
+    elif card_type.can_play(self, player):
         play_button.text = "Play"
         play_button.pressed.connect(func play_card_and_free_ui():
-            CardGameApi.play_card_from_hand(self, CardPlayer.BOTTOM, card_type)
+            CardGameApi.play_card_from_hand(self, player, card_type)
             card_row.queue_free())
     else:
         play_button.text = "(Can't afford)"
@@ -221,10 +245,10 @@ func _on_bottom_hand_card_node_card_clicked(card_node) -> void:
     card_row.append_button(play_button)
 
 
-func _on_bottom_hand_card_node_card_right_clicked(card_node) -> void:
+func _on_visible_hand_card_node_card_right_clicked(card_node, player) -> void:
     var card_type = card_node.card_type
-    if card_type.can_play(self, CardPlayer.BOTTOM):
-        CardGameApi.play_card_from_hand(self, CardPlayer.BOTTOM, card_type)
+    if player == turn_player and card_type.can_play(self, player):
+        CardGameApi.play_card_from_hand(self, player, card_type)
 
 
 func _on_played_card_node_card_clicked(card_node) -> void:
@@ -353,3 +377,13 @@ func end_enemy_turn() -> void:
     await CardGamePhases.end_of_full_turn(self)
     await CardGamePhases.start_of_full_turn(self)
     await CardGameTurnTransitions.begin_turn(self, CardPlayer.BOTTOM)
+
+
+func hand_cards_are_hidden(player: StringName) -> bool:
+    if player == CardPlayer.BOTTOM:
+        return bottom_cards_are_hidden
+    elif player == CardPlayer.TOP:
+        return top_cards_are_hidden
+    else:
+        push_error("Bad card player %s" % player)
+        return false
