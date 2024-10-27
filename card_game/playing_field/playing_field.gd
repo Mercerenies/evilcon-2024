@@ -23,6 +23,10 @@ signal cards_moved
 signal turn_number_updated
 signal turn_player_changed
 
+signal _never  # Never emitted. See end_game() for justification.
+
+signal game_ended(winner)
+
 # Note: This starts at -1 but will be set to 0 as soon as the game
 # starts. The first turn of the game is internally treated as Turn 0.
 var turn_number: int = -1:
@@ -385,6 +389,18 @@ func begin_game() -> void:
         await _run_turn_for(CardPlayer.BOTTOM)
         await _run_turn_for(CardPlayer.TOP)
         await CardGamePhases.end_of_full_turn(self)
+
+
+# This method ends the game, with the winner being the given player.
+# This method awaits a signal that will NEVER fire. The intention is
+# that the game's usual "turn progression" logic can await the result
+# of end_game to abort the process. Then, when the PlayingField is
+# freed by the surrounding infrastructure (the overworld, or whatever
+# simulation we're running this in), then that signal (and everything
+# that depends on it) can be freed as well.
+func end_game(winner: StringName) -> void:
+    game_ended.emit(winner)
+    await _never
 
 
 func _run_turn_for(player: StringName) -> void:

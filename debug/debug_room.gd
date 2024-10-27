@@ -63,3 +63,8 @@ func _load_all_cards():
     # Just checking for typos and obvious stuff :)
     for id in PlayingCardCodex.get_all_ids():
         PlayingCardCodex.get_entity_script(id)
+
+
+func _on_playing_field_game_ended(winner):
+    print(str(winner) + " wins!")
+    get_tree().quit()

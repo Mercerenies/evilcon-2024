@@ -8,6 +8,7 @@ extends Node
 # instantaneous, and only the animation is awaitable.
 
 const NumberAnimation = preload("res://card_game/playing_field/animation/number/number_animation.tscn")
+const GameStatsPanel = preload("res://card_game/playing_field/game_stats_panel/game_stats_panel.gd")
 
 # If you want to show two NumberAnimations on the same card at the
 # same time, this is the standard offset to show the second one at.
@@ -100,6 +101,9 @@ static func set_fort_defense(playing_field, player: StringName, new_value: int) 
     # Fire and forget
     play_animation_for_stat_change(playing_field, stats.get_fort_defense_node(), new_value - old_value)
 
+    if stats.fort_defense <= 0:
+        await playing_field.end_game(CardPlayer.other(player))
+
 
 static func add_fort_defense(playing_field, player: StringName, delta: int) -> void:
     var stats = playing_field.get_stats(player)
@@ -113,6 +117,9 @@ static func set_destiny_song(playing_field, player: StringName, new_value: int) 
     playing_field.emit_cards_moved()
     # Fire and forget
     play_animation_for_stat_change(playing_field, stats.get_destiny_song_node(), new_value - old_value)
+
+    if stats.destiny_song >= GameStatsPanel.DESTINY_SONG_LIMIT:
+        await playing_field.end_game(player)
 
 
 static func add_destiny_song(playing_field, player: StringName, delta: int) -> void:

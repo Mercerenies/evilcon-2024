@@ -7,3 +7,5 @@
 script = ExtResource("1_jdag2")
 
 [node name="PlayingField" parent="." instance=ExtResource("2_ucbm5")]
+
+[connection signal="game_ended" from="PlayingField" to="." method="_on_playing_field_game_ended"]

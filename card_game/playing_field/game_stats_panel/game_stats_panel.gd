@@ -2,7 +2,7 @@ extends Node2D
 
 const DESTINY_SONG_LIMIT := 3
 
-const DEFAULT_FORT_DEFENSE := 60
+const DEFAULT_FORT_DEFENSE := 10
 
 # Note: Stats which are themselves stateful (e.g., fort defense, max
 # fort defense, current evil point count, and current destiny song
