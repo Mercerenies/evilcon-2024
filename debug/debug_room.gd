@@ -41,15 +41,15 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.GIANT_PIG),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.TREE_NYMPH),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.ALONE_IN_THE_DARK),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.FARMERS_MARKET),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.PLUMBERMAN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CORNY_ACORN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.TINY_TURTLE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CORNY_ACORN),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.RED_TURTLE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CHICKEN),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.BOILING_POT_OF_WATER),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CHICKEN),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CATACOMB_CHARMER),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CLUELESS_MAN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CLUELESS_MAN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.SKUNKMAN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.WALL_GOLEM),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.SKUNKMAN),
     ]
 
 
