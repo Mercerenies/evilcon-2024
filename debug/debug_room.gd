@@ -32,7 +32,7 @@ func _ready():
 
 func _sample_deck():
     return [
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.DEAL_WITH_THE_DEVIL),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.POULTRY_FARM),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.LIFE_DRAIN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.MYSTERY_BOX),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.VENOMATRIX),
@@ -48,7 +48,7 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.RED_TURTLE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CHICKEN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.BOILING_POT_OF_WATER),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.COUNT_CARBONARA),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CHICKEN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CATACOMB_CHARMER),
     ]
 
