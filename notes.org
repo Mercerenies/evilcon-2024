@@ -517,6 +517,7 @@
      character who happens to know Marty the Mole.
    + [ ] Boss support? The /only/ boss interactions right now are
      Prisman and Evil Lair. And Prisman is a debuff for bosses.
+   + [ ] "Spaghetti Code" (Pasta + Robot synergy :))
 ** SCRAPPED IDEAS
    Various ideas that didn't end up working out or were cut for one
    reason or another.
