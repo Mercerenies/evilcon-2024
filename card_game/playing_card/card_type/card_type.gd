@@ -221,6 +221,14 @@ func augment_attack_damage(_playing_field, _this_card, _attacking_card) -> int:
     return 0
 
 
+func get_level_modifier(_playing_field, _this_card, _minion_card) -> int:
+    # Called during the get_level calculation. This method should
+    # return a numerical value by which to increase or decrease the
+    # minion_card's Level, per this_card's effect. This method MUST
+    # NOT await.
+    return 0
+
+
 func on_draw_phase(_playing_field, _card) -> void:
     # NOTE: Does not broadcast, since the phase itself is already
     # being broadcasted. If we change this behavior, MAKE SURE to

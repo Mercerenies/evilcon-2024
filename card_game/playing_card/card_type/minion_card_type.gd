@@ -27,11 +27,17 @@ func get_base_morale() -> int:
     return 0
 
 
-func get_level(_playing_field, card) -> int:
+func get_level(playing_field, card) -> int:
     # IMPORTANT NOTE: Unlike many methods on CardType, get_level must
     # NOT `await`, as it will be called from contexts that cannot be
     # delayed, such as inside of Array.sort_custom.
-    return card.metadata[CardMeta.LEVEL]
+    var level = card.metadata[CardMeta.LEVEL]
+    for augmentation in CardGameApi.broadcast_to_cards(playing_field, "get_level_modifier", [card]):
+        level += augmentation
+    if level >= 0:
+        return level
+    else:
+        return 0
 
 
 func get_morale(_playing_field, card) -> int:
