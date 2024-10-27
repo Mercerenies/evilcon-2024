@@ -10,7 +10,7 @@ func get_title() -> String:
 
 
 func get_text() -> String:
-    return "Destroy all [icon]TURTLE[/icon] TURTLE Minions you control; +X defense to your fortress, where X is the total Level of the destroyed Minions."
+    return "[font_size=12]Destroy all [icon]TURTLE[/icon] TURTLE Minions you control; +X defense to your fortress, where X is the total Level of the destroyed Minions.[/font_size]"
 
 
 func get_star_cost() -> int:

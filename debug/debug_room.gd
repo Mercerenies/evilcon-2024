@@ -32,7 +32,7 @@ func _ready():
 
 func _sample_deck():
     return [
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.EVIL_LAIR),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.DEFENSIVE_FORMATION),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.BARONI),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.MYSTERY_BOX),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CORNY_ACORN),
