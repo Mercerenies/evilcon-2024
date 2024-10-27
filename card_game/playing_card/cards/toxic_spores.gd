@@ -37,7 +37,7 @@ func _perform_effect(playing_field, this_card) -> void:
     var opponent = CardPlayer.other(owner)
 
     if not _owner_has_nature_minion(playing_field, owner):
-        # TODO All of these cards that require a card to be present on owner's side should use a different word than "target". Maybe "trigger"?
+        # TODO All of these cards that require a card to be present on owner's side should use a different word than "target". Maybe "trigger"? Maybe "Failed"?
         Stats.show_text(playing_field, this_card, PopupText.NO_TARGET)
         return
 
