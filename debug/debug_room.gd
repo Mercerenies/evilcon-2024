@@ -11,6 +11,7 @@ func _ready():
     $PlayingField.replace_player_agent(CardPlayer.TOP, GreedyAIAgent.instantiate())
     #$PlayingField.replace_player_agent(CardPlayer.TOP, NullAIAgent.new())
     $PlayingField.replace_player_agent(CardPlayer.BOTTOM, HumanAgent.new())
+    #$PlayingField.replace_player_agent(CardPlayer.BOTTOM, GreedyAIAgent.instantiate())
     var bottom_deck = $PlayingField.get_deck(CardPlayer.BOTTOM)
     var top_deck = $PlayingField.get_deck(CardPlayer.TOP)
     bottom_deck.cards().replace_cards(_sample_deck())

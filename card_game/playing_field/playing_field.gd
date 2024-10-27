@@ -52,6 +52,14 @@ var event_logger = EventLogger.new()
 @export var top_cards_are_hidden := true
 @export var bottom_cards_are_hidden := false
 
+## If this is false, then animations will not play. Note carefully the
+## consequences of this: If animations do not play, then the player
+## will likely not see or be able to tell much of what is going on.
+## This should be true unless the PlayingField is being used for
+## internal logic (such as the thought process of an AI character).
+@export var plays_animations := true
+
+
 func _ready() -> void:
     # Make sure initial stats are correct.
     $TopStats.max_fort_defense += SECOND_PLAYER_FORT_ADVANTAGE
@@ -83,14 +91,18 @@ func replace_player_agent(player: StringName, new_agent: Node) -> void:
 
 # Runs the given callable with the parent animation node as its sole
 # argument, awaiting the result. This method should be called to wrap
-# any animation-based code, so that PlayingField-like mock objects can
-# skip that code when simulating the game.
+# any animation-based code. If plays_animations is false, the code
+# will not be called, and the return value of this method is
+# undefined.
 #
 # Callers should take care that, if the callable returns a value, that
 # value is only ever used in subsequent with_animation blocks, as its
 # value is undefined when using other PlayingField implementations.
 func with_animation(callable):
-    return await callable.call($AnimationLayer)
+    if plays_animations:
+        return await callable.call($AnimationLayer)
+    else:
+        return null
 
 
 func get_deck(player: StringName):
