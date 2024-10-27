@@ -32,16 +32,16 @@ func _ready():
 
 func _sample_deck():
     return [
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.POULTRY_FARM),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.FARMERS_MARKET),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.LIFE_DRAIN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.MYSTERY_BOX),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.VENOMATRIX),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.LIFE_FORCE_CANNON),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.LIFE_DRAIN),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.FANCIFUL_FAIRY),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.TURKEY),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.DUCK),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.GIANT_PIG),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.TREE_NYMPH),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.ALONE_IN_THE_DARK),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.LIFE_FORCE_CANNON),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.FARMERS_MARKET),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CORNY_ACORN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.TINY_TURTLE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CORNY_ACORN),
