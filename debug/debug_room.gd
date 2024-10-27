@@ -33,11 +33,11 @@ func _ready():
 func _sample_deck():
     return [
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.DEFENSIVE_FORMATION),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.BARONI),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.ICE_MOTH),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.MYSTERY_BOX),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CORNY_ACORN),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.TURTLES_UNITE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.HIRED_NINJA),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.GREEN_RANGER),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.HYPERACTIVE_BEE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.TEAM_COBRA),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.TINY_TURTLE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.TINY_TURTLE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.MASKED_TURTLE),
