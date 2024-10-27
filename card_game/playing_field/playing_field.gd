@@ -358,7 +358,7 @@ func _on_turn_number_updated():
 
 
 func _on_turn_player_changed():
-    $EndTurnButton.disabled = (turn_player != CardPlayer.BOTTOM)
+    $EndTurnButton.disabled = hand_cards_are_hidden(turn_player)
 
 
 func _on_end_turn_button_pressed():
