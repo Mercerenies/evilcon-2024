@@ -3,11 +3,12 @@ extends Node
 
 # Helpers to begin the game and transition between player turns.
 
+# Initial deal of five cards per hand, should be run once at the very
+# beginning of an instance of the card game, usually from
+# PlayingField.begin_game().
 static func begin_game(playing_field) -> void:
     await draw_initial_hand(playing_field, CardPlayer.BOTTOM)
     await draw_initial_hand(playing_field, CardPlayer.TOP)
-    await CardGamePhases.start_of_full_turn(playing_field)
-    await begin_turn(playing_field, CardPlayer.BOTTOM)
 
 
 static func draw_initial_hand(playing_field, player: StringName) -> void:

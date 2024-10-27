@@ -6,7 +6,7 @@ const BlankCardDisplay = preload("res://card_game/playing_card/blank_card_displa
 const HiddenCardDisplay = preload("res://card_game/playing_card/hidden_card_display/hidden_card_display.tscn")
 const ScrollableCardRow = preload("res://card_game/scrollable_card_row/scrollable_card_row.tscn")
 const NullMinion = preload("res://card_game/playing_card/cards/null_minion.gd")
-const NullEnemyAI = preload("res://card_game/playing_field/enemy_ai/null_enemy_ai.gd")
+const NullAIAgent = preload("res://card_game/playing_field/player_agent/null_ai_agent.gd")
 const Randomness = preload("res://card_game/playing_field/randomness.gd")
 const EventLogger = preload("res://card_game/playing_field/event_logger.gd")
 
@@ -31,7 +31,8 @@ var turn_player: StringName = CardPlayer.BOTTOM:
         turn_player = v
         turn_player_changed.emit()
 
-var _enemy_ai: Node = NullEnemyAI.new()
+var _top_agent: Node = NullAIAgent.new()
+var _bottom_agent: Node = NullAIAgent.new()
 
 var randomness = Randomness.new()
 var event_logger = EventLogger.new()
@@ -47,7 +48,8 @@ func _ready() -> void:
     # Make sure initial stats are correct.
     $BottomStats.update_stats_from(self, CardPlayer.BOTTOM)
     $TopStats.update_stats_from(self, CardPlayer.TOP)
-    $AILayer.add_child(_enemy_ai)
+    $AILayer.add_child(_top_agent)
+    $AILayer.add_child(_bottom_agent)
 
     # Hide player hands not controlled by a human.
     if top_cards_are_hidden:
@@ -56,12 +58,17 @@ func _ready() -> void:
         $BottomHand.card_display_scene = HiddenCardDisplay
 
 
-func replace_enemy_ai(new_enemy_ai: Node) -> void:
-    var is_in_tree = _enemy_ai.is_inside_tree()
-    _enemy_ai.free()
-    _enemy_ai = new_enemy_ai
+func replace_player_agent(player: StringName, new_agent: Node) -> void:
+    var old_agent = _top_agent if player == CardPlayer.TOP else _bottom_agent
+    var is_in_tree = old_agent.is_inside_tree()
+    old_agent.free()
+    new_agent.controlled_player = player
+    if player == CardPlayer.TOP:
+        _top_agent = new_agent
+    else:
+        _bottom_agent = new_agent
     if is_in_tree:
-        $AILayer.add_child(_enemy_ai)
+        $AILayer.add_child(new_agent)
 
 
 # Runs the given callable with the parent animation node as its sole
@@ -362,11 +369,22 @@ func _on_turn_player_changed():
 
 
 func _on_end_turn_button_pressed():
-    # TODO This button doesn't always end BOTTOM's turn, it might end
-    # TOP if TOP is human-controlled.
-    await CardGameTurnTransitions.end_turn(self, CardPlayer.BOTTOM)
-    await CardGameTurnTransitions.begin_turn(self, CardPlayer.TOP)
-    _enemy_ai.start_enemy_turn(self)
+    _turn_player_agent().on_end_turn_button_pressed(self)
+
+
+func begin_game() -> void:
+    await CardGameTurnTransitions.begin_game(self)
+    while true:
+        await CardGamePhases.start_of_full_turn(self)
+        await _run_turn_for(CardPlayer.BOTTOM)
+        await _run_turn_for(CardPlayer.TOP)
+        await CardGamePhases.end_of_full_turn(self)
+
+
+func _run_turn_for(player: StringName) -> void:
+    await CardGameTurnTransitions.begin_turn(self, player)
+    await _player_agent(player).run_one_turn(self)
+    await CardGameTurnTransitions.end_turn(self, player)
 
 
 func end_enemy_turn() -> void:
@@ -389,3 +407,11 @@ func hand_cards_are_hidden(player: StringName) -> bool:
     else:
         push_error("Bad card player %s" % player)
         return false
+
+
+func _turn_player_agent():
+    return _player_agent(turn_player)
+
+
+func _player_agent(player: StringName):
+    return _top_agent if player == CardPlayer.TOP else _bottom_agent

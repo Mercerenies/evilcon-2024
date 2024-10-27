@@ -1,12 +1,16 @@
 extends Node2D
 
-const GreedyEnemyAI = preload("res://card_game/playing_field/enemy_ai/greedy_enemy_ai.tscn")
+const GreedyAIAgent = preload("res://card_game/playing_field/player_agent/greedy_ai_agent.tscn")
+const NullAIAgent = preload("res://card_game/playing_field/player_agent/null_ai_agent.gd")
+const HumanAgent = preload("res://card_game/playing_field/player_agent/human_agent.gd")
 
 
 func _ready():
     #_load_all_cards()  # Comment when not using; it's slow.
 
-    $PlayingField.replace_enemy_ai(GreedyEnemyAI.instantiate())
+    $PlayingField.replace_player_agent(CardPlayer.TOP, GreedyAIAgent.instantiate())
+    #$PlayingField.replace_player_agent(CardPlayer.TOP, NullAIAgent.new())
+    $PlayingField.replace_player_agent(CardPlayer.BOTTOM, HumanAgent.new())
     var bottom_deck = $PlayingField.get_deck(CardPlayer.BOTTOM)
     var top_deck = $PlayingField.get_deck(CardPlayer.TOP)
     bottom_deck.cards().replace_cards(_sample_deck())
@@ -14,8 +18,8 @@ func _ready():
     bottom_deck.cards().shuffle()
     top_deck.cards().shuffle()
 
-    $PlayingField.turn_number = 10  # Get extra EP :)
-    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.LIVESTOCK_DELIVERY))
+    #$PlayingField.turn_number = 10  # Get extra EP :)
+    #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.LIVESTOCK_DELIVERY))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN), CardPlayer.TOP))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN), CardPlayer.TOP))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN), CardPlayer.TOP))
@@ -27,7 +31,7 @@ func _ready():
     #$PlayingField.get_effect_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.KIDNAPPING_THE_PRESIDENT), CardPlayer.TOP))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.BUSY_BEE), CardPlayer.TOP))
 
-    await CardGameTurnTransitions.begin_game($PlayingField)
+    $PlayingField.begin_game()
 
 
 func _sample_deck():
