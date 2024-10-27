@@ -10,7 +10,7 @@ func get_title() -> String:
 
 
 func get_text() -> String:
-    return "Gain 4 EP immediately when you play this card. If you ever control more than one Minion, destroy this card and all Minions you control."
+    return "Gain 4 EP immediately when you play this card. During your End Phase, if you control more than one Minion, destroy this card and all Minions you control."
 
 
 func is_ongoing() -> bool:
@@ -33,18 +33,11 @@ func on_play(playing_field, this_card) -> void:
     await super.on_play(playing_field, this_card)
     await CardGameApi.highlight_card(playing_field, this_card)
     await Stats.add_evil_points(playing_field, this_card.owner, 4)
-    await _do_minion_check(playing_field, this_card)
 
 
-func on_enter_ownership_broadcasted(playing_field, this_card, new_card) -> void:
-    # Unconditionally do a Minion count check, regardless of what card
-    # moved around.
-    #
-    # One exception: Do NOT do a Minion check if this is the on_enter
-    # event for THIS Deal with the Devil card, because we need to do
-    # that check later (after the EP have been awarded).
-    await super.on_enter_ownership_broadcasted(playing_field, this_card, new_card)
-    if this_card != new_card:
+func on_end_phase(playing_field, this_card) -> void:
+    await super.on_end_phase(playing_field, this_card)
+    if this_card.owner == playing_field.turn_player:
         await _do_minion_check(playing_field, this_card)
 
 
