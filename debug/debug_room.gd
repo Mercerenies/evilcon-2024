@@ -15,6 +15,7 @@ func _ready():
     top_deck.cards().shuffle()
 
     $PlayingField.turn_number = 10  # Get extra EP :)
+    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.LIFE_DRAIN))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN), CardPlayer.TOP))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN), CardPlayer.TOP))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN), CardPlayer.TOP))
@@ -32,11 +33,11 @@ func _ready():
 func _sample_deck():
     return [
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.DEAL_WITH_THE_DEVIL),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.LIFE_DRAIN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.MYSTERY_BOX),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.VENOMATRIX),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.LIFE_FORCE_CANNON),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.WORKER_BEE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.LIFE_DRAIN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.FANCIFUL_FAIRY),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.TREE_NYMPH),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.ALONE_IN_THE_DARK),
