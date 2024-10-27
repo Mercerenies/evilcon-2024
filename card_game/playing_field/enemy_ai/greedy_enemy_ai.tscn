@@ -1,9 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://bfrtrjhfb0s4a"]
-
-[ext_resource type="Script" path="res://card_game/playing_field/enemy_ai/greedy_enemy_ai.gd" id="1_t481g"]
-
-[node name="GreedyEnemyAI" type="Node"]
-script = ExtResource("1_t481g")
-
-[node name="NextActionTimer" type="Timer" parent="."]
-one_shot = true
