@@ -501,75 +501,96 @@
       reverts back to its factory condition and only has the stats and
       abilities listed on the physical card.
 ** ENEMY AI PLAN
-   (Written Oct 27, 2024)
+*** SUMMARY
+    (Written Oct 27, 2024)
 
-   We have officially reached the point where it's time to write an
-   actually /good/ AI for the game. The current one, called
-   ~GreedyAIAgent~, merely plays cards at random until it is no longer
-   legal to do so, then ends its turn.
+    We have officially reached the point where it's time to write an
+    actually /good/ AI for the game. The current one, called
+    ~GreedyAIAgent~, merely plays cards at random until it is no
+    longer legal to do so, then ends its turn.
 
-   My first idea (which has mostly been superseded by the idea I will
-   discuss later) was to make a one-lookahead engine by
-   hand-programming heuristics. That is, every card type would have a
-   function that determines its current value to the AI, given the
-   state of the playing field. For basic Minions, the value is zero,
-   since ~cost = level * morale~. But if the card synergizes with
-   something already on the field, its value goes up. This would
-   probably work well for basic stuff, but I feel like more
-   sophisticated cards (Ultimate Fusion, Team Cobra, etc) would never
-   get played, and if that's the case then the AI may be playing
-   suboptimally in other situations as well. It also relies on me
-   being able to come up with reliable heuristics for every card. For
-   instance, how many fort health points is immunity from enemy
-   effects worth? Or how many points is drawing an extra card worth?
-   It depends heavily on the context in ways difficult to quantify.
+    My first idea (which has mostly been superseded by the idea I will
+    discuss later) was to make a one-lookahead engine by
+    hand-programming heuristics. That is, every card type would have a
+    function that determines its current value to the AI, given the
+    state of the playing field. For basic Minions, the value is zero,
+    since ~cost = level * morale~. But if the card synergizes with
+    something already on the field, its value goes up. This would
+    probably work well for basic stuff, but I feel like more
+    sophisticated cards (Ultimate Fusion, Team Cobra, etc) would never
+    get played, and if that's the case then the AI may be playing
+    suboptimally in other situations as well. It also relies on me
+    being able to come up with reliable heuristics for every card. For
+    instance, how many fort health points is immunity from enemy
+    effects worth? Or how many points is drawing an extra card worth?
+    It depends heavily on the context in ways difficult to quantify.
 
-   So, instead, I'm thinking we design a Monte Carlo engine. The AI
-   looks at its legal actions right now, which consist of either
-   playing a card it can legally afford to play, or ending its turn.
-   For each action, deep-copy the playing field (nontrivial but not
-   terribly difficult to do), then run a couple hundred simulations of
-   the next, say, five turns. At the end of that, see which card (or
-   end-of-turn action) had the best value and play it (resp, end your
-   turn). Notes on this approach:
-   + The utility value of the game board after running a simulation is
-     pretty simple to calculate. Assuming A is the AI and B is the
-     other player, we want to maximize ~utility = A.fort_defense -
-     B.fort_defense + (A.destiny_songs - B.destiny_songs) * 20~
-     - A Destiny Song is worth 20 fort defense, because it's
-       effectively 1/3 of the way to winning the game, and the fort
-       has 60 (or 62, but we're ignoring that difference for now)
-       defense. One third of 60 is 20.
-   + For the purposes of running the simulation, after deep-copying
-     the playing field, we shuffle our remaining deck, since the AI
-     can't see the order of the cards in its own deck but does know
-     /what/ those cards are. There are no effects that blindly exile a
-     card (even in the case of Ravenboy/Ravengirl, the exiled card is
-     revealed publicly to all players), so the AI always has complete
-     knowledge of what cards remain in the unordered multiset of its
-     current deck.
-   + Likewise, we'll need to randomize the AI's opponent's hand and
-     deck. I'm thinking the AI will take notes of what cards it has
-     seen, and fill out the remainder of its opponent's deck from that
-     context. For example, if the opponent has exhausted their deck
-     once before, then the AI should know every card in that deck
-     (and, again, since all exiles are public, the AI can reason about
-     what cards have been exiled). If not, the AI can look at the
-     cards it /has/ seen and assume the remaining cards will be of
-     similar archetypes to the existing ones. If it has no
-     information, then assume random basic Minions. Since the /main/
-     point of Monte Carlo is to figure out what's best for the AI, I
-     feel like the contents of the enemy's deck (especially at the
-     beginning of a game) are not as relevant, so we can probably just
-     fill in unknown information with random basic Minions, normally
-     distributed by Cost.
-   + I do worry about speed here. The greedy AI pauses for a bit to
-     make things seem more natural. We'll need to distribute our
-     simulations across Godot frames as best as possible and hopefully
-     still /seem/ as fast as the greedy AI. This Will require some
-     experimentation to tweak the best numbers. We can adjust, for
-     instance, the depth of the Monte Carlo search, as well as the
-     number of simulations.
+    So, instead, I'm thinking we design a Monte Carlo engine. The AI
+    looks at its legal actions right now, which consist of either
+    playing a card it can legally afford to play, or ending its turn.
+    For each action, deep-copy the playing field (nontrivial but not
+    terribly difficult to do), then run a couple hundred simulations
+    of the next, say, five turns. At the end of that, see which card
+    (or end-of-turn action) had the best value and play it (resp, end
+    your turn). Notes on this approach:
+    + The utility value of the game board after running a simulation
+      is pretty simple to calculate. Assuming A is the AI and B is the
+      other player, we want to maximize ~utility = A.fort_defense -
+      B.fort_defense + (A.destiny_songs - B.destiny_songs) * 20~
+      - A Destiny Song is worth 20 fort defense, because it's
+        effectively 1/3 of the way to winning the game, and the fort
+        has 60 (or 62, but we're ignoring that difference for now)
+        defense. One third of 60 is 20.
+    + For the purposes of running the simulation, after deep-copying
+      the playing field, we shuffle our remaining deck, since the AI
+      can't see the order of the cards in its own deck but does know
+      /what/ those cards are. There are no effects that blindly exile
+      a card (even in the case of Ravenboy/Ravengirl, the exiled card
+      is revealed publicly to all players), so the AI always has
+      complete knowledge of what cards remain in the unordered
+      multiset of its current deck.
+    + Likewise, we'll need to randomize the AI's opponent's hand and
+      deck. I'm thinking the AI will take notes of what cards it has
+      seen, and fill out the remainder of its opponent's deck from
+      that context. For example, if the opponent has exhausted their
+      deck once before, then the AI should know every card in that
+      deck (and, again, since all exiles are public, the AI can reason
+      about what cards have been exiled). If not, the AI can look at
+      the cards it /has/ seen and assume the remaining cards will be
+      of similar archetypes to the existing ones. If it has no
+      information, then assume random basic Minions. Since the /main/
+      point of Monte Carlo is to figure out what's best for the AI, I
+      feel like the contents of the enemy's deck (especially at the
+      beginning of a game) are not as relevant, so we can probably
+      just fill in unknown information with random basic Minions,
+      normally distributed by Cost.
+    + I do worry about speed here. The greedy AI pauses for a bit to
+      make things seem more natural. We'll need to distribute our
+      simulations across Godot frames as best as possible and
+      hopefully still /seem/ as fast as the greedy AI. This Will
+      require some experimentation to tweak the best numbers. We can
+      adjust, for instance, the depth of the Monte Carlo search, as
+      well as the number of simulations.
+*** PROJECT DEEPCOPY
+    We need to be able to deep-copy ~PlayingField~. Unfortunately,
+    while Godot's ~duplicate~ is nice to have, it has several
+    subtleties that make it not suitable for my use case (most
+    prominently, the 0-argument constructor requirement is a
+    non-starter). So I'll be implementing a custom ~deepclone~ method.
+    These are all of the things that ~PlayingField~ directly or
+    indirectly depends on.
+
+    + [ ] ~PlayingField~
+    + [ ] ~Deck~
+    + [ ] ~CardContainer~
+    + [X] ~Card~
+    + [X] ~CardType~ (Immutable so simply return ~self~)
+    + [ ] ~DiscardPile~
+    + [ ] ~CardStrip~
+    + [ ] ~HiddenCardDisplay~
+    + [ ] ~PlayingCardDisplay~
+    + [ ] ~GameStatsPanel~ + all individual stats panels
+    + [ ] All AI nodes
 ** RANDOM IDEAS
    + [ ] Villain(s) from Three Rules Standing
    + [ ] Costume shop for some cosmetic upgrades

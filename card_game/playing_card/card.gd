@@ -76,3 +76,15 @@ func has_archetype(playing_field, archetype: int) -> bool:
         return false
     var archetypes = card_type.get_archetypes(playing_field, self)
     return archetype in archetypes
+
+
+# NOTE CAREFULLY: This method is NOT the correct choice for in-game
+# card effects. If a card effect copies a card as part of the card
+# game's mechanics, you're looking for CardGameApi.copy_card().
+# deepclone() is for copying the entire playing field in batch, to run
+# analysis on it (usually for the purposes of an AI engine).
+func deepclone():
+    var clone = Card.new(card_type, owner)
+    clone.original_owner = original_owner
+    clone.metadata = metadata.duplicate(true)
+    return clone
