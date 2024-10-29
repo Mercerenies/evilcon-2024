@@ -3,6 +3,36 @@ extends Node
 
 # Helpers to begin the game and transition between player turns.
 
+# Plays the whole game, from start to finish, and awaits until the game is completed. Returns the winner.
+static func play_full_game(playing_field) -> StringName:
+    # By setting up a promise (rather than just blindly awaiting the
+    # game_ended signal), we can deal with the corner case where the
+    # game ends instantaneously without any user input.
+    var winner_promise = Promise.new()
+    playing_field.game_ended.connect(winner_promise.resolve_with_data)
+
+    # Fire and forget the game loop
+    _run_game_loop(playing_field)
+
+    var winner = await winner_promise.async_awaiter()
+    return winner
+
+
+static func _run_game_loop(playing_field) -> void:
+    await begin_game(playing_field)
+    while true:
+        await CardGamePhases.start_of_full_turn(playing_field)
+        await _run_turn_for(playing_field, CardPlayer.BOTTOM)
+        await _run_turn_for(playing_field, CardPlayer.TOP)
+        await CardGamePhases.end_of_full_turn(playing_field)
+
+
+static func _run_turn_for(playing_field, player: StringName) -> void:
+    await begin_turn(playing_field, player)
+    await playing_field.player_agent(player).run_one_turn(playing_field)
+    await end_turn(playing_field, player)
+
+
 # Initial deal of five cards per hand, should be run once at the very
 # beginning of an instance of the card game, usually from
 # PlayingField.begin_game().

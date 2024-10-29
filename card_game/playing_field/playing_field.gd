@@ -363,15 +363,6 @@ func _on_end_turn_button_pressed():
     _turn_player_agent().on_end_turn_button_pressed(self)
 
 
-func begin_game() -> void:
-    await CardGameTurnTransitions.begin_game(self)
-    while true:
-        await CardGamePhases.start_of_full_turn(self)
-        await _run_turn_for(CardPlayer.BOTTOM)
-        await _run_turn_for(CardPlayer.TOP)
-        await CardGamePhases.end_of_full_turn(self)
-
-
 # This method ends the game, with the winner being the given player.
 # This method awaits a signal that will NEVER fire. The intention is
 # that the game's usual "turn progression" logic can await the result
@@ -382,12 +373,6 @@ func begin_game() -> void:
 func end_game(winner: StringName) -> void:
     game_ended.emit(winner)
     await _never
-
-
-func _run_turn_for(player: StringName) -> void:
-    await CardGameTurnTransitions.begin_turn(self, player)
-    await _player_agent(player).run_one_turn(self)
-    await CardGameTurnTransitions.end_turn(self, player)
 
 
 func hand_cards_are_hidden(player: StringName) -> bool:
@@ -401,8 +386,8 @@ func hand_cards_are_hidden(player: StringName) -> bool:
 
 
 func _turn_player_agent():
-    return _player_agent(turn_player)
+    return player_agent(turn_player)
 
 
-func _player_agent(player: StringName):
+func player_agent(player: StringName):
     return _top_agent if player == CardPlayer.TOP else _bottom_agent

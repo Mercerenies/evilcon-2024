@@ -32,7 +32,8 @@ func _ready():
     #$PlayingField.get_effect_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.KIDNAPPING_THE_PRESIDENT), CardPlayer.TOP))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.BUSY_BEE), CardPlayer.TOP))
 
-    $PlayingField.begin_game()
+    await CardGameTurnTransitions.play_full_game($PlayingField)
+    print("Endgame :)")
 
 
 func _sample_deck():
