@@ -29,7 +29,11 @@ static func _run_game_loop(playing_field) -> void:
 
 # Assuming the playing field is currently in the middle of a game,
 # continues from the current point in the game, up until the endgame.
-static func play_rest_of_game(playing_field) -> StringName:
+#
+# Accepted options:
+#
+# * max_turns (integer) - If supplied, the game will cut off if it goes longer than this many turns.
+static func play_rest_of_game(playing_field, opts = {}):
     # By setting up a promise (rather than just blindly awaiting the
     # game_ended signal), we can deal with the corner case where the
     # game ends instantaneously without any user input.
@@ -37,13 +41,13 @@ static func play_rest_of_game(playing_field) -> StringName:
     playing_field.game_ended.connect(winner_promise.resolve_with_data)
 
     # Fire and forget the game loop
-    _run_rest_of_game_loop(playing_field)
+    _run_rest_of_game_loop(playing_field, opts.get("max_turns", -1))
 
     var winner = await winner_promise.async_awaiter()
     return winner
 
 
-static func _run_rest_of_game_loop(playing_field) -> void:
+static func _run_rest_of_game_loop(playing_field, max_turns: int) -> void:
     # Finish the current turn
     if playing_field.turn_player == CardPlayer.BOTTOM:
         await playing_field.player_agent(CardPlayer.BOTTOM).run_one_turn(playing_field)
@@ -55,11 +59,14 @@ static func _run_rest_of_game_loop(playing_field) -> void:
         await end_turn(playing_field, CardPlayer.TOP)
         await CardGamePhases.end_of_full_turn(playing_field)
 
-    while true:
+    while max_turns < 0 or playing_field.turn_number < max_turns:
         await CardGamePhases.start_of_full_turn(playing_field)
         await _run_turn_for(playing_field, CardPlayer.BOTTOM)
         await _run_turn_for(playing_field, CardPlayer.TOP)
         await CardGamePhases.end_of_full_turn(playing_field)
+    # If we get to this point, the game has been cut off due to an
+    # explicit "max_turns" parameter. There is no winner.
+    playing_field.game_ended.emit(null)
 
 
 static func _run_turn_for(playing_field, player: StringName) -> void:
