@@ -36,6 +36,6 @@ func has_event(turn_number: int, player: StringName, event: StringName) -> bool:
 
 
 func deepclone():
-    var new_logger = load("res://card_game/playing_field/event_logger.gd")
+    var new_logger = load("res://card_game/playing_field/event_logger.gd").new()
     new_logger._dict = _dict.duplicate(true)
     return new_logger
