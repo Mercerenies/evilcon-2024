@@ -5,7 +5,7 @@ extends PlayerAgent
 
 func run_one_turn(playing_field) -> void:
     while true:
-        playing_field.with_animation(func(_animation_layer):
+        await playing_field.with_animation(func(_animation_layer):
             $NextActionTimer.start()
             await $NextActionTimer.timeout)
         var next_card_type = _get_next_card(playing_field)
