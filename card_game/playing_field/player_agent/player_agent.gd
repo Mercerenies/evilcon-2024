@@ -27,3 +27,12 @@ func suppresses_input() -> bool:
     # player's turn.
     push_warning("Forgot to override suppresses_input!")
     return false
+
+
+func deepclone():
+    # Deep-copy the player agent. Subclasses should override this if
+    # they define any additional instance fields that need to get
+    # duplicated.
+    var new_agent = get_script().new()
+    new_agent.controlled_player = controlled_player
+    return new_agent

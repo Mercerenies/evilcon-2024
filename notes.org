@@ -590,7 +590,7 @@
     + [ ] ~HiddenCardDisplay~
     + [ ] ~PlayingCardDisplay~
     + [ ] ~GameStatsPanel~ + all individual stats panels
-    + [ ] All AI nodes
+    + [X] All AI nodes
 ** RANDOM IDEAS
    + [ ] Villain(s) from Three Rules Standing
    + [ ] Costume shop for some cosmetic upgrades
