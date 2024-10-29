@@ -165,41 +165,20 @@ func get_stats(player: StringName):
         return null
 
 
-# Moves a card from one node to another.
-#
-# The source and destination nodes must be Node2Ds and must have a
-# method called cards() which returns the appropriate CardContainer.
+# Performs (and awaits) the on-screen animation of the card moving
+# from the source position to the destination position.
 #
 # Optional arguments are as follows:
 #
-# * source_index (int) - Index to draw from in the source node's
-#   CardContainer. Counts from the back if negative. Default = -1.
-#
-# * scale (Vector2) - Scale of the animation. Default = Vector2(0.25, 0.25).
+# * scale (Vector2) - The scale of the animation. Default = Vector2(0.25, 0.25).
 #
 # * custom_displayed_card (Callable) - A 0-argument Callable that
 #   returns a card display node (a node with a set_card() method) to
 #   use. If not provided, the default node type of PlayingCardDisplay
 #   is used.
-#
-# * destination_transform (Callable) - A 1-argument Callable that
-#   transforms the drawn card before it is stored in the destination.
-#   If not supplied, defaults to the identity function.
-func move_card(source, destination, opts = {}):
-    var source_index = opts.get("source_index", -1)
+func animate_card_moving(source: Node, destination: Node, relevant_card, opts = {}):
     var animation_scale = opts.get("scale", Vector2(0.25, 0.25))
     var custom_displayed_card = opts.get("custom_displayed_card", null)
-    var destination_transform = opts.get("destination_transform", null)
-
-    # TODO Consider finding the exact position within the row, if one
-    # exists. :)
-
-    var source_cards = source.cards()
-    var destination_cards = destination.cards()
-    var relevant_card = source_cards.pop_card(source_index)
-    emit_cards_moved()
-
-    # Animate the card moving
     await with_animation(func(animation_layer):
         var animation = CardMovingAnimation.instantiate()
         animation_layer.add_child(animation)
@@ -212,12 +191,6 @@ func move_card(source, destination, opts = {}):
             "end_angle": destination.global_rotation,
         })
         animation.queue_free())
-
-    if destination_transform != null:
-        relevant_card = destination_transform.call(relevant_card)
-    destination_cards.push_card(relevant_card)
-    emit_cards_moved()
-    return relevant_card
 
 
 func _on_bottom_hand_card_added(card_node):

@@ -46,7 +46,7 @@ func _perform_effect(playing_field, this_card) -> void:
     if can_influence:
         var chosen_minion_index = opponent_minions_strip.cards().find_card(chosen_minion)
         var owner_minions_strip = playing_field.get_minion_strip(this_card.owner)
-        await playing_field.move_card(opponent_minions_strip, owner_minions_strip, {
+        await CardGameApi.move_card(playing_field, opponent_minions_strip, owner_minions_strip, {
             "source_index": chosen_minion_index,
         })
         chosen_minion.owner = this_card.owner

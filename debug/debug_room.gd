@@ -40,7 +40,7 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.FARMERS_MARKET),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.LIFE_DRAIN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.MYSTERY_BOX),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.VENOMATRIX),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.BRAINWASHING_RAY),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.TURKEY),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.DUCK),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.VENOMATRIX),

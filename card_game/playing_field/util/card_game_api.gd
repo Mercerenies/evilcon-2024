@@ -20,6 +20,48 @@ class CardPosition:
         self.index = index
 
 
+# Moves a card from one node to another.
+#
+# The source and destination nodes must be Node2Ds and must have a
+# method called cards() which returns the appropriate CardContainer.
+#
+# Optional arguments are as follows:
+#
+# * source_index (int) - Index to draw from in the source node's
+#   CardContainer. Counts from the back if negative. Default = -1.
+#
+# * scale (Vector2) - Scale of the animation. Default = Vector2(0.25, 0.25).
+#
+# * custom_displayed_card (Callable) - A 0-argument Callable that
+#   returns a card display node (a node with a set_card() method) to
+#   use. If not provided, the default node type of PlayingCardDisplay
+#   is used.
+#
+# * destination_transform (Callable) - A 1-argument Callable that
+#   transforms the drawn card before it is stored in the destination.
+#   If not supplied, defaults to the identity function.
+static func move_card(playing_field, source, destination, opts = {}):
+    var source_index = opts.get("source_index", -1)
+    var destination_transform = opts.get("destination_transform", null)
+
+    # TODO Consider finding the exact position within the row, if one
+    # exists. :)
+
+    var source_cards = source.cards()
+    var destination_cards = destination.cards()
+    var relevant_card = source_cards.pop_card(source_index)
+    playing_field.emit_cards_moved()
+
+    # Animate the card moving
+    await playing_field.animate_card_moving(source, destination, relevant_card, opts)
+
+    if destination_transform != null:
+        relevant_card = destination_transform.call(relevant_card)
+    destination_cards.push_card(relevant_card)
+    playing_field.emit_cards_moved()
+    return relevant_card
+
+
 static func field_strips(playing_field) -> Array:
     return [
         playing_field.get_minion_strip(CardPlayer.BOTTOM),
@@ -173,7 +215,7 @@ static func draw_cards(playing_field, player: StringName, card_count: int = 1) -
         if deck.cards().card_count() == 0:
             break
         # Else, draw.
-        await playing_field.move_card(deck, hand, opts)
+        await move_card(playing_field, deck, hand, opts)
 
 
 static func draw_specific_card(playing_field, player: StringName, card_type: CardType) -> void:
@@ -188,7 +230,7 @@ static func draw_specific_card(playing_field, player: StringName, card_type: Car
     }
     if playing_field.hand_cards_are_hidden(player):
         opts["custom_displayed_card"] = func (): return HiddenCardDisplay.instantiate()
-    await playing_field.move_card(deck, hand, opts)
+    await move_card(playing_field, deck, hand, opts)
 
 
 static func reshuffle_discard_pile(playing_field, player: StringName) -> void:
@@ -233,7 +275,7 @@ static func play_card_from_hand(playing_field, player: StringName, card_type: Ca
         push_warning("Cannot play card %s from hand because it is not in hand" % card_type)
         return
     await Stats.add_evil_points(playing_field, player, - card_type.get_star_cost())
-    var new_card = await playing_field.move_card(hand, field, {
+    var new_card = await move_card(playing_field, hand, field, {
         "source_index": hand_index,
         "destination_transform": DestinationTransform.instantiate_card(player),
     })
@@ -249,7 +291,7 @@ static func resurrect_card(playing_field, player: StringName, card_type: CardTyp
     if discard_index == null:
         push_warning("Cannot resurrect card %s because it is not in discard pile" % card_type)
         return
-    var new_card = await playing_field.move_card(discard_pile, field, {
+    var new_card = await move_card(playing_field, discard_pile, field, {
         "source_index": discard_index,
         "destination_transform": DestinationTransform.instantiate_card(player),
     })
@@ -265,7 +307,7 @@ static func play_card_from_deck(playing_field, player: StringName, card_type: Ca
     if deck_index == null:
         push_warning("Cannot play card %s from deck because it is not in deck" % card_type)
         return
-    var new_card = await playing_field.move_card(deck, field, {
+    var new_card = await move_card(playing_field, deck, field, {
         "source_index": deck_index,
         "destination_transform": DestinationTransform.instantiate_card(player),
     })
@@ -342,7 +384,7 @@ static func destroy_card(playing_field, card: Card) -> void:
         push_warning("Cannot destroy card %s because it is not in play" % card)
         return
     var discard_pile = playing_field.get_discard_pile(card.original_owner)
-    await playing_field.move_card(card_pos.card_strip, discard_pile, {
+    await move_card(playing_field, card_pos.card_strip, discard_pile, {
         "source_index": card_pos.index,
         "destination_transform": DestinationTransform.strip_to_card_type,
     })
@@ -356,7 +398,7 @@ static func discard_card(playing_field, player: StringName, card_type: CardType)
     if hand_index == null:
         push_warning("Cannot discard card %s from hand because it is not in hand" % card_type)
         return
-    await playing_field.move_card(hand, discard_pile, {
+    await move_card(playing_field, hand, discard_pile, {
         "source_index": hand_index,
     })
 
@@ -369,7 +411,7 @@ static func move_card_from_discard_to_deck(playing_field, player: StringName, ca
     if discard_pile_index == null:
         push_warning("Cannot move card %s from discard pile to deck, because it is not in discard pile" % card_type)
         return
-    await playing_field.move_card(discard_pile, deck, {
+    await move_card(playing_field, discard_pile, deck, {
         "source_index": discard_pile_index,
     })
 
