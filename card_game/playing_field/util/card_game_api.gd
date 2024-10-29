@@ -20,8 +20,17 @@ class CardPosition:
         self.index = index
 
 
+static func field_strips(playing_field) -> Array:
+    return [
+        playing_field.get_minion_strip(CardPlayer.BOTTOM),
+        playing_field.get_minion_strip(CardPlayer.TOP),
+        playing_field.get_effect_strip(CardPlayer.BOTTOM),
+        playing_field.get_effect_strip(CardPlayer.TOP),
+    ]
+
+
 static func find_card_on_field(playing_field, card: Card):
-    for strip in playing_field.field_strips():
+    for strip in field_strips(playing_field):
         var cards = strip.cards()
         for i in range(cards.card_count()):
             if card == cards.peek_card(i):

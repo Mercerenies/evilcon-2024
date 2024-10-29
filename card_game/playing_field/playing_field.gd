@@ -165,10 +165,6 @@ func get_stats(player: StringName):
         return null
 
 
-func field_strips() -> Array:
-    return [$BottomMinionStrip, $TopMinionStrip, $BottomEffectStrip, $TopEffectStrip]
-
-
 # Moves a card from one node to another.
 #
 # The source and destination nodes must be Node2Ds and must have a
