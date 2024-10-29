@@ -30,7 +30,7 @@ func get_base_morale() -> int:
 
 
 func get_base_archetypes() -> Array:
-    return [Archetype.BOSS]
+    return [Archetype.NATURE, Archetype.BOSS]
 
 
 func get_rarity() -> int:
