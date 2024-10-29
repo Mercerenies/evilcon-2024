@@ -589,7 +589,7 @@
     + [ ] ~CardStrip~
     + [ ] ~HiddenCardDisplay~
     + [ ] ~PlayingCardDisplay~
-    + [ ] ~GameStatsPanel~ + all individual stats panels
+    + [X] ~GameStatsPanel~ + all individual stats panels
     + [X] All AI nodes
 ** RANDOM IDEAS
    + [ ] Villain(s) from Three Rules Standing
