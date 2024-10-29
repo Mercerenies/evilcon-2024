@@ -32,8 +32,8 @@ func run_one_turn(playing_field) -> void:
     var tmp = Virtualization.to_virtual(playing_field)
     tmp.replace_player_agent(CardPlayer.BOTTOM, GreedyAIAgent.instantiate())
     tmp.replace_player_agent(CardPlayer.TOP, GreedyAIAgent.instantiate())
-    var sim = MonteCarloSimulation.run_simulations_in_series(tmp, 5)
-    await get_tree().create_timer(1.0).timeout
+    var sim = MonteCarloSimulation.run_simulations(tmp, 15, 4)
+    await get_tree().create_timer(5.0).timeout
     print(sim.get_results())
 
     while true:
