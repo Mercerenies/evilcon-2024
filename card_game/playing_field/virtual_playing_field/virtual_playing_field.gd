@@ -125,7 +125,9 @@ func get_stats(player: StringName):
         return null
 
 
-# TODO move_card (Can we put it in CardGameAPI, maybe?)
+func animate_card_moving(_source, _destination, _card, _opts = {}):
+    # We don't play animations in the VirtualPlayingField.
+    pass
 
 
 func emit_cards_moved() -> void:
