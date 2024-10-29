@@ -417,18 +417,6 @@ func _run_turn_for(player: StringName) -> void:
     await CardGameTurnTransitions.end_turn(self, player)
 
 
-func end_enemy_turn() -> void:
-    # Do NOT call this directly from an EnemyAI subclass. Call
-    # EnemyAI.end_enemy_turn, which delegates to this method instead.
-    # (Yes, it's spaghetti and I should probably clean that up)
-    #
-    # TODO Good visuals for turn transitions
-    await CardGameTurnTransitions.end_turn(self, CardPlayer.TOP)
-    await CardGamePhases.end_of_full_turn(self)
-    await CardGamePhases.start_of_full_turn(self)
-    await CardGameTurnTransitions.begin_turn(self, CardPlayer.BOTTOM)
-
-
 func hand_cards_are_hidden(player: StringName) -> bool:
     if player == CardPlayer.BOTTOM:
         return bottom_cards_are_hidden
