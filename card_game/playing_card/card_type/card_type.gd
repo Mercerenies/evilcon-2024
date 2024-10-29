@@ -303,9 +303,3 @@ func is_spiky_broadcasted(_playing_field, _this_card, _candidate_card) -> bool:
     #
     # This method MUST NOT await.
     return false
-
-
-func deepclone():
-    # Card types are immutable objects, so we can simply return the
-    # current instance here.
-    return self
