@@ -108,3 +108,13 @@ func find_card_reversed_if(callable: Callable):
         if callable.call(_array[i]):
             return i
     return null
+
+
+func deepclone():
+    # Returns a new CardContainer containing deep copies of the same
+    # cards as self.
+    var CardContainer = load("res://card_game/playing_field/card_container/card_container.tscn")
+    var new_container = CardContainer.instantiate()
+    new_container.contained_type = contained_type
+    new_container._array = _array.map(func (c): return c.deepclone())
+    return new_container
