@@ -13,3 +13,7 @@ func cards():
 func _on_card_container_cards_modified():
     # Propagate
     cards_modified.emit()
+
+
+func get_card_node(_index):
+    return null

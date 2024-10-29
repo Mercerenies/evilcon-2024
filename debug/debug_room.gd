@@ -3,11 +3,37 @@ extends Node2D
 const GreedyAIAgent = preload("res://card_game/playing_field/player_agent/greedy_ai_agent.tscn")
 const NullAIAgent = preload("res://card_game/playing_field/player_agent/null_ai_agent.gd")
 const HumanAgent = preload("res://card_game/playing_field/player_agent/human_agent.gd")
+const VirtualPlayingField = preload("res://card_game/playing_field/virtual_playing_field/virtual_playing_field.tscn")
 
 
 func _ready():
     #_load_all_cards()  # Comment when not using; it's slow.
+    #_debug_interactive_game()
+    _debug_batch_game()
 
+
+func _debug_batch_game() -> void:
+    var top_winners = 0
+    var bottom_winners = 0
+    for i in range(100):
+        print(i)
+        var virtual_playing_field = VirtualPlayingField.instantiate()
+        virtual_playing_field.get_deck(CardPlayer.BOTTOM).cards().replace_cards(_sample_deck())
+        virtual_playing_field.get_deck(CardPlayer.TOP).cards().replace_cards(_sample_deck())
+        virtual_playing_field.get_deck(CardPlayer.BOTTOM).cards().shuffle()
+        virtual_playing_field.get_deck(CardPlayer.TOP).cards().shuffle()
+        virtual_playing_field.replace_player_agent(CardPlayer.TOP, GreedyAIAgent.instantiate())
+        virtual_playing_field.replace_player_agent(CardPlayer.BOTTOM, GreedyAIAgent.instantiate())
+        var winner = await CardGameTurnTransitions.play_full_game(virtual_playing_field)
+        if winner == CardPlayer.TOP:
+            top_winners += 1
+        else:
+            bottom_winners += 1
+        virtual_playing_field.free()
+    print("Top: %s, Bottom: %s" % [top_winners, bottom_winners])
+
+
+func _debug_interactive_game():
     $PlayingField.replace_player_agent(CardPlayer.TOP, GreedyAIAgent.instantiate())
     #$PlayingField.replace_player_agent(CardPlayer.TOP, NullAIAgent.new())
     $PlayingField.replace_player_agent(CardPlayer.BOTTOM, HumanAgent.new())

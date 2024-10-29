@@ -144,4 +144,18 @@ func _on_turn_number_updated():
     $TopStats.update_stats_from(self, CardPlayer.TOP)
 
 
-# TODO begin_game and end_game
+func end_game(winner: StringName) -> void:
+    game_ended.emit(winner)
+    await _never
+
+
+func hand_cards_are_hidden(_player) -> bool:
+    return true
+
+
+func player_agent(player: StringName):
+    return _top_agent if player == CardPlayer.TOP else _bottom_agent
+
+
+func get_viewport_rect() -> Rect2:
+    return Rect2()
