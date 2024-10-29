@@ -1,6 +1,7 @@
 extends PlayerAgent
 
 const CardWatcher = preload("res://card_game/playing_field/card_watcher/card_watcher.gd")
+const GreedyAIAgent = preload("res://card_game/playing_field/player_agent/greedy_ai_agent.tscn")
 
 # (While I set up the Monte Carlo sim, this just uses GreedyAIAgent's
 # logic. TODO Do NOT leave it this way!)
@@ -25,6 +26,16 @@ func removed_from_playing_field(playing_field) -> void:
 
 
 func run_one_turn(playing_field) -> void:
+
+    # TODO Fudge the data the AI shouldn't be able to see (deck order,
+    # and opponent hand/deck contents)
+    var tmp = Virtualization.to_virtual(playing_field)
+    tmp.replace_player_agent(CardPlayer.BOTTOM, GreedyAIAgent.instantiate())
+    tmp.replace_player_agent(CardPlayer.TOP, GreedyAIAgent.instantiate())
+    var sim = MonteCarloSimulation.run_single_simulation(tmp)
+    await get_tree().create_timer(1.0).timeout
+    print(sim.get_winner())
+
     while true:
         var next_card_type = _get_next_card(playing_field)
         if next_card_type == null:

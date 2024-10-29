@@ -27,6 +27,41 @@ static func _run_game_loop(playing_field) -> void:
         await CardGamePhases.end_of_full_turn(playing_field)
 
 
+# Assuming the playing field is currently in the middle of a game,
+# continues from the current point in the game, up until the endgame.
+static func play_rest_of_game(playing_field) -> StringName:
+    # By setting up a promise (rather than just blindly awaiting the
+    # game_ended signal), we can deal with the corner case where the
+    # game ends instantaneously without any user input.
+    var winner_promise = Promise.new()
+    playing_field.game_ended.connect(winner_promise.resolve_with_data)
+
+    # Fire and forget the game loop
+    _run_rest_of_game_loop(playing_field)
+
+    var winner = await winner_promise.async_awaiter()
+    return winner
+
+
+static func _run_rest_of_game_loop(playing_field) -> void:
+    # Finish the current turn
+    if playing_field.turn_player == CardPlayer.BOTTOM:
+        await playing_field.player_agent(CardPlayer.BOTTOM).run_one_turn(playing_field)
+        await end_turn(playing_field, CardPlayer.BOTTOM)
+        await _run_turn_for(playing_field, CardPlayer.TOP)
+        await CardGamePhases.end_of_full_turn(playing_field)
+    else:
+        await playing_field.player_agent(CardPlayer.TOP).run_one_turn(playing_field)
+        await end_turn(playing_field, CardPlayer.TOP)
+        await CardGamePhases.end_of_full_turn(playing_field)
+
+    while true:
+        await CardGamePhases.start_of_full_turn(playing_field)
+        await _run_turn_for(playing_field, CardPlayer.BOTTOM)
+        await _run_turn_for(playing_field, CardPlayer.TOP)
+        await CardGamePhases.end_of_full_turn(playing_field)
+
+
 static func _run_turn_for(playing_field, player: StringName) -> void:
     await begin_turn(playing_field, player)
     await playing_field.player_agent(player).run_one_turn(playing_field)
