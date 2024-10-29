@@ -4,3 +4,7 @@
 
 [node name="MonteCarloAIAgent" type="Node"]
 script = ExtResource("1_dy2pn")
+
+[node name="AwaitThreadTimer" type="Timer" parent="."]
+wait_time = 0.75
+one_shot = true

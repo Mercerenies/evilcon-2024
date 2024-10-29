@@ -48,6 +48,11 @@ static func min_by(array: Array, less_than: Callable):
         return less_than.call(b, a))
 
 
+static func max_on(array: Array, key: Callable):
+    return max_by(array, func (a, b):
+        return key.call(a) < key.call(b))
+
+
 # Takes an array and acts like Array.reduce(method, accum), but at
 # each iteration, stop_condition is invoked with one argument (the
 # current accumulator). If stop_condition returns true, iteration
