@@ -1,6 +1,7 @@
 extends Node2D
 
 const GreedyAIAgent = preload("res://card_game/playing_field/player_agent/greedy_ai_agent.tscn")
+const MonteCarloAIAgent = preload("res://card_game/playing_field/player_agent/monte_carlo_ai_agent.tscn")
 const NullAIAgent = preload("res://card_game/playing_field/player_agent/null_ai_agent.gd")
 const HumanAgent = preload("res://card_game/playing_field/player_agent/human_agent.gd")
 const VirtualPlayingField = preload("res://card_game/playing_field/virtual_playing_field/virtual_playing_field.tscn")
@@ -34,7 +35,7 @@ func _debug_batch_game() -> void:
 
 
 func _debug_interactive_game():
-    $PlayingField.replace_player_agent(CardPlayer.TOP, GreedyAIAgent.instantiate())
+    $PlayingField.replace_player_agent(CardPlayer.TOP, MonteCarloAIAgent.instantiate())
     #$PlayingField.replace_player_agent(CardPlayer.TOP, NullAIAgent.new())
     $PlayingField.replace_player_agent(CardPlayer.BOTTOM, HumanAgent.new())
     #$PlayingField.replace_player_agent(CardPlayer.BOTTOM, GreedyAIAgent.instantiate())

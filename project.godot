@@ -25,6 +25,7 @@ PlayingCardLists="*res://card_game/playing_card/playing_card_lists.gd"
 
 gdscript/warnings/shadowed_variable=0
 gdscript/warnings/shadowed_global_identifier=0
+gdscript/warnings/static_called_on_instance=0
 gdscript/warnings/redundant_await=0
 
 [display]

@@ -1,13 +1,31 @@
 extends PlayerAgent
 
+const CardWatcher = preload("res://card_game/playing_field/card_watcher/card_watcher.gd")
+
 # (While I set up the Monte Carlo sim, this just uses GreedyAIAgent's
 # logic. TODO Do NOT leave it this way!)
 
+
+var _card_watcher = CardWatcher.new()
+
+
+func added_to_playing_field(playing_field) -> void:
+    super.added_to_playing_field(playing_field)
+    playing_field.cards_moved.connect(_card_watcher._on_cards_moved.bind(playing_field, CardPlayer.other(controlled_player)))
+
+
+func removed_from_playing_field(playing_field) -> void:
+    super.removed_from_playing_field(playing_field)
+    # HACK: Implementation hack in Godot 4.2.1.stable: Callables are
+    # compared for equality (in disconnect) by their base name only,
+    # ignoring any bindings. I sincerely hope this behavior stays this
+    # way, as it's the only way to reliably disconnect a bound method
+    # from a signal.
+    playing_field.cards_moved.disconnect(_card_watcher._on_cards_moved.bind(playing_field, CardPlayer.other(controlled_player)))
+
+
 func run_one_turn(playing_field) -> void:
     while true:
-        await playing_field.with_animation(func(_animation_layer):
-            $NextActionTimer.start()
-            await $NextActionTimer.timeout)
         var next_card_type = _get_next_card(playing_field)
         if next_card_type == null:
             break  # Turn is done

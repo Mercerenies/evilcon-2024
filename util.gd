@@ -85,3 +85,15 @@ static func find_if(array: Array, predicate: Callable):
 
 static func normalize_angle(angle: float) -> float:
     return fmod(fmod(angle, 2 * PI) + 2 * PI, 2 * PI)
+
+
+# Merges all of the keys from the right dictionary into the left one,
+# modifying the left dictionary in-place. If a key exists in both
+# dictionaries, then `merge_function` is called with the key and both
+# values, to determine a merged value to store in the left dictionary.
+static func merge_dicts_in_place(left: Dictionary, right: Dictionary, merge_function: Callable) -> void:
+    for key in right.keys():
+        if key in left:
+            left[key] = merge_function.call(key, left[key], right[key])
+        else:
+            left[key] = right[key]
