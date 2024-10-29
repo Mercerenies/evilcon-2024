@@ -48,6 +48,7 @@ visible = false
 visible = false
 
 [connection signal="cards_moved" from="." to="." method="_on_cards_moved"]
+[connection signal="turn_number_updated" from="." to="." method="_on_turn_number_updated"]
 
 [editable path="BottomMinionStrip"]
 [editable path="TopMinionStrip"]
