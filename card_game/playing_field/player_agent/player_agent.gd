@@ -8,6 +8,18 @@ extends Node
 @export_enum(&"BOTTOM", &"TOP") var controlled_player
 
 
+func added_to_playing_field(_playing_field) -> void:
+    # Called when this node is added to a playing field.
+    pass
+
+
+func removed_from_playing_field(_playing_field) -> void:
+    # Called when this node is removed from a playing field. This
+    # method should NOT free the agent, as the PlayingField will do
+    # that just after removing him.
+    pass
+
+
 func run_one_turn(_playing_field) -> void:
     # This required method should run one full iteration of the
     # player's turn, awaiting until that player has finished their

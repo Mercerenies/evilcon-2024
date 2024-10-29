@@ -79,12 +79,14 @@ func _ready() -> void:
 func replace_player_agent(player: StringName, new_agent: Node) -> void:
     var old_agent = _top_agent if player == CardPlayer.TOP else _bottom_agent
     var is_in_tree = old_agent.is_inside_tree()
+    old_agent.removed_from_playing_field(self)
     old_agent.free()
     new_agent.controlled_player = player
     if player == CardPlayer.TOP:
         _top_agent = new_agent
     else:
         _bottom_agent = new_agent
+    new_agent.added_to_playing_field(self)
     if is_in_tree:
         $AILayer.add_child(new_agent)
 

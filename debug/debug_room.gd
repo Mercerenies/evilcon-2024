@@ -8,8 +8,8 @@ const VirtualPlayingField = preload("res://card_game/playing_field/virtual_playi
 
 func _ready():
     #_load_all_cards()  # Comment when not using; it's slow.
-    #_debug_interactive_game()
-    _debug_batch_game()
+    _debug_interactive_game()
+    #_debug_batch_game()
 
 
 func _debug_batch_game() -> void:
