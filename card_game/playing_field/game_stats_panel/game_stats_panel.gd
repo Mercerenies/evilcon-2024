@@ -1,11 +1,5 @@
 extends Node2D
 
-const DESTINY_SONG_LIMIT := 3
-
-const DEFAULT_FORT_DEFENSE := 60
-
-@export var is_showing_visuals := true
-
 # Note: Stats which are themselves stateful (e.g., fort defense, max
 # fort defense, current evil point count, and current destiny song
 # count) are stored here as instance variables. That is, this object
@@ -13,9 +7,13 @@ const DEFAULT_FORT_DEFENSE := 60
 # hand limit) are calculated from the state of the playing field and
 # are merely *displayed* here.
 
-var evil_points: int = 0:
+const GameStatsDict = preload("res://card_game/playing_field/game_stats_panel/game_stats_dict.gd")
+
+var evil_points: int:
+    get:
+        return $GameStatsDict.evil_points
     set(v):
-        evil_points = maxi(v, 0)
+        $GameStatsDict.evil_points = v
         _update_evil_points()
 
 # We store this whenever we get an update from the playing field. This
@@ -25,20 +23,25 @@ var evil_points: int = 0:
 # update the UI when evil_points gets changed.
 var _evil_points_per_turn: int = 0
 
-var fort_defense: int = DEFAULT_FORT_DEFENSE:
+var fort_defense: int:
+    get:
+        return $GameStatsDict.fort_defense
     set(v):
-        fort_defense = clampi(v, 0, max_fort_defense)
+        $GameStatsDict.fort_defense = v
         _update_fort_defense()
 
-var max_fort_defense: int = DEFAULT_FORT_DEFENSE:
+var max_fort_defense: int:
+    get:
+        return $GameStatsDict.max_fort_defense
     set(v):
-        max_fort_defense = maxi(v, 0)
-        self.fort_defense = fort_defense  # Refresh value with new limit
+        $GameStatsDict.max_fort_defense = v
         _update_fort_defense()
 
-var destiny_song: int = 0:
+var destiny_song: int:
+    get:
+        return $GameStatsDict.destiny_song
     set(v):
-        destiny_song = clampi(v, 0, DESTINY_SONG_LIMIT)
+        $GameStatsDict.destiny_song = v
         _update_destiny_song()
 
 
@@ -59,26 +62,22 @@ func get_destiny_song_node() -> Node2D:
 
 
 func _update_evil_points() -> void:
-    if is_showing_visuals:
-        $EvilPointsStat.text = "%s/%s" % [evil_points, _evil_points_per_turn]
+    $EvilPointsStat.text = "%s/%s" % [self.evil_points, _evil_points_per_turn]
 
 
 func _update_hand_limit(playing_field, player: StringName) -> void:
-    if is_showing_visuals:
-        var hand_size = playing_field.get_hand(player).cards().card_count()
-        var hand_limit = StatsCalculator.get_hand_limit(playing_field, player)
-        $HandLimitStat.text = "%s/%s" % [hand_size, hand_limit]
+    var hand_size = playing_field.get_hand(player).cards().card_count()
+    var hand_limit = StatsCalculator.get_hand_limit(playing_field, player)
+    $HandLimitStat.text = "%s/%s" % [hand_size, hand_limit]
 
 
 func _update_fort_defense() -> void:
-    if is_showing_visuals:
-        $FortDefenseStat.text = "%s/%s" % [fort_defense, max_fort_defense]
+    $FortDefenseStat.text = "%s/%s" % [self.fort_defense, self.max_fort_defense]
 
 
 func _update_destiny_song() -> void:
-    if is_showing_visuals:
-        $DestinySongStat.text = "%s/%s" % [destiny_song, DESTINY_SONG_LIMIT]
-        $DestinySongStat.visible = (destiny_song > 0)
+    $DestinySongStat.text = "%s/%s" % [self.destiny_song, GameStatsDict.DESTINY_SONG_LIMIT]
+    $DestinySongStat.visible = (destiny_song > 0)
 
 
 func update_stats_from(playing_field, player: StringName) -> void:
@@ -87,11 +86,3 @@ func update_stats_from(playing_field, player: StringName) -> void:
     _update_hand_limit(playing_field, player)
     _update_fort_defense()
     _update_destiny_song()
-
-
-func load_stats_from(other_stats_panel) -> void:
-    evil_points = other_stats_panel.evil_points
-    _evil_points_per_turn = other_stats_panel._evil_points_per_turn
-    fort_defense = other_stats_panel.fort_defense
-    max_fort_defense = other_stats_panel.max_fort_defense
-    destiny_song = other_stats_panel.destiny_song

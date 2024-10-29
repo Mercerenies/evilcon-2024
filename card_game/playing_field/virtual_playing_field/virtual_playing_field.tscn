@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://card_game/playing_field/virtual_playing_field/virtual_playing_field.gd" id="1_kyd7q"]
 [ext_resource type="PackedScene" uid="uid://bq6axevgnbp60" path="res://card_game/playing_field/virtual_playing_field/virtual_card_list.tscn" id="2_mnk0q"]
-[ext_resource type="PackedScene" uid="uid://bvh50q457q3ko" path="res://card_game/playing_field/game_stats_panel/game_stats_panel.tscn" id="3_eewga"]
+[ext_resource type="PackedScene" uid="uid://4ny5dpr2oa7u" path="res://card_game/playing_field/game_stats_panel/game_stats_dict.tscn" id="3_73216"]
 
 [node name="VirtualPlayingField" type="Node"]
 script = ExtResource("1_kyd7q")
@@ -41,16 +41,9 @@ contained_type = "Card"
 [node name="CardContainer" parent="TopEffectStrip" index="0"]
 contained_type = "Card"
 
-[node name="BottomStats" parent="." instance=ExtResource("3_eewga")]
-visible = false
-is_showing_visuals = false
+[node name="BottomStats" parent="." instance=ExtResource("3_73216")]
 
-[node name="TopStats" parent="." instance=ExtResource("3_eewga")]
-visible = false
-is_showing_visuals = false
-
-[connection signal="cards_moved" from="." to="." method="_on_cards_moved"]
-[connection signal="turn_number_updated" from="." to="." method="_on_turn_number_updated"]
+[node name="TopStats" parent="." instance=ExtResource("3_73216")]
 
 [editable path="BottomMinionStrip"]
 [editable path="TopMinionStrip"]

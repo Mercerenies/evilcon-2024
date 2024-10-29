@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://4ny5dpr2oa7u"]
+
+[ext_resource type="Script" path="res://card_game/playing_field/game_stats_panel/game_stats_dict.gd" id="1_18kbm"]
+
+[node name="GameStatsDict" type="Node"]
+script = ExtResource("1_18kbm")

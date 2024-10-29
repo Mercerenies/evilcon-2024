@@ -8,7 +8,7 @@ extends Node
 # instantaneous, and only the animation is awaitable.
 
 const NumberAnimation = preload("res://card_game/playing_field/animation/number/number_animation.tscn")
-const GameStatsPanel = preload("res://card_game/playing_field/game_stats_panel/game_stats_panel.gd")
+const GameStatsDict = preload("res://card_game/playing_field/game_stats_panel/game_stats_dict.gd")
 
 # If you want to show two NumberAnimations on the same card at the
 # same time, this is the standard offset to show the second one at.
@@ -44,8 +44,10 @@ const ROBOTED_COLOR := Color.WEB_PURPLE
 #
 # * offset (Vector2) - Position offset from the target node. If
 #   supplied as a scalar, it is multiplied by CARD_MULTI_UI_OFFSET.
-static func play_animation_for_stat_change(playing_field, stat_node: Node2D, delta: int, opts = {}) -> void:
+static func play_animation_for_stat_change(playing_field, stat_node, delta: int, opts = {}) -> void:
     await playing_field.with_animation(func(animation_layer):
+        if stat_node is Callable:
+            stat_node = stat_node.call()
         var animation = NumberAnimation.instantiate()
         animation.position = animation_layer.to_local(stat_node.global_position) + opts.get("offset", Vector2.ZERO)
         animation.amount = delta
@@ -85,7 +87,7 @@ static func set_evil_points(playing_field, player: StringName, new_value: int) -
     stats.evil_points = new_value
     playing_field.emit_cards_moved()
     # Fire and forget
-    play_animation_for_stat_change(playing_field, stats.get_evil_points_node(), new_value - old_value)
+    play_animation_for_stat_change(playing_field, func(): return stats.get_evil_points_node(), new_value - old_value)
 
 
 static func add_evil_points(playing_field, player: StringName, delta: int) -> void:
@@ -99,7 +101,7 @@ static func set_fort_defense(playing_field, player: StringName, new_value: int) 
     stats.fort_defense = new_value
     playing_field.emit_cards_moved()
     # Fire and forget
-    play_animation_for_stat_change(playing_field, stats.get_fort_defense_node(), new_value - old_value)
+    play_animation_for_stat_change(playing_field, func(): return stats.get_fort_defense_node(), new_value - old_value)
 
     if stats.fort_defense <= 0:
         await playing_field.end_game(CardPlayer.other(player))
@@ -116,9 +118,9 @@ static func set_destiny_song(playing_field, player: StringName, new_value: int) 
     stats.destiny_song = new_value
     playing_field.emit_cards_moved()
     # Fire and forget
-    play_animation_for_stat_change(playing_field, stats.get_destiny_song_node(), new_value - old_value)
+    play_animation_for_stat_change(playing_field, func(): return stats.get_destiny_song_node(), new_value - old_value)
 
-    if stats.destiny_song >= GameStatsPanel.DESTINY_SONG_LIMIT:
+    if stats.destiny_song >= GameStatsDict.DESTINY_SONG_LIMIT:
         await playing_field.end_game(player)
 
 

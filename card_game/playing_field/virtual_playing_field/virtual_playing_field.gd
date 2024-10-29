@@ -136,16 +136,6 @@ func emit_cards_moved() -> void:
     cards_moved.emit()
 
 
-func _on_cards_moved():
-    $BottomStats.update_stats_from(self, CardPlayer.BOTTOM)
-    $TopStats.update_stats_from(self, CardPlayer.TOP)
-
-
-func _on_turn_number_updated():
-    $BottomStats.update_stats_from(self, CardPlayer.BOTTOM)
-    $TopStats.update_stats_from(self, CardPlayer.TOP)
-
-
 func end_game(winner: StringName) -> void:
     game_ended.emit(winner)
     await _never
