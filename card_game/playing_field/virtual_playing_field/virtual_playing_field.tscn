@@ -1,0 +1,55 @@
+[gd_scene load_steps=4 format=3 uid="uid://swsj02mgngqk"]
+
+[ext_resource type="Script" path="res://card_game/playing_field/virtual_playing_field/virtual_playing_field.gd" id="1_kyd7q"]
+[ext_resource type="PackedScene" uid="uid://bq6axevgnbp60" path="res://card_game/playing_field/virtual_playing_field/virtual_card_list.tscn" id="2_mnk0q"]
+[ext_resource type="PackedScene" uid="uid://bvh50q457q3ko" path="res://card_game/playing_field/game_stats_panel/game_stats_panel.tscn" id="3_eewga"]
+
+[node name="VirtualPlayingField" type="Node"]
+script = ExtResource("1_kyd7q")
+
+[node name="AIAgents" type="Node" parent="."]
+
+[node name="BottomDeck" parent="." instance=ExtResource("2_mnk0q")]
+
+[node name="TopDeck" parent="." instance=ExtResource("2_mnk0q")]
+
+[node name="BottomDiscardPile" parent="." instance=ExtResource("2_mnk0q")]
+
+[node name="TopDiscardPile" parent="." instance=ExtResource("2_mnk0q")]
+
+[node name="BottomHand" parent="." instance=ExtResource("2_mnk0q")]
+
+[node name="TopHand" parent="." instance=ExtResource("2_mnk0q")]
+
+[node name="BottomMinionStrip" parent="." instance=ExtResource("2_mnk0q")]
+
+[node name="CardContainer" parent="BottomMinionStrip" index="0"]
+contained_type = "Card"
+
+[node name="TopMinionStrip" parent="." instance=ExtResource("2_mnk0q")]
+
+[node name="CardContainer" parent="TopMinionStrip" index="0"]
+contained_type = "Card"
+
+[node name="BottomEffectStrip" parent="." instance=ExtResource("2_mnk0q")]
+
+[node name="CardContainer" parent="BottomEffectStrip" index="0"]
+contained_type = "Card"
+
+[node name="TopEffectStrip" parent="." instance=ExtResource("2_mnk0q")]
+
+[node name="CardContainer" parent="TopEffectStrip" index="0"]
+contained_type = "Card"
+
+[node name="BottomStats" parent="." instance=ExtResource("3_eewga")]
+visible = false
+
+[node name="TopStats" parent="." instance=ExtResource("3_eewga")]
+visible = false
+
+[connection signal="cards_moved" from="." to="." method="_on_cards_moved"]
+
+[editable path="BottomMinionStrip"]
+[editable path="TopMinionStrip"]
+[editable path="BottomEffectStrip"]
+[editable path="TopEffectStrip"]
