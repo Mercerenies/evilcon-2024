@@ -31,9 +31,3 @@ func on_end_turn_button_pressed(_playing_field) -> void:
 
 func suppresses_input() -> bool:
     return true
-
-
-func deepclone():
-    var new_agent = load("res://card_game/playing_field/player_agent/greedy_ai_agent.tscn").instantiate()
-    new_agent.controlled_player = controlled_player
-    return new_agent

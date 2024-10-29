@@ -81,7 +81,3 @@ func update_stats_from(playing_field, player: StringName) -> void:
     _update_hand_limit(playing_field, player)
     _update_fort_defense()
     _update_destiny_song()
-
-
-func deepclone():
-    return duplicate(DUPLICATE_SCRIPTS | DUPLICATE_USE_INSTANTIATION)

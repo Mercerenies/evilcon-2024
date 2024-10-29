@@ -582,15 +582,15 @@
 
     + [ ] ~PlayingField~
     + [ ] ~Deck~
-    + [X] ~CardContainer~
+    + [ ] ~CardContainer~
     + [X] ~Card~
     + [X] ~CardType~ (Immutable so simply return ~self~)
     + [ ] ~DiscardPile~
     + [ ] ~CardStrip~
     + [ ] ~HiddenCardDisplay~
     + [ ] ~PlayingCardDisplay~
-    + [X] ~GameStatsPanel~ + all individual stats panels
-    + [X] All AI nodes
+    + [ ] ~GameStatsPanel~ + all individual stats panels
+    + [ ] All AI nodes
 ** RANDOM IDEAS
    + [ ] Villain(s) from Three Rules Standing
    + [ ] Costume shop for some cosmetic upgrades

@@ -12,7 +12,3 @@ extends Node2D
         return $Label.text
     set(v):
         $Label.text = v
-
-
-func deepclone():
-    return duplicate(DUPLICATE_SCRIPTS | DUPLICATE_USE_INSTANTIATION)
