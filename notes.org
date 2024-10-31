@@ -609,6 +609,12 @@
    + [ ] Boss support? The /only/ boss interactions right now are
      Prisman and Evil Lair. And Prisman is a debuff for bosses.
    + [ ] "Spaghetti Code" (Pasta + Robot synergy :))
+   + [ ] Clarify on Squaredude/Circlegirl whether it counts as
+     "playing" the other if a hero card intercepted it
+   + [ ] Reskin vitamin capsule to make it more clear that it's a Dr.
+     Mario reference
+   + [ ] A "jester" / "joker" card that makes a Minion count as /all/
+     archetypes at once
 ** SCRAPPED IDEAS
    Various ideas that didn't end up working out or were cut for one
    reason or another.
