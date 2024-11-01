@@ -60,3 +60,11 @@ func do_influence_check(playing_field, target_card, source_card, silently: bool)
         await CardEffects.do_ninja_influence_check(playing_field, target_card, source_card, silently) and
         await super.do_influence_check(playing_field, target_card, source_card, silently)
     )
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+    # Cultist does not attack, so remove the points earned by his
+    # Level * Morale.
+    score -= get_base_level() * get_base_morale() * priorities.of(LookaheadPriorities.FORT_DEFENSE)
+    return score
