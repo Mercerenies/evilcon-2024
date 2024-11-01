@@ -46,3 +46,11 @@ func get_level(playing_field, card) -> int:
         return starting_level + 2
     else:
         return starting_level
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+    var friendly_minions = playing_field.get_minion_strip(player).cards().card_array()
+    if friendly_minions.any(func(c): return c.has_archetype(playing_field, Archetype.TURTLE)):
+        score += 2 * get_base_morale() * priorities.of(LookaheadPriorities.FORT_DEFENSE)
+    return score
