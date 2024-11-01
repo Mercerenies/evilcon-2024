@@ -43,6 +43,15 @@ const NORMAL_DRAW = &"NORMAL_DRAW"
 # end of a turn.
 const EVIL_POINT_OPPORTUNITY := &"EVIL_POINT_OPPORTUNITY"
 
+# The value of a friendly Minion getting immunity to enemy card
+# effects, such as through Ninja Mask or Cover of Moonlight.
+#
+# NOTE: This is not "per Minion". This valuation will be multiplied by
+# the Minion's own "protection score", which for most Minions is
+# "Level * Morale". This is because more powerful Minions are more
+# valuable to protect with immunity effects.
+const IMMUNITY = &"IMMUNITY"
+
 const DEFAULT_PRIORITIES := {
     &"EVIL_POINT": 1.0,
     &"FORT_DEFENSE": 1.0,
@@ -51,6 +60,7 @@ const DEFAULT_PRIORITIES := {
     &"FIRST_DRAW": 2.5,
     &"NORMAL_DRAW": 1.1,
     &"EVIL_POINT_OPPORTUNITY": 0.4,
+    &"IMMUNITY": 0.3,
 }
 
 var _data: Dictionary
