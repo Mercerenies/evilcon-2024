@@ -1,9 +1,9 @@
 [gd_scene load_steps=2 format=3 uid="uid://d24ybjdwkmdwd"]
 
-[ext_resource type="Script" path="res://card_game/playing_field/player_agent/greedy_ai_agent.gd" id="1_nvbe7"]
+[ext_resource type="Script" path="res://card_game/playing_field/player_agent/greedy_ai_agent/greedy_ai_agent.gd" id="1_kpehc"]
 
 [node name="GreedyAIAgent" type="Node"]
-script = ExtResource("1_nvbe7")
+script = ExtResource("1_kpehc")
 
 [node name="NextActionTimer" type="Timer" parent="."]
 one_shot = true

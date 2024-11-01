@@ -1,7 +1,7 @@
 class_name MonteCarloSimulation
 extends Node
 
-const GreedyAIAgent = preload("res://card_game/playing_field/player_agent/greedy_ai_agent.tscn")
+const GreedyAIAgent = preload("res://card_game/playing_field/player_agent/greedy_ai_agent/greedy_ai_agent.tscn")
 
 const SIMULATION_MAX_TURNS = 20
 

@@ -1,10 +1,7 @@
 extends PlayerAgent
 
 const CardWatcher = preload("res://card_game/playing_field/card_watcher/card_watcher.gd")
-const GreedyAIAgent = preload("res://card_game/playing_field/player_agent/greedy_ai_agent.tscn")
-
-# (While I set up the Monte Carlo sim, this just uses GreedyAIAgent's
-# logic. TODO Do NOT leave it this way!)
+const GreedyAIAgent = preload("res://card_game/playing_field/player_agent/greedy_ai_agent/greedy_ai_agent.tscn")
 
 
 class PlayCardAction:

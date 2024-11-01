@@ -1,6 +1,6 @@
 extends PlayerAgent
 
-# GreedyEnemyAI randomly picks cards from hand to play until he can't
+# GreedyAIAgent randomly picks cards from hand to play until he can't
 # anymore. He has no concept of strategy or of which cards are better.
 
 func run_one_turn(playing_field) -> void:

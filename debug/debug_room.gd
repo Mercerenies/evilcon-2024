@@ -1,9 +1,9 @@
 extends Node2D
 
-const GreedyAIAgent = preload("res://card_game/playing_field/player_agent/greedy_ai_agent.tscn")
-const MonteCarloAIAgent = preload("res://card_game/playing_field/player_agent/monte_carlo_ai_agent.tscn")
+const GreedyAIAgent = preload("res://card_game/playing_field/player_agent/greedy_ai_agent/greedy_ai_agent.tscn")
+const MonteCarloAIAgent = preload("res://card_game/playing_field/player_agent/monte_carlo_ai_agent/monte_carlo_ai_agent.tscn")
 const NullAIAgent = preload("res://card_game/playing_field/player_agent/null_ai_agent.gd")
-const HumanAgent = preload("res://card_game/playing_field/player_agent/human_agent.gd")
+const HumanAgent = preload("res://card_game/playing_field/player_agent/human_agent/human_agent.gd")
 const VirtualPlayingField = preload("res://card_game/playing_field/virtual_playing_field/virtual_playing_field.tscn")
 
 
