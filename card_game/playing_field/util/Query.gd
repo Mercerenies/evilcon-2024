@@ -41,6 +41,12 @@ class Q:
             callable = Query.always_true
         return (index_of(callable) != null)
 
+    func count(callable = null):
+        if callable == null:
+            return len(array())
+        else:
+            return filter(callable).count()
+
     func max():
         return Util.max_by(array(), CardEffects.card_power_less_than(_playing_field))
 

@@ -14,11 +14,9 @@ func get_text() -> String:
 
 
 func get_level(playing_field, card) -> int:
-    var friendly_minions = playing_field.get_minion_strip(card.owner).cards().card_array()
-    var friendly_bees = friendly_minions.filter(func(minion):
-        return minion.has_archetype(playing_field, Archetype.BEE))
     var starting_level = super.get_level(playing_field, card)
-    return starting_level + len(friendly_bees)
+    var friendly_bee_count = Query.on(playing_field).minions(card.owner).count(Query.by_archetype(Archetype.BEE))
+    return starting_level + friendly_bee_count
 
 
 func get_picture_index() -> int:
@@ -43,3 +41,10 @@ func get_base_archetypes() -> Array:
 
 func get_rarity() -> int:
     return Rarity.RARE
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var base_score = super.ai_get_score(playing_field, player, priorities)
+    # Note: +1 because Queen Bee counts herself when in play.
+    var friendly_bee_count = Query.on(playing_field).minions(player).count(Query.by_archetype(Archetype.BEE)) + 1
+    return base_score + friendly_bee_count * get_base_morale() * priorities.of(LookaheadPriorities.FORT_DEFENSE)
