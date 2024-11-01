@@ -100,8 +100,12 @@ func _end_of_turn_score(playing_field) -> float:
 
     var score = - evil_points_remaining * priorities.of(LookaheadPriorities.EVIL_POINT_OPPORTUNITY)
     if excess_cards_next_turn > 0:
-        score -= priorities.of(LookaheadPriorities.FIRST_DRAW)
-        score -= (excess_cards_next_turn - 1) * priorities.of(LookaheadPriorities.NORMAL_DRAW)
+        var normal_draw = priorities.of(LookaheadPriorities.NORMAL_DRAW)
+        var first_draw = priorities.of(LookaheadPriorities.FIRST_DRAW)
+        if cards_in_hand >= max_hand_size:
+            score -= ((excess_cards_next_turn - 1) * normal_draw + first_draw)
+        else:
+            score -= excess_cards_next_turn * normal_draw
     return score
 
 
