@@ -59,6 +59,11 @@ const IMMUNITY := &"IMMUNITY"
 # Default value is 0.0.
 const UNDEAD := &"UNDEAD"
 
+# The value of converting an opponent card to a CLOWN Minion. Most
+# decks don't care about this, so the default value is 0.0. But
+# characters running a CLOWN deck will care.
+const CLOWNING = &"CLOWNING"
+
 const DEFAULT_PRIORITIES := {
     &"EVIL_POINT": 1.0,
     &"FORT_DEFENSE": 1.0,
@@ -69,6 +74,7 @@ const DEFAULT_PRIORITIES := {
     &"EVIL_POINT_OPPORTUNITY": 0.3,
     &"IMMUNITY": 0.3,
     &"UNDEAD": 0.0,
+    &"CLOWNING": 0.0,
 }
 
 var _data: Dictionary

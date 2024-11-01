@@ -38,6 +38,7 @@ func _debug_batch_game() -> void:
 func _debug_interactive_game():
     var ai_priorities = LookaheadPriorities.new({
         LookaheadPriorities.UNDEAD: 1.0,
+        LookaheadPriorities.CLOWNING: 0.4,
     })
     var ai = LookaheadAIAgent.instantiate()
     ai.priorities = ai_priorities
@@ -56,7 +57,7 @@ func _debug_interactive_game():
     $PlayingField.turn_number = 10  # Get extra EP :)
     #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.LIVESTOCK_DELIVERY))
     $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.MIMEDROID))
-    $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN))
+    $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.SILENT_CLOWN))
     $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.STREET_MIME))
     $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.CULTIST))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN), CardPlayer.TOP))

@@ -64,3 +64,12 @@ func on_expire(playing_field, this_card) -> void:
             Stats.show_text(playing_field, selected_target, PopupText.CLOWNED)
             selected_target.metadata[CardMeta.ARCHETYPE_OVERRIDES] = [Archetype.CLOWN]
     playing_field.emit_cards_moved()
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+    score += priorities.of(LookaheadPriorities.IMMUNITY)
+    # It is difficult to predict what Minions will be in play when
+    # this card expires, so assume there will be at least one.
+    score += priorities.of(LookaheadPriorities.CLOWNING)
+    return score
