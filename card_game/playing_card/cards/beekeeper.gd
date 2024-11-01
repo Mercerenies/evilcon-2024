@@ -50,16 +50,13 @@ func on_attack_phase(playing_field, this_card) -> void:
     if not should_proceed:
         return
 
-    var friendly_bees = (
-        playing_field.get_minion_strip(owner)
-        .cards().card_array()
-        .filter(func (c): return c.has_archetype(playing_field, Archetype.BEE))
-    )
-    if len(friendly_bees) == 0:
-        Stats.show_text(playing_field, this_card, PopupText.NO_TARGET)
+    var most_powerful_bee = Query.on(playing_field).minions(owner).filter(Query.by_archetype(Archetype.BEE)).max()
+    if most_powerful_bee == null:
+        Stats.show_text(playing_field, this_card, PopupText.NO_TARGET, {
+            "offset": 1,
+        })
         return
 
-    var most_powerful_bee = Util.max_by(friendly_bees, CardEffects.card_power_less_than(playing_field))
     var can_influence = await most_powerful_bee.card_type.do_influence_check(playing_field, most_powerful_bee, this_card, false)
     if not can_influence:
         return
