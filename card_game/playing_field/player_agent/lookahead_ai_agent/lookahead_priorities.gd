@@ -66,7 +66,7 @@ const DEFAULT_PRIORITIES := {
     &"EFFECT_DRAW": 0.6,
     &"FIRST_DRAW": 2.5,
     &"NORMAL_DRAW": 1.1,
-    &"EVIL_POINT_OPPORTUNITY": 0.4,
+    &"EVIL_POINT_OPPORTUNITY": 0.3,
     &"IMMUNITY": 0.3,
     &"UNDEAD": 0.0,
 }
