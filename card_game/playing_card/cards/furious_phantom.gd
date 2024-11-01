@@ -1,7 +1,5 @@
 extends MinionCardType
 
-const ZanyZombie = preload("res://card_game/playing_card/cards/zany_zombie.gd")
-
 func get_id() -> int:
     return 48
 
@@ -41,13 +39,10 @@ func get_rarity() -> int:
 func on_expire(playing_field, this_card) -> void:
     await super.on_expire(playing_field, this_card)
     var owner = this_card.owner
-    var discard_pile = playing_field.get_discard_pile(owner)
-    var zombie_index = discard_pile.cards().find_card_reversed_if(func (discarded_card):
-        return discarded_card is ZanyZombie)
+    var zombie = Query.on(playing_field).discard_pile(owner).find(Query.by_id(PlayingCardCodex.ID.ZANY_ZOMBIE))
     await CardGameApi.highlight_card(playing_field, this_card)
-    if zombie_index != null:
-        var zombie_card_type = discard_pile.cards().peek_card(zombie_index)
-        await CardGameApi.resurrect_card(playing_field, owner, zombie_card_type)
+    if zombie != null:
+        await CardGameApi.resurrect_card(playing_field, owner, zombie)
     else:
         Stats.show_text(playing_field, this_card, PopupText.NO_TARGET, {
             "offset": 1,

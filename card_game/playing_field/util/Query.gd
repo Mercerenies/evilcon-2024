@@ -35,6 +35,10 @@ class Q:
         # callable, or null if not found.
         return Util.find_if(array(), func(card): return callable.call(_playing_field, card))
 
+    func find(callable):
+        var index = index_of(callable)
+        return null if index == null else array()[index]
+
     func any(callable = null):
         # Returns true if any element matches the callable.
         if callable == null:
@@ -92,7 +96,7 @@ class QueryManager:
 
     # Query on cards in the given player's discard pile, from top to
     # bottom. Player is NOT optional.
-    func discard(player: StringName):
+    func discard_pile(player: StringName):
         var cards = _playing_field.get_discard_pile(player).cards().card_array()
         return Q.new(_playing_field, cards).reversed()  # Top to bottom
 
@@ -139,6 +143,14 @@ static func by_archetype(archetype):
             return card is MinionCardType and archetype in card.get_base_archetypes()
         else:
             return card.card_type is MinionCardType and card.has_archetype(playing_field, archetype)
+
+
+static func by_id(id: int):
+    return func filter_by_id(_playing_field, card):
+        if card is CardType:
+            return card.get_id() == id
+        else:
+            return card.card_type.get_id() == id
 
 
 # Filter to Minions.
