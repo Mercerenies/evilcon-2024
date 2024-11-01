@@ -45,25 +45,33 @@ func on_attack_phase(playing_field, card) -> void:
     if playing_field.turn_player != owner:
         return
 
-    var enemy_targets = (
-        playing_field.get_minion_strip(CardPlayer.other(owner)).cards()
-        .card_array()
-        .filter(func (minion): return not minion.has_archetype(playing_field, Archetype.CLOWN))
-    )
     await CardGameApi.highlight_card(playing_field, card)
-
 
     # Check if anything blocks the Attack Phase.
     var should_proceed = await CardEffects.do_attack_phase_check(playing_field, card)
     if not should_proceed:
         return
 
-    if len(enemy_targets) == 0:
-        Stats.show_text(playing_field, card, PopupText.NO_TARGET)
+    var enemy_target = (
+        Query.on(playing_field).minions(CardPlayer.other(owner))
+        .filter(Query.not_(Query.by_archetype(Archetype.CLOWN)))
+        .random()
+    )
+    if enemy_target == null:
+        Stats.show_text(playing_field, card, PopupText.NO_TARGET, {
+            "offset": 1,
+        })
     else:
-        var selected_target = playing_field.randomness.choose(enemy_targets)
-        var can_influence = await selected_target.card_type.do_influence_check(playing_field, selected_target, card, false)
+        var can_influence = await enemy_target.card_type.do_influence_check(playing_field, enemy_target, card, false)
         if can_influence:
-            Stats.show_text(playing_field, selected_target, PopupText.CLOWNED)
-            selected_target.metadata[CardMeta.ARCHETYPE_OVERRIDES] = [Archetype.CLOWN]
+            Stats.show_text(playing_field, enemy_target, PopupText.CLOWNED)
+            enemy_target.metadata[CardMeta.ARCHETYPE_OVERRIDES] = [Archetype.CLOWN]
     playing_field.emit_cards_moved()
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+    # Assume that there will be targets, i.e. that this Minion will
+    # successfully convert three enemies.
+    score += get_base_morale() * priorities.of(LookaheadPriorities.CLOWNING)
+    return score

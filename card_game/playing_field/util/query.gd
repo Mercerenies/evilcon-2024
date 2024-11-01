@@ -63,6 +63,14 @@ class Q:
     func min():
         return Util.min_by(array(), CardEffects.card_power_less_than(_playing_field))
 
+    func random():
+        # Using the playing field's random number generator, pick a
+        # random card. Returns null if the query is empty.
+        if len(array()) == 0:
+            return null
+        else:
+            return _playing_field.randomness.choose(array())
+
 
 class QueryManager:
     # Helper class to initiate a query on a specific part of the
