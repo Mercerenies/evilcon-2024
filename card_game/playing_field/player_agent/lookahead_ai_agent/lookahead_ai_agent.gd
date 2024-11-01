@@ -43,6 +43,8 @@ func _init(priorities = null) -> void:
     self.priorities = priorities if priorities != null else LookaheadPriorities.new({})
 
 
+# TODO Introduce some small randomization to the scores, as a
+# tiebreaker and so the AI plays more interesting moves.
 func run_one_turn(playing_field) -> void:
     while true:
         await playing_field.with_animation(func(_animation_layer):
