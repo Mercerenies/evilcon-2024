@@ -30,6 +30,12 @@ class Q:
             func (card): return callable_or_arr.call(_playing_field, card)
         ))
 
+    func map(callable):
+        # Maps a callable over the query, returning an array. NOTE:
+        # This method does NOT return a Q, since the map might return
+        # things other than cards.
+        return array().map(func(card): return callable.call(_playing_field, card))
+
     func index_of(callable):
         # Returns the index of the first card that matches the given
         # callable, or null if not found.
