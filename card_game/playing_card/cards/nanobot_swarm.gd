@@ -56,3 +56,38 @@ func on_expire(playing_field, this_card) -> void:
         if can_influence:
             await Stats.add_morale(playing_field, most_powerful_robot, 1)
 
+
+@warning_ignore("CONFUSABLE_LOCAL_DECLARATION")
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+
+    # Find the presumptive target.
+    var most_powerful_robot = (
+        Query.on(playing_field).minions(player)
+        .filter(Query.by_archetype(Archetype.ROBOT))
+        .filter(func (playing_field, card): return card.card_type.get_morale(playing_field, card) > 1)
+        .max()
+    )
+    if most_powerful_robot != null:
+        score += most_powerful_robot.card_type.get_level(playing_field, most_powerful_robot) * priorities.of(LookaheadPriorities.FORT_DEFENSE)
+
+    return score
+
+
+func ai_get_score_broadcasted(playing_field, this_card, player: StringName, priorities, target_card_type) -> float:
+    var score = super.ai_get_score_broadcasted(playing_field, this_card, player, priorities, target_card_type)
+    if this_card.owner != player:
+        return score
+
+    # If we control Nanobot Swarm and no other ROBOT Minions,
+    # prioritize robots.
+    var robot_count = (
+        Query.on(playing_field).minions(player)
+        .filter(Query.by_archetype(Archetype.ROBOT))
+        .count()
+    )
+    if robot_count < 2 and target_card_type is MinionCardType and Archetype.ROBOT in target_card_type.get_base_archetypes():
+        # Nanobot Swarm will expire and give +1 Morale to that Minion
+        # if played.
+        score += target_card_type.get_base_level() * priorities.of(LookaheadPriorities.FORT_DEFENSE)
+    return score
