@@ -45,3 +45,10 @@ func on_end_phase(playing_field, card) -> void:
         var chosen_card_type = playing_field.randomness.choose([BusyBee, WorkerBee]).new()
         await CardGameApi.create_card(playing_field, card.owner, chosen_card_type)
     await super.on_end_phase(playing_field, card)
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    return (
+        super.ai_get_score(playing_field, player, priorities) +
+        get_base_morale() * priorities.of(LookaheadPriorities.FORT_DEFENSE)
+    )
