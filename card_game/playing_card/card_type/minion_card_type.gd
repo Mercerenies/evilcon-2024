@@ -192,7 +192,8 @@ func on_morale_phase(playing_field, card) -> void:
 
 
 func ai_get_score(playing_field, player: StringName, priorities) -> float:
-    return (
-        super.ai_get_score(playing_field, player, priorities) +
-        get_base_level() * get_base_morale() * priorities.of(LookaheadPriorities.FORT_DEFENSE)
-    )
+    var score = super.ai_get_score(playing_field, player, priorities)
+    score += get_base_level() * get_base_morale() * priorities.of(LookaheadPriorities.FORT_DEFENSE)
+    if Archetype.UNDEAD in get_base_archetypes():
+        score += priorities.of(LookaheadPriorities.UNDEAD)
+    return score

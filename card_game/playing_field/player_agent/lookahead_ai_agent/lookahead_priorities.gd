@@ -20,7 +20,7 @@ const EVIL_POINT := &"EVIL_POINT"
 # Value of dealing one point of damage to the enemy's base, or
 # equivalently, the value of healing one point of damage to the
 # player's base.
-const FORT_DEFENSE = &"FORT_DEFENSE"
+const FORT_DEFENSE := &"FORT_DEFENSE"
 
 # The value of successfully activating Destiny's Song. The default
 # value for this is 20.0, or one third of the total fort defense.
@@ -33,11 +33,11 @@ const EFFECT_DRAW := &"EFFECT_DRAW"
 # starting draw phase of the next turn. This value is generally larger
 # than NORMAL_DRAW, since the AI wants to avoid having its hand full
 # at the end of its turn.
-const FIRST_DRAW = &"FIRST_DRAW"
+const FIRST_DRAW := &"FIRST_DRAW"
 
 # The value of being able to draw additional cards (after FIRST_DRAW)
 # as the default starting action of next turn.
-const NORMAL_DRAW = &"NORMAL_DRAW"
+const NORMAL_DRAW := &"NORMAL_DRAW"
 
 # The opportunity cost of leaving an Evil Point on the table at the
 # end of a turn.
@@ -50,7 +50,14 @@ const EVIL_POINT_OPPORTUNITY := &"EVIL_POINT_OPPORTUNITY"
 # the Minion's own "protection score", which for most Minions is
 # "Level * Morale". This is because more powerful Minions are more
 # valuable to protect with immunity effects.
-const IMMUNITY = &"IMMUNITY"
+const IMMUNITY := &"IMMUNITY"
+
+# The value of playing an UNDEAD Minion, applied once per Minion. A
+# naive valuation always puts UNDEAD Minions at -1.0, since they lose
+# to curve by design. But playing an UNDEAD Minion has value for
+# anyone playing an UNDEAD deck, so this value can offset that.
+# Default value is 0.0.
+const UNDEAD := &"UNDEAD"
 
 const DEFAULT_PRIORITIES := {
     &"EVIL_POINT": 1.0,
@@ -61,6 +68,7 @@ const DEFAULT_PRIORITIES := {
     &"NORMAL_DRAW": 1.1,
     &"EVIL_POINT_OPPORTUNITY": 0.4,
     &"IMMUNITY": 0.3,
+    &"UNDEAD": 0.0,
 }
 
 var _data: Dictionary
