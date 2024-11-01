@@ -55,8 +55,7 @@ func _debug_interactive_game():
 
     $PlayingField.turn_number = 10  # Get extra EP :)
     #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.LIVESTOCK_DELIVERY))
-    $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.QUEEN_BEE))
-    $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.GOLDEN_ACORN))
+    $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DISEMBODIED_SOUL))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN), CardPlayer.TOP))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN), CardPlayer.TOP))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN), CardPlayer.TOP))
@@ -74,11 +73,11 @@ func _debug_interactive_game():
 
 func _sample_deck():
     return [
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.FARMERS_MARKET),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.LIFE_DRAIN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.ZANY_ZOMBIE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.FURIOUS_PHANTOM),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.MYSTERY_BOX),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.BRAINWASHING_RAY),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.TURKEY),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.DISEMBODIED_SOUL),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.BUSY_BEE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.ULTIMATE_FUSION),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.WORKER_BEE),

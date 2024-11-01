@@ -40,3 +40,10 @@ func get_level(playing_field, card) -> int:
     var starting_level = super.get_level(playing_field, card)
     var undeads_count = Query.on(playing_field).discard_pile(card.owner).count(Query.by_archetype(Archetype.UNDEAD))
     return starting_level + mini(undeads_count, 5)
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+    var undeads_count = Query.on(playing_field).discard_pile(player).count(Query.by_archetype(Archetype.UNDEAD))
+    score += mini(undeads_count, 5) * get_base_morale() * priorities.of(LookaheadPriorities.FORT_DEFENSE)
+    return score
