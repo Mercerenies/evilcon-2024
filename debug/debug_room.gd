@@ -36,7 +36,13 @@ func _debug_batch_game() -> void:
 
 
 func _debug_interactive_game():
-    $PlayingField.replace_player_agent(CardPlayer.TOP, LookaheadAIAgent.instantiate())
+    var ai_priorities = LookaheadPriorities.new({
+        LookaheadPriorities.UNDEAD: 1.0,
+    })
+    var ai = LookaheadAIAgent.instantiate()
+    ai.priorities = ai_priorities
+    $PlayingField.replace_player_agent(CardPlayer.TOP, ai)
+
     #$PlayingField.replace_player_agent(CardPlayer.TOP, NullAIAgent.new())
     $PlayingField.replace_player_agent(CardPlayer.BOTTOM, HumanAgent.new())
     #$PlayingField.replace_player_agent(CardPlayer.BOTTOM, GreedyAIAgent.instantiate())
@@ -47,8 +53,12 @@ func _debug_interactive_game():
     bottom_deck.cards().shuffle()
     top_deck.cards().shuffle()
 
-    #$PlayingField.turn_number = 10  # Get extra EP :)
+    $PlayingField.turn_number = 10  # Get extra EP :)
     #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.LIVESTOCK_DELIVERY))
+    $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.MASKED_TURTLE))
+    $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.SPIKY_MASKED_TURTLE))
+    $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.METAL_TURTLE))
+    $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.SPIKY_METAL_TURTLE))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN), CardPlayer.TOP))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN), CardPlayer.TOP))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN), CardPlayer.TOP))
@@ -76,9 +86,9 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.QUEEN_BEE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.ALONE_IN_THE_DARK),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.QUEEN_BEE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CORNY_ACORN),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.TINY_TURTLE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.WORKER_BEE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.ZOMBEE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.ZOMBEE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNDEAD_PIG),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CLUELESS_MAN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CHICKEN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.SKUNKMAN),
