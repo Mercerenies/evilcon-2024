@@ -53,5 +53,5 @@ func ai_get_score(playing_field, player: StringName, priorities) -> float:
     var score = super.ai_get_score(playing_field, player, priorities)
     var has_zombie = Query.on(playing_field).discard_pile(player).any(Query.by_id(PlayingCardCodex.ID.ZANY_ZOMBIE))
     if has_zombie:
-        score += 1  # Resurrects the 1/1 Zombie for free.
+        score += priorities.of(LookaheadPriorities.FORT_DEFENSE)  # Resurrects the 1/1 Zombie for free.
     return score
