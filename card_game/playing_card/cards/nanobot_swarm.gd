@@ -36,21 +36,23 @@ func get_rarity() -> int:
     return Rarity.COMMON
 
 
-func on_expire(playing_field, card) -> void:
-    await super.on_expire(playing_field, card)
-    var owner = card.owner
+func on_expire(playing_field, this_card) -> void:
+    await super.on_expire(playing_field, this_card)
+    var owner = this_card.owner
 
     # Find owner's most powerful Robot (other than this card)
-    var minions = (
-        playing_field.get_minion_strip(owner).cards()
-        .card_array()
-        .filter(func (minion): return minion != card and minion.has_archetype(playing_field, Archetype.ROBOT))
+    var most_powerful_robot = (
+        Query.on(playing_field).minions(owner)
+        .filter([Query.by_archetype(Archetype.ROBOT), Query.not_equals(this_card)])
+        .max()
     )
-    await CardGameApi.highlight_card(playing_field, card)
-    if len(minions) == 0:
-        Stats.show_text(playing_field, card, PopupText.NO_TARGET)
+    await CardGameApi.highlight_card(playing_field, this_card)
+    if most_powerful_robot == null:
+        Stats.show_text(playing_field, this_card, PopupText.NO_TARGET, {
+            "offset": 1,
+        })
     else:
-        var most_powerful_robot = Util.max_by(minions, CardEffects.card_power_less_than(playing_field))
-        var can_influence = await most_powerful_robot.card_type.do_influence_check(playing_field, most_powerful_robot, card, false)
+        var can_influence = await most_powerful_robot.card_type.do_influence_check(playing_field, most_powerful_robot, this_card, false)
         if can_influence:
             await Stats.add_morale(playing_field, most_powerful_robot, 1)
+
