@@ -189,3 +189,10 @@ func on_morale_phase(playing_field, card) -> void:
             return
 
         await Stats.add_morale(playing_field, card, -1)
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    return (
+        super.ai_get_score(playing_field, player, priorities) +
+        get_base_level() * get_base_morale() * priorities.of(LookaheadPriorities.FORT_DEFENSE)
+    )

@@ -311,3 +311,23 @@ func deepclone():
     # subclasses, and is only provided for parity with the API of the
     # Card class.
     return self
+
+
+func ai_get_score(_playing_field, _player: StringName, priorities) -> float:
+    # Given the current state of the game board, returns the score
+    # assigned to this card. A positive score indicates that the AI
+    # should play this card, with a higher score indicating a better
+    # card to play in the current state of the game.
+    #
+    # A negative score does NOT necessarily mean that the AI will
+    # refuse to play the card. For instance, if the AI's hand is full
+    # of only negative score cards, it will likely choose to play at
+    # least one in order to be able to draw again next turn.
+    #
+    # The default score of a card only takes into consideration its
+    # cost. Minions will also take their default stats into
+    # consideration (via an override on MinionCardType). Most cards
+    # that have additional effects should override this method.
+    #
+    # This method MUST NOT await.
+    return - get_star_cost() * priorities.of(LookaheadPriorities.EVIL_POINT)
