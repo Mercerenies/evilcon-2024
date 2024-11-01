@@ -65,3 +65,11 @@ func on_attack_phase(playing_field, this_card) -> void:
         "offset": Stats.CARD_MULTI_UI_OFFSET,  # Just playing it safe with the -1 Morale message :)
     })
 
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+
+    var most_powerful_bee = Query.on(playing_field).minions(player).filter(Query.by_archetype(Archetype.BEE)).max()
+    if most_powerful_bee != null:
+        score += most_powerful_bee.card_type.get_level(playing_field, most_powerful_bee) * priorities.of(LookaheadPriorities.FORT_DEFENSE)
+    return score
