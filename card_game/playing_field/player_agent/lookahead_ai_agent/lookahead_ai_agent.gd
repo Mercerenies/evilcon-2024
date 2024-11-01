@@ -33,14 +33,14 @@ extends PlayerAgent
 # more difficult to quantify objectively, and different strategies may
 # require different weights.
 
-var _priorities
+var priorities
 
 # Sentinel value for the "End Turn" action
 const END_OF_TURN = &"LookaheadAIAgent.END_OF_TURN"
 
 
 func _init(priorities = null) -> void:
-    _priorities = priorities if priorities != null else LookaheadPriorities.new({})
+    self.priorities = priorities if priorities != null else LookaheadPriorities.new({})
 
 
 func run_one_turn(playing_field) -> void:
@@ -83,7 +83,7 @@ func _score_of_move(playing_field, move) -> float:
     if move is StringName and move == END_OF_TURN:
         return _end_of_turn_score(playing_field)
     else:
-        return move.ai_get_score(playing_field, controlled_player, _priorities)
+        return move.ai_get_score(playing_field, controlled_player, priorities)
 
 
 func _end_of_turn_score(playing_field) -> float:
@@ -98,10 +98,10 @@ func _end_of_turn_score(playing_field) -> float:
     # "miss out on" by hitting our hand limit next turn.
     var excess_cards_next_turn = (cards_in_hand + cards_per_turn) - max_hand_size
 
-    var score = - evil_points_remaining * _priorities.of(LookaheadPriorities.EVIL_POINT_OPPORTUNITY)
+    var score = - evil_points_remaining * priorities.of(LookaheadPriorities.EVIL_POINT_OPPORTUNITY)
     if excess_cards_next_turn > 0:
-        score -= _priorities.of(LookaheadPriorities.FIRST_DRAW)
-        score -= (excess_cards_next_turn - 1) * _priorities.of(LookaheadPriorities.NORMAL_DRAW)
+        score -= priorities.of(LookaheadPriorities.FIRST_DRAW)
+        score -= (excess_cards_next_turn - 1) * priorities.of(LookaheadPriorities.NORMAL_DRAW)
     return score
 
 
