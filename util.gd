@@ -3,6 +3,19 @@ extends Node
 
 # Utility class, autoloaded
 
+
+class Pair:
+    var first
+    var second
+
+    func _init(first, second):
+        self.first = first
+        self.second = second
+
+    func _to_string() -> String:
+        return "Pair.new(%s, %s)" % [first, second]
+
+
 static func free_all_children(node: Node):
     for child in node.get_children():
         child.free()
@@ -102,3 +115,11 @@ static func merge_dicts_in_place(left: Dictionary, right: Dictionary, merge_func
             left[key] = merge_function.call(key, left[key], right[key])
         else:
             left[key] = right[key]
+
+
+# Stops when the end of the shorter array is reached.
+static func zip(left: Array, right: Array) -> Array:
+    var result = []
+    for i in range(min(len(left), len(right))):
+        result.push_back(Pair.new(left[i], right[i]))
+    return result
