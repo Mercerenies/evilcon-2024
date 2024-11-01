@@ -42,3 +42,10 @@ func do_influence_check(playing_field, target_card, source_card, silently: bool)
         await CardEffects.do_ninja_influence_check(playing_field, target_card, source_card, silently) and
         await super.do_influence_check(playing_field, target_card, source_card, silently)
     )
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    return (
+        super.ai_get_score(playing_field, player, priorities) +
+        priorities.of(LookaheadPriorities.IMMUNITY)
+    )
