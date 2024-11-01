@@ -313,7 +313,7 @@ func deepclone():
     return self
 
 
-func ai_get_score(_playing_field, _player: StringName, priorities) -> float:
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
     # Given the current state of the game board, returns the score
     # assigned to this card. A positive score indicates that the AI
     # should play this card, with a higher score indicating a better
@@ -330,4 +330,26 @@ func ai_get_score(_playing_field, _player: StringName, priorities) -> float:
     # that have additional effects should override this method.
     #
     # This method MUST NOT await.
-    return - get_star_cost() * priorities.of(LookaheadPriorities.EVIL_POINT)
+    var score = - get_star_cost() * priorities.of(LookaheadPriorities.EVIL_POINT)
+    for card in CardGameApi.get_cards_in_play(playing_field):
+        score += card.card_type.ai_get_score_broadcasted(playing_field, card, player, priorities, self)
+    for card_type in playing_field.get_hand(player).cards().card_array():
+        score += card_type.ai_get_score_broadcasted_in_hand(playing_field, player, priorities, self)
+    return score
+
+
+func ai_get_score_broadcasted(_playing_field, _this_card, _player: StringName, _priorities, _target_card_type) -> float:
+    # Broadcasted variant of ai_get_score. Called when this_card is in
+    # the field and target_card_type is being considered for play from
+    # the hand to the field.
+    #
+    # Note that this_card may or may not belong to the same owner as
+    # the AI considering playing target_card_type.
+    return 0.0
+
+
+func ai_get_score_broadcasted_in_hand(_playing_field, _player: StringName, _priorities, _target_card_type) -> float:
+    # Broadcasted variant of ai_get_score. Called when self is in the
+    # player's hand and target_card_type is being considered for play
+    # from the hand to the field.
+    return 0.0
