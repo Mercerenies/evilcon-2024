@@ -42,3 +42,11 @@ func on_attack_phase(playing_field, this_card) -> void:
     await super.on_attack_phase(playing_field, this_card)
     if playing_field.turn_player == this_card.owner:
         await super.on_attack_phase(playing_field, this_card)
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+    # Add the expected damage (= level * morale) of the card a second
+    # time, since Hyperactive Bee attacks twice per turn.
+    score += get_base_level() * get_base_morale() * priorities.of(LookaheadPriorities.FORT_DEFENSE)
+    return score

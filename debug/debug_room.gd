@@ -55,7 +55,6 @@ func _debug_interactive_game():
     top_deck.cards().shuffle()
 
     $PlayingField.turn_number = 10  # Get extra EP :)
-    $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.FOREVER_CLOWN))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN), CardPlayer.TOP))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN), CardPlayer.TOP))
     #$PlayingField.get_minion_strip(CardPlayer.BOTTOM).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DUCK), CardPlayer.BOTTOM))
@@ -73,18 +72,18 @@ func _debug_interactive_game():
 func _sample_deck():
     return [
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.ZANY_ZOMBIE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.FURIOUS_PHANTOM),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.MYSTERY_BOX),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.HYPERACTIVE_BEE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.GREEN_RANGER),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.BRAINWASHING_RAY),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.DISEMBODIED_SOUL),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.BUSY_BEE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.ULTIMATE_FUSION),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CORNY_ACORN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CORNY_ACORN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.MUSHROOM_MAN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.WORKER_BEE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.MIME_SUPERIOR),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNDEAD_PIG),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CLUELESS_MAN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CHICKEN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.SKUNKMAN),
