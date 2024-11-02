@@ -66,11 +66,10 @@ func ai_get_score(playing_field, player: StringName, priorities) -> float:
     var blocked_minion_turns = (
         Query.on(playing_field).minions(CardPlayer.other(player))
         .filter(func(playing_field, card): return card.card_type.get_level(playing_field, card) <= 1)
-        .map(func(playing_field, card):
-                 if not CardEffects.do_hypothetical_influence_check(playing_field, card, self, player):
-                     return 0
-                 return mini(icosaking_morale, card.card_type.get_morale(playing_field, card)))
-        .reduce(Operator.plus, 0)
+        .map_sum(func(playing_field, card):
+                     if not CardEffects.do_hypothetical_influence_check(playing_field, card, self, player):
+                         return 0
+                     return mini(icosaking_morale, card.card_type.get_morale(playing_field, card)))
     )
     score += blocked_minion_turns * priorities.of(LookaheadPriorities.FORT_DEFENSE)
 

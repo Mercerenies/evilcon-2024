@@ -36,6 +36,11 @@ class Q:
         # things other than cards.
         return array().map(func(card): return callable.call(_playing_field, card))
 
+    func map_sum(callable):
+        # Equivalent to .map, followed by summing the resulting array.
+        # The callable must produce numerical values.
+        return map(callable).reduce(Operator.plus, 0)
+
     func index_of(callable):
         # Returns the index of the first card that matches the given
         # callable, or null if not found.

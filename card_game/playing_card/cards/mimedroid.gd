@@ -49,8 +49,7 @@ func ai_get_score(playing_field, player: StringName, priorities) -> float:
     var clown_expires = (
         Query.on(playing_field).minions(player)
         .filter(Query.by_archetype(Archetype.CLOWN))
-        .map(_ai_turns_after_expiry)
-        .reduce(Operator.plus, 0)
+        .map_sum(_ai_turns_after_expiry)
     )
     score += clown_expires * priorities.of(LookaheadPriorities.FORT_DEFENSE)
     return score

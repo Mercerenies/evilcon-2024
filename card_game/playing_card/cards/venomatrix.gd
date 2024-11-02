@@ -53,8 +53,7 @@ func ai_get_score(playing_field, player: StringName, priorities) -> float:
     var friendly_bee_count = get_base_morale() + (
         Query.on(playing_field).minions(player)
         .filter(Query.by_archetype(Archetype.BEE))
-        .map(func (playing_field, card): return mini(this_card_morale, card.card_type.get_morale(playing_field, card)))
-        .reduce(Operator.plus, 0)
+        .map_sum(func (playing_field, card): return mini(this_card_morale, card.card_type.get_morale(playing_field, card)))
     )
     return base_score + friendly_bee_count * priorities.of(LookaheadPriorities.FORT_DEFENSE)
 
