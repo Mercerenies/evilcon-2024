@@ -56,7 +56,7 @@ func do_broadcasted_influence_check(playing_field, this_card, target_card, sourc
 func ai_get_score(playing_field, player: StringName, priorities) -> float:
     var score = super.ai_get_score(playing_field, player, priorities)
     # Immunity for self
-    score += priorities.of(LookaheadPriorities.IMMUNITY)
+    score += priorities.of(LookaheadPriorities.IMMUNITY) * ai_get_immunity_score(playing_field, null)
     # Immunity for HUMAN Minions
     var immune_minions = (
         Query.on(playing_field).minions(player)

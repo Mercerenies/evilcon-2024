@@ -47,5 +47,5 @@ func do_influence_check(playing_field, target_card, source_card, silently: bool)
 func ai_get_score(playing_field, player: StringName, priorities) -> float:
     return (
         super.ai_get_score(playing_field, player, priorities) +
-        priorities.of(LookaheadPriorities.IMMUNITY)
+        priorities.of(LookaheadPriorities.IMMUNITY) * ai_get_immunity_score(playing_field, null)
     )
