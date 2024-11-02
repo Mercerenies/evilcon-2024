@@ -18,7 +18,7 @@ func get_picture_index() -> int:
 
 
 func get_star_cost() -> int:
-    return 5
+    return 7
 
 
 func get_base_level() -> int:
