@@ -126,10 +126,9 @@ func do_influence_check(playing_field, target_card, source_card, silently: bool)
     # is permitted to affect the target card (which is usually the
     # case), or false if something blocks the effect.
     #
-    # If the `silently` argument is false, this method is permitted to
-    # be a coroutine (i.e. to "await"), in order to play animations.
-    # If `silently` is true, this method must not perform any
-    # animations.
+    # If the `silently` argument is false, this method to play
+    # animations. If `silently` is true, this method must not perform
+    # any animations. In either case, this method MUST NOT await.
     #
     # The default implementation behaves like
     # CardGameApi.broadcast_to_cards (resp.
@@ -138,11 +137,9 @@ func do_influence_check(playing_field, target_card, source_card, silently: bool)
     # Additionally, the default implementation respects
     # CardMeta.HAS_SPECIAL_IMMUNITY.
 
-    # NOTE: If silently = true, these `await` calls SHOULD do nothing.
-
     # Special immunity check
     if target_card.metadata.get(CardMeta.HAS_SPECIAL_IMMUNITY, false):
-        if not await CardEffects.do_ninja_influence_check(playing_field, target_card, source_card, silently):
+        if not CardEffects.do_ninja_influence_check(playing_field, target_card, source_card, silently):
             return false
 
     # Broadcast check
@@ -159,6 +156,8 @@ func do_broadcasted_influence_check(_playing_field, _card, _target_card, _source
     # giving a third party (the card argument) a chance to intervene.
     # If it is always true that card == target_card, then you should
     # be overriding do_influence_check instead.
+    #
+    # This method MUST NOT await.
     return true
 
 

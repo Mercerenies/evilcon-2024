@@ -34,4 +34,4 @@ func do_broadcasted_influence_check(playing_field, card, target_card, source_car
         if not silently:
             Stats.show_text(playing_field, target_card, PopupText.BLOCKED)
         return false
-    return await super.do_broadcasted_influence_check(playing_field, card, target_card, source_card, silently)
+    return super.do_broadcasted_influence_check(playing_field, card, target_card, source_card, silently)

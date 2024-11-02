@@ -39,8 +39,8 @@ func get_rarity() -> int:
 
 func do_influence_check(playing_field, target_card, source_card, silently: bool) -> bool:
     return (
-        await CardEffects.do_ninja_influence_check(playing_field, target_card, source_card, silently) and
-        await super.do_influence_check(playing_field, target_card, source_card, silently)
+        CardEffects.do_ninja_influence_check(playing_field, target_card, source_card, silently) and
+        super.do_influence_check(playing_field, target_card, source_card, silently)
     )
 
 
@@ -50,7 +50,7 @@ func do_broadcasted_influence_check(playing_field, this_card, target_card, sourc
             if not silently:
                 Stats.show_text(playing_field, target_card, PopupText.BLOCKED)
             return false
-    return await super.do_broadcasted_influence_check(playing_field, this_card, target_card, source_card, silently)
+    return super.do_broadcasted_influence_check(playing_field, this_card, target_card, source_card, silently)
 
 
 func ai_get_score(playing_field, player: StringName, priorities) -> float:
