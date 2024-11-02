@@ -26,6 +26,9 @@ const FORT_DEFENSE := &"FORT_DEFENSE"
 # value for this is 20.0, or one third of the total fort defense.
 const DESTINY_SONG := &"DESTINY_SONG"
 
+# Value of increasing hand limit by one, for one turn.
+const HAND_LIMIT_UP := &"HAND_LIMIT_UP"
+
 # Value of drawing an extra card to the hand, as a special effect.
 const EFFECT_DRAW := &"EFFECT_DRAW"
 
@@ -68,6 +71,7 @@ const DEFAULT_PRIORITIES := {
     &"EVIL_POINT": 1.0,
     &"FORT_DEFENSE": 1.0,
     &"DESTINY_SONG": 20.0,
+    &"HAND_LIMIT_UP": 0.3,
     &"EFFECT_DRAW": 0.6,
     &"FIRST_DRAW": 2.5,
     &"NORMAL_DRAW": 1.1,

@@ -39,3 +39,9 @@ func get_rarity() -> int:
 
 func get_hand_limit_modifier(_playing_field, card, player: StringName) -> int:
     return 1 if player == card.owner else 0
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+    score += get_base_morale() * priorities.of(LookaheadPriorities.HAND_LIMIT_UP)
+    return score
