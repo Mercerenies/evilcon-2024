@@ -70,3 +70,12 @@ func ai_get_score(playing_field, player: StringName, priorities) -> float:
     # the enemy's fort.
     score += get_base_morale() * 1.7 * priorities.of(LookaheadPriorities.FORT_DEFENSE)
     return score
+
+
+func ai_get_immunity_score(playing_field, card) -> float:
+    # The justification for the 1.7 here is the same as in
+    # ai_get_score.
+    var score = super.ai_get_immunity_score(playing_field, card)
+    var remaining_morale = get_base_morale() if card == null else get_morale(playing_field, card)
+    score += remaining_morale * 1.7
+    return score
