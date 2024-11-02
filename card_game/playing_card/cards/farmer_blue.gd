@@ -70,3 +70,22 @@ func _is_farm_card_type(card_type):
     # have archetype modifiers.
     var archetypes = card_type.get_base_archetypes()
     return Archetype.FARM in archetypes
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+    # As of Nov 2, 2024, the average EP cost of a playing card is 3.2.
+    # Assume that we will find a valid FARM Minion of this cost in the
+    # deck and will play it at curve.
+    score += get_base_morale() * 3.2 * priorities.of(LookaheadPriorities.FORT_DEFENSE)
+    return score
+
+
+func ai_get_immunity_score(playing_field, card) -> float:
+    var score = super.ai_get_immunity_score(playing_field, card)
+    var remaining_morale = get_base_morale() if card == null else get_morale(playing_field, card)
+    # As of Nov 2, 2024, the average EP cost of a playing card is 3.2.
+    # Assume that we will find a valid FARM Minion of this cost in the
+    # deck and will play it at curve.
+    score += remaining_morale * 3.2
+    return score
