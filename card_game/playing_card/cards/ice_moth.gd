@@ -57,3 +57,11 @@ func _try_to_perform_effect(playing_field, this_card) -> void:
         return
 
     await Stats.add_morale(playing_field, target_minion, -1)
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+    var target_minion = CardEffects.most_powerful_minion(playing_field, CardPlayer.other(player))
+    if target_minion != null:
+        score += target_minion.card_type.get_level(playing_field, target_minion) * priorities.of(LookaheadPriorities.FORT_DEFENSE)
+    return score
