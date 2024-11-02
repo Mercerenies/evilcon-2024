@@ -51,3 +51,30 @@ func do_broadcasted_influence_check(playing_field, this_card, target_card, sourc
                 Stats.show_text(playing_field, target_card, PopupText.BLOCKED)
             return false
     return await super.do_broadcasted_influence_check(playing_field, this_card, target_card, source_card, silently)
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+    # Immunity for self
+    score += priorities.of(LookaheadPriorities.IMMUNITY)
+    # Immunity for HUMAN Minions
+    var immune_minions = (
+        Query.on(playing_field).minions(player)
+        .count(Query.by_archetype(Archetype.HUMAN))
+    )
+    score += priorities.of(LookaheadPriorities.IMMUNITY) * immune_minions
+    return score
+
+
+func ai_get_score_broadcasted(playing_field, this_card, player: StringName, priorities, target_card_type) -> float:
+    var score = super.ai_get_score_broadcasted(playing_field, this_card, player, priorities, target_card_type)
+    if this_card.owner != player:
+        return score
+
+    # All HUMAN Minions are immune.
+    if target_card_type is MinionCardType:
+        var archetypes = target_card_type.get_base_archetypes()
+        if Archetype.HUMAN in archetypes:
+            score += priorities.of(LookaheadPriorities.IMMUNITY)
+    return score
+
