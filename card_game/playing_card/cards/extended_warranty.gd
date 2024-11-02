@@ -50,7 +50,7 @@ func _try_to_apply(playing_field, this_card, target_card) -> bool:
     if not (CardMeta.TURN_COUNTER in target_card.metadata):
         return false
 
-    var can_influence = await target_card.card_type.do_influence_check(playing_field, target_card, this_card, false)
+    var can_influence = target_card.card_type.do_influence_check(playing_field, target_card, this_card, false)
     if can_influence:
         target_card.metadata[CardMeta.TURN_COUNTER] -= 1
     playing_field.emit_cards_moved()

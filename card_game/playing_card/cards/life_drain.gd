@@ -40,7 +40,7 @@ func _evaluate_effect(playing_field, this_card) -> void:
         Stats.show_text(playing_field, this_card, PopupText.NO_TARGET)
         return
 
-    var can_influence = await tribute.card_type.do_influence_check(playing_field, tribute, this_card, false)
+    var can_influence = tribute.card_type.do_influence_check(playing_field, tribute, this_card, false)
     if can_influence:
         var tributed_level = tribute.card_type.get_level(playing_field, tribute)
         var tributed_morale = tribute.card_type.get_morale(playing_field, tribute)

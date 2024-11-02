@@ -44,7 +44,7 @@ func _evaluate_effect(playing_field, this_card) -> void:
 
     var total_level = 0
     for card in cards_to_destroy:
-        var can_influence = await card.card_type.do_influence_check(playing_field, card, this_card, false)
+        var can_influence = card.card_type.do_influence_check(playing_field, card, this_card, false)
         if can_influence:
             total_level += card.card_type.get_level(playing_field, card)
             await CardGameApi.destroy_card(playing_field, card)

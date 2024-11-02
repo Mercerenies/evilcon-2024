@@ -43,7 +43,7 @@ func _evaluate_effect(playing_field, this_card) -> void:
         return
 
     var most_powerful_non_demon = Util.max_by(non_demons, CardEffects.card_power_less_than(playing_field))
-    var can_influence = await most_powerful_non_demon.card_type.do_influence_check(playing_field, most_powerful_non_demon, this_card, false)
+    var can_influence = most_powerful_non_demon.card_type.do_influence_check(playing_field, most_powerful_non_demon, this_card, false)
     if can_influence:
         Stats.show_text(playing_field, most_powerful_non_demon, PopupText.DEMONED)
         most_powerful_non_demon.metadata[CardMeta.ARCHETYPE_OVERRIDES] = [Archetype.DEMON]

@@ -39,7 +39,7 @@ func on_play_broadcasted(playing_field, this_card, played_card) -> void:
         return
 
     await CardGameApi.highlight_card(playing_field, this_card)
-    var can_influence = await played_card.card_type.do_influence_check(playing_field, played_card, this_card, false)
+    var can_influence = played_card.card_type.do_influence_check(playing_field, played_card, this_card, false)
     if can_influence:
         Stats.show_text(playing_field, played_card, PopupText.CLOWNED)
         played_card.metadata[CardMeta.ARCHETYPE_OVERRIDES] = [Archetype.CLOWN]

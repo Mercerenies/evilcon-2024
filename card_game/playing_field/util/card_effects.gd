@@ -16,7 +16,7 @@ static func power_up_archetype(playing_field, source_card, archetypes) -> void:
     for minion in minions:
         if not _has_any_archetype(playing_field, minion, archetypes):
             continue
-        var can_influence = await minion.card_type.do_influence_check(playing_field, minion, source_card, false)
+        var can_influence = minion.card_type.do_influence_check(playing_field, minion, source_card, false)
         if can_influence:
             await Stats.add_level(playing_field, minion, 1)
 
@@ -162,4 +162,4 @@ static func most_powerful_minion(playing_field, player):
 # never actually yield.
 static func do_hypothetical_influence_check(playing_field, target_card: Card, activating_card_type, player: StringName) -> bool:
     var hypothetical_card = Card.new(activating_card_type, player)
-    return await target_card.card_type.do_influence_check(playing_field, target_card, hypothetical_card, true)
+    return target_card.card_type.do_influence_check(playing_field, target_card, hypothetical_card, true)

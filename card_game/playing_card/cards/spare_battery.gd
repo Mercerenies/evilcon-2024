@@ -40,7 +40,7 @@ func on_play(playing_field, card) -> void:
         Stats.show_text(playing_field, card, PopupText.NO_TARGET)
     else:
         var most_powerful_robot = Util.max_by(minions, CardEffects.card_power_less_than(playing_field))
-        var can_influence = await most_powerful_robot.card_type.do_influence_check(playing_field, most_powerful_robot, card, false)
+        var can_influence = most_powerful_robot.card_type.do_influence_check(playing_field, most_powerful_robot, card, false)
         if can_influence:
             await Stats.add_level(playing_field, most_powerful_robot, 1, {
                 "offset": Stats.CARD_MULTI_UI_OFFSET,

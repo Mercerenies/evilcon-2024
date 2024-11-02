@@ -46,7 +46,7 @@ func _do_minion_check(playing_field, this_card) -> void:
     if minions.card_count() > 1:
         await CardGameApi.highlight_card(playing_field, this_card)
         for minion in minions.card_array():
-            var can_influence = await minion.card_type.do_influence_check(playing_field, minion, this_card, false)
+            var can_influence = minion.card_type.do_influence_check(playing_field, minion, this_card, false)
             if can_influence:
                 await CardGameApi.destroy_card(playing_field, minion)
         await CardGameApi.destroy_card(playing_field, this_card)

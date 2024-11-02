@@ -62,7 +62,7 @@ func on_attack_phase(playing_field, card) -> void:
             "offset": 1,
         })
     else:
-        var can_influence = await enemy_target.card_type.do_influence_check(playing_field, enemy_target, card, false)
+        var can_influence = enemy_target.card_type.do_influence_check(playing_field, enemy_target, card, false)
         if can_influence:
             Stats.show_text(playing_field, enemy_target, PopupText.CLOWNED)
             enemy_target.metadata[CardMeta.ARCHETYPE_OVERRIDES] = [Archetype.CLOWN]

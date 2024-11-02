@@ -51,7 +51,7 @@ func _try_to_perform_effect(playing_field, this_card) -> void:
 
     friendly_nature_minions.sort_custom(CardEffects.card_power_less_than(playing_field))
     var minion_to_destroy = friendly_nature_minions[0]
-    var can_tribute = await minion_to_destroy.card_type.do_influence_check(playing_field, minion_to_destroy, this_card, false)
+    var can_tribute = minion_to_destroy.card_type.do_influence_check(playing_field, minion_to_destroy, this_card, false)
     if not can_tribute:
         return
 
@@ -66,6 +66,6 @@ func _try_to_perform_effect(playing_field, this_card) -> void:
         return
 
     var target_enemy_minion = playing_field.randomness.choose(enemy_minions)
-    var can_destroy = await target_enemy_minion.card_type.do_influence_check(playing_field, target_enemy_minion, this_card, false)
+    var can_destroy = target_enemy_minion.card_type.do_influence_check(playing_field, target_enemy_minion, this_card, false)
     if can_destroy:
         await CardGameApi.destroy_card(playing_field, target_enemy_minion)

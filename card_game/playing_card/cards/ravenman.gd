@@ -60,7 +60,7 @@ func _evaluate_effect(playing_field, card) -> bool:
         Stats.show_text(playing_field, card, PopupText.NO_TARGET)
         return false
 
-    var can_influence = await target_minion.card_type.do_influence_check(playing_field, target_minion, card, false)
+    var can_influence = target_minion.card_type.do_influence_check(playing_field, target_minion, card, false)
     if can_influence:
         await CardGameApi.exile_card(playing_field, target_minion)
 

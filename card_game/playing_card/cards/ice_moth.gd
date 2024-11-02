@@ -51,7 +51,7 @@ func _try_to_perform_effect(playing_field, this_card) -> void:
         Stats.show_text(playing_field, this_card, PopupText.NO_TARGET)
         return
 
-    var can_influence = await target_minion.card_type.do_influence_check(playing_field, target_minion, this_card, false)
+    var can_influence = target_minion.card_type.do_influence_check(playing_field, target_minion, this_card, false)
     if not can_influence:
         # Effect was blocked
         return

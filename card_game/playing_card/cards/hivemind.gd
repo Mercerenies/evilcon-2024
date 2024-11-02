@@ -48,7 +48,7 @@ func _evaluate_effect(playing_field, this_card) -> void:
 
     var successful_destructions = 0
     for target_card in target_minions:
-        var can_influence = await target_card.card_type.do_influence_check(playing_field, target_card, this_card, false)
+        var can_influence = target_card.card_type.do_influence_check(playing_field, target_card, this_card, false)
         if can_influence:
             await CardGameApi.destroy_card(playing_field, target_card)
             successful_destructions += 1

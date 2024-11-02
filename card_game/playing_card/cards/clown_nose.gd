@@ -46,7 +46,7 @@ func _perform_effect(playing_field, this_card) -> void:
         return
 
     var most_powerful_minion = Util.max_by(minions, CardEffects.card_power_less_than(playing_field))
-    var can_influence = await most_powerful_minion.card_type.do_influence_check(playing_field, most_powerful_minion, this_card, false)
+    var can_influence = most_powerful_minion.card_type.do_influence_check(playing_field, most_powerful_minion, this_card, false)
     if not can_influence:
         return
 

@@ -57,7 +57,7 @@ func _evaluate_effect(playing_field, card) -> bool:
         return false  # Effect was not blocked, you just played it at a dumb moment.
 
     for target_minion in target_minions:
-        var can_influence = await target_minion.card_type.do_influence_check(playing_field, target_minion, card, false)
+        var can_influence = target_minion.card_type.do_influence_check(playing_field, target_minion, card, false)
         if can_influence:
             await CardGameApi.destroy_card(playing_field, target_minion)
 

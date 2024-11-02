@@ -57,7 +57,7 @@ func on_attack_phase(playing_field, this_card) -> void:
         })
         return
 
-    var can_influence = await most_powerful_bee.card_type.do_influence_check(playing_field, most_powerful_bee, this_card, false)
+    var can_influence = most_powerful_bee.card_type.do_influence_check(playing_field, most_powerful_bee, this_card, false)
     if not can_influence:
         return
 

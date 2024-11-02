@@ -52,7 +52,7 @@ func on_expire(playing_field, this_card) -> void:
             "offset": 1,
         })
     else:
-        var can_influence = await most_powerful_robot.card_type.do_influence_check(playing_field, most_powerful_robot, this_card, false)
+        var can_influence = most_powerful_robot.card_type.do_influence_check(playing_field, most_powerful_robot, this_card, false)
         if can_influence:
             await Stats.add_morale(playing_field, most_powerful_robot, 1)
 

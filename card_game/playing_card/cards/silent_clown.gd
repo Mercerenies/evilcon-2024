@@ -59,7 +59,7 @@ func on_expire(playing_field, this_card) -> void:
         Stats.show_text(playing_field, this_card, PopupText.NO_TARGET)
     else:
         var selected_target = playing_field.randomness.choose(enemy_targets)
-        var can_influence = await selected_target.card_type.do_influence_check(playing_field, selected_target, this_card, false)
+        var can_influence = selected_target.card_type.do_influence_check(playing_field, selected_target, this_card, false)
         if can_influence:
             Stats.show_text(playing_field, selected_target, PopupText.CLOWNED)
             selected_target.metadata[CardMeta.ARCHETYPE_OVERRIDES] = [Archetype.CLOWN]

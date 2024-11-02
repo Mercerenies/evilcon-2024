@@ -42,7 +42,7 @@ func _perform_effect(playing_field, this_card) -> void:
         Stats.show_text(playing_field, this_card, PopupText.NO_TARGET)
         return
     var chosen_minion = playing_field.randomness.choose(minions)
-    var can_influence = await chosen_minion.card_type.do_influence_check(playing_field, chosen_minion, this_card, false)
+    var can_influence = chosen_minion.card_type.do_influence_check(playing_field, chosen_minion, this_card, false)
     if can_influence:
         var chosen_minion_index = opponent_minions_strip.cards().find_card(chosen_minion)
         var owner_minions_strip = playing_field.get_minion_strip(this_card.owner)

@@ -42,7 +42,7 @@ func augment_attack_damage(playing_field, this_card, attacking_card) -> int:
         return super.augment_attack_damage(playing_field, this_card, attacking_card)
     await CardGameApi.highlight_card(playing_field, this_card)
 
-    var can_influence = await attacking_card.card_type.do_influence_check(playing_field, attacking_card, this_card, false)
+    var can_influence = attacking_card.card_type.do_influence_check(playing_field, attacking_card, this_card, false)
     if can_influence:  # TODO Consider if we can show this in the UI better, it's confusing right now
         Stats.show_text(playing_field, attacking_card, PopupText.BLOCKED, {
             "offset": 1,

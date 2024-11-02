@@ -59,6 +59,6 @@ func _evaluate_effect(playing_field, card) -> void:
         return
 
     for target in targets:
-        var can_influence = await target.card_type.do_influence_check(playing_field, target, card, false)
+        var can_influence = target.card_type.do_influence_check(playing_field, target, card, false)
         if can_influence:
             await Stats.add_level(playing_field, target, 1)

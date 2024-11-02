@@ -54,7 +54,7 @@ func _evaluate_effect(playing_field, card) -> void:
     var minions_to_destroy = minions.slice(-3)
     minions_to_destroy.reverse()  # Destroy the strongest one first, just to make it look more natural.
     for target_minion in minions_to_destroy:
-        var can_influence = await target_minion.card_type.do_influence_check(playing_field, target_minion, card, false)
+        var can_influence = target_minion.card_type.do_influence_check(playing_field, target_minion, card, false)
         if can_influence:
             await CardGameApi.destroy_card(playing_field, target_minion)
 

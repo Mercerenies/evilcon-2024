@@ -45,7 +45,7 @@ func _evaluate_effect(playing_field, this_card) -> void:
 
 
 func _try_to_clown(playing_field, this_card, target_card):
-    var can_influence = await target_card.card_type.do_influence_check(playing_field, target_card, this_card, false)
+    var can_influence = target_card.card_type.do_influence_check(playing_field, target_card, this_card, false)
     if can_influence:
         Stats.show_text(playing_field, target_card, PopupText.CLOWNED)
         target_card.metadata[CardMeta.ARCHETYPE_OVERRIDES] = [Archetype.CLOWN]

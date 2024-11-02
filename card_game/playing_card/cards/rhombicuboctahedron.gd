@@ -44,6 +44,6 @@ func _do_effect(playing_field, card) -> void:
         Stats.show_text(playing_field, card, PopupText.NO_TARGET)
     else:
         for minion in opponent_minions_to_destroy:
-            var can_influence = await minion.card_type.do_influence_check(playing_field, minion, card, false)
+            var can_influence = minion.card_type.do_influence_check(playing_field, minion, card, false)
             if can_influence:
                 await CardGameApi.destroy_card(playing_field, minion)

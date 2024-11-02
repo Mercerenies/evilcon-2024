@@ -40,7 +40,7 @@ func _perform_effect(playing_field, this_card) -> void:
     if target_minion == null:
         Stats.show_text(playing_field, this_card, PopupText.NO_TARGET)
         return
-    var can_influence = await target_minion.card_type.do_influence_check(playing_field, target_minion, this_card, false)
+    var can_influence = target_minion.card_type.do_influence_check(playing_field, target_minion, this_card, false)
     if can_influence:
         var level_up_amount = 4 if _is_wimpy_powered(target_minion) else 2
         await Stats.add_level(playing_field, target_minion, level_up_amount)

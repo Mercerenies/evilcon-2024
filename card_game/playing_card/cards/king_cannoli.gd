@@ -59,7 +59,7 @@ func _evaluate_effect(playing_field, card) -> bool:
     if most_powerful_minion == null:
         Stats.show_text(playing_field, card, PopupText.NO_TARGET)
     else:
-        var can_influence = await most_powerful_minion.card_type.do_influence_check(playing_field, most_powerful_minion, card, false)
+        var can_influence = most_powerful_minion.card_type.do_influence_check(playing_field, most_powerful_minion, card, false)
         if can_influence:
             await Stats.add_morale(playing_field, most_powerful_minion, len(hand_cards))
 
