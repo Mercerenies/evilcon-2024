@@ -60,3 +60,13 @@ func on_pre_expire_broadcasted(playing_field, this_card, expiring_card) -> void:
         await CardGameApi.highlight_card(playing_field, this_card)
         await Stats.add_morale(playing_field, expiring_card, 1)
         await Stats.add_morale(playing_field, this_card, -1)
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+    # As of Nov 2, 2024, the average Level of a Minion is 1.7. So
+    # assume Maxwell is donating to HUMAN Minions with Level 1.7. That
+    # is, assume each of Maxwell's Morale points deals 1.7 damage to
+    # the enemy's fort.
+    score += get_base_morale() * 1.7 * priorities.of(LookaheadPriorities.FORT_DEFENSE)
+    return score
