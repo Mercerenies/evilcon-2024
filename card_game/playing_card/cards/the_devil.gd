@@ -52,3 +52,33 @@ func on_expire(playing_field, this_card) -> void:
             Stats.show_text(playing_field, minion, PopupText.DEMONED)
             minion.metadata[CardMeta.ARCHETYPE_OVERRIDES] = [Archetype.DEMON]
     playing_field.emit_cards_moved()
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+    var devil_morale = get_base_morale()
+
+    # Count the Minions that will still be in play when the Devil expires.
+    var non_demons_still_in_play = (
+        Query.on(playing_field).minions(player)
+        .filter(func (playing_field, card): return card.card_type.get_morale(playing_field, card) > devil_morale)
+        .count(Query.not_(Query.by_archetype(Archetype.DEMON)))
+    )
+    score += non_demons_still_in_play * priorities.of(LookaheadPriorities.BEDEVILING)
+
+    return score
+
+
+func ai_get_score_broadcasted(playing_field, this_card, player: StringName, priorities, target_card_type) -> float:
+    var score = super.ai_get_score_broadcasted(playing_field, this_card, player, priorities, target_card_type)
+    if this_card.owner != player:
+        return score
+    if not (target_card_type is MinionCardType) or Archetype.DEMON in target_card_type.get_base_archetypes():
+        return score
+
+    # If we control The Devil, then playing non-DEMONs is a good idea,
+    # because The Devil will convert them.
+    if target_card_type.get_base_morale() > get_morale(playing_field, this_card):
+        score += priorities.of(LookaheadPriorities.BEDEVILING)
+
+    return score

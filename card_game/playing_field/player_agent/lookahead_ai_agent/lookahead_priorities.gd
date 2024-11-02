@@ -67,6 +67,11 @@ const UNDEAD := &"UNDEAD"
 # characters running a CLOWN deck will care.
 const CLOWNING = &"CLOWNING"
 
+# The value of converting a friendly Minion to a DEMON Minion. Most
+# decks don't care about this, so the default avlue is 0.0, but
+# characters running a DEMON deck will care.
+const BEDEVILING = &"BEDEVILING"
+
 const DEFAULT_PRIORITIES := {
     &"EVIL_POINT": 1.0,
     &"FORT_DEFENSE": 1.0,
@@ -79,6 +84,7 @@ const DEFAULT_PRIORITIES := {
     &"IMMUNITY": 0.15,
     &"UNDEAD": 0.0,
     &"CLOWNING": 0.0,
+    &"BEDEVILING": 0.0,
 }
 
 var _data: Dictionary
