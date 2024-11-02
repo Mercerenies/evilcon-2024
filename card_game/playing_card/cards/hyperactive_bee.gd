@@ -50,3 +50,5 @@ func ai_get_score(playing_field, player: StringName, priorities) -> float:
     # time, since Hyperactive Bee attacks twice per turn.
     score += get_base_level() * get_base_morale() * priorities.of(LookaheadPriorities.FORT_DEFENSE)
     return score
+
+# TODO: Can we teach the AI that boosting Hyperactive Bee's Morale is actually really good?
