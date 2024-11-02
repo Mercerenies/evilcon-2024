@@ -62,6 +62,6 @@ func _try_to_perform_effect(playing_field, this_card) -> void:
 func ai_get_score(playing_field, player: StringName, priorities) -> float:
     var score = super.ai_get_score(playing_field, player, priorities)
     var target_minion = CardEffects.most_powerful_minion(playing_field, CardPlayer.other(player))
-    if target_minion != null:
+    if target_minion != null and await CardEffects.do_hypothetical_influence_check(playing_field, target_minion, self, player):
         score += target_minion.card_type.get_level(playing_field, target_minion) * priorities.of(LookaheadPriorities.FORT_DEFENSE)
     return score

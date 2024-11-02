@@ -151,3 +151,15 @@ static func most_powerful_minion(playing_field, player):
     if player != null:
         all_minions = all_minions.filter(func (minion): return minion.owner == player)
     return Util.max_by(all_minions, card_power_less_than(playing_field))
+
+
+# Performs a hypothetical influence check for the given card type
+# against a card already in play. Returns true if the prospective card
+# could influence the target.
+#
+# Due to the unfortunate way that coroutines work in Godot (as of
+# 4.2), this method must be awaited, even though the coroutine should
+# never actually yield.
+static func do_hypothetical_influence_check(playing_field, target_card: Card, activating_card_type, player: StringName) -> bool:
+    var hypothetical_card = Card.new(activating_card_type, player)
+    return await target_card.card_type.do_influence_check(playing_field, target_card, hypothetical_card, true)
