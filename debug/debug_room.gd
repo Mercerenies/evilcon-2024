@@ -55,8 +55,9 @@ func _debug_interactive_game():
     top_deck.cards().shuffle()
 
     $PlayingField.turn_number = 10  # Get extra EP :)
-    $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.TRUE_NINJA_MASTER))
-    $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN))
+    $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.ICOSAKING))
+    $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.ICE_MOTH))
+    #$PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN), CardPlayer.TOP))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN), CardPlayer.TOP))
     #$PlayingField.get_minion_strip(CardPlayer.BOTTOM).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DUCK), CardPlayer.BOTTOM))
@@ -78,8 +79,8 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.ZANY_ZOMBIE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.HYPERACTIVE_BEE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.GREEN_RANGER),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.BRAINWASHING_RAY),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.DISEMBODIED_SOUL),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.NINJA_ASSASSIN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.HIRED_NINJA),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.BUSY_BEE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.ULTIMATE_FUSION),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CORNY_ACORN),

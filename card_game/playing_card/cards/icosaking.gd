@@ -54,3 +54,21 @@ func augment_attack_damage(playing_field, this_card, attacking_card) -> int:
             })
             return -99999
     return super.augment_attack_damage(playing_field, this_card, attacking_card)
+
+
+@warning_ignore("CONFUSABLE_LOCAL_DECLARATION")
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+
+    # Enemy Level 1 Minions don't get to attack for the turns that
+    # Icosaking is in play.
+    var icosaking_morale = get_base_morale()
+    var blocked_minion_turns = (
+        Query.on(playing_field).minions(CardPlayer.other(player))
+        .filter(func(playing_field, card): return card.card_type.get_level(playing_field, card) <= 1)
+        .map(func(playing_field, card): return mini(icosaking_morale, card.card_type.get_morale(playing_field, card)))
+        .reduce(Operator.plus, 0)
+    )
+    score += blocked_minion_turns * priorities.of(LookaheadPriorities.FORT_DEFENSE)
+
+    return score
