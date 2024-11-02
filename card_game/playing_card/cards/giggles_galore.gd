@@ -39,7 +39,6 @@ func get_rarity() -> int:
 
 func get_level(playing_field, card) -> int:
     var opponent = CardPlayer.other(card.owner)
-    var opposing_clowns = playing_field.get_minion_strip(opponent).cards().card_array().filter(func(minion):
-        return minion.has_archetype(playing_field, Archetype.CLOWN))
+    var opposing_clowns = Query.on(playing_field).minions(opponent).count(Query.by_archetype(Archetype.CLOWN))
     var starting_level = super.get_level(playing_field, card)
-    return starting_level + len(opposing_clowns)
+    return starting_level + opposing_clowns
