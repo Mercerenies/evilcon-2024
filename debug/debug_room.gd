@@ -58,8 +58,7 @@ func _debug_interactive_game():
 
     $PlayingField.turn_number = 10  # Get extra EP :)
     #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.GIGGLES_GALORE))
-    $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.INFERNAL_IMP))
-    $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.NINJA_ASSASSIN))
+    $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DEATH))
     $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.THE_DEVIL))
     #$PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN), CardPlayer.TOP))
@@ -88,7 +87,7 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.BUSY_BEE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.ULTIMATE_FUSION),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CORNY_ACORN),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CORNY_ACORN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.DEATH),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.MUSHROOM_MAN),
