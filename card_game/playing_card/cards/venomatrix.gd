@@ -45,7 +45,6 @@ func get_rarity() -> int:
     return Rarity.ULTRA_RARE
 
 
-@warning_ignore("CONFUSABLE_LOCAL_DECLARATION")
 func ai_get_score(playing_field, player: StringName, priorities) -> float:
     var base_score = super.ai_get_score(playing_field, player, priorities)
     var this_card_morale = get_base_morale()

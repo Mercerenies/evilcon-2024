@@ -56,7 +56,6 @@ func augment_attack_damage(playing_field, this_card, attacking_card) -> int:
     return super.augment_attack_damage(playing_field, this_card, attacking_card)
 
 
-@warning_ignore("CONFUSABLE_LOCAL_DECLARATION")
 func ai_get_score(playing_field, player: StringName, priorities) -> float:
     var score = super.ai_get_score(playing_field, player, priorities)
 

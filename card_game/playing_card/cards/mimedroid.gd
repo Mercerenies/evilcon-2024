@@ -43,7 +43,6 @@ func on_expire_broadcasted(playing_field, card, expiring_card) -> void:
         await Stats.add_level(playing_field, card, 1)
 
 
-@warning_ignore("CONFUSABLE_LOCAL_DECLARATION")
 func ai_get_score(playing_field, player: StringName, priorities) -> float:
     var score = super.ai_get_score(playing_field, player, priorities)
     var clown_expires = (

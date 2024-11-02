@@ -57,7 +57,6 @@ func on_expire(playing_field, this_card) -> void:
             await Stats.add_morale(playing_field, most_powerful_robot, 1)
 
 
-@warning_ignore("CONFUSABLE_LOCAL_DECLARATION")
 func ai_get_score(playing_field, player: StringName, priorities) -> float:
     var score = super.ai_get_score(playing_field, player, priorities)
 
