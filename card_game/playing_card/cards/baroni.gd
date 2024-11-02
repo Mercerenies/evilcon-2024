@@ -67,3 +67,14 @@ func _is_summon_candidate(deck_card) -> bool:
         Archetype.ROBOT in deck_card.get_base_archetypes() and
         deck_card.get_star_cost() <= 2
     )
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+    # B'aroni expires for +4 EP.
+    score += 4 * priorities.of(LookaheadPriorities.EVIL_POINT)
+    # B'aroni will summon a Cost 2 Minion when he expires. We can't
+    # predict what cards will still be in your deck at that time, so
+    # assume it will succeed.
+    score += 2 * priorities.of(LookaheadPriorities.FORT_DEFENSE)
+    return score
