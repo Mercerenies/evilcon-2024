@@ -151,12 +151,16 @@ static func by_original_owner(player: StringName):
 # overrides into consideration.
 #
 # Effect cards have no archetype and always fail this predicate.
-static func by_archetype(archetype):
-    return func filter_by_archetype(playing_field, card):
-        if card is CardType:
-            return card is MinionCardType and archetype in card.get_base_archetypes()
-        else:
-            return card.card_type is MinionCardType and card.has_archetype(playing_field, archetype)
+static func by_archetype(archetype_or_arr):
+    if archetype_or_arr is Array:
+        return or_(archetype_or_arr.map(func (a): return by_archetype(a)))
+    else:
+        var archetype = archetype_or_arr
+        return func filter_by_archetype(playing_field, card):
+            if card is CardType:
+                return card is MinionCardType and archetype in card.get_base_archetypes()
+            else:
+                return card.card_type is MinionCardType and card.has_archetype(playing_field, archetype)
 
 
 static func by_id(id: int):
