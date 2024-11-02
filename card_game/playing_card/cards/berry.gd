@@ -41,3 +41,10 @@ func on_expire(playing_field, this_card) -> void:
     await super.on_expire(playing_field, this_card)
     await CardGameApi.highlight_card(playing_field, this_card)
     await Stats.add_evil_points(playing_field, this_card.owner, 4)
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+    # Berry expires for +4 EP.
+    score += 4 * priorities.of(LookaheadPriorities.EVIL_POINT)
+    return score
