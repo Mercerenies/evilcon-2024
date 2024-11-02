@@ -60,7 +60,8 @@ func ai_get_score(playing_field, player: StringName, priorities) -> float:
     # Immunity for bees and nature minions
     var immune_minions = (
         Query.on(playing_field).minions(player)
-        .count(Query.by_archetype([Archetype.BEE, Archetype.NATURE]))
+        .filter(Query.by_archetype([Archetype.BEE, Archetype.NATURE]))
+        .map_sum(func(playing_field, card): return card.card_type.ai_get_immunity_score(playing_field, card))
     )
     score += priorities.of(LookaheadPriorities.IMMUNITY) * immune_minions
     return score
@@ -75,5 +76,5 @@ func ai_get_score_broadcasted(playing_field, this_card, player: StringName, prio
     if target_card_type is MinionCardType:
         var archetypes = target_card_type.get_base_archetypes()
         if Archetype.BEE in archetypes or Archetype.NATURE in archetypes:
-            score += priorities.of(LookaheadPriorities.IMMUNITY)
+            score += priorities.of(LookaheadPriorities.IMMUNITY) * target_card_type.ai_get_immunity_score(playing_field, null)
     return score

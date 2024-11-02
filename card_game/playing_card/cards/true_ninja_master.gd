@@ -58,11 +58,12 @@ func ai_get_score(playing_field, player: StringName, priorities) -> float:
     # Immunity for self
     score += priorities.of(LookaheadPriorities.IMMUNITY) * ai_get_immunity_score(playing_field, null)
     # Immunity for HUMAN Minions
-    var immune_minions = (
+    var immunity_score = (
         Query.on(playing_field).minions(player)
-        .count(Query.by_archetype(Archetype.HUMAN))
+        .filter(Query.by_archetype(Archetype.HUMAN))
+        .map_sum(func(playing_field, card): return card.card_type.ai_get_immunity_score(playing_field, card))
     )
-    score += priorities.of(LookaheadPriorities.IMMUNITY) * immune_minions
+    score += priorities.of(LookaheadPriorities.IMMUNITY) * immunity_score
     return score
 
 
@@ -75,6 +76,6 @@ func ai_get_score_broadcasted(playing_field, this_card, player: StringName, prio
     if target_card_type is MinionCardType:
         var archetypes = target_card_type.get_base_archetypes()
         if Archetype.HUMAN in archetypes:
-            score += priorities.of(LookaheadPriorities.IMMUNITY)
+            score += priorities.of(LookaheadPriorities.IMMUNITY) * target_card_type.ai_get_immunity_score(playing_field, null)
     return score
 
