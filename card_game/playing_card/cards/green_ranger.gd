@@ -77,4 +77,3 @@ func ai_get_score_broadcasted(playing_field, this_card, player: StringName, prio
         if Archetype.BEE in archetypes or Archetype.NATURE in archetypes:
             score += priorities.of(LookaheadPriorities.IMMUNITY)
     return score
-

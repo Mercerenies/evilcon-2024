@@ -43,8 +43,28 @@ func get_rarity() -> int:
     return Rarity.RARE
 
 
+@warning_ignore("CONFUSABLE_LOCAL_DECLARATION")
 func ai_get_score(playing_field, player: StringName, priorities) -> float:
     var base_score = super.ai_get_score(playing_field, player, priorities)
-    # Note: +1 because Queen Bee counts herself when in play.
-    var friendly_bee_count = Query.on(playing_field).minions(player).count(Query.by_archetype(Archetype.BEE)) + 1
-    return base_score + friendly_bee_count * get_base_morale() * priorities.of(LookaheadPriorities.FORT_DEFENSE)
+    var this_card_morale = get_base_morale()
+    # Note: +Morale because Queen Bee counts herself when in play.
+    var friendly_bee_count = get_base_morale() + (
+        Query.on(playing_field).minions(player)
+        .filter(Query.by_archetype(Archetype.BEE))
+        .map(func (playing_field, card): return mini(this_card_morale, card.card_type.get_morale(playing_field, card)))
+        .reduce(Operator.plus, 0)
+    )
+    return base_score + friendly_bee_count * priorities.of(LookaheadPriorities.FORT_DEFENSE)
+
+
+func ai_get_score_broadcasted(playing_field, this_card, player: StringName, priorities, target_card_type) -> float:
+    var score = super.ai_get_score_broadcasted(playing_field, this_card, player, priorities, target_card_type)
+    if this_card.owner != player:
+        return score
+
+    # BEE Minions power up Queen Bee.
+    if target_card_type is MinionCardType:
+        if Archetype.BEE in target_card_type.get_base_archetypes():
+            var turns_on_board_together = mini(get_morale(playing_field, this_card), target_card_type.get_base_morale())
+            score += turns_on_board_together * priorities.of(LookaheadPriorities.FORT_DEFENSE)
+    return score
