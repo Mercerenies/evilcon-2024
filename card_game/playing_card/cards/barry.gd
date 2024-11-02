@@ -44,3 +44,10 @@ func on_end_phase(playing_field, card) -> void:
         var chosen_card_type = PlayingCardCodex.get_entity(chosen_card_id)
         await CardGameApi.create_card(playing_field, card.owner, chosen_card_type)
     await super.on_end_phase(playing_field, card)
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+    # Barry will create a Cost 2 Minions during every End Phase of his life.
+    score += get_base_morale() * 2 * priorities.of(LookaheadPriorities.FORT_DEFENSE)
+    return score

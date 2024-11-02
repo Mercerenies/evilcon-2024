@@ -52,3 +52,17 @@ func on_play(playing_field, card) -> void:
         # Choose a target minion and play
         var target_minion = playing_field.randomness.choose(valid_target_minions)
         await CardGameApi.play_card_from_deck(playing_field, owner, target_minion)
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+    # Make sure there's a Minion in your deck
+    var has_minion_in_deck = (
+        Query.on(playing_field).deck(player)
+        .filter(Query.is_minion)
+        .filter(func (_playing_field, card): return card.get_star_cost() <= 1)
+        .any()
+    )
+    if has_minion_in_deck:
+        score += priorities.of(LookaheadPriorities.FORT_DEFENSE)  # Assume target Minion is 1/1.
+    return score
