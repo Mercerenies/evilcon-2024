@@ -21,6 +21,19 @@ static func power_up_archetype(playing_field, source_card, archetypes) -> void:
             await Stats.add_level(playing_field, minion, 1)
 
 
+static func ai_score_for_powering_up_archetype(playing_field, source_card_type, player: StringName, archetypes, priorities) -> float:
+    if archetypes is int:
+        archetypes = [archetypes]
+    var affected_total = (
+        Query.on(playing_field).minions()
+        .filter([Query.by_archetype(archetypes), Query.influenced_by(source_card_type, player)])
+        .map_sum(func(playing_field, target_minion):
+            var sign = 1 if target_minion.owner == player else -1
+            return sign * target_minion.card_type.get_morale(playing_field, target_minion))
+    )
+    return affected_total * priorities.of(LookaheadPriorities.FORT_DEFENSE)
+
+
 static func _has_any_archetype(playing_field, minion, archetypes: Array) -> bool:
     return archetypes.any(func (a): return minion.has_archetype(playing_field, a))
 
@@ -156,10 +169,6 @@ static func most_powerful_minion(playing_field, player):
 # Performs a hypothetical influence check for the given card type
 # against a card already in play. Returns true if the prospective card
 # could influence the target.
-#
-# Due to the unfortunate way that coroutines work in Godot (as of
-# 4.2), this method must be awaited, even though the coroutine should
-# never actually yield.
 static func do_hypothetical_influence_check(playing_field, target_card: Card, activating_card_type, player: StringName) -> bool:
     var hypothetical_card = Card.new(activating_card_type, player)
     return target_card.card_type.do_influence_check(playing_field, target_card, hypothetical_card, true)
