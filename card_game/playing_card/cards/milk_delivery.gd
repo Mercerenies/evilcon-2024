@@ -37,3 +37,12 @@ func on_play(playing_field, card) -> void:
         for minion in minion_strip.cards().card_array():
             await Stats.add_morale(playing_field, minion, 1)
     await CardGameApi.destroy_card(playing_field, card)
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+    score += (
+        Query.on(playing_field).minions(player)
+        .map_sum(Query.level().value())
+    )
+    return score

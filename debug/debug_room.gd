@@ -83,7 +83,7 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.METAL_SCORPION),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.DEATH_CYBORG),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.NINJA_ASSASSIN),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.HIRED_NINJA),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.MILK_DELIVERY),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.METAL_SPIDER),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.ROBOT_MITE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.DESTRUCTION_TANK),
