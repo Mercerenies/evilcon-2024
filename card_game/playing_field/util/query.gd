@@ -232,6 +232,10 @@ static func or_(preds: Array):
 
 ## Filters predicated by a numerical value.
 
+# Intermediate class for comparisons against common numerical values
+# on cards. Instancees of this class SHOULD NOT be explicitly
+# constructed outside of this file. Use the static helper functions
+# defined below.
 class NumericalCompare:
     var _getter: Callable
 
@@ -253,6 +257,11 @@ class NumericalCompare:
     func at_most(value):
         return func comparison(playing_field, card):
             return _getter.call(playing_field, card) <= value
+
+    # Returns the numerical value as an integer when queried. Useful
+    # in map() and similar functions.
+    func value():
+        return _getter
 
 
 static func morale() -> NumericalCompare:
