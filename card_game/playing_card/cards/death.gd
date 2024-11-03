@@ -60,9 +60,10 @@ func ai_get_score_broadcasted(playing_field, this_card, player: StringName, prio
     if not (target_card_type is MinionCardType):
         return score
 
-    # If we control Death, then playing another Minion will reduce his
-    # effectiveness.
-    var turns_together = mini(get_morale(playing_field, this_card), target_card_type.get_base_morale())
-    score -= 2 * turns_together * priorities.of(LookaheadPriorities.FORT_DEFENSE)
+    # If we control Death and no other Minions, then playing another
+    # Minion will reduce his effectiveness.
+    if Query.on(playing_field).minions(player).count() == 1:
+        var turns_together = mini(get_morale(playing_field, this_card), target_card_type.get_base_morale())
+        score -= 2 * turns_together * priorities.of(LookaheadPriorities.FORT_DEFENSE)
 
     return score
