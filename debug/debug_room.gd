@@ -77,8 +77,8 @@ func _debug_interactive_game():
 
 func _sample_deck():
     return [
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.SPARE_BATTERY),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.SPARE_BATTERY),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.PET_COW),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.PET_COW),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.METAL_SPIDER),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.METAL_SCORPION),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.DEATH_CYBORG),
