@@ -30,16 +30,15 @@ func on_play(playing_field, card) -> void:
     var owner = card.owner
 
     # Find owner's most powerful Robot.
-    var minions = (
-        playing_field.get_minion_strip(owner).cards()
-        .card_array()
-        .filter(func (minion): return minion.has_archetype(playing_field, Archetype.ROBOT))
+    var most_powerful_robot = (
+        Query.on(playing_field).minions(owner)
+        .filter(Query.by_archetype(Archetype.ROBOT))
+        .max()
     )
     await CardGameApi.highlight_card(playing_field, card)
-    if len(minions) == 0:
+    if most_powerful_robot == null:
         Stats.show_text(playing_field, card, PopupText.NO_TARGET)
     else:
-        var most_powerful_robot = Util.max_by(minions, CardEffects.card_power_less_than(playing_field))
         var can_influence = most_powerful_robot.card_type.do_influence_check(playing_field, most_powerful_robot, card, false)
         if can_influence:
             await Stats.add_level(playing_field, most_powerful_robot, 1, {
