@@ -40,9 +40,22 @@ func _perform_effect(playing_field, card) -> void:
         Stats.show_text(playing_field, card, PopupText.NO_TARGET)
         return
 
-    var opponent_clowns_count = len(
-        playing_field.get_minion_strip(opponent)
-        .cards().card_array()
-        .filter(func (c): return c.has_archetype(playing_field, Archetype.CLOWN))
+    var opponent_clowns_count = (
+        Query.on(playing_field).minions(opponent)
+        .count(Query.by_archetype(Archetype.CLOWN))
     )
     await Stats.add_morale(playing_field, target_minion, min(opponent_clowns_count, 3))
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+
+    var target_minion = CardEffects.most_powerful_minion(playing_field, player)
+    var opponent_clowns_count = (
+        Query.on(playing_field).minions(CardPlayer.other(player))
+        .count(Query.by_archetype(Archetype.CLOWN))
+    )
+
+    if target_minion != null:
+        score += mini(opponent_clowns_count, 3) * target_minion.card_type.get_level(playing_field, target_minion) * priorities.of(LookaheadPriorities.FORT_DEFENSE)
+    return score
