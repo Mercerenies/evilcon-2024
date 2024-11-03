@@ -32,3 +32,18 @@ func on_standby_phase(playing_field, card) -> void:
         playing_field.emit_cards_moved()
         if card.metadata[CardMeta.TURN_COUNTER] >= get_total_turn_count():
             await CardGameApi.destroy_card(playing_field, card)
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+    score += ai_get_score_per_turn(playing_field, player, priorities) * get_total_turn_count()
+    return score
+
+
+func ai_get_score_per_turn(_playing_field, _player: StringName, _priorities) -> float:
+    # The value of this TimedCardType remaining on the field for one
+    # turn. Subclasses should generally prefer to override this method
+    # rather than ai_get_score, because this method iwll also interact
+    # correctly with cards that extend lifetimes, like Chris Cogsworth
+    # or the Foreman.
+    return 0.0
