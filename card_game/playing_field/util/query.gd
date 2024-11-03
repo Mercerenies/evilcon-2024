@@ -223,6 +223,14 @@ static func is_effect(_playing_field, card):
         return card.card_type is EffectCardType
 
 
+# Filter to timed effects.
+static func is_timed_effect(_playing_field, card):
+    if card is CardType:
+        return card is TimedCardType
+    else:
+        return card.card_type is TimedCardType
+
+
 # Filter to cards literally equal to the target.
 static func equals(target_card):
     return func filter_by_equality(_playing_field, card):
@@ -319,3 +327,14 @@ static func cost() -> NumericalCompare:
         else:
             return card.card_type.get_star_cost())
 
+
+# Turns remaining on a TimedCardType. Zero for any card which is NOT a
+# TimedCardType.
+static func turn_count() -> NumericalCompare:
+    return NumericalCompare.new(func(_playing_field, card):
+        if card is CardType:
+            return card.get_total_turn_count() if card is TimedCardType else 0
+        else:
+            if not (card.card_type is TimedCardType):
+                return 0
+            return card.card_type.get_total_turn_count() - card.metadata.get(CardMeta.TURN_COUNTER, 0))

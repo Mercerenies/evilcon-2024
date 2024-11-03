@@ -63,3 +63,30 @@ func _try_to_apply(playing_field, this_card, target_card) -> bool:
         target_card.metadata[CardMeta.TURN_COUNTER] -= 1
     playing_field.emit_cards_moved()
     return true
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+
+    # Count all of the TimedCardTypes that will outlive Chris.
+    var chris_morale = get_base_morale()
+    score += (
+        Query.on(playing_field).effects(player)
+        .filter([Query.is_timed_effect, Query.turn_count().at_least(chris_morale)])
+        .map_sum(func (playing_field, card):
+            return card.card_type.ai_get_score_per_turn(playing_field, player, priorities))
+    )
+
+    return score
+
+
+func ai_get_score_broadcasted(playing_field, this_card, player: StringName, priorities, target_card_type) -> float:
+    var score = super.ai_get_score_broadcasted(playing_field, this_card, player, priorities, target_card_type)
+
+    # If we control Chris, then TimedCardTypes that will outlive him
+    # get one extra turn.
+    var chris_morale = get_morale(playing_field, this_card)
+    if target_card_type is TimedCardType and target_card_type.get_total_turn_count() >= chris_morale:
+        score += target_card_type.ai_get_score_per_turn(playing_field, player, priorities)
+
+    return score

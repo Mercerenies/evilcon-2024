@@ -94,7 +94,7 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.FOREMAN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.FOREMAN),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CHRIS_COGSWORTH),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN),
     ]
