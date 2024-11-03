@@ -41,11 +41,17 @@ class Q:
         # The callable must produce numerical values.
         return map(callable).reduce(Operator.plus, 0)
 
-    func map_max(callable):
-        return map(callable).max()
+    func map_max(callable, default = null):
+        if default == null:
+            return map(callable).max()
+        else:
+            return map(callable).reduce(func (a, b): return max(a, b), default)
 
-    func map_min(callable):
-        return map(callable).min()
+    func map_min(callable, default = null):
+        if default == null:
+            return map(callable).min()
+        else:
+            return map(callable).reduce(func (a, b): return min(a, b), default)
 
     func index_of(callable):
         # Returns the index of the first card that matches the given

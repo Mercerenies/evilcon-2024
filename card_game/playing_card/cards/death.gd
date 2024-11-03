@@ -1,6 +1,9 @@
 extends MinionCardType
 
 
+# TODO What happens if we make Death be UNDEAD-DEMON-BOSS Synergy? It
+# feels too powerful to let him be UNDEAD, so I'm leaning towards no.
+
 func get_id() -> int:
     return 116
 
@@ -66,7 +69,7 @@ func ai_get_score_broadcasted(playing_field, this_card, player: StringName, prio
     var max_morale_from_others = (
         Query.on(playing_field).minions(player)
         .filter(Query.not_equals(this_card))
-        .map_max(Query.morale().value())
+        .map_max(Query.morale().value(), 0)
     )
     var new_minion_morale = target_card_type.get_base_morale()
     if new_minion_morale > max_morale_from_others:
