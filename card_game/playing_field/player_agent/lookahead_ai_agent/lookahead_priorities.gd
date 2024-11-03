@@ -65,17 +65,25 @@ const UNDEAD := &"UNDEAD"
 # The value of converting an opponent card to a CLOWN Minion. Most
 # decks don't care about this, so the default value is 0.0. But
 # characters running a CLOWN deck will care.
-const CLOWNING = &"CLOWNING"
+const CLOWNING := &"CLOWNING"
 
 # The value of converting a friendly Minion to a DEMON Minion. Most
 # decks don't care about this, so the default value is 0.0, but
 # characters running a DEMON deck will care.
-const BEDEVILING = &"BEDEVILING"
+const BEDEVILING := &"BEDEVILING"
 
 # The value of converting a friendly Minion to a ROBOT Minion. Most
 # decks don't care about this, so the default value is 0.0, but
 # characters running a ROBOT deck will care.
-const ROBOTING = &"ROBOTING"
+const ROBOTING := &"ROBOTING"
+
+# The value of playing cards in the "right" order. This one is a bit
+# unusual. If the AI knows that it can play two cards X and Y this
+# turn in either order, but it's better to play X before Y, this is
+# the value of playing X before Y instead of Y before X. Generally,
+# this should just be a high number, since it's settling ties between
+# a clearly better move and a clearly worse one.
+const RIGHT_ORDER := &"RIGHT_ORDER"
 
 const DEFAULT_PRIORITIES := {
     &"EVIL_POINT": 1.0,
@@ -91,6 +99,7 @@ const DEFAULT_PRIORITIES := {
     &"CLOWNING": 0.0,
     &"BEDEVILING": 0.0,
     &"ROBOTING": 0.0,
+    &"RIGHT_ORDER": 10.0,
 }
 
 var _data: Dictionary
