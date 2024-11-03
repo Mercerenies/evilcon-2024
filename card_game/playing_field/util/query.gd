@@ -129,7 +129,6 @@ static func on(playing_field) -> QueryManager:
 ## Various helper filter functions, each of which satisfies the
 ## signature of Q.filter.
 
-
 # Filter by owner. Cards not on the field (i.e. in a player's hand,
 # deck, or discard pile) do not have owners and will always fail this
 # predicate.
@@ -230,3 +229,52 @@ static func or_(preds: Array):
             if pred.call(playing_field, card):
                 return true
         return false
+
+## Filters predicated by a numerical value.
+
+class NumericalCompare:
+    var _getter: Callable
+
+    func _init(getter: Callable):
+        _getter = getter
+
+    func greater_than(value):
+        return func comparison(playing_field, card):
+            return _getter.call(playing_field, card) > value
+
+    func at_least(value):
+        return func comparison(playing_field, card):
+            return _getter.call(playing_field, card) >= value
+
+    func less_than(value):
+        return func comparison(playing_field, card):
+            return _getter.call(playing_field, card) < value
+
+    func at_most(value):
+        return func comparison(playing_field, card):
+            return _getter.call(playing_field, card) <= value
+
+
+static func morale() -> NumericalCompare:
+    return NumericalCompare.new(func(playing_field, card):
+        if card is CardType:
+            return card.get_base_morale()
+        else:
+            return card.card_type.get_morale(playing_field, card))
+
+
+static func level() -> NumericalCompare:
+    return NumericalCompare.new(func(playing_field, card):
+        if card is CardType:
+            return card.get_base_level()
+        else:
+            return card.card_type.get_level(playing_field, card))
+
+
+static func cost() -> NumericalCompare:
+    return NumericalCompare.new(func(_playing_field, card):
+        if card is CardType:
+            return card.get_star_cost()
+        else:
+            return card.card_type.get_star_cost())
+

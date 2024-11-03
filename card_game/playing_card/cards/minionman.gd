@@ -59,8 +59,7 @@ func ai_get_score(playing_field, player: StringName, priorities) -> float:
     # Make sure there's a Minion in your deck
     var has_minion_in_deck = (
         Query.on(playing_field).deck(player)
-        .filter(Query.is_minion)
-        .filter(func (_playing_field, card): return card.get_star_cost() <= 1)
+        .filter([Query.is_minion, Query.cost().at_most(1)])
         .any()
     )
     if has_minion_in_deck:
