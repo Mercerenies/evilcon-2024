@@ -34,15 +34,15 @@ func on_play(playing_field, card) -> void:
 func _evaluate_effect(playing_field, this_card) -> void:
     await CardGameApi.highlight_card(playing_field, this_card)
     var owner = this_card.owner
-    var candidates = (
-        playing_field.get_minion_strip(owner).cards().card_array()
-        .filter(func(c): return c.has_archetype(playing_field, Archetype.HUMAN) and not c.has_archetype(playing_field, Archetype.ROBOT))
+    var most_powerful_candidate = (
+        Query.on(playing_field).minions(owner)
+        .filter([Query.by_archetype(Archetype.HUMAN), Query.not_(Query.by_archetype(Archetype.ROBOT))])
+        .max()
     )
-    if len(candidates) == 0:
+    if most_powerful_candidate == null:
         Stats.show_text(playing_field, this_card, PopupText.NO_TARGET)
         return
 
-    var most_powerful_candidate = Util.max_by(candidates, CardEffects.card_power_less_than(playing_field))
     var can_influence = most_powerful_candidate.card_type.do_influence_check(playing_field, most_powerful_candidate, this_card, false)
     if can_influence:
         Stats.show_text(playing_field, most_powerful_candidate, PopupText.ROBOTED)
