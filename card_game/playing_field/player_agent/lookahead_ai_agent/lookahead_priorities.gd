@@ -68,9 +68,14 @@ const UNDEAD := &"UNDEAD"
 const CLOWNING = &"CLOWNING"
 
 # The value of converting a friendly Minion to a DEMON Minion. Most
-# decks don't care about this, so the default avlue is 0.0, but
+# decks don't care about this, so the default value is 0.0, but
 # characters running a DEMON deck will care.
 const BEDEVILING = &"BEDEVILING"
+
+# The value of converting a friendly Minion to a ROBOT Minion. Most
+# decks don't care about this, so the default value is 0.0, but
+# characters running a ROBOT deck will care.
+const ROBOTING = &"ROBOTING"
 
 const DEFAULT_PRIORITIES := {
     &"EVIL_POINT": 1.0,
@@ -85,6 +90,7 @@ const DEFAULT_PRIORITIES := {
     &"UNDEAD": 0.0,
     &"CLOWNING": 0.0,
     &"BEDEVILING": 0.0,
+    &"ROBOTING": 0.0,
 }
 
 var _data: Dictionary

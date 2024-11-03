@@ -40,6 +40,7 @@ func _debug_interactive_game():
         LookaheadPriorities.UNDEAD: 1.0,
         LookaheadPriorities.CLOWNING: 0.4,
         LookaheadPriorities.BEDEVILING: 0.2,
+        LookaheadPriorities.ROBOTING: 0.1,
         LookaheadPriorities.HAND_LIMIT_UP: 0.6,
     })
     var ai = LookaheadAIAgent.instantiate()
@@ -89,13 +90,13 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.DEATH),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.MIMEDROID),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.HONEY_JAR),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CIRCUS_MAKEUP),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.WORKER_BEE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CONTRACTOR),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CONTRACTOR),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CLUELESS_MAN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CHICKEN),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.METAL_CHICKEN),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.WALL_GOLEM),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.BUSY_BEE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CYBERNETIC_ENHANCEMENT),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN),
     ]
 
 

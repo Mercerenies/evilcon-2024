@@ -48,3 +48,15 @@ func _evaluate_effect(playing_field, this_card) -> void:
         Stats.show_text(playing_field, most_powerful_candidate, PopupText.ROBOTED)
         most_powerful_candidate.metadata[CardMeta.ARCHETYPE_OVERRIDES] = [Archetype.ROBOT]
     playing_field.emit_cards_moved()
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+    var has_candidate = (
+        Query.on(playing_field).minions(player)
+        .filter([Query.by_archetype(Archetype.HUMAN), Query.not_(Query.by_archetype(Archetype.ROBOT))])
+        .any()
+    )
+    if has_candidate:
+        score += priorities.of(LookaheadPriorities.ROBOTING)
+    return score
