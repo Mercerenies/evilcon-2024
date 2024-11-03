@@ -41,6 +41,12 @@ class Q:
         # The callable must produce numerical values.
         return map(callable).reduce(Operator.plus, 0)
 
+    func map_max(callable):
+        return map(callable).max()
+
+    func map_min(callable):
+        return map(callable).min()
+
     func index_of(callable):
         # Returns the index of the first card that matches the given
         # callable, or null if not found.
@@ -67,6 +73,12 @@ class Q:
 
     func min():
         return Util.min_by(array(), CardEffects.card_power_less_than(_playing_field))
+
+    func max_by(callable):
+        return Util.max_by(array(), func(card): return callable.call(_playing_field, card))
+
+    func min_by(callable):
+        return Util.min_by(array(), func(card): return callable.call(_playing_field, card))
 
     func random():
         # Using the playing field's random number generator, pick a
