@@ -46,3 +46,22 @@ func on_play(playing_field, card) -> void:
             })
             await Stats.add_morale(playing_field, most_powerful_robot, 1)
     await CardGameApi.destroy_card(playing_field, card)
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+
+    # Find owner's most powerful Robot.
+    var most_powerful_robot = (
+        Query.on(playing_field).minions(player)
+        .filter(Query.by_archetype(Archetype.ROBOT))
+        .max()
+    )
+    if most_powerful_robot != null:
+        var added_fort_damage = (
+            1 +
+            most_powerful_robot.card_type.get_level(playing_field, most_powerful_robot) +
+            most_powerful_robot.card_type.get_morale(playing_field, most_powerful_robot)
+        )
+        score += added_fort_damage * priorities.of(LookaheadPriorities.FORT_DEFENSE)
+    return score

@@ -57,7 +57,7 @@ func _debug_interactive_game():
     top_deck.cards().shuffle()
 
     $PlayingField.turn_number = 10  # Get extra EP :)
-    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.METAL_SCORPION))
+    #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.METAL_SCORPION))
     #$PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN), CardPlayer.TOP))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN), CardPlayer.TOP))
@@ -77,14 +77,14 @@ func _sample_deck():
     return [
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.SPARE_BATTERY),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.SPARE_BATTERY),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.ZANY_ZOMBIE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.METAL_SPIDER),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.HYPERACTIVE_BEE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.GREEN_RANGER),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.DEATH_CYBORG),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.NINJA_ASSASSIN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.HIRED_NINJA),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.GRAVESTONE_POLISHING),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.ULTIMATE_FUSION),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CORNY_ACORN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.ROBOT_MITE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.DESTRUCTION_TANK),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.DEATH),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.HONEY_JAR),
