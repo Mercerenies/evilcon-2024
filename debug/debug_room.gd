@@ -58,7 +58,8 @@ func _debug_interactive_game():
 
     $PlayingField.turn_number = 10  # Get extra EP :)
     #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.METAL_SCORPION))
-    #$PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN))
+    $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.REPLACEABLE_PARTS))
+    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.REPLACEABLE_PARTS))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN), CardPlayer.TOP))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN), CardPlayer.TOP))
     #$PlayingField.get_minion_strip(CardPlayer.BOTTOM).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DUCK), CardPlayer.BOTTOM))
@@ -78,21 +79,21 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.SPARE_BATTERY),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.SPARE_BATTERY),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.METAL_SPIDER),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.HYPERACTIVE_BEE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.METAL_SCORPION),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.DEATH_CYBORG),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.NINJA_ASSASSIN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.HIRED_NINJA),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.GRAVESTONE_POLISHING),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.METAL_SPIDER),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.ROBOT_MITE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.DESTRUCTION_TANK),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.DEATH),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.MIMEDROID),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.HONEY_JAR),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CIRCUS_MAKEUP),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.WORKER_BEE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CLUELESS_MAN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CHICKEN),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.SKUNKMAN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.METAL_CHICKEN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.WALL_GOLEM),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.BUSY_BEE),
     ]

@@ -53,3 +53,32 @@ func _evaluate_effect(playing_field, this_card) -> void:
     })
     await Stats.add_morale(playing_field, strongest_minion, weakest_minion_morale)
 
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+
+    # Find target robots.
+    var most_powerful_robot = (
+        Query.on(playing_field).minions(player)
+        .filter(Query.by_archetype(Archetype.ROBOT))
+        .max()
+    )
+    var weakest_robot = (
+        Query.on(playing_field).minions(player)
+        .filter(Query.by_archetype(Archetype.ROBOT))
+        .min()
+    )
+    if most_powerful_robot == null or weakest_robot == null or most_powerful_robot == weakest_robot:
+        return score  # No target, so the card has no effect.
+
+    var weak_level = weakest_robot.card_type.get_level(playing_field, weakest_robot)
+    var weak_morale = weakest_robot.card_type.get_level(playing_field, weakest_robot)
+    var strong_level = most_powerful_robot.card_type.get_level(playing_field, most_powerful_robot)
+    var strong_morale = most_powerful_robot.card_type.get_level(playing_field, most_powerful_robot)
+    var defense_priority = priorities.of(LookaheadPriorities.FORT_DEFENSE)
+    # Subtract the damage lost by sacrificing the weaker robot.
+    score -= weak_level * weak_morale * defense_priority
+    # Add the damage gained by bolstering the stronger robot.
+    score += (weak_level * strong_morale + strong_level * weak_morale + weak_level * weak_morale) * defense_priority
+
+    return score
