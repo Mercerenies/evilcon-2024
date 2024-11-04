@@ -96,6 +96,10 @@ const HOSTAGE := &"HOSTAGE"
 # The value of eliminating a card in the opponent's hand.
 const CARD_IN_HAND := &"CARD_IN_HAND"
 
+# The value cost of exiling one's own card, usually as part of that
+# card's effect.
+const SINGLE_USE_EXILE := &"SINGLE_USE_EXILE"
+
 # The value of playing cards in the "right" order. This one is a bit
 # unusual. If the AI knows that it can play two cards X and Y this
 # turn in either order, but it's better to play X before Y, this is
@@ -122,6 +126,7 @@ const DEFAULT_PRIORITIES := {
     &"HERO_SCRY": 0.6,
     &"HOSTAGE": 2.5,
     &"CARD_IN_HAND": 1.1,
+    &"SINGLE_USE_EXILE": 0.85,
     &"RIGHT_ORDER": 10.0,
 }
 

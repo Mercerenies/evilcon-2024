@@ -65,3 +65,30 @@ func _evaluate_effect(playing_field, card) -> bool:
         await CardGameApi.exile_card(playing_field, target_minion)
 
     return false
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+
+    var hero_check = CardEffects.do_hypothetical_hero_check(playing_field, self, player)
+    if hero_check == CardEffects.HeroCheckResult.PASSIVE_FAIL:
+        return score
+    elif hero_check == CardEffects.HeroCheckResult.ACTIVE_FAIL:
+        score += priorities.of(LookaheadPriorities.ELIMINATE_HERO_CHECK)
+        return score
+
+    # If we get to this point, then activation of Ravenman would exile
+    # him, so we factor that into the cost.
+    score -= priorities.of(LookaheadPriorities.SINGLE_USE_EXILE)
+
+    var target = CardEffects.most_powerful_minion(playing_field, CardPlayer.other(player))
+    if target == null:
+        return score
+
+    var can_influence = CardEffects.do_hypothetical_influence_check(playing_field, target, self, player)
+    if not can_influence:
+        return score
+
+    var value_of_target = target.card_type.ai_get_expected_remaining_score(playing_field, target)
+    score += value_of_target * priorities.of(LookaheadPriorities.FORT_DEFENSE)
+    return score
