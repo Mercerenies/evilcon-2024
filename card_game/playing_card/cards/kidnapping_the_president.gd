@@ -33,3 +33,14 @@ func do_passive_hero_check(playing_field, card, hero_card) -> bool:
     if card.owner != hero_card.owner:
         return false
     return super.do_passive_hero_check(playing_field, card, hero_card)
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+
+    # Playing multiple Kidnapping the Presidents at the same time is
+    # useless.
+    if not Query.on(playing_field).effects(player).any(Query.by_id(get_id())):
+        score += priorities.of(LookaheadPriorities.HOSTAGE)
+
+    return score

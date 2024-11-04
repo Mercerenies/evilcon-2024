@@ -33,3 +33,9 @@ func do_active_hero_check(playing_field, card, hero_card) -> bool:
     if card.owner != hero_card.owner:
         return false
     return super.do_active_hero_check(playing_field, card, hero_card)
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+    score += priorities.of(LookaheadPriorities.HOSTAGE)
+    return score
