@@ -185,7 +185,9 @@ static func by_archetype(archetype_or_arr):
                 return card.card_type is MinionCardType and card.has_archetype(playing_field, archetype)
 
 
-static func by_id(id: int):
+static func by_id(id):
+    if id is Array:
+        return or_(id.map(func (i): return by_id(i)))
     return func filter_by_id(_playing_field, card):
         if card is CardType:
             return card.get_id() == id

@@ -40,7 +40,8 @@ func ai_get_score(playing_field, player: StringName, priorities) -> float:
 
     # Playing multiple Kidnapping the Presidents at the same time is
     # useless.
-    if not Query.on(playing_field).effects(player).any(Query.by_id(get_id())):
+    var passive_hostage_ids = [PlayingCardCodex.ID.KIDNAPPING_THE_PRESIDENT, PlayingCardCodex.ID.BRISTLEGAZE]
+    if not Query.on(playing_field).effects(player).any(Query.by_id(passive_hostage_ids)):
         score += priorities.of(LookaheadPriorities.HOSTAGE)
 
     return score
