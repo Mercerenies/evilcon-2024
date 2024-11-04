@@ -93,6 +93,9 @@ const HERO_SCRY := &"HERO_SCRY"
 # effects.
 const HOSTAGE := &"HOSTAGE"
 
+# The value of eliminating a card in the opponent's hand.
+const CARD_IN_HAND := &"CARD_IN_HAND"
+
 # The value of playing cards in the "right" order. This one is a bit
 # unusual. If the AI knows that it can play two cards X and Y this
 # turn in either order, but it's better to play X before Y, this is
@@ -118,6 +121,7 @@ const DEFAULT_PRIORITIES := {
     &"ELIMINATE_HERO_CHECK": 0.2,
     &"HERO_SCRY": 0.6,
     &"HOSTAGE": 2.5,
+    &"CARD_IN_HAND": 1.1,
     &"RIGHT_ORDER": 10.0,
 }
 

@@ -51,3 +51,15 @@ func on_play(playing_field, card) -> void:
         return
     for target_card in cards_to_discard:
         await CardGameApi.discard_card(playing_field, opponent, target_card)
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+
+    # Assume that the opponent has 2 Hero cards in their deck. Thus,
+    # every card held in hand has a 2 / 20, or 0.1, chance of being a
+    # Hero card.
+    var enemy_cards_in_hand = Query.on(playing_field).hand(CardPlayer.other(player)).count()
+    score += enemy_cards_in_hand * 0.1 * priorities.of(LookaheadPriorities.CARD_IN_HAND)
+
+    return score
