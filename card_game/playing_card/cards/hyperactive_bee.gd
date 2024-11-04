@@ -51,4 +51,13 @@ func ai_get_score(playing_field, player: StringName, priorities) -> float:
     score += get_base_level() * get_base_morale() * priorities.of(LookaheadPriorities.FORT_DEFENSE)
     return score
 
+
+func ai_get_expected_remaining_score(playing_field, card) -> float:
+    var score = super.ai_get_expected_remaining_score(playing_field, card)
+    if card == null:
+        score += get_base_level() * get_base_morale()
+    else:
+        score += get_level(playing_field, card) * get_morale(playing_field, card)
+    return score
+
 # TODO: Can we teach the AI that boosting Hyperactive Bee's Morale is actually really good?
