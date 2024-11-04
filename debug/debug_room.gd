@@ -89,14 +89,14 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.FOREMAN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.IT_WORKER),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.DEATH),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.MIMEDROID),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.HONEY_JAR),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.BULL_MARKET),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CONTRACTOR),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CONTRACTOR),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.FOREMAN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.FOREMAN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CHRIS_COGSWORTH),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.BULL_MARKET),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN),
     ]
 
