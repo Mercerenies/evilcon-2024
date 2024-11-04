@@ -68,7 +68,7 @@ func on_expire(playing_field, this_card) -> void:
 
 func ai_get_score(playing_field, player: StringName, priorities) -> float:
     var score = super.ai_get_score(playing_field, player, priorities)
-    score += priorities.of(LookaheadPriorities.IMMUNITY) * ai_get_immunity_score(playing_field, null)
+    score += priorities.of(LookaheadPriorities.IMMUNITY) * ai_get_expected_remaining_score(playing_field, null)
     # It is difficult to predict what Minions will be in play when
     # this card expires, so assume there will be at least one.
     score += priorities.of(LookaheadPriorities.CLOWNING)

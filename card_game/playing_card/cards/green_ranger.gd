@@ -56,12 +56,12 @@ func do_broadcasted_influence_check(playing_field, this_card, target_card, sourc
 func ai_get_score(playing_field, player: StringName, priorities) -> float:
     var score = super.ai_get_score(playing_field, player, priorities)
     # Immunity for self
-    score += priorities.of(LookaheadPriorities.IMMUNITY) * ai_get_immunity_score(playing_field, null)
+    score += priorities.of(LookaheadPriorities.IMMUNITY) * ai_get_expected_remaining_score(playing_field, null)
     # Immunity for bees and nature minions
     var immune_minions = (
         Query.on(playing_field).minions(player)
         .filter(Query.by_archetype([Archetype.BEE, Archetype.NATURE]))
-        .map_sum(func(playing_field, card): return card.card_type.ai_get_immunity_score(playing_field, card))
+        .map_sum(func(playing_field, card): return card.card_type.ai_get_expected_remaining_score(playing_field, card))
     )
     score += priorities.of(LookaheadPriorities.IMMUNITY) * immune_minions
     return score
@@ -76,5 +76,5 @@ func ai_get_score_broadcasted(playing_field, this_card, player: StringName, prio
     if target_card_type is MinionCardType:
         var archetypes = target_card_type.get_base_archetypes()
         if Archetype.BEE in archetypes or Archetype.NATURE in archetypes:
-            score += priorities.of(LookaheadPriorities.IMMUNITY) * target_card_type.ai_get_immunity_score(playing_field, null)
+            score += priorities.of(LookaheadPriorities.IMMUNITY) * target_card_type.ai_get_expected_remaining_score(playing_field, null)
     return score

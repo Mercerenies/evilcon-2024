@@ -72,10 +72,10 @@ func ai_get_score(playing_field, player: StringName, priorities) -> float:
     return score
 
 
-func ai_get_immunity_score(playing_field, card) -> float:
+func ai_get_expected_remaining_score(playing_field, card) -> float:
     # The justification for the 1.7 here is the same as in
     # ai_get_score.
-    var score = super.ai_get_immunity_score(playing_field, card)
+    var score = super.ai_get_expected_remaining_score(playing_field, card)
     var remaining_morale = get_base_morale() if card == null else get_morale(playing_field, card)
     score += remaining_morale * 1.7
     return score

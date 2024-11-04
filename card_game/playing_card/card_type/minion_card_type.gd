@@ -199,16 +199,16 @@ func ai_get_score(playing_field, player: StringName, priorities) -> float:
     return score
 
 
-# Gets the value of making this Minion immune to enemy card effects.
-# Usually, this is Level * Morale, but some Minions who have unusual
-# Attack Phases may have different valuations for immunity.
-# Additionally, Minions who do something when they expire may have an
-# immunity valuation higher than usual.
+# Gets the expected remaining value, in fort defense points, of this
+# Minion. Usually, this is Level * Morale, but some Minions who have
+# unusual Attack Phases may have different valuations. Additionally,
+# Minions who do something when they expire may have a valuation
+# higher than usual.
 #
 # `card` can be null. If `card` is null, then the question is being
 # asked for a card that is not yet in play. All overrides of this
 # method MUST support both null and non-null `card` values.
-func ai_get_immunity_score(playing_field, card) -> float:
+func ai_get_expected_remaining_score(playing_field, card) -> float:
     if card == null:
         return get_base_level() * get_base_morale()
     else:
