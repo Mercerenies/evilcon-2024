@@ -84,7 +84,7 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.PET_COWN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.NUCLEAR_FUSION_PLANT),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.NUCLEAR_POWER_PLANT),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.MILK_DELIVERY),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.LIBRARY_OF_ALEXANDRIA),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.METAL_SPIDER),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.FOREMAN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.IT_WORKER),
