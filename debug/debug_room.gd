@@ -88,14 +88,14 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.FOREMAN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.MILITARY_ANDROID),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.WIMPY_SMASH),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.BULL_MARKET),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.PRISMAN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.WIMPY_SMASH),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CONTRACTOR),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.WIMPY_SMASH),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.FOREMAN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.BARRY),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.FOREMAN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CHRIS_COGSWORTH),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.BULL_MARKET),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.MINIONMAN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN),
     ]
 
