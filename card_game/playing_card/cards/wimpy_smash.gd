@@ -1,8 +1,5 @@
 extends EffectCardType
 
-const Wimpy = preload("res://card_game/playing_card/cards/wimpy.gd")
-
-
 func get_id() -> int:
     return 161
 
@@ -49,7 +46,7 @@ func _perform_effect(playing_field, this_card) -> void:
 
 
 func _find_wimpy(playing_field, owner):
-    var wimpy_id = Wimpy.new().get_id()
+    var wimpy_id = PlayingCardCodex.ID.WIMPY
     var wimpys = (
         playing_field.get_minion_strip(owner)
         .cards().card_array()
@@ -63,3 +60,15 @@ func _find_wimpy(playing_field, owner):
 
 func _is_wimpy_powered(wimpy):
     return wimpy.metadata.get(CardMeta.WIMPY_SMASHING, false)
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = ai_get_score_base_calculation(playing_field, player, priorities)
+
+    var target = _find_wimpy(playing_field, player)
+    if target != null:
+        var level_up_amount = 4 if _is_wimpy_powered(target) else 2
+        var morale = target.card_type.get_morale(playing_field, target)
+        score += level_up_amount * morale * priorities.of(LookaheadPriorities.FORT_DEFENSE)
+
+    return score
