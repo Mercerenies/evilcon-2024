@@ -39,7 +39,6 @@ func get_rarity() -> int:
 
 func do_passive_hero_check(playing_field, card, hero_card) -> bool:
     if card.owner != hero_card.owner:
-        Stats.show_text(playing_field, card, PopupText.BLOCKED)
         return false
     return super.do_passive_hero_check(playing_field, card, hero_card)
 

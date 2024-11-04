@@ -53,6 +53,7 @@ static func do_hero_check(playing_field, hero_card) -> bool:
     var all_cards = CardGameApi.get_cards_in_play(playing_field)
     for card in all_cards:
         if not card.card_type.do_passive_hero_check(playing_field, card, hero_card):
+            Stats.show_text(playing_field, card, PopupText.BLOCKED)
             return false
     for card in all_cards:
         if not card.card_type.do_active_hero_check(playing_field, card, hero_card):
@@ -61,6 +62,33 @@ static func do_hero_check(playing_field, hero_card) -> bool:
             await CardGameApi.destroy_card(playing_field, card)
             return false
     return true
+
+
+enum HeroCheckResult {
+    PASS = 0,
+    PASSIVE_FAIL = 1,
+    ACTIVE_FAIL = 2,
+}
+
+
+static func do_hypothetical_hero_check(playing_field, hero_card_type, player: StringName) -> int:
+    # Check to see if a Hero card would be blocked by a hostage
+    # effect.
+    #
+    # NOTE CAREFULLY: Unlike the other "do_*_check" methods, this DOES
+    # NOT return a Boolean. It returns a HeroCheckResult value,
+    # indicating whether the Hero Check passes, or (if it fails), how
+    # it fails, so that the AI engines that use this function can
+    # prioritize getting rid of active hero checks if they so choose.
+    var hypothetical_card = Card.new(hero_card_type, player)
+    var all_cards = CardGameApi.get_cards_in_play(playing_field)
+    for card in all_cards:
+        if not card.card_type.do_passive_hero_check(playing_field, card, hypothetical_card):
+            return HeroCheckResult.PASSIVE_FAIL
+    for card in all_cards:
+        if not card.card_type.do_active_hero_check(playing_field, card, hypothetical_card):
+            return HeroCheckResult.ACTIVE_FAIL
+    return HeroCheckResult.PASS
 
 
 static func do_attack_phase_check(playing_field, attacking_card) -> bool:
