@@ -21,6 +21,10 @@ func get_picture_index() -> int:
     return 94
 
 
+func is_hero() -> bool:
+    return true
+
+
 func get_rarity() -> int:
     return Rarity.RARE
 
@@ -33,8 +37,9 @@ func on_play(playing_field, card) -> void:
     await super.on_play(playing_field, card)
     await CardGameApi.highlight_card(playing_field, card)
 
-    var node = CardGameApi.find_card_node(playing_field, card)
-    await CardGameApi.play_musical_note_animation(playing_field, node)
-    await Stats.add_destiny_song(playing_field, card.owner, 1)
+    if await CardEffects.do_hero_check(playing_field, card):
+        var node = CardGameApi.find_card_node(playing_field, card)
+        await CardGameApi.play_musical_note_animation(playing_field, node)
+        await Stats.add_destiny_song(playing_field, card.owner, 1)
 
     await CardGameApi.destroy_card(playing_field, card)

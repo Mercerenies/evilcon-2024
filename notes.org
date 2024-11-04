@@ -615,6 +615,11 @@
      Mario reference
    + [ ] A "jester" / "joker" card that makes a Minion count as /all/
      archetypes at once
+   + [X] Should Destiny's Song be a Hero card? I like that idea
+     because it means the opponent can defend against a Destiny's Song
+     strategy with Bristlegaze, Kidnapping the President, Damsel in
+     Distress, or Skunkman (Skunkman becomes insanely powerful against
+     a Destiny deck)
 ** SCRAPPED IDEAS
    Various ideas that didn't end up working out or were cut for one
    reason or another.
