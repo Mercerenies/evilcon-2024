@@ -31,8 +31,5 @@ func get_rarity() -> int:
 
 func do_active_hero_check(playing_field, card, hero_card) -> bool:
     if card.owner != hero_card.owner:
-        await CardGameApi.highlight_card(playing_field, card)
-        Stats.show_text(playing_field, card, PopupText.BLOCKED)
-        await CardGameApi.destroy_card(playing_field, card)
         return false
-    return await super.do_active_hero_check(playing_field, card, hero_card)
+    return super.do_active_hero_check(playing_field, card, hero_card)

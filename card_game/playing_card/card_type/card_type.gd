@@ -165,7 +165,8 @@ func do_passive_hero_check(_playing_field, _card, _hero_card) -> bool:
     # Called when a Hero card indicated by `hero_card` is about to
     # perform its effect. This method should return true (the default)
     # if the card is permitted to proceed as planned, and false if
-    # this card is blocking the hero card. This method may `await`.
+    # this card is blocking the hero card. This method MAY NOT
+    # `await`.
     #
     # This method should only trigger for cards that block Hero cards
     # passively and do not discard themselves when blocking. Use
@@ -178,7 +179,10 @@ func do_active_hero_check(_playing_field, _card, _hero_card) -> bool:
     # Called when a Hero card indicated by `hero_card` is about to
     # perform its effect. This method should return true (the default)
     # if the card is permitted to proceed as planned, and false if
-    # this card is blocking the hero card. This method may `await`.
+    # this card is blocking the hero card. This method MAY NOT
+    # `await`. If this method returns false, the returning card will
+    # be destroyed as a result of the active hero check. This method
+    # SHALL NOT destroy the card itself.
     #
     # This method should only trigger for cards that block Hero cards
     # by sacrificing oneself or something else. Use

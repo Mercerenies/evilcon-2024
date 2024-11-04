@@ -52,10 +52,13 @@ static func do_hero_check(playing_field, hero_card) -> bool:
     # if we find a match.
     var all_cards = CardGameApi.get_cards_in_play(playing_field)
     for card in all_cards:
-        if not await card.card_type.do_passive_hero_check(playing_field, card, hero_card):
+        if not card.card_type.do_passive_hero_check(playing_field, card, hero_card):
             return false
     for card in all_cards:
-        if not await card.card_type.do_active_hero_check(playing_field, card, hero_card):
+        if not card.card_type.do_active_hero_check(playing_field, card, hero_card):
+            await CardGameApi.highlight_card(playing_field, card)
+            Stats.show_text(playing_field, card, PopupText.BLOCKED)
+            await CardGameApi.destroy_card(playing_field, card)
             return false
     return true
 
