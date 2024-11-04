@@ -51,3 +51,10 @@ func ai_get_score(playing_field, player: StringName, priorities) -> float:
     # Barry will create a Cost 2 Minions during every End Phase of his life.
     score += get_base_morale() * 2 * priorities.of(LookaheadPriorities.FORT_DEFENSE)
     return score
+
+
+func ai_get_expected_remaining_score(playing_field, card) -> float:
+    var score = super.ai_get_expected_remaining_score(playing_field, card)
+    var morale = get_base_morale() if card == null else get_morale(playing_field, card)
+    score += 2 * maxi(morale - 1, 0)  # -1 because Barry summons during the End Phase, not the Morale Phase.
+    return score

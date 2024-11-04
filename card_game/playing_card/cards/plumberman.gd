@@ -76,6 +76,6 @@ func ai_get_score(playing_field, player: StringName, priorities) -> float:
     if target == null:
         return score
 
-    var value_of_target = target.card_type.get_level(playing_field, target) * target.card_type.get_morale(playing_field, target)
+    var value_of_target = target.card_type.ai_get_expected_remaining_score(playing_field, target)
     score += value_of_target * priorities.of(LookaheadPriorities.FORT_DEFENSE)
     return score
