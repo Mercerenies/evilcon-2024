@@ -76,6 +76,7 @@
     + Have at least 6 of your own cards exiled in one game.
     + Successfully activate Ultimate Fusion.
     + Successfully activate Team Cobra.
+    + Successfully power up one Wimpy with three Wimpy Smashes.
     + Have 20 EP at one time.
       - Note: I think 36 is the legit maximum with a deck fully
         structured around EP-generation. (36 = 8 Regular + 3 from

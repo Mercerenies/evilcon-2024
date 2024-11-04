@@ -62,8 +62,8 @@ func ai_get_score(playing_field, player: StringName, priorities) -> float:
 
     var level_increases_this_turn = 0
     if playable_wimpy_smashes > 0:
-        # The first Wimpy Smash is worth 2. The rest are worth 4 each.
-        level_increases_this_turn += 2 + 4 * (playable_wimpy_smashes - 1)
+        # The first Wimpy Smash is worth 3. The rest are worth 4 each.
+        level_increases_this_turn += 3 + 4 * (playable_wimpy_smashes - 1)
 
     score += level_increases_this_turn * get_base_morale() * priorities.of(LookaheadPriorities.FORT_DEFENSE)
     score -= playable_wimpy_smashes * _wimpy_smash_star_cost() * priorities.of(LookaheadPriorities.EVIL_POINT)

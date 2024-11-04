@@ -9,7 +9,7 @@ func get_title() -> String:
 
 
 func get_text() -> String:
-    return "If you control Wimpy, +2 Level to Wimpy. Or +4 Level to Wimpy if this is not the first Wimpy Smash! used on that Minion."
+    return "If you control Wimpy, +3 Level to Wimpy. Or +4 Level to Wimpy if this is not the first Wimpy Smash! used on that Minion."
 
 
 func get_star_cost() -> int:
@@ -39,7 +39,7 @@ func _perform_effect(playing_field, this_card) -> void:
         return
     var can_influence = target_minion.card_type.do_influence_check(playing_field, target_minion, this_card, false)
     if can_influence:
-        var level_up_amount = 4 if _is_wimpy_powered(target_minion) else 2
+        var level_up_amount = 4 if _is_wimpy_powered(target_minion) else 3
         await Stats.add_level(playing_field, target_minion, level_up_amount)
         target_minion.metadata[CardMeta.WIMPY_SMASHING] = true
     playing_field.emit_cards_moved()
@@ -67,7 +67,7 @@ func ai_get_score(playing_field, player: StringName, priorities) -> float:
 
     var target = _find_wimpy(playing_field, player)
     if target != null:
-        var level_up_amount = 4 if _is_wimpy_powered(target) else 2
+        var level_up_amount = 4 if _is_wimpy_powered(target) else 3
         var morale = target.card_type.get_morale(playing_field, target)
         score += level_up_amount * morale * priorities.of(LookaheadPriorities.FORT_DEFENSE)
 
