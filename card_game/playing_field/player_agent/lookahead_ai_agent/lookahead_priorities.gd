@@ -77,6 +77,13 @@ const BEDEVILING := &"BEDEVILING"
 # characters running a ROBOT deck will care.
 const ROBOTING := &"ROBOTING"
 
+# The value of eliminating an active hero check. Currently, the only
+# active hero check in the game is Damsel in Distress. Most decks
+# don't care very much about eliminating hero checks, but decks
+# centered around Hero cards (and especially decks centered around
+# Destiny's Song) will value this more.
+const ELIMINATE_HERO_CHECK := &"ELIMINATE_HERO_CHECK"
+
 # The value of playing cards in the "right" order. This one is a bit
 # unusual. If the AI knows that it can play two cards X and Y this
 # turn in either order, but it's better to play X before Y, this is
@@ -99,6 +106,7 @@ const DEFAULT_PRIORITIES := {
     &"CLOWNING": 0.0,
     &"BEDEVILING": 0.0,
     &"ROBOTING": 0.0,
+    &"ELIMINATE_HERO_CHECK": 0.2,
     &"RIGHT_ORDER": 10.0,
 }
 

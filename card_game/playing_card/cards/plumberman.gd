@@ -44,7 +44,7 @@ func _evaluate_effect(playing_field, card) -> void:
         return
 
     # Destroy enemy's most powerful Minion
-    var target_minion = CardEffects.most_powerful_minion(playing_field, CardPlayer.other(owner))
+    var target_minion = _find_target(playing_field, CardPlayer.other(owner))
     if target_minion == null:
         # No minions in play
         Stats.show_text(playing_field, card, PopupText.NO_TARGET)
@@ -56,3 +56,26 @@ func _evaluate_effect(playing_field, card) -> void:
         return
 
     await CardGameApi.destroy_card(playing_field, target_minion)
+
+
+func _find_target(playing_field, opponent: StringName):
+    return CardEffects.most_powerful_minion(playing_field, opponent)
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+
+    var hero_check = CardEffects.do_hypothetical_hero_check(playing_field, self, player)
+    if hero_check == CardEffects.HeroCheckResult.PASSIVE_FAIL:
+        return score
+    elif hero_check == CardEffects.HeroCheckResult.ACTIVE_FAIL:
+        score += priorities.of(LookaheadPriorities.ELIMINATE_HERO_CHECK)
+        return score
+
+    var target = _find_target(playing_field, CardPlayer.other(player))
+    if target == null:
+        return score
+
+    var value_of_target = target.card_type.get_level(playing_field, target) * target.card_type.get_morale(playing_field, target)
+    score += value_of_target * priorities.of(LookaheadPriorities.FORT_DEFENSE)
+    return score
