@@ -84,6 +84,11 @@ const ROBOTING := &"ROBOTING"
 # Destiny's Song) will value this more.
 const ELIMINATE_HERO_CHECK := &"ELIMINATE_HERO_CHECK"
 
+# The value of drawing a Hero card out of your deck. Normal decks
+# consider this equivalent to an EFFECT_DRAW, while Destiny's Song
+# decks will value this higher.
+const HERO_SCRY = &"HERO_SCRY"
+
 # The value of playing cards in the "right" order. This one is a bit
 # unusual. If the AI knows that it can play two cards X and Y this
 # turn in either order, but it's better to play X before Y, this is
@@ -107,6 +112,7 @@ const DEFAULT_PRIORITIES := {
     &"BEDEVILING": 0.0,
     &"ROBOTING": 0.0,
     &"ELIMINATE_HERO_CHECK": 0.2,
+    &"HERO_SCRY": 0.6,
     &"RIGHT_ORDER": 10.0,
 }
 

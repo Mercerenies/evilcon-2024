@@ -53,3 +53,10 @@ func on_expire(playing_field, card) -> void:
     # Choose a target card and draw
     var target_card = playing_field.randomness.choose(valid_targets)
     await CardGameApi.draw_specific_card(playing_field, owner, target_card)
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+    # On expiry, Doomcake draws a Hero card.
+    score += priorities.of(LookaheadPriorities.HERO_SCRY)
+    return score
