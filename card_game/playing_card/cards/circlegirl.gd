@@ -10,7 +10,7 @@ func get_title() -> String:
 
 
 func get_text() -> String:
-    return "+1 Level to your most powerful Minion, or +1 Level to all of your Minions if you played Squaredude this turn."
+    return "+1 Level to your most powerful Minion, or +1 Level to all of your Minions if you successfully played Squaredude this turn."
 
 
 func get_star_cost() -> int:
