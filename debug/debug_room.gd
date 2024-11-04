@@ -78,16 +78,16 @@ func _debug_interactive_game():
 
 func _sample_deck():
     return [
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.PET_COW),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.PET_COW),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.MANDATORY_OVERTIME),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.PET_COWN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.PET_COWN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.NUCLEAR_FUSION_PLANT),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.NUCLEAR_POWER_PLANT),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.MILK_DELIVERY),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.METAL_SPIDER),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.ROBOT_MITE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.DESTRUCTION_TANK),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.FOREMAN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.IT_WORKER),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.DEATH),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.MIMEDROID),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.HONEY_JAR),

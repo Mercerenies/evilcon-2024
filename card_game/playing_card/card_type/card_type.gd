@@ -329,6 +329,13 @@ func ai_get_score(playing_field, player: StringName, priorities) -> float:
     # that have additional effects should override this method.
     #
     # This method MUST NOT await.
+    return ai_get_score_base_calculation(playing_field, player, priorities)
+
+
+func ai_get_score_base_calculation(playing_field, player: StringName, priorities) -> float:
+    # The base function for ai_get_score. Subclasses can call this in
+    # lieu of calling super(). Subclasses SHALL NOT override this
+    # method.
     var score = - get_star_cost() * priorities.of(LookaheadPriorities.EVIL_POINT)
     for card in CardGameApi.get_cards_in_play(playing_field):
         score += card.card_type.ai_get_score_broadcasted(playing_field, card, player, priorities, self)
