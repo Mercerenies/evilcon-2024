@@ -58,9 +58,8 @@ func _debug_interactive_game():
     top_deck.cards().shuffle()
 
     $PlayingField.turn_number = 10  # Get extra EP :)
-    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DAMSEL_IN_DISTRESS))
-    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.KIDNAPPING_THE_PRESIDENT))
-    $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.PLUMBERMAN))
+    #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DAMSEL_IN_DISTRESS))
+    #$PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.PLUMBERMAN))
     #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.REPLACEABLE_PARTS))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN), CardPlayer.TOP))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN), CardPlayer.TOP))
@@ -80,14 +79,14 @@ func _sample_deck():
     return [
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.MANDATORY_OVERTIME),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.PLUMBERMAN),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.PLUMBERMANS_BROTHER),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.MILK_DELIVERY),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.NUCLEAR_FUSION_PLANT),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.MIDDLE_MANAGER),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.DAMSEL_IN_DISTRESS),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.LIBRARY_OF_ALEXANDRIA),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.KIDNAPPING_THE_PRESIDENT),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.FOREMAN),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.IT_WORKER),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.MILITARY_ANDROID),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.WIMPY_SMASH),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.BULL_MARKET),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.WIMPY_SMASH),
