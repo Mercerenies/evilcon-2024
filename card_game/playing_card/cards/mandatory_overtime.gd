@@ -18,7 +18,7 @@ func get_total_turn_count() -> int:
 
 
 func get_star_cost() -> int:
-    return 2
+    return 3
 
 
 func get_picture_index() -> int:
