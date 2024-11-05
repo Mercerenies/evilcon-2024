@@ -89,14 +89,14 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.FOREMAN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.RAVENMAN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.PRISMAN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.EXTENDED_WARRANTY),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.RAVENGIRL),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.SQUAREDUDE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CIRCLEGIRL),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.BARRY),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.TINY_TURTLE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.NUCLEAR_POWER_PLANT),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.NUCLEAR_FUSION_PLANT),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CHRIS_COGSWORTH),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.MINIONMAN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.NUCLEAR_POWER_PLANT),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN),
     ]
 

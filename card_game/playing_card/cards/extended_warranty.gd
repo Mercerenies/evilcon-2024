@@ -55,3 +55,29 @@ func _try_to_apply(playing_field, this_card, target_card) -> bool:
         target_card.metadata[CardMeta.TURN_COUNTER] -= 1
     playing_field.emit_cards_moved()
     return true
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+
+    # Count all of the TimedCardTypes already in play.
+    score += (
+        Query.on(playing_field).effects(player)
+        .filter(Query.is_timed_effect)
+        .map_sum(func (playing_field, card):
+            return card.card_type.ai_get_score_per_turn(playing_field, player, priorities))
+    )
+
+    # If we have other good TimedCardTypes in hand and can afford to
+    # play both, penalize playing this first.
+    var evil_points_left = playing_field.get_stats(player).evil_points - get_star_cost()
+    var timed_cards_in_hand = (
+        Query.on(playing_field).hand(player)
+        .filter(Query.is_timed_effect)
+        .any(func(playing_field, card_type):
+                 return card_type.ai_get_score(playing_field, player, priorities) > 0.0 and evil_points_left >= card_type.get_star_cost())
+    )
+    if timed_cards_in_hand:
+        score -= priorities.of(LookaheadPriorities.RIGHT_ORDER)
+
+    return score
