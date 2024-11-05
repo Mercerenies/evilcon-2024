@@ -59,7 +59,7 @@ func _debug_interactive_game():
 
     $PlayingField.turn_number = 10  # Get extra EP :)
     #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DR_BADGUY_DOOMCAKE))
-    $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.RAVENMAN))
+    #$PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.SQUAREDUDE))
     #$PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DR_BADGUY_DOOMCAKE))
     #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.REPLACEABLE_PARTS))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN), CardPlayer.TOP))
@@ -84,17 +84,17 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.MILK_DELIVERY),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.HIRED_NINJA),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.HIRED_NINJA),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.LIBRARY_OF_ALEXANDRIA),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.MUSHROOM_MAN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.HIRED_NINJA),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.FOREMAN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.RAVENMAN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.PRISMAN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.RAVENGIRL),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.RAVENBOY),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.WIMPY_SMASH),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.SQUAREDUDE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CIRCLEGIRL),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.BARRY),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.DESTRUCTION_TANK),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.TINY_TURTLE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CHRIS_COGSWORTH),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.MINIONMAN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN),
