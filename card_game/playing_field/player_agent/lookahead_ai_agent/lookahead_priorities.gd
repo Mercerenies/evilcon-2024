@@ -93,7 +93,9 @@ const HERO_SCRY := &"HERO_SCRY"
 # effects.
 const HOSTAGE := &"HOSTAGE"
 
-# The value of eliminating a card in the opponent's hand.
+# The value of eliminating a card in the opponent's hand, or the
+# negative of the value of being made to discard a card from the
+# owner's hand.
 const CARD_IN_HAND := &"CARD_IN_HAND"
 
 # The value cost of exiling one's own card, usually as part of that
@@ -129,7 +131,7 @@ const DEFAULT_PRIORITIES := {
     &"ELIMINATE_HERO_CHECK": 0.2,
     &"HERO_SCRY": 0.6,
     &"HOSTAGE": 2.5,
-    &"CARD_IN_HAND": 1.1,
+    &"CARD_IN_HAND": 0.4,
     &"SINGLE_USE_EXILE": 0.85,
     &"BLIND_EXILE": 4.0,
     &"RIGHT_ORDER": 10.0,

@@ -64,3 +64,27 @@ func _evaluate_effect(playing_field, card) -> bool:
             await Stats.add_morale(playing_field, most_powerful_minion, len(hand_cards))
 
     return false
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+
+    var hero_check = CardEffects.do_hypothetical_hero_check(playing_field, self, player)
+    if hero_check == CardEffects.HeroCheckResult.PASSIVE_FAIL:
+        return score
+    elif hero_check == CardEffects.HeroCheckResult.ACTIVE_FAIL:
+        score += priorities.of(LookaheadPriorities.ELIMINATE_HERO_CHECK)
+        return score
+
+    # If we get to this point, then activation of King Cannoli
+    # would exile him, so we factor that into the cost.
+    score -= priorities.of(LookaheadPriorities.SINGLE_USE_EXILE)
+
+    var cards_in_hand = Query.on(playing_field).hand(player).count() - 1
+    score -= cards_in_hand * priorities.of(LookaheadPriorities.CARD_IN_HAND)
+
+    var most_powerful_minion = CardEffects.most_powerful_minion(playing_field, player)
+    if most_powerful_minion != null:
+        var level = most_powerful_minion.card_type.get_level(playing_field, most_powerful_minion)
+        score += level * cards_in_hand * priorities.of(LookaheadPriorities.FORT_DEFENSE)
+    return score
