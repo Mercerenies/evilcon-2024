@@ -62,3 +62,26 @@ func _evaluate_effect(playing_field, card) -> bool:
             await CardGameApi.destroy_card(playing_field, target_minion)
 
     return false
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+
+    var hero_check = CardEffects.do_hypothetical_hero_check(playing_field, self, player)
+    if hero_check == CardEffects.HeroCheckResult.PASSIVE_FAIL:
+        return score
+    elif hero_check == CardEffects.HeroCheckResult.ACTIVE_FAIL:
+        score += priorities.of(LookaheadPriorities.ELIMINATE_HERO_CHECK)
+        return score
+
+    # If we get to this point, then activation of Flying Brickman
+    # would exile him, so we factor that into the cost.
+    score -= priorities.of(LookaheadPriorities.SINGLE_USE_EXILE)
+
+    var target_values = (
+        Query.on(playing_field).minions(CardPlayer.other(player))
+        .filter(Query.influenced_by(self, player))
+        .map_sum(Query.remaining_ai_value().value())
+    )
+    score += target_values * priorities.of(LookaheadPriorities.FORT_DEFENSE)
+    return score

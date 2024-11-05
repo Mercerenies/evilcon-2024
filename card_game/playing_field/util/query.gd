@@ -340,3 +340,17 @@ static func turn_count() -> NumericalCompare:
             if not (card.card_type is TimedCardType):
                 return 0
             return card.card_type.get_total_turn_count() - card.metadata.get(CardMeta.TURN_COUNTER, 0))
+
+
+static func remaining_ai_value() -> NumericalCompare:
+    return NumericalCompare.new(func(playing_field, card):
+        if card is CardType:
+            if card is MinionCardType:
+                return card.ai_get_expected_remaining_score(playing_field, null)
+            else:
+                return 0.0
+        else:
+            if card.card_type is MinionCardType:
+                return card.card_type.ai_get_expected_remaining_score(playing_field, card)
+            else:
+                return 0.0)

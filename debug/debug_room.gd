@@ -58,8 +58,8 @@ func _debug_interactive_game():
     top_deck.cards().shuffle()
 
     $PlayingField.turn_number = 10  # Get extra EP :)
-    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DAMSEL_IN_DISTRESS))
-    $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DESTINYS_SONG))
+    #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DAMSEL_IN_DISTRESS))
+    #$PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DESTINYS_SONG))
     #$PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DR_BADGUY_DOOMCAKE))
     #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.REPLACEABLE_PARTS))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN), CardPlayer.TOP))
@@ -81,9 +81,9 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.MANDATORY_OVERTIME),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.PLUMBERMAN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.PLUMBERMANS_BROTHER),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.DESTINYS_SONG),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.BUSY_BEE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.HIRED_NINJA),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.HIRED_NINJA),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.FLYING_BRICKMAN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.MUSHROOM_MAN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.HIRED_NINJA),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.FOREMAN),
