@@ -43,3 +43,17 @@ func on_play(playing_field, card) -> void:
         await Stats.add_destiny_song(playing_field, card.owner, 1)
 
     await CardGameApi.destroy_card(playing_field, card)
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+
+    var hero_check = CardEffects.do_hypothetical_hero_check(playing_field, self, player)
+    if hero_check == CardEffects.HeroCheckResult.PASSIVE_FAIL:
+        return score
+    elif hero_check == CardEffects.HeroCheckResult.ACTIVE_FAIL:
+        score += priorities.of(LookaheadPriorities.ELIMINATE_HERO_CHECK)
+        return score
+
+    score += priorities.of(LookaheadPriorities.DESTINYS_SONG)
+    return score
