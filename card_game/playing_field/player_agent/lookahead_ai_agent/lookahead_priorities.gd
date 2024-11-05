@@ -100,6 +100,10 @@ const CARD_IN_HAND := &"CARD_IN_HAND"
 # card's effect.
 const SINGLE_USE_EXILE := &"SINGLE_USE_EXILE"
 
+# The value of exiling a random card from the opponent's deck, with no
+# knowledge of what that card is.
+const BLIND_EXILE := &"BLIND_EXILE"
+
 # The value of playing cards in the "right" order. This one is a bit
 # unusual. If the AI knows that it can play two cards X and Y this
 # turn in either order, but it's better to play X before Y, this is
@@ -127,6 +131,7 @@ const DEFAULT_PRIORITIES := {
     &"HOSTAGE": 2.5,
     &"CARD_IN_HAND": 1.1,
     &"SINGLE_USE_EXILE": 0.85,
+    &"BLIND_EXILE": 4.0,
     &"RIGHT_ORDER": 10.0,
 }
 

@@ -61,3 +61,23 @@ func _evaluate_effect(playing_field, card) -> bool:
 
     await CardEffects.exile_top_of_deck(playing_field, CardPlayer.other(owner))
     return false
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+
+    var hero_check = CardEffects.do_hypothetical_hero_check(playing_field, self, player)
+    if hero_check == CardEffects.HeroCheckResult.PASSIVE_FAIL:
+        return score
+    elif hero_check == CardEffects.HeroCheckResult.ACTIVE_FAIL:
+        score += priorities.of(LookaheadPriorities.ELIMINATE_HERO_CHECK)
+        return score
+
+    # If we get to this point, then activation of Ravengirl would exile
+    # him, so we factor that into the cost.
+    score -= priorities.of(LookaheadPriorities.SINGLE_USE_EXILE)
+    # We will exile a card at random.
+    if Query.on(playing_field).deck(CardPlayer.other(player)).any():
+        score += priorities.of(LookaheadPriorities.BLIND_EXILE)
+
+    return score
