@@ -35,3 +35,14 @@ func on_play(playing_field, card) -> void:
     await CardGameApi.highlight_card(playing_field, card)
     await CardGameApi.draw_cards(playing_field, owner, 2)
     await CardGameApi.destroy_card(playing_field, card)
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+
+    var cards_in_hand = playing_field.get_hand(player).cards().card_count()
+    var max_hand_size = StatsCalculator.get_hand_limit(playing_field, player)
+    var cards_to_draw = mini(2, max_hand_size - cards_in_hand)
+    score += cards_to_draw * priorities.of(LookaheadPriorities.EFFECT_DRAW)
+
+    return score

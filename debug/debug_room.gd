@@ -78,10 +78,10 @@ func _debug_interactive_game():
 
 func _sample_deck():
     return [
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.MANDATORY_OVERTIME),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.PLUMBERMAN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.POT_OF_LINGUINE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.WITH_EXTRA_CHEESE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.PLUMBERMANS_BROTHER),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.BUSY_BEE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.SECOND_COURSE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.KING_CANNOLI),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.FLYING_BRICKMAN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.MUSHROOM_MAN),

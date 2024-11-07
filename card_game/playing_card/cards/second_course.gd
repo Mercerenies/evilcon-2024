@@ -31,3 +31,10 @@ func get_rarity() -> int:
 
 func get_hand_limit_modifier(_playing_field, card, player: StringName) -> int:
     return 1 if player == card.owner else 0
+
+
+func ai_get_score_per_turn(playing_field, player: StringName, priorities) -> float:
+    return (
+        super.ai_get_score_per_turn(playing_field, player, priorities) +
+        priorities.of(LookaheadPriorities.HAND_LIMIT_UP)
+    )

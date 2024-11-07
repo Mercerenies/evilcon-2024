@@ -621,6 +621,9 @@
      strategy with Bristlegaze, Kidnapping the President, Damsel in
      Distress, or Skunkman (Skunkman becomes insanely powerful against
      a Destiny deck)
+   + [ ] Reskin Second Course to be, maybe, "Second Plate". I keep
+     forgetting which of it and "With Extra Cheese" is the hand limit
+     and which is the extra draw.
 ** SCRAPPED IDEAS
    Various ideas that didn't end up working out or were cut for one
    reason or another.
