@@ -39,18 +39,10 @@ func _evaluate_effect(playing_field, this_card) -> void:
     await CardGameApi.highlight_card(playing_field, this_card)
     var owner = this_card.owner
     var cards_to_discard = (
-        playing_field.get_hand(owner).cards().card_array()
-        .filter(_is_pasta_minion)
+        Query.on(playing_field).hand(owner)
+        .filter(Query.by_archetype(Archetype.PASTA))
+        .array()
     )
     for card in cards_to_discard:
         await CardGameApi.discard_card(playing_field, owner, card)
     await CardGameApi.draw_cards(playing_field, owner, len(cards_to_discard) + 1)
-
-
-func _is_pasta_minion(card_type):
-    if not (card_type is MinionCardType):
-        return false
-    # NOTE: get_base_archetypes since we're not in play and thus don't
-    # have archetype modifiers.
-    var archetypes = card_type.get_base_archetypes()
-    return Archetype.PASTA in archetypes
