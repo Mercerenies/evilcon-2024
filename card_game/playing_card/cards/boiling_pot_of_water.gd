@@ -46,3 +46,20 @@ func _evaluate_effect(playing_field, this_card) -> void:
     for card in cards_to_discard:
         await CardGameApi.discard_card(playing_field, owner, card)
     await CardGameApi.draw_cards(playing_field, owner, len(cards_to_discard) + 1)
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+
+    var cards_to_discard = (
+        Query.on(playing_field).hand(player)
+        .count(Query.by_archetype(Archetype.PASTA))
+    )
+    score -= cards_to_discard * priorities.of(LookaheadPriorities.CARD_IN_HAND)
+
+    var cards_in_hand = playing_field.get_hand(player).cards().card_count() - 1  # Subtract this card
+    var max_hand_size = StatsCalculator.get_hand_limit(playing_field, player)
+    var cards_to_draw = mini(cards_to_discard + 1, max_hand_size - cards_in_hand)
+    score += cards_to_draw * priorities.of(LookaheadPriorities.EFFECT_DRAW)
+
+    return score
