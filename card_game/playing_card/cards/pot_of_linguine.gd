@@ -40,7 +40,7 @@ func on_play(playing_field, card) -> void:
 func ai_get_score(playing_field, player: StringName, priorities) -> float:
     var score = super.ai_get_score(playing_field, player, priorities)
 
-    var cards_in_hand = playing_field.get_hand(player).cards().card_count()
+    var cards_in_hand = playing_field.get_hand(player).cards().card_count() - 1  # Subtract Pot of Linguine
     var max_hand_size = StatsCalculator.get_hand_limit(playing_field, player)
     var cards_to_draw = mini(2, max_hand_size - cards_in_hand)
     score += cards_to_draw * priorities.of(LookaheadPriorities.EFFECT_DRAW)
