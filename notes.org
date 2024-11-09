@@ -624,6 +624,19 @@
    + [ ] Reskin Second Course to be, maybe, "Second Plate". I keep
      forgetting which of it and "With Extra Cheese" is the hand limit
      and which is the extra draw.
+   + [ ] Rule 18 (Shape support) - Rule 18 looks like the triforce, so
+     let's lean into that reference.
+     - [ ] Rule 18 :: Effect card, lasts 3 turns, limit 1 per deck, no
+       additional effects.
+     - [ ] Rule of Strength :: If you control Rule 18, then +2 Level
+       to your strongest SHAPE Minion.
+     - [ ] Rule of Knowledge :: If you control Rule 18, then +2 Morale
+       to your strongest SHAPE Minion.
+     - [ ] Rule of Bravery :: If you control Rule 18, then all of your
+       SHAPE Minions are now immune to enemy card effects.
+   + [ ] BUG: Labels on cards (such as the level/morale or turn count)
+     are blocking clicks on those cards. Also applies to deck and
+     discard
 ** SCRAPPED IDEAS
    Various ideas that didn't end up working out or were cut for one
    reason or another.
