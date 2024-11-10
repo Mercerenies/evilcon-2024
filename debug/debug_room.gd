@@ -78,12 +78,12 @@ func _debug_interactive_game():
 
 func _sample_deck():
     return [
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.POT_OF_LINGUINE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.RHOMBICUBOCTAHEDRON),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.PLUMBERMANS_BROTHER),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.HYPERCUBE_PRISON),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.ZANY_ZOMBIE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.FURIOUS_PHANTOM),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNDEAD_PIG),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CATACOMB_CHARMER),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.KING_CANNOLI),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.BOILING_POT_OF_WATER),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CALL_OF_ECTOPLASM),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.MUSHROOM_MAN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.HIRED_NINJA),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.PENNE_PIKEMAN),

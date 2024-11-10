@@ -32,12 +32,13 @@ func get_rarity() -> int:
 func on_end_phase(playing_field, card) -> void:
     var owner = card.owner
     if owner == playing_field.turn_player:
-        var discard_pile = playing_field.get_discard_pile(owner)
         await CardGameApi.highlight_card(playing_field, card)
-        var target_index = _find_undead_card_in_discard_pile(playing_field, card.owner)
-        if target_index != null:
-            var undead_card_type = discard_pile.cards().peek_card(target_index)
-            var undead_card = await CardGameApi.resurrect_card(playing_field, owner, undead_card_type)
+        var target = (
+            Query.on(playing_field).discard_pile(owner)
+            .find(Query.by_archetype(Archetype.UNDEAD))
+        )
+        if target != null:
+            var undead_card = await CardGameApi.resurrect_card(playing_field, owner, target)
             if undead_card.card_type.get_morale(playing_field, undead_card) != 1:
                 await Stats.set_morale(playing_field, undead_card, 1)
         else:
@@ -45,7 +46,27 @@ func on_end_phase(playing_field, card) -> void:
     await super.on_end_phase(playing_field, card)
 
 
-func _find_undead_card_in_discard_pile(playing_field, owner: StringName):
-    var discard_pile = playing_field.get_discard_pile(owner)
-    return discard_pile.cards().find_card_reversed_if(func (card_type):
-        return card_type is MinionCardType and Archetype.UNDEAD in card_type.get_base_archetypes())
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = ai_get_score_base_calculation(playing_field, player, priorities)
+
+    var all_targets_levels = (
+        Query.on(playing_field).discard_pile(player)
+        .filter(Query.by_archetype(Archetype.UNDEAD))
+        .slice(- get_total_turn_count())
+        .map_sum(Query.level().value())
+    )
+    score += all_targets_levels * priorities.of(LookaheadPriorities.FORT_DEFENSE)
+
+    return score
+
+
+
+func ai_get_score_per_turn(playing_field, player: StringName, priorities) -> float:
+    # If we get an extra turn on Call of Ectoplasm, assume that we'll
+    # be able to pull an UNDEAD Minion from the discard pile. The
+    # average Level of an UNDEAD Minion, as of Nov 9, 2024, is 1.75
+    # (This excludes Disembodied Soul, whose Level is difficult to
+    # calculate). So assume we'll get an extra 1.75 damage from this.
+    var score = super.ai_get_score_per_turn(playing_field, player, priorities)
+    score += 1.75 * priorities.of(LookaheadPriorities.FORT_DEFENSE)
+    return score
