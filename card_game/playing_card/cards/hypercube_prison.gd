@@ -44,3 +44,19 @@ func do_attack_phase_check(playing_field, this_card, attacking_card) -> bool:
             })
             return false
     return super.do_attack_phase_check(playing_field, this_card, attacking_card)
+
+
+func ai_get_score_per_turn(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score_per_turn(playing_field, player, priorities)
+
+    var target = CardEffects.most_powerful_minion(playing_field, CardPlayer.other(player))
+    if target == null:
+        return score
+
+    var can_influence = CardEffects.do_hypothetical_influence_check(playing_field, target, self, player)
+    if not can_influence:
+        return score
+
+    var value_of_target = target.card_type.get_level(playing_field, target)
+    score += value_of_target * priorities.of(LookaheadPriorities.FORT_DEFENSE)
+    return score

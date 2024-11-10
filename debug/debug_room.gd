@@ -79,9 +79,9 @@ func _debug_interactive_game():
 func _sample_deck():
     return [
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.POT_OF_LINGUINE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.WITH_EXTRA_CHEESE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.RHOMBICUBOCTAHEDRON),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.PLUMBERMANS_BROTHER),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.SECOND_COURSE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.HYPERCUBE_PRISON),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.KING_CANNOLI),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.BOILING_POT_OF_WATER),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.MUSHROOM_MAN),

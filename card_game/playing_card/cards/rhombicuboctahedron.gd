@@ -36,9 +36,9 @@ func _do_effect(playing_field, card) -> void:
     var owner = card.owner
 
     var opponent_minions_to_destroy = (
-        playing_field.get_minion_strip(CardPlayer.other(owner))
-        .cards().card_array()
-        .filter(func(target_card): return target_card.card_type.get_morale(playing_field, target_card) <= 1)
+        Query.on(playing_field).minions(CardPlayer.other(owner))
+        .filter(Query.morale().at_most(1))
+        .array()
     )
     if len(opponent_minions_to_destroy) == 0:
         Stats.show_text(playing_field, card, PopupText.NO_TARGET)
@@ -47,3 +47,16 @@ func _do_effect(playing_field, card) -> void:
             var can_influence = minion.card_type.do_influence_check(playing_field, minion, card, false)
             if can_influence:
                 await CardGameApi.destroy_card(playing_field, minion)
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+
+    var opponent_minion_values = (
+        Query.on(playing_field).minions(CardPlayer.other(player))
+        .filter([Query.morale().at_most(1), Query.influenced_by(self, player)])
+        .map_sum(Query.remaining_ai_value().value())
+    )
+    score += opponent_minion_values
+
+    return score
