@@ -38,7 +38,7 @@ func do_broadcasted_influence_check(playing_field, card, target_card, source_car
 
 
 func ai_get_score(playing_field, player: StringName, priorities) -> float:
-    var score = super.ai_get_score(playing_field, player, priorities)
+    var score = ai_get_score_base_calculation(playing_field, player, priorities)
 
     # See how many cards are in play and NOT protected by Ninja
     # immunity.
