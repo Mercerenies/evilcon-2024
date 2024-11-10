@@ -125,27 +125,42 @@
     + King Cannoli :: Count Carbonara's arch nemesis.
     + Squaredude and Circlegirl
     + Prisman
-    + Plumberman and Plumberman's Brother
+    + Plumberman and Plumberman's Brother :: Bristlegaze's archrivals.
     + Clueless Man
-    + Wall Golem
-    + Team Cobra
+    + Wall Golem :: Hero for hire, does the right thing but has low
+      intellect.
+    + Team Cobra :: Formerly minions to the Venomatrix, but they
+      turned good a short time ago. The Evilcon folks haven't had time
+      to update their playing cards, so they're still minion cards.
 *** VILLAINS
 **** STAMP VILLAINS
      + Minionman :: Gimmick villain obsessed with armies of low-level
        Minion cards. Minionman is the first character you face in the
        hotel and will later give you the Minion Stamp once you raid
-       his Lair of Minions.
+       his Minionmansion.
+       - The Minionmansion is a large tower, where you must face his
+         minions in sequence. Normally, you'd have to face several,
+         but the upper floors of the Mansion have been exploded by
+         Barry's accidental dynamite. So you only have to face a
+         couple.
      + Icosaking :: Supervillain from the geometry world. Holder of
        the Geometry Stamp, operating in a tower of geometry with his
        loyal Icosaklones. Believes he's the rightful king of both
        Prismania and Geometropolis.
+       - The Icosatower is a puzzle-based tower full of block-pushing
+         puzzles.
      + Berry :: Barry the Brainless Overlord's much more competent
        sister. The true leader of the factory / robot lair, and holder
        of the Engineers' Stamp.
      + True Ninja Master :: The ninja master over Dr. Meguruku. Holder
        of the Silent Stamp and true leader of the ninja lair.
+       - Hides away (with Dr. Meguruku) in a papercraft town
+         resembling Rabbit Hole. Only reveals himself after you defeat
+         Dr. Meguruku /and/ find his hiding place.
      + Giggles Galore :: Clown boss. Leader of the clown lair and
        holder of the Funny Stamp.
+       - Circus tent only allows admission if you've found his hidden
+         mimes, who each give you an invitation.
      + Count Carbonara :: Pasta-obsessed supervillain and holder of
        the Spaghetti Stamp.
      + Venomatrix :: Human-sized queen bee, obsessed with replacing
@@ -158,6 +173,12 @@
        with unworkable evil schemes. He runs the robotic lair but
        doesn't have a Stamp. After you beat him, a doorway opens to
        his sister's factory.
+       - Right before the start of the game, he accidentally exploded
+         some dynamite, destroying part of the Minionmansion and
+         blocking one of the main corridors. The hotel staff finishes
+         repairing the corridor right when you get the Minion Stamp.
+         Additionally, they /might/ repair the Minionmansion (for an
+         optional post-game endurance test) after you beat the game.
      + Dr. Meguruku :: Town physician who is secretly a powerful
        ninja. Guardian of the ninja lair. Once defeated, he will tell
        you how to find the True Ninja Master.
@@ -171,7 +192,7 @@
 **** THE FINAL GAUNTLET
      The four villains you must face before meeting the King of Evil.
      Must be faced in order with no deck changes in betwee.
-     + Minionman :: again but with his mask off and going by his real
+     + Minionman :: Again but with his mask off and going by his real
        identity; he's actually a powerful card player and just puts on
        the "Minionman" gimmick for show (TODO Do we need an ultra rare
        card for his unmasked variant?)
