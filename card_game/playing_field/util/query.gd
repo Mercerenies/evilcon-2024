@@ -30,6 +30,9 @@ class Q:
             func (card): return callable_or_arr.call(_playing_field, card)
         ))
 
+    func slice(begin = 0, end = 2147483647, step = 1):
+        return Q.new(_playing_field, array().slice(begin, end, step))
+
     func map(callable):
         # Maps a callable over the query, returning an array. NOTE:
         # This method does NOT return a Q, since the map might return
