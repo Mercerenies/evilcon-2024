@@ -60,7 +60,7 @@ func ai_get_score(playing_field, player: StringName, priorities) -> float:
     score += (
         Query.on(playing_field).deck(player)
         .filter(Query.by_id(_valid_target_minions()))
-        .map_sum(func(playing_field, card_type): return card_type.ai_get_score(playing_field, player, priorities))
+        .map_sum(func(playing_field, card_type): return card_type.ai_get_score(playing_field, player, priorities) + card_type.get_star_cost() * priorities.of(LookaheadPriorities.EVIL_POINT))
     )
 
     return score

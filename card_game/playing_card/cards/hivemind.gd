@@ -71,7 +71,7 @@ func ai_get_score(playing_field, player: StringName, priorities) -> float:
         .filter(Query.not_(Query.by_archetype(Archetype.BEE)))
     )
     var value_lost = all_minions_in_play.map_sum(Query.remaining_ai_value().value())
-    var value_gained_per_bee = BusyBee.new().ai_get_score(playing_field, player, priorities)
+    var value_gained_per_bee = BusyBee.new().ai_get_score(playing_field, player, priorities) + BusyBee.new().get_star_cost() * priorities.of(LookaheadPriorities.EVIL_POINT)
     score -= value_lost
     score += value_gained_per_bee * all_minions_in_play.count()
 
