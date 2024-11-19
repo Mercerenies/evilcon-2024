@@ -55,3 +55,20 @@ func ai_get_score(playing_field, player: StringName, priorities) -> float:
     if has_zombie:
         score += priorities.of(LookaheadPriorities.FORT_DEFENSE)  # Resurrects the 1/1 Zombie for free.
     return score
+
+
+func ai_get_expected_remaining_score(playing_field, card) -> float:
+    var score = super.ai_get_expected_remaining_score(playing_field, card)
+
+    # In principle, we should still be able to calculate this in this
+    # case, but we don't have access to the owning player here.
+    if card == null:
+        return score
+
+    # If the player has a Zany Zombie in their discard pile, then
+    # there's an increased benefit to letting Furious Phantom expire
+    # normally.
+    var has_zombie = Query.on(playing_field).discard_pile(card.owner).any(Query.by_id(PlayingCardCodex.ID.ZANY_ZOMBIE))
+    if has_zombie:
+        score += 1.0
+    return score
