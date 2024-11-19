@@ -357,3 +357,17 @@ static func remaining_ai_value() -> NumericalCompare:
                 return card.card_type.ai_get_expected_remaining_score(playing_field, card)
             else:
                 return 0.0)
+
+
+static func value_of_destroying(priorities) -> NumericalCompare:
+    return NumericalCompare.new(func(playing_field, card):
+        if card is CardType:
+            if card is MinionCardType:
+                return card.ai_get_value_of_destroying(playing_field, null, priorities)
+            else:
+                return 0.0
+        else:
+            if card.card_type is MinionCardType:
+                return card.card_type.ai_get_value_of_destroying(playing_field, card, priorities)
+            else:
+                return 0.0)

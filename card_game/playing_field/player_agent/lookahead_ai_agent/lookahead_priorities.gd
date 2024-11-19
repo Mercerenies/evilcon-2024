@@ -62,6 +62,11 @@ const IMMUNITY := &"IMMUNITY"
 # Default value is 0.0.
 const UNDEAD := &"UNDEAD"
 
+# The value of sending one of your own UNDEAD Minions to the discard
+# pile, applied once per Minion. The default value is 0.0, but UNDEAD
+# decks will benefit from doing this.
+const UNDEAD_DESTRUCTION := &"UNDEAD_DESTRUCTION"
+
 # The value of getting an extra attack from an UNDEAD Minion. This is
 # applied once per Minion that will attack, regardless of that
 # Minion's Level. The default value is 0.0, since a Minion already
@@ -137,6 +142,7 @@ const DEFAULT_PRIORITIES := {
     &"EVIL_POINT_OPPORTUNITY": 0.1,
     &"IMMUNITY": 0.15,
     &"UNDEAD": 0.0,
+    &"UNDEAD_DESTRUCTION": 0.0,
     &"UNDEAD_BONUS_ATTACK": 0.0,
     &"CLOWNING": 0.0,
     &"BEDEVILING": 0.0,

@@ -213,3 +213,22 @@ func ai_get_expected_remaining_score(playing_field, card) -> float:
         return get_base_level() * get_base_morale()
     else:
         return get_level(playing_field, card) * get_morale(playing_field, card)
+
+
+# Gets the value of the owner voluntarily destroying this Minion.
+# Normally, this is just ai_get_expected_remaining_score times the
+# appropriate priority, but UNDEAD Minions may also get a decrease to
+# this number, since UNDEAD Minions benefit from being in the discard
+# pile.
+#
+# `card` can be null.
+func ai_get_value_of_destroying(playing_field, card, priorities) -> float:
+    var is_undead
+    if card == null:
+        is_undead = (Archetype.UNDEAD in get_base_archetypes())
+    else:
+        is_undead = card.has_archetype(playing_field, Archetype.UNDEAD)
+    var score = ai_get_expected_remaining_score(playing_field, card) * priorities.of(LookaheadPriorities.FORT_DEFENSE)
+    if is_undead:
+        score -= priorities.of(LookaheadPriorities.UNDEAD_DESTRUCTION)
+    return score
