@@ -84,7 +84,7 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CATACOMB_CHARMER),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.KING_CANNOLI),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CALL_OF_ECTOPLASM),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.MUSHROOM_MAN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.GRAVEYARD_DANCE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.HIRED_NINJA),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.PENNE_PIKEMAN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.MEATBALL_MAN),

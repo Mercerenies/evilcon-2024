@@ -54,3 +54,16 @@ func _evaluate_effect(playing_field, card) -> void:
             var undead_card = await CardGameApi.resurrect_card(playing_field, owner, undead_card_type)
             if undead_card.card_type.get_morale(playing_field, undead_card) != 1:
                 await Stats.set_morale(playing_field, undead_card, 1)
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = ai_get_score_base_calculation(playing_field, player, priorities)
+
+    var all_targets_levels = (
+        Query.on(playing_field).discard_pile(player)
+        .filter(Query.by_archetype(Archetype.UNDEAD))
+        .map_sum(Query.level().value())
+    )
+    score += all_targets_levels * priorities.of(LookaheadPriorities.FORT_DEFENSE)
+
+    return score
