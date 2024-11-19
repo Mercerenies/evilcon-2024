@@ -60,8 +60,8 @@ func _debug_interactive_game():
 
     $PlayingField.turn_number = 10  # Get extra EP :)
     #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DAMSEL_IN_DISTRESS))
-    $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.LAST_STAND))
-    $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.GOLDEN_ACORN))
+    #$PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.LAST_STAND))
+    #$PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.GOLDEN_ACORN))
     #$PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DR_BADGUY_DOOMCAKE))
     #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.REPLACEABLE_PARTS))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN), CardPlayer.TOP))
@@ -82,16 +82,16 @@ func _sample_deck():
     return [
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.ZANY_ZOMBIE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.FURIOUS_PHANTOM),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNDEAD_PIG),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CATACOMB_CHARMER),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.WORKER_BEE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.WORKER_BEE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.KING_CANNOLI),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CALL_OF_ECTOPLASM),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.BUSY_BEE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.GRAVEYARD_DANCE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.SPIRIT_FLUTE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.BUSY_BEE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.LAST_STAND),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.MEATBALL_MAN),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.RAVIOLI_RUNT),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.RAVIOLI_RUNT),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.STINGER_SWARM),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.STINGER_SWARM),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.RAVENGIRL),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.SQUAREDUDE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CIRCLEGIRL),
