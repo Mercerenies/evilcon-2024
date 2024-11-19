@@ -61,3 +61,18 @@ func _is_valid_target_minion(playing_field, card):
     if not (card.card_type is MinionCardType):
         return false
     return not card.has_archetype(playing_field, Archetype.BEE)
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = ai_get_score_base_calculation(playing_field, player, priorities)
+
+    var all_minions_in_play = (
+        Query.on(playing_field).minions(player)
+        .filter(Query.not_(Query.by_archetype(Archetype.BEE)))
+    )
+    var value_lost = all_minions_in_play.map_sum(Query.remaining_ai_value().value())
+    var value_gained_per_bee = BusyBee.new().ai_get_score(playing_field, player, priorities)
+    score -= value_lost
+    score += value_gained_per_bee * all_minions_in_play.count()
+
+    return score
