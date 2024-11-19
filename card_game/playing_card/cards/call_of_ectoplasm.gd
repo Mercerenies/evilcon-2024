@@ -49,13 +49,16 @@ func on_end_phase(playing_field, card) -> void:
 func ai_get_score(playing_field, player: StringName, priorities) -> float:
     var score = ai_get_score_base_calculation(playing_field, player, priorities)
 
-    var all_targets_levels = (
+    # Because we summon with 1 Morale during the End Phase, we know
+    # that, in normal circumstances, the Minion we summon will be back
+    # in the discard pile by the next End Phase. So we assume that
+    # we'll be pulling the same Minion four times.
+    var top_target = (
         Query.on(playing_field).discard_pile(player)
-        .filter(Query.by_archetype(Archetype.UNDEAD))
-        .slice(- get_total_turn_count())
-        .map_sum(Query.level().value())
+        .find(Query.by_archetype(Archetype.UNDEAD))
     )
-    score += all_targets_levels * priorities.of(LookaheadPriorities.FORT_DEFENSE)
+    if top_target != null:
+        score += top_target.get_base_level() * get_total_turn_count() * priorities.of(LookaheadPriorities.FORT_DEFENSE)
 
     return score
 
