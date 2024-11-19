@@ -54,9 +54,13 @@ func _valid_target_minions():
 func ai_get_score(playing_field, player: StringName, priorities) -> float:
     var score = ai_get_score_base_calculation(playing_field, player, priorities)
 
-    # Worker Bee and Busy Bee are both 1/1 Minions, so each such
-    # Minion counts as 1.0 * FORT_DEFENSE score.
-    var targets = Query.on(playing_field).deck(player).count(Query.by_id(_valid_target_minions()))
-    score += targets * priorities.of(LookaheadPriorities.FORT_DEFENSE)
+    # Get the fully broadcasted score of all targets, so that we
+    # include any benefits from Queen Bee or Venomatrix cards already
+    # in play.
+    score += (
+        Query.on(playing_field).deck(player)
+        .filter(Query.by_id(_valid_target_minions()))
+        .map_sum(func(playing_field, card_type): return card_type.ai_get_score(playing_field, player, priorities))
+    )
 
     return score
