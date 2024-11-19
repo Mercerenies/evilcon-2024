@@ -46,3 +46,15 @@ func _perform_effect(playing_field, card) -> void:
         await minion.card_type.on_attack_phase(playing_field, minion)
     for minion in undead_minions:
         await minion.card_type.on_morale_phase(playing_field, minion)
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = ai_get_score_base_calculation(playing_field, player, priorities)
+
+    var undead_minions = (
+        Query.on(playing_field).minions(player)
+        .count(Query.by_archetype(Archetype.UNDEAD))
+    )
+    score += undead_minions * priorities.of(LookaheadPriorities.UNDEAD_BONUS_ATTACK)
+
+    return score

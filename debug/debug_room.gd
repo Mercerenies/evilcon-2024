@@ -38,6 +38,7 @@ func _debug_batch_game() -> void:
 func _debug_interactive_game():
     var ai_priorities = LookaheadPriorities.new({
         LookaheadPriorities.UNDEAD: 1.0,
+        LookaheadPriorities.UNDEAD_BONUS_ATTACK: 0.3,
         LookaheadPriorities.CLOWNING: 0.4,
         LookaheadPriorities.BEDEVILING: 0.2,
         LookaheadPriorities.ROBOTING: 0.1,
@@ -85,8 +86,8 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.KING_CANNOLI),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CALL_OF_ECTOPLASM),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.GRAVEYARD_DANCE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.HIRED_NINJA),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.PENNE_PIKEMAN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.SPIRIT_FLUTE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.SPIRIT_FLUTE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.MEATBALL_MAN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.RAVIOLI_RUNT),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.RAVIOLI_RUNT),

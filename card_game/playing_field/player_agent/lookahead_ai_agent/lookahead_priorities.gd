@@ -62,6 +62,14 @@ const IMMUNITY := &"IMMUNITY"
 # Default value is 0.0.
 const UNDEAD := &"UNDEAD"
 
+# The value of getting an extra attack from an UNDEAD Minion. This is
+# applied once per Minion that will attack, regardless of that
+# Minion's Level. The default value is 0.0, since a Minion already
+# assumes that it will eventually get all of its attacks, but UNDEAD
+# decks benefit from expediting this process so that cards like
+# Graveyard Dance and Call of Ectoplasm have more targets.
+const UNDEAD_BONUS_ATTACK := &"UNDEAD_BONUS_ATTACK"
+
 # The value of converting an opponent card to a CLOWN Minion. Most
 # decks don't care about this, so the default value is 0.0. But
 # characters running a CLOWN deck will care.
@@ -125,6 +133,7 @@ const DEFAULT_PRIORITIES := {
     &"EVIL_POINT_OPPORTUNITY": 0.1,
     &"IMMUNITY": 0.15,
     &"UNDEAD": 0.0,
+    &"UNDEAD_BONUS_ATTACK": 0.0,
     &"CLOWNING": 0.0,
     &"BEDEVILING": 0.0,
     &"ROBOTING": 0.0,
