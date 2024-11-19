@@ -106,13 +106,17 @@ const HOSTAGE := &"HOSTAGE"
 # owner's hand.
 const CARD_IN_HAND := &"CARD_IN_HAND"
 
-# The value cost of exiling one's own card, usually as part of that
-# card's effect.
+# The value cost of exiling one's own card as part of that card's own
+# effect.
 const SINGLE_USE_EXILE := &"SINGLE_USE_EXILE"
 
 # The value of exiling a random card from the opponent's deck, with no
 # knowledge of what that card is.
 const BLIND_EXILE := &"BLIND_EXILE"
+
+# The value, per Level * Morale, of exiling a specific Minion of your
+# own.
+const DOOMED_EXILE := &"DOOMED_EXILE"
 
 # The value of playing cards in the "right" order. This one is a bit
 # unusual. If the AI knows that it can play two cards X and Y this
@@ -143,6 +147,7 @@ const DEFAULT_PRIORITIES := {
     &"CARD_IN_HAND": 0.4,
     &"SINGLE_USE_EXILE": 0.85,
     &"BLIND_EXILE": 4.0,
+    &"DOOMED_EXILE": 0.7,
     &"RIGHT_ORDER": 10.0,
 }
 
