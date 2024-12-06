@@ -56,3 +56,19 @@ func _perform_effect(playing_field, this_card) -> void:
 
     for _i in successful_destructions:
         await CardGameApi.create_card(playing_field, opponent, BabyClown.new())
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = ai_get_score_base_calculation(playing_field, player, priorities)
+    var opponent = CardPlayer.other(player)
+
+    var all_minions_in_play = (
+        Query.on(playing_field).minions(opponent)
+        .filter([Query.by_archetype(Archetype.CLOWN), Query.influenced_by(self, player)])
+    )
+    var value_gained_by_destroying = all_minions_in_play.map_sum(Query.remaining_ai_value().value())
+    var value_lost_per_baby_clown = BabyClown.new().ai_get_score(playing_field, player, priorities) + BabyClown.new().get_star_cost() * priorities.of(LookaheadPriorities.EVIL_POINT)
+    score += value_gained_by_destroying
+    score -= value_lost_per_baby_clown * all_minions_in_play.count()
+
+    return score

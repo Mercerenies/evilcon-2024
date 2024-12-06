@@ -670,6 +670,7 @@
      discard
    + [ ] Change "Destiny's Song" to "Destiny's Singer", so it makes
      more sense why it's a hero card.
+   + [ ] Investigate fullscreen and window resizing behavior
 ** SCRAPPED IDEAS
    Various ideas that didn't end up working out or were cut for one
    reason or another.
