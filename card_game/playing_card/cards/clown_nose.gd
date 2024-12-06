@@ -36,19 +36,36 @@ func _perform_effect(playing_field, this_card) -> void:
     var opponent = CardPlayer.other(this_card.owner)
 
     # Find opponent's most powerful non-Clown.
-    var minions = (
-        playing_field.get_minion_strip(opponent).cards()
-        .card_array()
-        .filter(func (minion): return not minion.has_archetype(playing_field, Archetype.CLOWN))
+    var most_powerful_minion = (
+        Query.on(playing_field).minions(opponent)
+        .filter(Query.not_(Query.by_archetype(Archetype.CLOWN)))
+        .max()
     )
-    if len(minions) == 0:
+    if most_powerful_minion == null:
         Stats.show_text(playing_field, this_card, PopupText.NO_TARGET)
         return
 
-    var most_powerful_minion = Util.max_by(minions, CardEffects.card_power_less_than(playing_field))
     var can_influence = most_powerful_minion.card_type.do_influence_check(playing_field, most_powerful_minion, this_card, false)
     if not can_influence:
         return
 
     Stats.show_text(playing_field, most_powerful_minion, PopupText.CLOWNED)
     most_powerful_minion.metadata[CardMeta.ARCHETYPE_OVERRIDES] = [Archetype.CLOWN]
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = ai_get_score_base_calculation(playing_field, player, priorities)
+    var opponent = CardPlayer.other(player)
+
+    var most_powerful_minion = (
+        Query.on(playing_field).minions(opponent)
+        .filter(Query.not_(Query.by_archetype(Archetype.CLOWN)))
+        .max()
+    )
+    if most_powerful_minion != null:
+        var can_influence = CardEffects.do_hypothetical_influence_check(playing_field, most_powerful_minion, self, player)
+        if can_influence:
+            score += priorities.of(LookaheadPriorities.CLOWNING)
+
+
+    return score

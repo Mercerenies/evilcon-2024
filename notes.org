@@ -123,8 +123,9 @@
     + Flying Brickman :: Super-strong superhero and a symbol of peace
       and justice.
     + King Cannoli :: Count Carbonara's arch nemesis.
-    + Squaredude and Circlegirl
-    + Prisman
+    + Squaredude and Circlegirl :: The first to overthrow the
+      Icosaking in Geometropolis.
+    + Prisman :: The hero who overthrew the Icosaking in Prismania.
     + Plumberman and Plumberman's Brother :: Bristlegaze's archrivals.
     + Clueless Man
     + Wall Golem :: Hero for hire, does the right thing but has low
@@ -132,6 +133,11 @@
     + Team Cobra :: Formerly minions to the Venomatrix, but they
       turned good a short time ago. The Evilcon folks haven't had time
       to update their playing cards, so they're still minion cards.
+    + Destiny's Singer :: A legend among heroes. His songs can rewrite
+      reality. Was completely undefeated among heroes, but suddenly
+      disappeared one day about ten years ago. Despite every villain
+      claiming credit for the kill, no one knows who or what did him
+      in.
 *** VILLAINS
 **** STAMP VILLAINS
      + Minionman :: Gimmick villain obsessed with armies of low-level
@@ -662,6 +668,8 @@
    + [ ] BUG: Labels on cards (such as the level/morale or turn count)
      are blocking clicks on those cards. Also applies to deck and
      discard
+   + [ ] Change "Destiny's Song" to "Destiny's Singer", so it makes
+     more sense why it's a hero card.
 ** SCRAPPED IDEAS
    Various ideas that didn't end up working out or were cut for one
    reason or another.

@@ -52,7 +52,7 @@ func run_one_turn(playing_field) -> void:
             await $NextActionTimer.timeout)
         var legal_moves = _get_legal_moves(playing_field)
         var move_values = legal_moves.map(func(move): return _score_of_move(playing_field, move))
-        _debug_print_moves(legal_moves, move_values)
+        _debug_print_moves(legal_moves, move_values)  # DEBUG CODE
         var indices = range(len(legal_moves))
         var best_move_index = Util.max_on(indices, func(i): return move_values[i])
         var best_move = legal_moves[best_move_index]
