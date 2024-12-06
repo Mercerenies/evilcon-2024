@@ -218,6 +218,10 @@
        robot lair. For obvious reasons, he doesn't want Barry or Berry
        seeing him. Not a Stamp-holder, but is a powerful optional
        boss.
+       - In the post-game, B'aroni finally fixes his time machine, and
+         he offers to take you back to just before everyone was
+         arrested (that way, we can have a post-game while you still
+         get to wander around the pre-police-raid convention hall)
      + Devil :: From Nail. A devil from the fiery pits who makes deals
        for people's souls. Obsessed with meeting Death and heard a
        rumor that he was going to be at the convention.
