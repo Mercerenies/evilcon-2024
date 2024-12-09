@@ -67,5 +67,4 @@ func ai_get_score(playing_field, player: StringName, priorities) -> float:
         if can_influence:
             score += priorities.of(LookaheadPriorities.CLOWNING)
 
-
     return score

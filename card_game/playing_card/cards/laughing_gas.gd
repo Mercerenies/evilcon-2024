@@ -35,7 +35,11 @@ func _evaluate_effect(playing_field, this_card) -> void:
     await CardGameApi.highlight_card(playing_field, this_card)
     var owner = this_card.owner
 
-    var enemy_minions = playing_field.get_minion_strip(CardPlayer.other(owner)).cards().card_array()
+    var enemy_minions = (
+        Query.on(playing_field).minions(CardPlayer.other(owner))
+        .filter(Query.not_(Query.by_archetype(Archetype.CLOWN)))
+        .array()
+    )
     if len(enemy_minions) == 0:
         Stats.show_text(playing_field, this_card, PopupText.NO_TARGET)
         return
@@ -50,3 +54,17 @@ func _try_to_clown(playing_field, this_card, target_card):
         Stats.show_text(playing_field, target_card, PopupText.CLOWNED)
         target_card.metadata[CardMeta.ARCHETYPE_OVERRIDES] = [Archetype.CLOWN]
     playing_field.emit_cards_moved()
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = ai_get_score_base_calculation(playing_field, player, priorities)
+    var opponent = CardPlayer.other(player)
+
+    var opposing_minions_count = (
+        Query.on(playing_field).minions(opponent)
+        .filter([Query.not_(Query.by_archetype(Archetype.CLOWN)), Query.influenced_by(self, player)])
+        .count()
+    )
+    score += priorities.of(LookaheadPriorities.CLOWNING) * opposing_minions_count
+
+    return score
