@@ -37,7 +37,6 @@ func _evaluate_effect(playing_field, this_card) -> void:
 
     var enemy_minions = (
         Query.on(playing_field).minions(CardPlayer.other(owner))
-        .filter(Query.not_(Query.by_archetype(Archetype.CLOWN)))
         .array()
     )
     if len(enemy_minions) == 0:
