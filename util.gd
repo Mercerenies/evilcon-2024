@@ -66,6 +66,10 @@ static func max_on(array: Array, key: Callable):
         return key.call(a) < key.call(b))
 
 
+static func sum(array: Array):
+    return array.reduce(func (a, b): return a + b, 0)
+
+
 # Takes an array and acts like Array.reduce(method, accum), but at
 # each iteration, stop_condition is invoked with one argument (the
 # current accumulator). If stop_condition returns true, iteration
@@ -123,3 +127,17 @@ static func zip(left: Array, right: Array) -> Array:
     for i in range(min(len(left), len(right))):
         result.push_back(Pair.new(left[i], right[i]))
     return result
+
+
+static func ncr(n: int, r: int) -> int:
+    if r > n or r < 0:
+        return 0
+    if 2 * r > n:
+        return ncr(n, n - r) # Use symmetry property: nCr(n, r) = nCr(n, n - r)
+    var numerator = 1
+    var denominator = 1
+    for i in range(r):
+        numerator *= (n - i)
+        denominator *= (i + 1)
+    @warning_ignore("integer_division")
+    return numerator / denominator

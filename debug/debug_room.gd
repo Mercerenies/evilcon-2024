@@ -61,8 +61,8 @@ func _debug_interactive_game():
 
     $PlayingField.turn_number = 10  # Get extra EP :)
     #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DAMSEL_IN_DISTRESS))
-    $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.LAUGHING_GAS))
-    $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.PACIFIER))
+    $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.INVASIVE_PARASITES))
+    #$PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.PACIFIER))
     #$PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.GOLDEN_ACORN))
     #$PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DR_BADGUY_DOOMCAKE))
     #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.REPLACEABLE_PARTS))
@@ -86,21 +86,21 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.TODDLER_CLOWN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.GIGGLES_GALORE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.KING_CANNOLI),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.BUSY_BEE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.MUSHROOM_MAN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.GRAVEYARD_DANCE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.BUSY_BEE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.LAST_STAND),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.MEATBALL_MAN),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.STINGER_SWARM),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.STINGER_SWARM),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CORNY_ACORN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CORNY_ACORN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.STREET_MIME),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.SQUAREDUDE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CIRCLEGIRL),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.NUCLEAR_POWER_PLANT),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.NUCLEAR_FUSION_PLANT),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.SPIKY_ACORN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.GOLDEN_ACORN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CHRIS_COGSWORTH),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.NUCLEAR_POWER_PLANT),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.SPIKY_MUSHROOM_MAN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.SPIKY_ACORN),
     ]
 
 

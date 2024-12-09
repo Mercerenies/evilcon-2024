@@ -140,6 +140,22 @@ class QueryManager:
         var cards = _playing_field.get_discard_pile(player).cards().card_array()
         return Q.new(_playing_field, cards).reversed()  # Top to bottom
 
+    # Query on all cards owned by the given player except those which
+    # have been exiled. This includes the player's hand, deck, field,
+    # and discard pile. This will be a mixed array of Card and
+    # CardType objects.
+    #
+    # The order of elements in the returned array is NOT guaranteed.
+    # Player is NOT optional.
+    func full_deck(player: StringName):
+        var all_cards = []
+        all_cards.append_array(_playing_field.get_hand(player).cards().card_array())
+        all_cards.append_array(_playing_field.get_deck(player).cards().card_array())
+        all_cards.append_array(_playing_field.get_discard_pile(player).cards().card_array())
+        all_cards.append_array(_playing_field.get_minion_strip(player).cards().card_array())
+        all_cards.append_array(_playing_field.get_effect_strip(player).cards().card_array())
+        return Q.new(_playing_field, all_cards)
+
 
 # All queries must start with a call to this method, which returns a
 # QueryManager object representing every card on the board, regardless
