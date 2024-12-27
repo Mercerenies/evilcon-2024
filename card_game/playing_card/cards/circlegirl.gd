@@ -1,5 +1,7 @@
 extends EffectCardType
 
+const LogEvents = preload("res://card_game/playing_field/event_logger/log_events.gd")
+
 
 func get_id() -> int:
     return 91
@@ -43,10 +45,10 @@ func _evaluate_effect(playing_field, card) -> void:
         # Blocked by Hero-blocking card
         return
 
-    playing_field.event_logger.log_event(playing_field.turn_number, owner, LogEvents.CIRCLEGIRL_PLAYED)
+    playing_field.event_logger.LogEvent(playing_field.turn_number, owner, LogEvents.CIRCLEGIRL_PLAYED)
 
     var targets
-    if playing_field.event_logger.has_event(playing_field.turn_number, owner, LogEvents.SQUAREDUDE_PLAYED):
+    if playing_field.event_logger.HasEvent(playing_field.turn_number, owner, LogEvents.SQUAREDUDE_PLAYED):
         # Squaredude was played, level up all Minions
         targets = playing_field.get_minion_strip(owner).cards().card_array()
     else:
@@ -74,7 +76,7 @@ func ai_get_score(playing_field, player: StringName, priorities) -> float:
         score += priorities.of(LookaheadPriorities.ELIMINATE_HERO_CHECK)
         return score
 
-    if playing_field.event_logger.has_event(playing_field.turn_number, player, LogEvents.SQUAREDUDE_PLAYED):
+    if playing_field.event_logger.HasEvent(playing_field.turn_number, player, LogEvents.SQUAREDUDE_PLAYED):
         # We've already played Squaredude, so all Minions will get
         # leveled up.
         var targets = playing_field.get_minion_strip(player).cards().card_array()

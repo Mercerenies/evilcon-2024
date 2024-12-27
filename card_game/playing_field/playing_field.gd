@@ -8,7 +8,7 @@ const ScrollableCardRow = preload("res://card_game/scrollable_card_row/scrollabl
 const NullMinion = preload("res://card_game/playing_card/cards/null_minion.gd")
 const NullAIAgent = preload("res://card_game/playing_field/player_agent/null_ai_agent.gd")
 const Randomness = preload("res://card_game/playing_field/randomness.gd")
-const EventLogger = preload("res://card_game/playing_field/event_logger.gd")
+const EventLogger = preload("res://card_game/playing_field/event_logger/EventLogger.cs")
 
 # The extra amount of fort defense, given to the second player to go,
 # since they don't have first player advantage.
