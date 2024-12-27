@@ -90,6 +90,13 @@ func ai_get_score(playing_field, player: StringName, priorities) -> float:
     if odds_of_drawing_successfully == 0.0:
         # This card will die on Turn 2.
         return score
+    elif odds_of_drawing_successfully == 1.0:
+        # This card will survive indefinitely, until the opponent does
+        # something about it. This will only really happen if this
+        # character's deck has been thinned to a ridiculously low
+        # number of cards, all of them NATURE cards. To avoid dividing
+        # by zero, arbitrarily lower the probability to 99%.
+        odds_of_drawing_successfully = 0.99
 
     var expected_turns_to_live = 1.0 / (1.0 - odds_of_drawing_successfully)
     # As of Dec 9, 2024, the average EP cost of a playing card is 3.2.
@@ -102,15 +109,17 @@ func ai_get_score(playing_field, player: StringName, priorities) -> float:
 
 
 func _ai_get_expected_score_first_turn(playing_field, player: StringName, priorities):
-    var weakest_nature_minion = (
+    var nature_minions_by_value = (
         Query.on(playing_field).minions(player)
         .filter(Query.by_archetype(Archetype.NATURE))
-        .min()
+        .sorted().array()
     )
-    if weakest_nature_minion == null:
+    var parasites_in_play = _ai_count_parasites_in_play(playing_field, player)
+    if len(nature_minions_by_value) < parasites_in_play + 1:
         # In this case, we've wasted this card. It does nothing, and
         # we spent 4 EP for no reason.
         return null
+    var weakest_nature_minion = nature_minions_by_value[parasites_in_play]
 
     var possible_target_values = (
         Query.on(playing_field).minions(CardPlayer.other(player))
@@ -136,18 +145,31 @@ func _ai_probability_of_drawing_nature_card(playing_field, player: StringName) -
     var total_card_count = Query.on(playing_field).full_deck(player).count()
     var nature_card_count = _ai_count_total_nature_minions_owned(playing_field, player)
     var cards_per_turn = StatsCalculator.get_cards_per_turn(playing_field, player)
+    var cards_needed_per_turn = 1 + _ai_count_parasites_in_play(playing_field, player)
+
+    if cards_per_turn < cards_needed_per_turn:
+        # We aren't drawing enough cards to sustain this, so the
+        # probability of succeeding is zero.
+        return 0.0
+
+    if nature_card_count < cards_needed_per_turn:
+        # There aren't enough NATURE cards in our deck to sustain
+        # this. Probability of success is zero.
+        return 0.0
 
     if total_card_count <= cards_per_turn:
         # Weird corner case: Our deck is thinned to the point where we
         # draw every card we own on every turn. The AI NEVER goes for
         # deck-thinning strategies, so it would be extremely weird to
-        # end up in this case. In this case, if we have a Nature card,
-        # we're going to draw it.
-        return 1.0 if nature_card_count > 0 else 0.0
+        # end up in this case. In this case, if we have enough Nature
+        # cards, we're going to draw them every turn.
+        return 1.0 if nature_card_count >= cards_needed_per_turn else 0.0
 
-    var odds_of_failing_draw = (
-        float(Util.ncr(total_card_count - nature_card_count, cards_per_turn)) / float(Util.ncr(total_card_count, cards_per_turn))
-    )
+    var ways_of_failing_draw = 0.0
+    for j in range(cards_needed_per_turn):
+        ways_of_failing_draw += Util.ncr(nature_card_count, j) * Util.ncr(total_card_count - nature_card_count, cards_per_turn - j)
+
+    var odds_of_failing_draw = ways_of_failing_draw / float(Util.ncr(total_card_count, cards_per_turn))
     return 1.0 - odds_of_failing_draw
 
 
@@ -156,14 +178,23 @@ func ai_get_score_broadcasted(playing_field, this_card, player: StringName, prio
     if this_card.owner != player:
         return score
 
-    # If we control Invasive Parasite and no NATURE Minions,
-    # prioritize nature cards.
-    var has_nature_minion = (
+    # If we control Invasive Parasite and not enough NATURE Minions,
+    # prioritize NATURE cards.
+    var nature_minion_count = (
         Query.on(playing_field).minions(player)
-        .any(Query.by_archetype(Archetype.NATURE))
+        .count(Query.by_archetype(Archetype.NATURE))
     )
-    if not has_nature_minion and target_card_type is MinionCardType and Archetype.NATURE in target_card_type.get_base_archetypes():
+    var parasite_count = _ai_count_parasites_in_play(playing_field, player)
+    if parasite_count > nature_minion_count and target_card_type is MinionCardType and Archetype.NATURE in target_card_type.get_base_archetypes():
         # Invasive Parasites will expire. NOT playing this now would
         # suffer a wrong-order combo penalty.
         score += priorities.of(LookaheadPriorities.RIGHT_ORDER)
     return score
+
+
+func _ai_count_parasites_in_play(playing_field, player: StringName) -> int:
+    var this_id = get_id()
+    return (
+        Query.on(playing_field).effects(player)
+        .count(Query.by_id(this_id))
+    )

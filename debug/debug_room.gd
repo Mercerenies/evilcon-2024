@@ -71,7 +71,7 @@ func _debug_interactive_game():
     #$PlayingField.get_minion_strip(CardPlayer.BOTTOM).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.MILKMAN_MARAUDER), CardPlayer.BOTTOM))
     #$PlayingField.get_minion_strip(CardPlayer.BOTTOM).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.TURKEY), CardPlayer.BOTTOM))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.KING_TURTLE), CardPlayer.TOP))
-    #$PlayingField.get_effect_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DAMSEL_IN_DISTRESS), CardPlayer.TOP))
+    $PlayingField.get_effect_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.INVASIVE_PARASITES), CardPlayer.TOP))
     #$PlayingField.get_effect_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.KIDNAPPING_THE_PRESIDENT), CardPlayer.TOP))
     #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.NO_HONK_ZONE))
 
@@ -84,13 +84,13 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.ZANY_ZOMBIE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.FURIOUS_PHANTOM),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.TODDLER_CLOWN),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.GIGGLES_GALORE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.KING_CANNOLI),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CORNY_ACORN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.SPIKY_MUSHROOM_MAN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.MUSHROOM_MAN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.GRAVEYARD_DANCE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.BUSY_BEE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.MUSHROOM_MAN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.LAST_STAND),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.MEATBALL_MAN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.MUSHROOM_MAN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CORNY_ACORN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CORNY_ACORN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.STREET_MIME),
@@ -98,7 +98,7 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CIRCLEGIRL),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.SPIKY_ACORN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.GOLDEN_ACORN),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CHRIS_COGSWORTH),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.SPIKY_MUSHROOM_MAN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.SPIKY_MUSHROOM_MAN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.SPIKY_ACORN),
     ]

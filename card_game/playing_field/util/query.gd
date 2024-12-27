@@ -20,6 +20,11 @@ class Q:
         arr.reverse()
         return Q.new(_playing_field, arr)
 
+    func sorted():
+        var arr = array().duplicate()
+        arr.sort_custom(CardEffects.card_power_less_than(_playing_field))
+        return Q.new(_playing_field, arr)
+
     func filter(callable_or_arr):
         # Filters the array. The callable shall take two arguments:
         # the playing field and the particular card or card type to
