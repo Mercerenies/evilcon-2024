@@ -1,0 +1,19 @@
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Evilcon", "Evilcon.csproj", "{13738DA4-50FC-4DE6-AB09-4F0B3725800D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+	Debug|Any CPU = Debug|Any CPU
+	ExportDebug|Any CPU = ExportDebug|Any CPU
+	ExportRelease|Any CPU = ExportRelease|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{13738DA4-50FC-4DE6-AB09-4F0B3725800D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13738DA4-50FC-4DE6-AB09-4F0B3725800D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13738DA4-50FC-4DE6-AB09-4F0B3725800D}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
+		{13738DA4-50FC-4DE6-AB09-4F0B3725800D}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
+		{13738DA4-50FC-4DE6-AB09-4F0B3725800D}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
+		{13738DA4-50FC-4DE6-AB09-4F0B3725800D}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
+	EndGlobalSection
+EndGlobal
