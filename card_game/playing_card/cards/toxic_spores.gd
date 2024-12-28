@@ -57,3 +57,18 @@ func _perform_effect(playing_field, this_card) -> void:
 func _owner_has_nature_minion(playing_field, owner) -> bool:
     var minions = playing_field.get_minion_strip(owner).cards().card_array()
     return minions.any(func(c): return c.has_archetype(playing_field, Archetype.NATURE))
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+
+    if not _owner_has_nature_minion(playing_field, player):
+        # This card will have no effect.
+        return score
+
+    var target_minion = CardEffects.most_powerful_minion(playing_field, player)
+    var can_influence = CardEffects.do_hypothetical_influence_check(playing_field, target_minion, self, player)
+    if can_influence and target_minion.card_type.get_level(playing_field, target_minion) > 0:
+        score += target_minion.card_type.get_morale(playing_field, target_minion) * priorities.of(LookaheadPriorities.FORT_DEFENSE)
+
+    return score

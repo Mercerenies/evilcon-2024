@@ -61,7 +61,7 @@ func _debug_interactive_game():
 
     $PlayingField.turn_number = 10  # Get extra EP :)
     #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DAMSEL_IN_DISTRESS))
-    $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.INVASIVE_PARASITES))
+    $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.TOXIC_SPORES))
     #$PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.PACIFIER))
     #$PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.GOLDEN_ACORN))
     #$PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DR_BADGUY_DOOMCAKE))
@@ -83,9 +83,9 @@ func _sample_deck():
     return [
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.ZANY_ZOMBIE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.FURIOUS_PHANTOM),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.TODDLER_CLOWN),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CORNY_ACORN),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.SPIKY_MUSHROOM_MAN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CAPTAIN_CIRCLE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.DEATH_CYBORG),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.DEATH_CYBORG),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.MUSHROOM_MAN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.GRAVEYARD_DANCE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.MUSHROOM_MAN),
