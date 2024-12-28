@@ -134,6 +134,15 @@ func _ai_get_expected_score_first_turn(playing_field, player: StringName, priori
     score -= weakest_nature_minion.card_type.ai_get_value_of_destroying(playing_field, weakest_nature_minion, priorities)
     if len(possible_target_values) != 0:
         score += Util.sum(possible_target_values) / len(possible_target_values)
+
+    if _ai_controls_poison_cloud(playing_field, player) and len(nature_minions_by_value) == parasites_in_play + 1:
+        # If we control a Poison Cloud and have *exactly* enough
+        # Minions to keep these Invasive Parasites in play, then we'll
+        # lose the Poison Cloud. In that case, playing this card
+        # before playing the extra NATURE Minion triggers a wrong
+        # order combo penalty.
+        score -= priorities.of(LookaheadPriorities.RIGHT_ORDER)
+
     return score
 
 
@@ -146,6 +155,14 @@ func _ai_probability_of_drawing_nature_card(playing_field, player: StringName) -
     var nature_card_count = _ai_count_total_nature_minions_owned(playing_field, player)
     var cards_per_turn = StatsCalculator.get_cards_per_turn(playing_field, player)
     var cards_needed_per_turn = 1 + _ai_count_parasites_in_play(playing_field, player)
+
+    if _ai_controls_poison_cloud(playing_field, player):
+        # Technically, Poison Clouds don't sacrifice their Minions, so
+        # we can "reuse" the same Minion for a couple of turns. But on
+        # average, we'll need to draw an extra Minion to replace the
+        # expiring Poison Cloud Minion. So just pretend it's an extra
+        # Invasive Parasites for now.
+        cards_needed_per_turn += 1
 
     if cards_per_turn < cards_needed_per_turn:
         # We aren't drawing enough cards to sustain this, so the
@@ -184,7 +201,11 @@ func ai_get_score_broadcasted(playing_field, this_card, player: StringName, prio
         Query.on(playing_field).minions(player)
         .count(Query.by_archetype(Archetype.NATURE))
     )
+
     var parasite_count = _ai_count_parasites_in_play(playing_field, player)
+    if _ai_controls_poison_cloud(playing_field, player):
+        parasite_count += 1
+
     if parasite_count > nature_minion_count and target_card_type is MinionCardType and Archetype.NATURE in target_card_type.get_base_archetypes():
         # Invasive Parasites will expire. NOT playing this now would
         # suffer a wrong-order combo penalty.
@@ -197,4 +218,12 @@ func _ai_count_parasites_in_play(playing_field, player: StringName) -> int:
     return (
         Query.on(playing_field).effects(player)
         .count(Query.by_id(this_id))
+    )
+
+
+func _ai_controls_poison_cloud(playing_field, player: StringName) -> bool:
+    var poison_cloud_id = PlayingCardCodex.ID.POISON_CLOUD
+    return (
+        Query.on(playing_field).effects(player)
+        .any(Query.by_id(poison_cloud_id))
     )
