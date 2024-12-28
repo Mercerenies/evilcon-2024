@@ -10,7 +10,7 @@ func get_title() -> String:
 
 
 func get_text() -> String:
-    return "[font_size=12] Minions played by your opponent are at -1 Level. During your Standby Phase, destroy this card if you have no [icon]NATURE[/icon] NATURE Minions.[/font_size]"
+    return "[font_size=12]Minions played by your opponent are at -1 Level. During your Standby Phase, destroy this card if you have no [icon]NATURE[/icon] NATURE Minions.[/font_size]"
 
 
 func is_ongoing() -> bool:
