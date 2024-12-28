@@ -10,7 +10,7 @@ func get_title() -> String:
 
 
 func get_text() -> String:
-    return "[font_size=12]Minions played by your opponent are at -1 Level. During your Standby Phase, destroy this card if you have no [icon]NATURE[/icon] NATURE Minions.[/font_size]"
+    return "[font_size=12]Minions played by your opponent are at -1 Level. During your Standby Phase, destroy this card if you have no [icon]NATURE[/icon] NATURE Minions. Limit 1 per deck.[/font_size]"
 
 
 func is_ongoing() -> bool:
@@ -18,7 +18,7 @@ func is_ongoing() -> bool:
 
 
 func get_star_cost() -> int:
-    return 5
+    return 6
 
 
 func get_picture_index() -> int:
@@ -27,6 +27,10 @@ func get_picture_index() -> int:
 
 func get_rarity() -> int:
     return Rarity.RARE
+
+
+func is_limited() -> bool:
+    return true
 
 
 func on_standby_phase(playing_field, this_card) -> void:
