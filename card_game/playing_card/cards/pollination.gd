@@ -62,16 +62,32 @@ func _has_any_bees(playing_field, owner) -> bool:
 
 func ai_get_score(playing_field, player: StringName, priorities) -> float:
     var score = super.ai_get_score(playing_field, player, priorities)
-
     if not _has_any_bees(playing_field, player):
         # Effect fizzles and nothing happens.
         return score
 
+    score += _ai_value_of_effect(playing_field, player, priorities)
+    return score
+
+
+func ai_get_score_broadcasted_in_hand(playing_field, player: StringName, priorities, target_card_type) -> float:
+    var score = super.ai_get_score_broadcasted_in_hand(playing_field, player, priorities, target_card_type)
+
+    # If we play a BEE Minion and can follow up with Pollination, then
+    # consider the value of doing so.
+    var evil_points_left = playing_field.get_stats(player).evil_points
+    if target_card_type is MinionCardType and Archetype.BEE in target_card_type.get_base_archetypes() and target_card_type.get_star_cost() + get_star_cost() <= evil_points_left:
+        var value_of_playing_pollination = _ai_value_of_effect(playing_field, player, priorities) - get_star_cost() * priorities.of(LookaheadPriorities.EVIL_POINT)
+        if value_of_playing_pollination > 0:
+            score += value_of_playing_pollination
+
+    return score
+
+
+func _ai_value_of_effect(playing_field, player: StringName, priorities) -> float:
     var strongest_nature_minion = _get_strongest_nature_minion(playing_field, player)
     if strongest_nature_minion == null:
         # Nothing to copy
-        return score
+        return 0.0
 
-    var remaining_value = strongest_nature_minion.card_type.ai_get_expected_remaining_score(playing_field, strongest_nature_minion)
-    score += remaining_value
-    return score
+    return strongest_nature_minion.card_type.ai_get_expected_remaining_score(playing_field, strongest_nature_minion) * priorities.of(LookaheadPriorities.FORT_DEFENSE)
