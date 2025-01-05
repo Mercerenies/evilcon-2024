@@ -58,3 +58,20 @@ func _get_strongest_nature_minion(playing_field, owner):
 func _has_any_bees(playing_field, owner) -> bool:
     var minions = playing_field.get_minion_strip(owner).cards().card_array()
     return minions.any(func(c): return c.has_archetype(playing_field, Archetype.BEE))
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+
+    if not _has_any_bees(playing_field, player):
+        # Effect fizzles and nothing happens.
+        return score
+
+    var strongest_nature_minion = _get_strongest_nature_minion(playing_field, player)
+    if strongest_nature_minion == null:
+        # Nothing to copy
+        return score
+
+    var remaining_value = strongest_nature_minion.card_type.ai_get_expected_remaining_score(playing_field, strongest_nature_minion)
+    score += remaining_value
+    return score
