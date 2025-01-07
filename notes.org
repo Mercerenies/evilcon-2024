@@ -6,12 +6,18 @@
 
   Some of the below notes are revised from my original design
   document. Most of it has been edited since then.
+
+  (Note: It's now 2025 and I'm still working on this. Obviously the
+  name is no longer "Evilcon 2024", not least of all because it's no
+  longer that year. But also, I was never super attached to the name
+  to begin with; I'll probably come up with a cutesy acronym for the
+  convention)
 ** SETTING / STORY
    You play as Ravengirl, one of the sidekicks to well-known superhero
    and vigilante detective Ravenman. A convention of supervillains is
    meeting at a local hotel / conference hall under the guise of an
    International Clock Polishers' Association, to discuss some
-   unspecified evil plan. The rumor is that the fabled King of Evil
+   unspecified evil plan. The rumor is that the fabled King of Crime
    will be there, and Ravenman wants to identify and arrest him.
 
    You will go undercover as the hotel's cleaning staff to infiltrate
@@ -20,14 +26,14 @@
    everywhere.
 
    Once you earn the trust of the supervillains, you'll be able to
-   tackle an Elite Four style final boss gauntlet, where you must face
+   tackle an Elite-Four-style final boss gauntlet, where you must face
    four enemies in a row without changing your deck in between. After
    that, you learn that Ravenboy (Ravenman's /other/ sidekick) has
    been secretly running the criminal underground and is the King of
-   Evil.
+   Crime.
 
-   Possibly multiple endings: You can choose to arrest Ravenboy or
-   work with him as a criminal?
+   +Possibly multiple endings: You can choose to arrest Ravenboy or
+   work with him as a criminal?+
 ** GAMEPLAY
    The main game takes place as a top-down RPG-style world (think old
    Pokemon games). The entire game takes place in the hotel at which
@@ -106,10 +112,11 @@
     only be obtainable in this way.
 
     You may sell cards to the shop, except ultra rare cards. Ultra
-    rare cards are non-renewable, so you may not sell them. (Addendum:
-    Maybe you can sell them, and if you do, then you can get another
-    copy from the original NPC that gave them to you? Could be a
-    decent late-game money farm)
+    rare cards are non-renewable, so you may not sell them.
+
+    +Addendum: Maybe you /can/ sell them, and if you do, then you can
+    get another copy from the original NPC that gave them to you?
+    Could be a decent late-game money farm.+
 *** OTHER QUESTS
     + Probably some RPG-style fetch quests.
     + Some basic overworld puzzles like ice-sliding puzzles or
@@ -196,7 +203,7 @@
      + Beeatrice :: A human who has dedicated her life to the
        Venomatrix and seeks to make bees reign supreme.
 **** THE FINAL GAUNTLET
-     The four villains you must face before meeting the King of Evil.
+     The four villains you must face before meeting the King of Crime.
      Must be faced in order with no deck changes in betwee.
      + Minionman :: Again but with his mask off and going by his real
        identity; he's actually a powerful card player and just puts on
@@ -314,13 +321,13 @@
    card that /was/ augmenting the hand limit expires, for instance).
 *** PHASES
 **** DRAW PHASE
-     A player's turn starts with the Draw Phase. The player draws 3
-     cards and then gains Evil Points, or EP for short. On the first
-     turn, players get 2 EP each. On the second, they get 3, then 4,
-     and so on up to a maximum of 8 EP per turn. Then the player draws
-     cards. By default, he draws 3 cards per turn, though that can be
-     augmented with effects. Again, if he's already at his hand limit,
-     he does not draw.
+     A player's turn starts with the Draw Phase. First, The player
+     gains Evil Points, or EP for short. On the first turn, players
+     get 2 EP each. On the second, they get 3, then 4, and so on up to
+     a maximum of 8 EP per turn. Then the player draws cards. By
+     default, he draws 3 cards per turn, though that can be augmented
+     with effects. Again, if he's already at his hand limit, he does
+     not draw.
 **** ATTACK PHASE
      All Minions on the turn player's side of the field attack the
      enemy's fort. Generally speaking, this bypasses enemy Minions and
@@ -330,9 +337,16 @@
      All Minions on the turn player's side of the field decrease in
      Morale by 1. This includes Minions whose Attack Phase was skipped
      for any reason.
+
+     A Minion whose Morale hits zero will /expire/ and (usually) be
+     removed from the field. This is not exclusive to the Morale Phase
+     and can happen at other times if a card effect changes a Minion's
+     Morale, but it's most common during this phase.
 **** STANDBY PHASE
      Any cards which "last X number of turns" tick down their counter
-     and are discarded if the counter has hit zero.
+     and are discarded if the counter has hit zero. A handful of other
+     cards also have effects that explicitly activate during the
+     Standby Phase.
 **** MAIN PHASE
      During this phase, the turn player can spend EP to play cards
      from his hand in any order he chooses. He can play any number of
@@ -340,7 +354,8 @@
      are played one-at-a-time, and effects are fully evaluated before
      the next card is played.
 **** END PHASE
-     The player's turn ends. Any unspent EP is lost at this time.
+     The player's turn ends. Any unspent EP is lost at this time. Some
+     cards have special effects that operate during the End Phase.
 *** CARD TYPES
 **** MINIONS
      Minion cards have a Level and a Morale. Level indicates attack
@@ -361,7 +376,6 @@
 ** CARDS
    See ~library.ods~ for a list of cards that are planned for the
    game.
-
 ** CARD DESCRIPTIONS
    Here are the conventions for card description text, so we can try
    to be consistent.
@@ -411,6 +425,10 @@
      cards, should be used as an adjective, capitalized, /and/
      enclosed in quotation marks. Example: "All 'Spiky' Minions gain 1
      Level.".
+     - Note: This somewhat peculiar convention (involving the explicit
+       quotation marks) intends to emphasize that the "Spiky"
+       archetype is based on the presence or absence of the work
+       "Spiky" in the card's title.
    + "Limited" cards (i.e. those that can only exist once per deck)
      shall indicate their status using the "LIMITED" icon in the icon
      row, as well as a sentence "Limit 1 per deck." at the end of the
@@ -623,6 +641,17 @@
     + [ ] ~PlayingCardDisplay~
     + [ ] ~GameStatsPanel~ + all individual stats panels
     + [ ] All AI nodes
+*** RETROSPECTIVE
+    (Written Jan 6, 2025)
+
+    I have tried implementing a Monte Carlo simulation, but, at least
+    right now, it seems too slow in GDScript. I can only run for a
+    very small number of games and a small depth, not nearly enough to
+    begin to "understand" the game even superficially.
+
+    With that in mind, I am currently working on implementing the
+    other idea, involving manual heuristic-based valuations of every
+    card in the game.
 ** RANDOM IDEAS
    + [ ] Villain(s) from Three Rules Standing
    + [ ] Costume shop for some cosmetic upgrades
@@ -635,6 +664,7 @@
      - If the opponent plays the third Destiny Song while this card is
        in play, they win as soon as the card goes out of play.
    + [ ] The "thug" character from Nail?
+   + [ ] Ancient Demons are the salesmen who sell you cards at shops.
    + [ ] Representation (cameos?) from Growing Up?
    + [ ] Fast travel system is being dug by a new, original mole
      character who happens to know Marty the Mole.
