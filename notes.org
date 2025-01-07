@@ -123,23 +123,33 @@
       block-pushing puzzles.
 ** CHARACTERS
 *** HEROES
-    + Ravengirl :: The protagonist.
-    + Ravenman :: Prominent superhero detective.
+    + Ravengirl :: The protagonist. Ravenman's sidekick. Has no
+      special powers but is a decent martial artist.
+    + Ravenman :: Prominent superhero detective. Has no special powers
+      but is a master martial artist.
     + Ravenboy :: Sidekick of Ravenman, secretly the leader of
-      Evilcon.
-    + Flying Brickman :: Super-strong superhero and a symbol of peace
-      and justice.
+      Evilcon. Has no special powers but is a decent martial artist.
+    + Flying Brickman :: Super-strong superhero capable of flight; a
+      symbol of peace and justice. See also: Dr. Badguy Doomcake.
     + King Cannoli :: Count Carbonara's arch nemesis.
     + Squaredude and Circlegirl :: The first to overthrow the
       Icosaking in Geometropolis.
     + Prisman :: The hero who overthrew the Icosaking in Prismania.
-    + Plumberman and Plumberman's Brother :: Bristlegaze's archrivals.
-    + Clueless Man
+    + Plumberman and Plumberman's Brother :: Two ordinary plumbers
+      from Queens. One day, they were on a routine call fixing a drain
+      pipe, when Bristlegaze emerged from the bathtub drain. The two
+      defeated Bristlegaze and, somewhat reluctantly, became heroes
+      overnight. Real names: Mar and Lou. They do not have secret
+      identities and do still work as plumbers on their off time. No
+      special powers, but they use a variety of plumbing instruments
+      in cartoonish ways to fight.
+    + Clueless Man :: Believes he's a hero and tries to do the right
+      thing, but somehow it never works out.
     + Wall Golem :: Hero for hire, does the right thing but has low
       intellect.
     + Team Cobra :: Formerly minions to the Venomatrix, but they
       turned good a short time ago. The Evilcon folks haven't had time
-      to update their playing cards, so they're still minion cards.
+      to update their playing cards, so they're still Minion cards.
     + Destiny's Singer :: A legend among heroes. His songs can rewrite
       reality. Was completely undefeated among heroes, but suddenly
       disappeared one day about ten years ago. Despite every villain
@@ -165,6 +175,9 @@
      + Berry :: Barry the Brainless Overlord's much more competent
        sister. The true leader of the factory / robot lair, and holder
        of the Engineers' Stamp.
+       - The robot lair (secretly run by Berry but publicly managed by
+         Barry) consists of stealth sections, where Ravengirl must
+         avoid a variety of sentry bots.
      + True Ninja Master :: The ninja master over Dr. Meguruku. Holder
        of the Silent Stamp and true leader of the ninja lair.
        - Hides away (with Dr. Meguruku) in a papercraft town
@@ -175,7 +188,10 @@
        - Circus tent only allows admission if you've found his hidden
          mimes, who each give you an invitation.
      + Count Carbonara :: Pasta-obsessed supervillain and holder of
-       the Spaghetti Stamp.
+       the Spaghetti Stamp. His minions are all sentient pasta-related
+       foods taken from the pasta dimension. The Spaghetti Monsters
+       that rule over that dimension are not happy about his
+       intrusion.
      + Venomatrix :: Human-sized queen bee, obsessed with replacing
        the human race with bees. Holder of the Insect Stamp.
      + Catacomb Charmer :: Skeleton girl, was so obsessed with the
@@ -212,8 +228,19 @@
      + Death :: The Pale Specter himself. He gets paid a hefty
        commission to serve on the Final Gauntlet, and he's short on
        cash.
-     + Bristlegaze :: Weird alien floating eyeball thing.
-     + ??? :: ???
+     + Bristlegaze :: Weird alien floating eyeball thing. Bristlegaze
+       appeared randomly in a bathtub while Plumberman and his brother
+       were repairing it. They were able to defeat it for the moment,
+       but it keeps coming back. Bristlegaze's true nature is unknown.
+       It has a variety of powers, including the ability to read minds
+       and telekinetically control nearby objects. It only
+       acknowledges and fights Plumberman and his brother, considering
+       no one else worth its time.
+       - Bristlegaze immediately recognizes Ravengirl despite her
+         disguise, since it can read minds. However, it also doesn't
+         care. Its motives for attending the convention are unknown.
+     + ??? :: ??? (We might just make Ravenboy be the fourth one if we
+       can't think of anyone else)
 **** RECURRING RIVALS
      + Dr. Badguy Doomcake :: Just Flying Brickman in a paper-thin
        disguise.
