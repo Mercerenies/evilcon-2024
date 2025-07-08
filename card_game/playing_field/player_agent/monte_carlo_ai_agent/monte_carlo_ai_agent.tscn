@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://d30iupp0ul75q"]
 
-[ext_resource type="Script" path="res://card_game/playing_field/player_agent/monte_carlo_ai_agent/monte_carlo_ai_agent.gd" id="1_kfx7l"]
+[ext_resource type="Script" uid="uid://cix2jaybnnl4n" path="res://card_game/playing_field/player_agent/monte_carlo_ai_agent/monte_carlo_ai_agent.gd" id="1_kfx7l"]
 
 [node name="MonteCarloAIAgent" type="Node"]
 script = ExtResource("1_kfx7l")

@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://bhgmsspndgbym"]
 
 [ext_resource type="Texture2D" uid="uid://cpk0py50dxwa1" path="res://card_game/playing_card/playing_card_display/card_picture/card_picture.png" id="1_cr4k8"]
-[ext_resource type="Script" path="res://card_game/playing_card/playing_card_display/card_picture/card_picture.gd" id="1_yj2li"]
+[ext_resource type="Script" uid="uid://bee0s66vmao4k" path="res://card_game/playing_card/playing_card_display/card_picture/card_picture.gd" id="1_yj2li"]
 
 [node name="CardPicture" type="Node2D"]
 script = ExtResource("1_yj2li")

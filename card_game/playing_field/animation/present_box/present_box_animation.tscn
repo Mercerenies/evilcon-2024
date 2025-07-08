@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://c6kj7arnsu2kp"]
 
-[ext_resource type="Script" path="res://card_game/playing_field/animation/present_box/present_box_animation.gd" id="1_8k3ow"]
+[ext_resource type="Script" uid="uid://dx38o5nfkigrw" path="res://card_game/playing_field/animation/present_box/present_box_animation.gd" id="1_8k3ow"]
 [ext_resource type="Texture2D" uid="uid://c2m724b5h4v76" path="res://card_game/playing_field/animation/present_box/present_box.png" id="1_cm7hn"]
 [ext_resource type="PackedScene" uid="uid://d1hh31lpc0qp6" path="res://card_game/playing_card/playing_card_display/playing_card_display.tscn" id="2_weff7"]
 
@@ -82,7 +82,7 @@ tracks/5/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_nqqo2"]
 _data = {
-"PresentBoxAnimation": SubResource("Animation_vqfyr")
+&"PresentBoxAnimation": SubResource("Animation_vqfyr")
 }
 
 [node name="PresentBoxAnimation" type="Node2D"]

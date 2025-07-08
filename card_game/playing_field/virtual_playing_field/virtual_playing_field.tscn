@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://swsj02mgngqk"]
 
-[ext_resource type="Script" path="res://card_game/playing_field/virtual_playing_field/virtual_playing_field.gd" id="1_kyd7q"]
+[ext_resource type="Script" uid="uid://cw7jga4mjijdq" path="res://card_game/playing_field/virtual_playing_field/virtual_playing_field.gd" id="1_kyd7q"]
 [ext_resource type="PackedScene" uid="uid://bq6axevgnbp60" path="res://card_game/playing_field/virtual_playing_field/virtual_card_list.tscn" id="2_mnk0q"]
 [ext_resource type="PackedScene" uid="uid://4ny5dpr2oa7u" path="res://card_game/playing_field/game_stats_panel/game_stats_dict.tscn" id="3_73216"]
 

@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bix5v5gevj4qp"]
 
-[ext_resource type="Script" path="res://card_game/playing_field/player_agent/lookahead_ai_agent/lookahead_ai_agent.gd" id="1_ecnm2"]
+[ext_resource type="Script" uid="uid://cisjqaxp3m78a" path="res://card_game/playing_field/player_agent/lookahead_ai_agent/lookahead_ai_agent.gd" id="1_ecnm2"]
 
 [node name="LookaheadAIAgent" type="Node"]
 script = ExtResource("1_ecnm2")

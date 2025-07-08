@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://b4btsmsqpgldt"]
 
-[ext_resource type="Script" path="res://debug/debug_room.gd" id="1_jdag2"]
+[ext_resource type="Script" uid="uid://cm0ql085dwl8m" path="res://debug/debug_room.gd" id="1_jdag2"]
 [ext_resource type="PackedScene" uid="uid://pxp7u44hyyv2" path="res://card_game/playing_field/playing_field.tscn" id="2_ucbm5"]
 
 [node name="DebugRoom" type="Node2D"]

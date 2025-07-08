@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://bg6xq0rg54ckl"]
 
 [ext_resource type="PackedScene" uid="uid://dhi813hsu46i6" path="res://card_game/playing_card/playing_card_display/card_icon/card_icon.tscn" id="1_axfox"]
-[ext_resource type="Script" path="res://card_game/playing_field/game_stat/game_stat.gd" id="1_wmr8c"]
+[ext_resource type="Script" uid="uid://dk1fw4wqvlgym" path="res://card_game/playing_field/game_stat/game_stat.gd" id="1_wmr8c"]
 [ext_resource type="Theme" uid="uid://bqxbmpg0ub86d" path="res://global_theme.tres" id="3_hvkk0"]
 
 [node name="GameStat" type="Node2D"]

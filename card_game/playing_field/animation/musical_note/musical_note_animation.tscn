@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://beaqvknoxix0q"]
 
-[ext_resource type="Script" path="res://card_game/playing_field/animation/musical_note/musical_note_animation.gd" id="1_p3or8"]
+[ext_resource type="Script" uid="uid://4wtppoad1ahw" path="res://card_game/playing_field/animation/musical_note/musical_note_animation.gd" id="1_p3or8"]
 [ext_resource type="Texture2D" uid="uid://80ksdjko2ef6" path="res://card_game/playing_field/animation/musical_note/musical_note.png" id="2_tvpv5"]
 
 [sub_resource type="Curve" id="Curve_lepjg"]
@@ -53,7 +53,7 @@ tracks/1/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_h3ju1"]
 _data = {
-"MusicalNoteAnimation": SubResource("Animation_le52e")
+&"MusicalNoteAnimation": SubResource("Animation_le52e")
 }
 
 [node name="MusicalNoteAnimation" type="Node2D"]

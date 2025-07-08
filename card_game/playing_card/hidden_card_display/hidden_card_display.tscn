@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://cysmxvy2tf6p7"]
 
 [ext_resource type="PackedScene" uid="uid://bnpua7ivul3vs" path="res://card_game/playing_card/playing_card_display/card_frame/card_frame.tscn" id="1_iuaq2"]
-[ext_resource type="Script" path="res://card_game/playing_card/hidden_card_display/hidden_card_display.gd" id="1_xwrpg"]
+[ext_resource type="Script" uid="uid://b18c78cglehf5" path="res://card_game/playing_card/hidden_card_display/hidden_card_display.gd" id="1_xwrpg"]
 
 [node name="HiddenCardDisplay" type="Node2D"]
 script = ExtResource("1_xwrpg")

@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://d2ofb3pgrl0mt"]
 
-[ext_resource type="Script" path="res://card_game/playing_field/animation/puff_of_smoke/puff_of_smoke_animation.gd" id="1_8ohdx"]
+[ext_resource type="Script" uid="uid://cs3mfu0hvptok" path="res://card_game/playing_field/animation/puff_of_smoke/puff_of_smoke_animation.gd" id="1_8ohdx"]
 [ext_resource type="Texture2D" uid="uid://kvhs50r50nak" path="res://card_game/playing_field/animation/puff_of_smoke/puff_of_smoke.png" id="2_xtcl3"]
 
 [sub_resource type="Curve" id="Curve_q8ur0"]
@@ -38,7 +38,7 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_mu1ag"]
 _data = {
-"SmokeAnimation": SubResource("Animation_8ms53")
+&"SmokeAnimation": SubResource("Animation_8ms53")
 }
 
 [node name="PuffOfSmokeAnimation" type="Node2D"]

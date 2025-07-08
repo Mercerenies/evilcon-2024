@@ -1,7 +1,7 @@
 [gd_scene load_steps=11 format=3 uid="uid://pxp7u44hyyv2"]
 
 [ext_resource type="Texture2D" uid="uid://bynkbt50b1evw" path="res://card_game/playing_field/card_mat/card_mat.png" id="1_3fl7o"]
-[ext_resource type="Script" path="res://card_game/playing_field/playing_field.gd" id="1_cgwfb"]
+[ext_resource type="Script" uid="uid://cy1gulctkjc2o" path="res://card_game/playing_field/playing_field.gd" id="1_cgwfb"]
 [ext_resource type="Texture2D" uid="uid://ba6n74del1dnm" path="res://card_game/playing_field/card_mat/player_corner_mat.png" id="2_2fr12"]
 [ext_resource type="PackedScene" uid="uid://d06m06mq1io2n" path="res://card_game/playing_field/deck/deck.tscn" id="3_5hleg"]
 [ext_resource type="PackedScene" uid="uid://7aew13ponkej" path="res://card_game/playing_field/card_strip/card_strip.tscn" id="5_dckxn"]
@@ -9,7 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://duefqdwqjkkdl" path="res://card_game/playing_card/clickable_card_display/clickable_card_display.tscn" id="6_bd5kg"]
 [ext_resource type="PackedScene" uid="uid://bvh50q457q3ko" path="res://card_game/playing_field/game_stats_panel/game_stats_panel.tscn" id="8_aoot7"]
 [ext_resource type="PackedScene" uid="uid://dgwt236eos2sb" path="res://card_game/playing_field/end_turn_button/end_turn_button.tscn" id="10_dkn10"]
-[ext_resource type="Script" path="res://card_game/playing_field/ai_layer.gd" id="10_tna8l"]
+[ext_resource type="Script" uid="uid://dl5u8vucqal63" path="res://card_game/playing_field/ai_layer.gd" id="10_tna8l"]
 
 [node name="PlayingField" type="Node2D"]
 script = ExtResource("1_cgwfb")

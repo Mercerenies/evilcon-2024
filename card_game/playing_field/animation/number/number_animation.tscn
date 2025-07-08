@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://bqna5put7r6to"]
 
-[ext_resource type="Script" path="res://card_game/playing_field/animation/number/number_animation.gd" id="1_npeo6"]
+[ext_resource type="Script" uid="uid://c1a5uk682kol3" path="res://card_game/playing_field/animation/number/number_animation.gd" id="1_npeo6"]
 [ext_resource type="Theme" uid="uid://bqxbmpg0ub86d" path="res://global_theme.tres" id="2_ik6nh"]
 
 [sub_resource type="Animation" id="Animation_uhlvg"]
@@ -21,7 +21,7 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_lt36f"]
 _data = {
-"DecayAnimation": SubResource("Animation_uhlvg")
+&"DecayAnimation": SubResource("Animation_uhlvg")
 }
 
 [node name="NumberAnimation" type="Node2D"]

@@ -1,6 +1,6 @@
 [gd_scene load_steps=13 format=3 uid="uid://d1hh31lpc0qp6"]
 
-[ext_resource type="Script" path="res://card_game/playing_card/playing_card_display/playing_card_display.gd" id="1_ctuju"]
+[ext_resource type="Script" uid="uid://bxw8jdpxc6nxa" path="res://card_game/playing_card/playing_card_display/playing_card_display.gd" id="1_ctuju"]
 [ext_resource type="PackedScene" uid="uid://bnpua7ivul3vs" path="res://card_game/playing_card/playing_card_display/card_frame/card_frame.tscn" id="1_titw6"]
 [ext_resource type="Theme" uid="uid://e72ukg4v02e7" path="res://card_game/playing_card/playing_card_display/card_display_theme.tres" id="2_7d3ug"]
 [ext_resource type="PackedScene" uid="uid://brk2nqbiy5ofr" path="res://card_game/playing_card/playing_card_display/card_icon_row/card_icon_row.tscn" id="4_o5fv1"]
@@ -84,10 +84,10 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_jare0"]
 _data = {
-"FadeInAnimation": SubResource("Animation_dicjk"),
-"FadeOutAnimation": SubResource("Animation_o6ei0"),
-"HighlightAnimation": SubResource("Animation_1c8rq"),
-"RotateAnimation": SubResource("Animation_88o15")
+&"FadeInAnimation": SubResource("Animation_dicjk"),
+&"FadeOutAnimation": SubResource("Animation_o6ei0"),
+&"HighlightAnimation": SubResource("Animation_1c8rq"),
+&"RotateAnimation": SubResource("Animation_88o15")
 }
 
 [node name="PlayingCardDisplay" type="Node2D"]

@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://b2dywo36vnqkv"]
 
-[ext_resource type="Script" path="res://card_game/playing_field/animation/card_moving/card_moving_animation.gd" id="1_g1f2t"]
+[ext_resource type="Script" uid="uid://dxky25w7re7bx" path="res://card_game/playing_field/animation/card_moving/card_moving_animation.gd" id="1_g1f2t"]
 [ext_resource type="PackedScene" uid="uid://d1hh31lpc0qp6" path="res://card_game/playing_card/playing_card_display/playing_card_display.tscn" id="2_x5s3o"]
 
 [node name="CardMovingAnimation" type="Node2D"]

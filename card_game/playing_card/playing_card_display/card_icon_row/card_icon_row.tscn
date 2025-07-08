@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://brk2nqbiy5ofr"]
 
-[ext_resource type="Script" path="res://card_game/playing_card/playing_card_display/card_icon_row/card_icon_row.gd" id="1_pb4cl"]
+[ext_resource type="Script" uid="uid://bybk737tu023r" path="res://card_game/playing_card/playing_card_display/card_icon_row/card_icon_row.gd" id="1_pb4cl"]
 
 [node name="CardIconRow" type="Node2D"]
 script = ExtResource("1_pb4cl")
