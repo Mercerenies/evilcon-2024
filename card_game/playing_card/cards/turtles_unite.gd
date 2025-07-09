@@ -10,15 +10,19 @@ func get_title() -> String:
 
 
 func get_text() -> String:
-    return "[font_size=12]Destroy all [icon]TURTLE[/icon] TURTLE Minions you control; +X defense to your fortress, where X is the total Level of the destroyed Minions.[/font_size]"
+    return "[font_size=12]Destroy all [icon]TURTLE[/icon] TURTLE Minions you control; +X defense to your fortress, where X is twice the total Level of the destroyed Minions. Limit 1 per deck.[/font_size]"
 
 
 func get_star_cost() -> int:
-    return 1
+    return 2
 
 
 func get_picture_index() -> int:
     return 172
+
+
+func is_limited() -> bool:
+    return true
 
 
 func get_rarity() -> int:
@@ -46,7 +50,7 @@ func _evaluate_effect(playing_field, this_card) -> void:
     for card in cards_to_destroy:
         var can_influence = card.card_type.do_influence_check(playing_field, card, this_card, false)
         if can_influence:
-            total_level += card.card_type.get_level(playing_field, card)
+            total_level += 2 * card.card_type.get_level(playing_field, card)
             await CardGameApi.destroy_card(playing_field, card)
     if total_level > 0:
         await Stats.add_fort_defense(playing_field, owner, total_level)
