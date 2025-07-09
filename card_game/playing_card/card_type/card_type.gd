@@ -370,5 +370,5 @@ func ai_get_score_broadcasted_in_hand(_playing_field, _player: StringName, _prio
 # MinionCardType.ai_will_be_spiky.
 #
 # This method MUST NOT await.
-func ai_will_be_spiky_broadcasted(playing_field, this_card, candidate_card_type, candidate_owner):
+func ai_will_be_spiky_broadcasted(_playing_field, _this_card, _candidate_card_type, _candidate_owner):
     return false

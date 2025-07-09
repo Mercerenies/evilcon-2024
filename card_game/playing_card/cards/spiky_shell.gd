@@ -39,3 +39,13 @@ func ai_will_be_spiky_broadcasted(playing_field, this_card, candidate_card_type,
     if candidate_owner == this_card.owner and candidate_card_type is MinionCardType and Archetype.TURTLE in candidate_card_type.get_base_archetypes():
         return true
     return super.ai_will_be_spiky_broadcasted(playing_field, this_card, candidate_card_type, candidate_owner)
+
+
+func ai_get_score_per_turn(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score_per_turn(playing_field, player, priorities)
+
+    for minion in playing_field.get_minion_strip(player).cards().card_array():
+        if minion.has_archetype(playing_field, Archetype.TURTLE):
+            score += priorities.of(LookaheadPriorities.SPIKY)
+
+    return score

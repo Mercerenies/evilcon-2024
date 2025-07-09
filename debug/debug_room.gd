@@ -61,8 +61,9 @@ func _debug_interactive_game():
     top_deck.cards().shuffle()
 
     $PlayingField.turn_number = 10  # Get extra EP :)
-    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.SHELL_SHIELD))
-    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.KING_TURTLE))
+    $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.SPIKY_SHELL))
+    $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.TINY_TURTLE))
+    #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.KING_TURTLE))
     #$PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DR_BADGUY_DOOMCAKE))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.CORDYCEPS), CardPlayer.TOP))
     #$PlayingField.get_minion_strip(CardPlayer.BOTTOM).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.KING_TURTLE), CardPlayer.BOTTOM))
@@ -85,7 +86,7 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.DEATH_CYBORG),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.DEATH_CYBORG),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.SHELL_SHIELD),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.TINY_TURTLE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.SPIKY_SHELL),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.TINY_TURTLE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CORDYCEPS),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.MASKED_TURTLE),

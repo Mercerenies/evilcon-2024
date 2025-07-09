@@ -91,7 +91,9 @@ const BEDEVILING := &"BEDEVILING"
 const ROBOTING := &"ROBOTING"
 
 # The value of playing a "Spiky" Minion. Alternatively, the value of
-# taking an existing friendly Minion and making it "Spiky". Most decks
+# taking an existing friendly Minion and making it "Spiky". This is in
+# units of "1 / Minion*turn", so it should generally be multiplied by
+# the number of turns the Minion will be on the field. Most decks
 # don't care about this, but decks carrying Needle Strike will value
 # "Spiky" Minions.
 const SPIKY := &"SPIKY"

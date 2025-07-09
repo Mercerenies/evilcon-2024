@@ -196,6 +196,8 @@ func ai_get_score(playing_field, player: StringName, priorities) -> float:
     score += get_base_level() * get_base_morale() * priorities.of(LookaheadPriorities.FORT_DEFENSE)
     if Archetype.UNDEAD in get_base_archetypes():
         score += priorities.of(LookaheadPriorities.UNDEAD)
+    if ai_will_be_spiky(playing_field, player):
+        score += priorities.of(LookaheadPriorities.SPIKY) * get_base_morale()
     return score
 
 
