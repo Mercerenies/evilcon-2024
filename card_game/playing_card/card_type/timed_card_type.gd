@@ -43,7 +43,7 @@ func ai_get_score(playing_field, player: StringName, priorities) -> float:
 func ai_get_score_per_turn(_playing_field, _player: StringName, _priorities) -> float:
     # The value of this TimedCardType remaining on the field for one
     # turn. Subclasses should generally prefer to override this method
-    # rather than ai_get_score, because this method iwll also interact
+    # rather than ai_get_score, because this method will also interact
     # correctly with cards that extend lifetimes, like Chris Cogsworth
     # or the Foreman.
     return 0.0

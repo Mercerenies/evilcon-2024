@@ -60,14 +60,10 @@ func _debug_interactive_game():
     top_deck.cards().shuffle()
 
     $PlayingField.turn_number = 10  # Get extra EP :)
-    #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DAMSEL_IN_DISTRESS))
-    #$PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.POISON_CLOUD))
-    $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.POLLINATION))
-    #$PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.PACIFIER))
-    #$PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.GOLDEN_ACORN))
+    #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.SHELL_SHIELD))
+    #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.TINY_TURTLE))
     #$PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DR_BADGUY_DOOMCAKE))
-    #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.REPLACEABLE_PARTS))
-    $PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.CORDYCEPS), CardPlayer.TOP))
+    #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.CORDYCEPS), CardPlayer.TOP))
     #$PlayingField.get_minion_strip(CardPlayer.BOTTOM).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.KING_TURTLE), CardPlayer.BOTTOM))
     #$PlayingField.get_minion_strip(CardPlayer.BOTTOM).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.MILKMAN_MARAUDER), CardPlayer.BOTTOM))
     #$PlayingField.get_minion_strip(CardPlayer.BOTTOM).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.TURKEY), CardPlayer.BOTTOM))
@@ -87,15 +83,15 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CAPTAIN_CIRCLE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.DEATH_CYBORG),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.DEATH_CYBORG),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.MUSHROOM_MAN),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.GRAVEYARD_DANCE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.MUSHROOM_MAN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.SHELL_SHIELD),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.TINY_TURTLE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.TINY_TURTLE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CORDYCEPS),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.MUSHROOM_MAN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.MASKED_TURTLE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CORDYCEPS),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CORDYCEPS),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.RED_TURTLE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.BUSY_BEE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.ICE_MOTH),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.WORKER_BEE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.WORKER_BEE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.GOLDEN_ACORN),

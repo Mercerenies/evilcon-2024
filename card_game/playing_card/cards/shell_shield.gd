@@ -53,5 +53,57 @@ func augment_attack_damage(playing_field, this_card, attacking_card) -> int:
 
 
 func _owner_has_any_turtles(playing_field, owner) -> bool:
-    var minions = playing_field.get_minion_strip(owner).cards().card_array()
-    return minions.any(func(c): return c.has_archetype(playing_field, Archetype.TURTLE))
+    return (
+        Query.on(playing_field)
+        .minions(owner)
+        .any(Query.by_archetype(Archetype.TURTLE))
+    )
+
+
+func ai_get_score_per_turn(playing_field, player: StringName, priorities) -> float:
+    # If we're playing with Shell Shield in our deck, it is reasonable
+    # to assume we have enough TURTLE Minions to keep the effect
+    # active. So as long as we have one out right now, assume the
+    # effect is active.
+    var score = super.ai_get_score_per_turn(playing_field, player, priorities)
+    if not _owner_has_any_turtles(playing_field, player):
+        # No turtles, no effect
+        return score
+
+    score += _ai_get_score_for_extra_turn(playing_field, player, priorities)
+    return score
+
+func _ai_get_score_for_extra_turn(playing_field, player: StringName, priorities) -> float:
+    var score = 0.0
+
+    # We have turtles, so count the number of influence-able Level 1
+    # Minions that will be blocked by this effect.
+    for minion in Query.on(playing_field).minions(CardPlayer.other(player)).array():
+        var can_influence = CardEffects.do_hypothetical_influence_check(playing_field, minion, self, player)
+        var level = minion.card_type.get_level(playing_field, minion)
+        if can_influence and level <= 1:
+            # Exciting corner case: Technically "<= 1" even though the
+            # card text says "== 1". Doubt this ever matters but it is
+            # technically correct.
+            score += level * priorities.of(LookaheadPriorities.FORT_DEFENSE)
+
+    return score
+
+
+func ai_get_score_broadcasted(playing_field, this_card, player: StringName, priorities, target_card_type) -> float:
+    var score = super.ai_get_score_broadcasted(playing_field, this_card, player, priorities, target_card_type)
+
+    # If the target card type is a TURTLE and we don't currently have
+    # a TURTLE, then it's worth it to play it in order to keep this
+    # card on the field.
+    if not (target_card_type is MinionCardType):
+        return score
+    if not (Archetype.TURTLE in target_card_type.get_base_archetypes()):
+        return score
+    if _owner_has_any_turtles(playing_field, player):
+        return score  # Already have a turtle, so no need to play another.
+
+    var turns_left = get_total_turn_count() - this_card.metadata[CardMeta.TURN_COUNTER]
+    score += _ai_get_score_for_extra_turn(playing_field, player, priorities) * turns_left
+
+    return score

@@ -729,6 +729,8 @@
      more sense why it's a hero card.
    + [ ] Investigate fullscreen and window resizing behavior
    + [ ] A way to store EP for a future turn (maybe a factory card?)
+   + [ ] Diceman and dice pseudo-archetype (for random effects, lots
+     of synergy options)
 ** SCRAPPED IDEAS
    Various ideas that didn't end up working out or were cut for one
    reason or another.
