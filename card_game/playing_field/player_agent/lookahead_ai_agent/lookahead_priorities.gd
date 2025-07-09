@@ -90,6 +90,12 @@ const BEDEVILING := &"BEDEVILING"
 # characters running a ROBOT deck will care.
 const ROBOTING := &"ROBOTING"
 
+# The value of playing a "Spiky" Minion. Alternatively, the value of
+# taking an existing friendly Minion and making it "Spiky". Most decks
+# don't care about this, but decks carrying Needle Strike will value
+# "Spiky" Minions.
+const SPIKY := &"SPIKY"
+
 # The value of eliminating an active hero check. Currently, the only
 # active hero check in the game is Damsel in Distress. Most decks
 # don't care very much about eliminating hero checks, but decks
@@ -147,6 +153,7 @@ const DEFAULT_PRIORITIES := {
     &"CLOWNING": 0.0,
     &"BEDEVILING": 0.0,
     &"ROBOTING": 0.0,
+    &"SPIKY": 0.0,
     &"ELIMINATE_HERO_CHECK": 0.2,
     &"HERO_SCRY": 0.6,
     &"HOSTAGE": 2.5,

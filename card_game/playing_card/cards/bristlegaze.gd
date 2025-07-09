@@ -47,6 +47,10 @@ func is_spiky(_playing_field, _this_card) -> bool:
     return true
 
 
+func ai_will_be_spiky(_playing_field, _owner):
+    return true
+
+
 func ai_get_score(playing_field, player: StringName, priorities) -> float:
     var score = super.ai_get_score(playing_field, player, priorities)
 

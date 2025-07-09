@@ -232,3 +232,17 @@ func ai_get_value_of_destroying(playing_field, card, priorities) -> float:
     if is_undead:
         score -= priorities.of(LookaheadPriorities.UNDEAD_DESTRUCTION)
     return score
+
+
+# Should return true if this card (in hand) WOULD be spiky if played
+# right now.
+#
+# This method MUST NOT await.
+func ai_will_be_spiky(playing_field, owner):
+    if "Spiky" in get_title():
+        return true
+    var all_cards = CardGameApi.get_cards_in_play(playing_field)
+    for card in all_cards:
+        if card.card_type.ai_will_be_spiky_broadcasted(playing_field, card, self, owner):
+            return true
+    return false

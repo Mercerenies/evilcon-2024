@@ -363,3 +363,12 @@ func ai_get_score_broadcasted_in_hand(_playing_field, _player: StringName, _prio
     # player's hand and target_card_type is being considered for play
     # from the hand to the field.
     return 0.0
+
+
+# Should return true if this card would MAKE the candidate card spiky
+# if played right now. Default is constant false. See also
+# MinionCardType.ai_will_be_spiky.
+#
+# This method MUST NOT await.
+func ai_will_be_spiky_broadcasted(playing_field, this_card, candidate_card_type, candidate_owner):
+    return false

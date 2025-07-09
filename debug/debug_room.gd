@@ -43,6 +43,7 @@ func _debug_interactive_game():
         LookaheadPriorities.CLOWNING: 0.4,
         LookaheadPriorities.BEDEVILING: 0.2,
         LookaheadPriorities.ROBOTING: 0.1,
+        LookaheadPriorities.SPIKY: 0.3,
         LookaheadPriorities.HAND_LIMIT_UP: 0.6,
     })
     var ai = LookaheadAIAgent.instantiate()

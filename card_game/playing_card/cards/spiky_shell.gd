@@ -33,3 +33,9 @@ func is_spiky_broadcasted(playing_field, this_card, candidate_card) -> bool:
     if candidate_card.owner == this_card.owner and candidate_card.card_type is MinionCardType and candidate_card.has_archetype(playing_field, Archetype.TURTLE):
         return true
     return super.is_spiky_broadcasted(playing_field, this_card, candidate_card)
+
+
+func ai_will_be_spiky_broadcasted(playing_field, this_card, candidate_card_type, candidate_owner):
+    if candidate_owner == this_card.owner and candidate_card_type is MinionCardType and Archetype.TURTLE in candidate_card_type.get_base_archetypes():
+        return true
+    return super.ai_will_be_spiky_broadcasted(playing_field, this_card, candidate_card_type, candidate_owner)
