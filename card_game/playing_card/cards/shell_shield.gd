@@ -93,17 +93,51 @@ func _ai_get_score_for_extra_turn(playing_field, player: StringName, priorities)
 func ai_get_score_broadcasted(playing_field, this_card, player: StringName, priorities, target_card_type) -> float:
     var score = super.ai_get_score_broadcasted(playing_field, this_card, player, priorities, target_card_type)
 
+    if this_card.owner == player:
+        score += _ai_get_score_broadcasted_friendly(playing_field, this_card, priorities, target_card_type)
+    else:
+        score += _ai_get_score_broadcasted_enemy(playing_field, this_card, priorities, target_card_type)
+    return score
+
+
+func _ai_get_score_broadcasted_friendly(playing_field, this_card, priorities, target_card_type) -> float:
     # If the target card type is a TURTLE and we don't currently have
     # a TURTLE, then it's worth it to play it in order to keep this
     # card on the field.
+    var score = 0.0
     if not (target_card_type is MinionCardType):
         return score
     if not (Archetype.TURTLE in target_card_type.get_base_archetypes()):
         return score
-    if _owner_has_any_turtles(playing_field, player):
+    if _owner_has_any_turtles(playing_field, this_card.owner):
         return score  # Already have a turtle, so no need to play another.
 
     var turns_left = get_total_turn_count() - this_card.metadata[CardMeta.TURN_COUNTER]
-    score += _ai_get_score_for_extra_turn(playing_field, player, priorities) * turns_left
+    score += _ai_get_score_for_extra_turn(playing_field, this_card.owner, priorities) * turns_left
 
     return score
+
+
+func _ai_get_score_broadcasted_enemy(playing_field, this_card, priorities, target_card_type) -> float:
+    var score = 0.0
+    if not _owner_has_any_turtles_with_good_morale(playing_field, this_card.owner):
+        return score
+    if not (target_card_type is MinionCardType):
+        return score
+    if target_card_type.get_base_level() > 1:
+        return score  # Unaffected by Shell Shield
+    # If the enemy has Shell Shield and at least one TURTLE that will
+    # last a turn, then our Level 1 Minions are not worth as much.
+    var turns_left = get_total_turn_count() - this_card.metadata[CardMeta.TURN_COUNTER] - 1
+    var turns_blocked = min(target_card_type.get_base_morale(), turns_left)
+    score -= turns_blocked * target_card_type.get_base_level() * priorities.of(LookaheadPriorities.FORT_DEFENSE)
+    return score
+
+
+func _owner_has_any_turtles_with_good_morale(playing_field, owner) -> bool:
+    return (
+        Query.on(playing_field)
+        .minions(owner)
+        .filter(Query.morale().greater_than(1))
+        .any(Query.by_archetype(Archetype.TURTLE))
+    )
