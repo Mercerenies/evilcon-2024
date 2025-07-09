@@ -44,3 +44,14 @@ func _perform_effect(playing_field, this_card) -> void:
         return
     for minion in target_minions:
         await Stats.add_morale(playing_field, minion, 1)
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+    var defense_points = (
+        Query.on(playing_field).minions(player)
+        .filter(Query.by_archetype(Archetype.TURTLE))
+        .map_sum(Query.level().value())
+    )
+    score += defense_points * priorities.of(LookaheadPriorities.FORT_DEFENSE)
+    return score
