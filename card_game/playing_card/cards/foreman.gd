@@ -69,6 +69,9 @@ func ai_get_score(playing_field, player: StringName, priorities) -> float:
 func ai_get_score_broadcasted(playing_field, this_card, player: StringName, priorities, target_card_type) -> float:
     var score = super.ai_get_score_broadcasted(playing_field, this_card, player, priorities, target_card_type)
 
+    if this_card.owner != player:
+        return score
+
     # If we control Foreman, add one turn to TimedCardTypes we play.
     if target_card_type is TimedCardType:
         score += target_card_type.ai_get_score_per_turn(playing_field, player, priorities)

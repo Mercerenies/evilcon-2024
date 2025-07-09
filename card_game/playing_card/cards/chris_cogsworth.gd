@@ -83,6 +83,9 @@ func ai_get_score(playing_field, player: StringName, priorities) -> float:
 func ai_get_score_broadcasted(playing_field, this_card, player: StringName, priorities, target_card_type) -> float:
     var score = super.ai_get_score_broadcasted(playing_field, this_card, player, priorities, target_card_type)
 
+    if this_card.owner != player:
+        return score
+
     # If we control Chris, then TimedCardTypes that will outlive him
     # get one extra turn.
     var chris_morale = get_morale(playing_field, this_card)
