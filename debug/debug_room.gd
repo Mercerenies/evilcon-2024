@@ -45,6 +45,7 @@ func _debug_interactive_game():
         LookaheadPriorities.ROBOTING: 0.1,
         LookaheadPriorities.SPIKY: 0.3,
         LookaheadPriorities.HAND_LIMIT_UP: 0.6,
+        LookaheadPriorities.FARM_RECOVERY: 0.3,
     })
     var ai = LookaheadAIAgent.instantiate()
     ai.priorities = ai_priorities
@@ -61,14 +62,9 @@ func _debug_interactive_game():
     top_deck.cards().shuffle()
 
     $PlayingField.turn_number = 10  # Get extra EP :)
-    $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.TINY_TURTLE))
-    $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DEFENSIVE_FORMATION))
+    $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.CIRCLE_OF_LIFE))
     #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.KING_TURTLE))
     #$PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DR_BADGUY_DOOMCAKE))
-    $PlayingField.get_minion_strip(CardPlayer.BOTTOM).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.MILITARY_ANDROID), CardPlayer.BOTTOM))
-    $PlayingField.get_minion_strip(CardPlayer.BOTTOM).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.MILITARY_ANDROID), CardPlayer.BOTTOM))
-    $PlayingField.get_minion_strip(CardPlayer.BOTTOM).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.MILITARY_ANDROID), CardPlayer.BOTTOM))
-    $PlayingField.get_minion_strip(CardPlayer.BOTTOM).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.MILITARY_ANDROID), CardPlayer.BOTTOM))
     #$PlayingField.get_minion_strip(CardPlayer.BOTTOM).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.KING_TURTLE), CardPlayer.BOTTOM))
     #$PlayingField.get_minion_strip(CardPlayer.BOTTOM).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.MILKMAN_MARAUDER), CardPlayer.BOTTOM))
     #$PlayingField.get_minion_strip(CardPlayer.BOTTOM).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.TURKEY), CardPlayer.BOTTOM))
@@ -83,17 +79,17 @@ func _debug_interactive_game():
 
 func _sample_deck():
     return [
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.ZANY_ZOMBIE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.FURIOUS_PHANTOM),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CAPTAIN_CIRCLE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.DEATH_CYBORG),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.DEATH_CYBORG),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CHICKEN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.DUCK),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.DUCK),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.TURKEY),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.PIG),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.SHELL_SHIELD),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.SPIKY_SHELL),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.TINY_TURTLE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CORDYCEPS),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.MASKED_TURTLE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CORDYCEPS),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.TURKEY),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.PIG),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.GIANT_PIG),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CORDYCEPS),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.RED_TURTLE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.BUSY_BEE),

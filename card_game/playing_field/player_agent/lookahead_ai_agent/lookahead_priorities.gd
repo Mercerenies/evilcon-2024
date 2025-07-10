@@ -131,6 +131,11 @@ const BLIND_EXILE := &"BLIND_EXILE"
 # own.
 const DOOMED_EXILE := &"DOOMED_EXILE"
 
+# The value, per Level * Morale, of returning a FARM Minion from your
+# discard pile to your deck. Most decks care very minimally about
+# this, but FARM decks will care more.
+const FARM_RECOVERY := &"FARM_RECOVERY"
+
 # The value of playing cards in the "right" order. This one is a bit
 # unusual. If the AI knows that it can play two cards X and Y this
 # turn in either order, but it's better to play X before Y, this is
@@ -163,6 +168,7 @@ const DEFAULT_PRIORITIES := {
     &"SINGLE_USE_EXILE": 0.85,
     &"BLIND_EXILE": 4.0,
     &"DOOMED_EXILE": 0.7,
+    &"FARM_RECOVERY": 0.1,
     &"RIGHT_ORDER": 10.0,
 }
 

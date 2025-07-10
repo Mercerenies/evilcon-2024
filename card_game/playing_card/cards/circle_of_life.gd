@@ -48,6 +48,20 @@ func _evaluate_effect(playing_field, this_card) -> void:
     playing_field.emit_cards_moved()
 
 
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+
+    var relevant_cards = (
+        Query.on(playing_field).discard_pile(player)
+        .filter(Query.by_archetype(Archetype.FARM))
+        .array()
+    )
+    for card_type in relevant_cards:
+        score += card_type.ai_get_expected_remaining_score(playing_field, null) * priorities.of(LookaheadPriorities.FARM_RECOVERY)
+
+    return score
+
+
 func _is_farm_minion(card_type):
     if not (card_type is MinionCardType):
         return false
