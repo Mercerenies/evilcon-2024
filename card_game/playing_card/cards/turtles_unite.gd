@@ -35,13 +35,18 @@ func on_play(playing_field, card) -> void:
     await CardGameApi.destroy_card(playing_field, card)
 
 
+func _get_cards_to_destroy(playing_field, owner: StringName) -> Array:
+    return (
+        Query.on(playing_field).minions(owner)
+        .filter(Query.by_archetype(Archetype.TURTLE))
+        .array()
+    )
+
+
 func _evaluate_effect(playing_field, this_card) -> void:
     await CardGameApi.highlight_card(playing_field, this_card)
     var owner = this_card.owner
-    var cards_to_destroy = (
-        playing_field.get_minion_strip(owner).cards().card_array()
-        .filter(func (c): return c.has_archetype(playing_field, Archetype.TURTLE))
-    )
+    var cards_to_destroy = _get_cards_to_destroy(playing_field, owner)
     if len(cards_to_destroy) == 0:
         Stats.show_text(playing_field, this_card, PopupText.NO_TARGET)
         return
@@ -54,3 +59,22 @@ func _evaluate_effect(playing_field, this_card) -> void:
             await CardGameApi.destroy_card(playing_field, card)
     if total_level > 0:
         await Stats.add_fort_defense(playing_field, owner, total_level)
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+
+    # Add in the prospective heal amount and subtract the cost of
+    # destroying the relevant minions.
+    var stats = playing_field.get_stats(player)
+    var heal_amount = 0
+    var relevant_minions = _get_cards_to_destroy(playing_field, player)
+    for minion in relevant_minions:
+        var can_influence = CardEffects.do_hypothetical_influence_check(playing_field, minion, self, player)
+        if can_influence:
+            heal_amount += 2 * minion.card_type.get_level(playing_field, minion)
+            score -= minion.card_type.ai_get_value_of_destroying(playing_field, minion, priorities)
+    heal_amount = mini(heal_amount, stats.max_fort_defense - stats.fort_defense)
+    score += heal_amount * priorities.of(LookaheadPriorities.FORT_DEFENSE)
+
+    return score
