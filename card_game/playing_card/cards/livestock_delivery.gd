@@ -52,3 +52,22 @@ func _is_farm_card_type(card_type):
     # have archetype modifiers.
     var archetypes = card_type.get_base_archetypes()
     return Archetype.FARM in archetypes
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = ai_get_score_base_calculation(playing_field, player, priorities)
+
+    # We know what FARM Minions are in our deck but not the order. So
+    # find the average value.
+    var farm_minion_count = _ai_query_farm_minions_in_deck(playing_field, player).count()
+    if farm_minion_count == 0:
+        farm_minion_count = 1  # Avoid division by zero
+    var farm_minion_value = _ai_query_farm_minions_in_deck(playing_field, player).map_sum(Query.remaining_ai_value().value())
+    var avg_value = float(farm_minion_value) / float(farm_minion_count)
+    score += avg_value * priorities.of(LookaheadPriorities.EVIL_POINT)
+
+    return score
+
+
+func _ai_query_farm_minions_in_deck(playing_field, player: StringName):
+    return Query.on(playing_field).deck(player).filter(Query.by_archetype(Archetype.FARM))
