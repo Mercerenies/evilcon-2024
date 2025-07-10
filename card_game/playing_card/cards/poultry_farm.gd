@@ -1,7 +1,5 @@
 extends EffectCardType
 
-const Chicken = preload("res://card_game/playing_card/cards/chicken.gd")
-
 
 func get_id() -> int:
     return 184
@@ -51,5 +49,39 @@ func _evaluate_effect(playing_field, this_card) -> void:
         new_card.metadata[CardMeta.SKIP_MORALE] = true
 
 
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = ai_get_score_base_calculation(playing_field, player, priorities)
+
+    var total_chickens = (
+        Query.on(playing_field)
+        .deck(player)
+        .count(Query.by_id(PlayingCardCodex.ID.CHICKEN))
+    )
+    var value_of_chicken = 1.0
+    score += total_chickens * value_of_chicken
+
+    # If we're about to reshuffle, then also consider chickens in the
+    # discard pile.
+    if _ai_will_reshuffle_next_turn(playing_field, player):
+        var chickens_in_discard = (
+            Query.on(playing_field)
+            .discard_pile(player)
+            .count(Query.by_id(PlayingCardCodex.ID.CHICKEN))
+        )
+        score += chickens_in_discard * value_of_chicken
+
+    return score
+
+
+func _ai_will_reshuffle_next_turn(playing_field, player: StringName) -> bool:
+    var cards_in_deck = playing_field.get_deck(player).cards().card_count()
+
+    var cards_in_hand = playing_field.get_hand(player).cards().card_count()
+    var cards_per_turn = StatsCalculator.get_cards_per_turn(playing_field, player)
+    var max_hand_size = StatsCalculator.get_hand_limit(playing_field, player)
+    var cards_to_draw = mini(cards_per_turn, max_hand_size - cards_in_hand)
+    return cards_in_deck < cards_to_draw
+
+
 func _is_chicken_card_type(card_type) -> bool:
-    return card_type.get_id() == Chicken.new().get_id()
+    return card_type.get_id() == PlayingCardCodex.ID.CHICKEN
