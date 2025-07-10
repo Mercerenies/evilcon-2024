@@ -57,6 +57,6 @@ func ai_get_score(playing_field, player: StringName, priorities) -> float:
         .filter([Query.morale().at_most(1), Query.influenced_by(self, player)])
         .map_sum(Query.remaining_ai_value().value())
     )
-    score += opponent_minion_values
+    score += opponent_minion_values * priorities.of(LookaheadPriorities.FORT_DEFENSE)
 
     return score

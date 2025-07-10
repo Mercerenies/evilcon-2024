@@ -72,7 +72,7 @@ func ai_get_score(playing_field, player: StringName, priorities) -> float:
         Query.on(playing_field)
         .deck(player)
         .filter(Query.by_archetype(Archetype.FARM))
-        .filter(Query.remaining_ai_value().at_most(2))
+        .filter(Query.cost().at_most(2))
         .count()
     )
     var useful_turns = mini(total_farm_minions, get_total_turn_count())
@@ -89,7 +89,7 @@ func ai_get_score_per_turn(playing_field, player: StringName, priorities) -> flo
     if number_of_farm_minions == 0:
         number_of_farm_minions = 1  # Avoid division by zero
     var value_of_farm_minions = _ai_query_relevant_farm_minions(playing_field, player).map_sum(Query.remaining_ai_value().value())
-    score += float(value_of_farm_minions) / float(number_of_farm_minions)
+    score += priorities.of(LookaheadPriorities.EVIL_POINT) * float(value_of_farm_minions) / float(number_of_farm_minions)
 
     return score
 
@@ -99,5 +99,5 @@ func _ai_query_relevant_farm_minions(playing_field, player: StringName):
         Query.on(playing_field)
         .full_deck(player)
         .filter(Query.by_archetype(Archetype.FARM))
-        .filter(Query.remaining_ai_value().at_most(2))
+        .filter(Query.cost().at_most(2))
     )
