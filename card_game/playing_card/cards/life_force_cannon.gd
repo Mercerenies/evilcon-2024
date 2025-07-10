@@ -10,7 +10,7 @@ func get_title() -> String:
 
 
 func get_text() -> String:
-    return "If you control exactly one Minion, then deal 4 damage to your enemy's fortress."
+    return "If you control exactly one Minion, then deal 5 damage to your enemy's fortress."
 
 
 func get_star_cost() -> int:
@@ -39,4 +39,4 @@ func _evaluate_effect(playing_field, this_card) -> void:
         Stats.show_text(playing_field, this_card, PopupText.NO_TARGET)
         return
 
-    await Stats.add_fort_defense(playing_field, CardPlayer.other(owner), -4)
+    await Stats.add_fort_defense(playing_field, CardPlayer.other(owner), -5)
