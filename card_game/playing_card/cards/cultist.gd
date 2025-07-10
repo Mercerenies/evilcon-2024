@@ -68,3 +68,8 @@ func ai_get_score(playing_field, player: StringName, priorities) -> float:
     # Level * Morale.
     score -= get_base_level() * get_base_morale() * priorities.of(LookaheadPriorities.FORT_DEFENSE)
     return score
+
+
+func ai_get_expected_remaining_score(_playing_field, _card) -> float:
+    # Cultist never attacks, so he has no ongoing value.
+    return 0.0
