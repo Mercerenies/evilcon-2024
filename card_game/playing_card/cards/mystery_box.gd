@@ -61,3 +61,13 @@ func _play_present_box_animation(animation_layer, chosen_card_type) -> void:
 
 func _get_origin(any_node) -> Vector2:
     return any_node.get_viewport_rect().size / 2
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+    # As of Jul 9, 2025, the average EP cost of a playing card is 3.2.
+    # Mystery Box will give us a random card. Assume that card meets
+    # curve, i.e. its value when played is equal to its cost. Then on
+    # average we'll get a return of 3.2 out of this.
+    score += 3.2 * priorities.of(LookaheadPriorities.EVIL_POINT)
+    return score
