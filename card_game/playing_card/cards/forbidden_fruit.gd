@@ -48,3 +48,19 @@ func _evaluate_effect(playing_field, this_card) -> void:
         Stats.show_text(playing_field, most_powerful_non_demon, PopupText.DEMONED)
         most_powerful_non_demon.metadata[CardMeta.ARCHETYPE_OVERRIDES] = [Archetype.DEMON]
     playing_field.emit_cards_moved()
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+    var non_demons = (
+        playing_field.get_minion_strip(player).cards().card_array()
+        .filter(func(c): return not c.has_archetype(playing_field, Archetype.DEMON))
+    )
+    if len(non_demons) == 0:
+        return score
+
+    var most_powerful_non_demon = Util.max_by(non_demons, CardEffects.card_power_less_than(playing_field))
+    var can_influence = CardEffects.do_hypothetical_influence_check(playing_field, most_powerful_non_demon, self, player)
+    if can_influence:
+        score += priorities.of(LookaheadPriorities.BEDEVILING)
+    return score
