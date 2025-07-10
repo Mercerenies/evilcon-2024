@@ -62,7 +62,7 @@ func _debug_interactive_game():
     top_deck.cards().shuffle()
 
     $PlayingField.turn_number = 10  # Get extra EP :)
-    #$PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.ULTIMATE_FUSION))
+    $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.LIFE_DRAIN))
     #$PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DUCK))
     #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.KING_TURTLE))
     #$PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DR_BADGUY_DOOMCAKE))
@@ -85,25 +85,25 @@ func _debug_interactive_game():
 
 func _sample_deck():
     return [
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CHICKEN),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CHICKEN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.TREE_NYMPH),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.FANCIFUL_FAIRY),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.DUCK),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.TURKEY),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.PIG),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.INFERNAL_IMP),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CHICKEN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.DUCK),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.DUCK),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.TURKEY),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.TURKEY),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.INFERNAL_IMP),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.ULTIMATE_FUSION),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.RED_TURTLE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.RED_TURTLE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.BUSY_BEE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.WORKER_BEE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.POT_OF_LINGUINE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.GOLDEN_ACORN),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.SPIKY_RED_TURTLE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.KING_TURTLE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.GREEDY_GOBLIN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.ANCIENT_DEMON),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.LIFE_DRAIN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.RED_TURTLE),
     ]
 

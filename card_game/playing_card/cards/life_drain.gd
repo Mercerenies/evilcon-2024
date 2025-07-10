@@ -65,3 +65,29 @@ func _get_strongest_demon(playing_field, owner):
         .filter(func(minion): return minion.has_archetype(playing_field, Archetype.DEMON))
     )
     return Util.max_by(demons, CardEffects.card_power_less_than(playing_field))
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+
+    var tribute = _get_weakest_non_demon(playing_field, player)
+    var beneficiary = _get_strongest_demon(playing_field, player)
+    if tribute == null or beneficiary == null:
+        return score  # Effect will fizzle if played.
+
+    var can_influence = CardEffects.do_hypothetical_influence_check(playing_field, tribute, self, player)
+    if not can_influence:
+        return score  # Effect is blocked
+
+    # Sacrificing the remaining value of the tribute.
+    score -= tribute.card_type.ai_get_value_of_destroying(playing_field, tribute, priorities)
+
+    # Adding the increased value of the DEMON.
+    var tribute_level = tribute.card_type.get_level(playing_field, tribute)
+    var tribute_morale = tribute.card_type.get_morale(playing_field, tribute)
+    var curr_level = beneficiary.card_type.get_level(playing_field, beneficiary)
+    var curr_morale = beneficiary.card_type.get_morale(playing_field, beneficiary)
+    var increased_fort_defense_damage = tribute_level * tribute_morale + tribute_level * curr_morale + curr_level * tribute_morale
+    score += increased_fort_defense_damage * priorities.of(LookaheadPriorities.FORT_DEFENSE)
+
+    return score
