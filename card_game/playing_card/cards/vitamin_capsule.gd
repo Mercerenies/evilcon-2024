@@ -60,3 +60,13 @@ func _play_vitamin_animation(playing_field, vitamins_in_play: Array) -> void:
         _play_animation_for_vitamin(playing_field, vitamin, promise)
         return promise)
     await Promise.async_all(promises)
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+
+    # Easiest valuation in the world. A Vitamin Capsule is worth 1/3
+    # of its total resolution, so 10/3.
+    score += (10.0 / 3.0) * priorities.of(LookaheadPriorities.FORT_DEFENSE)
+
+    return score
