@@ -6,11 +6,11 @@ func get_id() -> int:
 
 
 func get_title() -> String:
-    return "Poultry Farm"
+    return "Farmer's Market"
 
 
 func get_text() -> String:
-    return "During your Standby Phase, summon a random [icon]FARM[/icon] FARM Minion of Cost at most 2 from your deck."
+    return "During your Standby Phase, summon a random [icon]FARM[/icon] FARM Minion of Cost at most 2 from your deck. Lasts 3 turns."
 
 
 func get_star_cost() -> int:
@@ -59,3 +59,45 @@ func _is_valid_target_card_type(card_type):
     # have archetype modifiers.
     var archetypes = card_type.get_base_archetypes()
     return Archetype.FARM in archetypes and card_type.get_star_cost() <= 2
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = ai_get_score_base_calculation(playing_field, player, priorities)
+
+    # This lasts 3 turns by default. It's pretty useless if there are
+    # fewer than 3 FARM Minions left in the deck. (This calculation
+    # ignores the possibility of reshuffling the discard pile into the
+    # deck)
+    var total_farm_minions = (
+        Query.on(playing_field)
+        .deck(player)
+        .filter(Query.by_archetype(Archetype.FARM))
+        .filter(Query.remaining_ai_value().at_most(2))
+        .count()
+    )
+    var useful_turns = mini(total_farm_minions, get_total_turn_count())
+
+    score += ai_get_score_per_turn(playing_field, player, priorities) * useful_turns
+    return score
+
+
+func ai_get_score_per_turn(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score_per_turn(playing_field, player, priorities)
+
+    # Average value of FARM Minions in this deck.
+    var number_of_farm_minions = _ai_query_relevant_farm_minions(playing_field, player).count()
+    if number_of_farm_minions == 0:
+        number_of_farm_minions = 1  # Avoid division by zero
+    var value_of_farm_minions = _ai_query_relevant_farm_minions(playing_field, player).map_sum(Query.remaining_ai_value().value())
+    score += float(value_of_farm_minions) / float(number_of_farm_minions)
+
+    return score
+
+
+func _ai_query_relevant_farm_minions(playing_field, player: StringName):
+    return (
+        Query.on(playing_field)
+        .full_deck(player)
+        .filter(Query.by_archetype(Archetype.FARM))
+        .filter(Query.remaining_ai_value().at_most(2))
+    )
