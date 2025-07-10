@@ -40,3 +40,15 @@ func _evaluate_effect(playing_field, this_card) -> void:
         return
 
     await Stats.add_fort_defense(playing_field, CardPlayer.other(owner), -5)
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+
+    var minions_count = playing_field.get_minion_strip(player).cards().card_count()
+    if minions_count != 1:
+        # No effect
+        return score
+    score += 5.0 * priorities.of(LookaheadPriorities.FORT_DEFENSE)
+
+    return score
