@@ -104,7 +104,7 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CHICK_INATOR),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.ALONE_IN_THE_DARK),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.LIFE_DRAIN),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.RED_TURTLE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.BRAINWASHING_RAY),
     ]
 
 

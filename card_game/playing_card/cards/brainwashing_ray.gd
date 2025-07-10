@@ -52,3 +52,25 @@ func _perform_effect(playing_field, this_card) -> void:
         chosen_minion.owner = this_card.owner
         await chosen_minion.card_type.on_enter_ownership(playing_field, chosen_minion)
     playing_field.emit_cards_moved()
+
+
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+
+    var minions = playing_field.get_minion_strip(CardPlayer.other(player)).cards().card_array()
+    if len(minions) == 0:
+        # Nothing to do
+        return score
+
+    var numerator = (
+        Query.on(playing_field).minions(CardPlayer.other(player))
+        .filter(Query.influenced_by(self, player))
+        .map_sum(Query.remaining_ai_value().value())
+    )
+    # Note: 2.0 times because we're removing it from the enemy AND
+    # giving it to ourselves.
+    score += (numerator / len(minions)) * 2.0 * priorities.of(LookaheadPriorities.FORT_DEFENSE)
+
+    return score
