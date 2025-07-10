@@ -144,6 +144,15 @@ const FARM_RECOVERY := &"FARM_RECOVERY"
 # a clearly better move and a clearly worse one.
 const RIGHT_ORDER := &"RIGHT_ORDER"
 
+# A minor version of RIGHT_ORDER. This is used for large, multi-card
+# combos. If all of the cards for the combo are currently in hand,
+# then it's a RIGHT_ORDER penalty to play it in the wrong order. But
+# if some part of the combo is in hand, it's a MINOR_RIGHT_ORDER
+# penalty to play them now instead of waiting for the full combo.
+#
+# See, for example, Ultimate Fusion.
+const MINOR_RIGHT_ORDER := &"MINOR_RIGHT_ORDER"
+
 const DEFAULT_PRIORITIES := {
     &"EVIL_POINT": 1.0,
     &"FORT_DEFENSE": 1.0,
@@ -170,6 +179,7 @@ const DEFAULT_PRIORITIES := {
     &"DOOMED_EXILE": 0.7,
     &"FARM_RECOVERY": 0.1,
     &"RIGHT_ORDER": 10.0,
+    &"MINOR_RIGHT_ORDER": 1.1,
 }
 
 var _data: Dictionary
