@@ -47,3 +47,25 @@ func _perform_effect(playing_field, this_card) -> void:
     if can_influence:
         await CardGameApi.destroy_card(playing_field, chosen_minion)
         await CardGameApi.create_card(playing_field, opponent, Chicken.new())
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+
+    var minions = playing_field.get_minion_strip(CardPlayer.other(player)).cards().card_array()
+    if len(minions) == 0:
+        # Nothing to do
+        return score
+
+    var numerator = (
+        Query.on(playing_field).minions(CardPlayer.other(player))
+        .filter(Query.influenced_by(self, player))
+        .map_sum(Query.remaining_ai_value().value())
+    )
+    score += (numerator / len(minions)) * priorities.of(LookaheadPriorities.FORT_DEFENSE)
+
+    # This does technically give the opponent a 1/1 Chicken. So, I
+    # mean, factor that in.
+    score -= 1.0 * priorities.of(LookaheadPriorities.FORT_DEFENSE)
+
+    return score
