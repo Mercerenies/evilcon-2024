@@ -153,6 +153,14 @@ const RIGHT_ORDER := &"RIGHT_ORDER"
 # See, for example, Ultimate Fusion.
 const MINOR_RIGHT_ORDER := &"MINOR_RIGHT_ORDER"
 
+# Opportunity cost associated with Deal with the Devil. The card Deal
+# with the Devil is a very complicated card to use correctly. In a
+# deck built around it, it's free EP. But in most decks, a lookahead
+# AI will greedily play it and then suffer later. This is the tax for
+# playing that card. DEVIL-themed decks should set this to zero or a
+# very lower number. The default value is higher.
+const DEVIL_OPPORTUNITY := &"DEVIL_OPPORTUNITY"
+
 const DEFAULT_PRIORITIES := {
     &"EVIL_POINT": 1.0,
     &"FORT_DEFENSE": 1.0,
@@ -180,6 +188,7 @@ const DEFAULT_PRIORITIES := {
     &"FARM_RECOVERY": 0.1,
     &"RIGHT_ORDER": 10.0,
     &"MINOR_RIGHT_ORDER": 1.1,
+    &"DEVIL_OPPORTUNITY": 3.5,
 }
 
 var _data: Dictionary
