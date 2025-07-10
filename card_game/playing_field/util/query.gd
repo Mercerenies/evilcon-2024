@@ -15,6 +15,9 @@ class Q:
     func array() -> Array:
         return _impl
 
+    func first():
+        return find(Query.always_true)
+
     func reversed():
         var arr = array().duplicate()
         arr.reverse()
