@@ -91,3 +91,6 @@ func ai_get_score(playing_field, player: StringName, priorities) -> float:
     score += increased_fort_defense_damage * priorities.of(LookaheadPriorities.FORT_DEFENSE)
 
     return score
+
+# TODO Would be nice to be able to teach the AI how to
+# play-then-immediately-Life-Drain a card for an extant DEMON Minion.
