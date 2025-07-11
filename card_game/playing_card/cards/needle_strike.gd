@@ -43,3 +43,15 @@ func _evaluate_effect(playing_field, card) -> void:
         if minion_card.card_type.is_spiky(playing_field, minion_card):
             await CardGameApi.highlight_card(playing_field, minion_card)
             await Stats.add_fort_defense(playing_field, opponent, -1)
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+
+    var damage = 0.0
+    for minion in playing_field.get_minion_strip(player).cards().card_array():
+        if minion.card_type.is_spiky(playing_field, minion):
+            damage += 1.0
+    score += damage * priorities.of(LookaheadPriorities.FORT_DEFENSE)
+
+    return score

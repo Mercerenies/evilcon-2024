@@ -92,19 +92,19 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.INFERNAL_IMP),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CHICKEN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.DUCK),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.VITAMIN_CAPSULE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.SPIKY_SHELL),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.TURKEY),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.VITAMIN_CAPSULE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.SPIKY_RED_TURTLE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.ULTIMATE_FUSION),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.RED_TURTLE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.RED_TURTLE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.BUSY_BEE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.VITAMIN_CAPSULE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.NEEDLE_STRIKE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.POT_OF_LINGUINE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CHICK_INATOR),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.ALONE_IN_THE_DARK),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.LIFE_DRAIN),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.BRAINWASHING_RAY),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.NEEDLE_STRIKE),
     ]
 
 
