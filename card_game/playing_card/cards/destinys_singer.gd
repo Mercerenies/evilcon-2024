@@ -6,11 +6,11 @@ func get_id() -> int:
 
 
 func get_title() -> String:
-    return "Destiny's Song"
+    return "Destiny's Singer"
 
 
 func get_text() -> String:
-    return "If you play this card three times, you win the game immediately. Limit 1 per deck."
+    return "If you successfully activate this card three times, you win the game immediately. Limit 1 per deck."
 
 
 func get_star_cost() -> int:
@@ -18,7 +18,7 @@ func get_star_cost() -> int:
 
 
 func get_picture_index() -> int:
-    return 94
+    return 200
 
 
 func is_hero() -> bool:

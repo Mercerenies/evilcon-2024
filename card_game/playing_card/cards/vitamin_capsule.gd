@@ -22,7 +22,7 @@ func get_star_cost() -> int:
 
 
 func get_picture_index() -> int:
-    return 83
+    return 201
 
 
 func get_rarity() -> int:

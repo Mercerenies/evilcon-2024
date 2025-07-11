@@ -700,7 +700,7 @@
    + [ ] "Spaghetti Code" (Pasta + Robot synergy :))
    + [X] Clarify on Squaredude/Circlegirl whether it counts as
      "playing" the other if a hero card intercepted it
-   + [ ] Reskin vitamin capsule to make it more clear that it's a Dr.
+   + [X] Reskin vitamin capsule to make it more clear that it's a Dr.
      Mario reference
    + [ ] A "jester" / "joker" card that makes a Minion count as /all/
      archetypes at once
@@ -725,7 +725,7 @@
    + [ ] BUG: Labels on cards (such as the level/morale or turn count)
      are blocking clicks on those cards. Also applies to deck and
      discard
-   + [ ] Change "Destiny's Song" to "Destiny's Singer", so it makes
+   + [X] Change "Destiny's Song" to "Destiny's Singer", so it makes
      more sense why it's a hero card.
    + [ ] Investigate fullscreen and window resizing behavior
    + [ ] A way to store EP for a future turn (maybe a factory card?)

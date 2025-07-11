@@ -62,7 +62,8 @@ func _debug_interactive_game():
     top_deck.cards().shuffle()
 
     $PlayingField.turn_number = 10  # Get extra EP :)
-    #$PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.FORBIDDEN_FRUIT))
+    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DESTINYS_SINGER))
+    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.VITAMIN_CAPSULE))
     #$PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DUCK))
     #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.KING_TURTLE))
     #$PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DR_BADGUY_DOOMCAKE))
