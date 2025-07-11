@@ -67,3 +67,34 @@ func _find_target_cards(playing_field, owner):
         return null
     else:
         return [hand.peek_card(plumberman), hand.peek_card(plumbermans_brother)]
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+
+    var plumbers = _find_target_cards(playing_field, player)
+    if plumbers == null:
+        return score  # Effect will fizzle.
+
+    var minions = playing_field.get_minion_strip(CardPlayer.other(player)).cards().card_array()
+    minions.sort_custom(CardEffects.card_power_less_than(playing_field))
+    var minions_to_destroy = minions.slice(-3)
+    for minion in minions_to_destroy:
+        var can_influence = CardEffects.do_hypothetical_influence_check(playing_field, minion, self, player)
+        if can_influence:
+            var value_of_target = minion.card_type.ai_get_expected_remaining_score(playing_field, minion)
+            score += value_of_target * priorities.of(LookaheadPriorities.FORT_DEFENSE)
+
+    return score
+
+
+func ai_get_score_broadcasted_in_hand(playing_field, player: StringName, priorities, target_card_type) -> float:
+    var score = super.ai_get_score_broadcasted_in_hand(playing_field, player, priorities, target_card_type)
+
+    if not (target_card_type.get_id() in [PlayingCardCodex.ID.PLUMBERMAN, PlayingCardCodex.ID.PLUMBERMANS_BROTHER]):
+        return score
+
+    # Minor wrong-order penalty
+    score -= priorities.of(LookaheadPriorities.MINOR_RIGHT_ORDER)
+
+    return score

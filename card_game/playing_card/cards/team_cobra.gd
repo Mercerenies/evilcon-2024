@@ -80,3 +80,51 @@ func _find_card_by_class(playing_field, owner, card_class):
         return null
     else:
         return Util.min_by(matching_minions, CardEffects.card_power_less_than(playing_field))
+
+
+func _ai_could_play_cobra_this_turn(playing_field, player: StringName) -> bool:
+    var evil_points = playing_field.get_stats(player).evil_points
+    var cards_needed = [PlayingCardCodex.ID.HYPERACTIVE_BEE, PlayingCardCodex.ID.GREEN_RANGER, PlayingCardCodex.ID.ICE_MOTH, self.get_id()]
+    var card_costs = [4, 4, 5, 2]
+    for i in range(len(cards_needed)):
+        var card_id = cards_needed[i]
+        if Query.on(playing_field).minions(player).any(Query.by_id(card_id)):
+            # Card is already on the field, so no change.
+            pass
+        elif Query.on(playing_field).hand(player).any(Query.by_id(card_id)):
+            # Card would need to be played, so include its cost.
+            evil_points -= card_costs[i]
+        else:
+            # Impossible to play this turn.
+            return false
+    return evil_points >= 0
+
+
+func ai_get_score(playing_field, player: StringName, priorities) -> float:
+    var score = super.ai_get_score(playing_field, player, priorities)
+
+    # If we can perform the attack, then we get the value of doing so
+    var targets = _find_target_cards(playing_field, player)
+    if len(targets) >= 3:
+        score += 15.0 * priorities.of(LookaheadPriorities.FORT_DEFENSE)
+
+    # This is probably overly-cautious, since Team Cobra is
+    # already -2.0 if it fizzles. But if we CAN do the combo in the
+    # right order and simply choose not to, it's a wrong order
+    # penalty.
+    if len(targets) < 3 and _ai_could_play_cobra_this_turn(playing_field, player):
+        score -= priorities.of(LookaheadPriorities.RIGHT_ORDER)
+
+    return score
+
+
+func ai_get_score_broadcasted_in_hand(playing_field, player: StringName, priorities, target_card_type) -> float:
+    var score = super.ai_get_score_broadcasted_in_hand(playing_field, player, priorities, target_card_type)
+
+    var cards_needed = [PlayingCardCodex.ID.HYPERACTIVE_BEE, PlayingCardCodex.ID.GREEN_RANGER, PlayingCardCodex.ID.ICE_MOTH]
+    if not (target_card_type.get_id() in cards_needed):
+        return score
+
+    if _ai_could_play_cobra_this_turn(playing_field, player):
+        score += priorities.of(LookaheadPriorities.RIGHT_ORDER)
+    return score
