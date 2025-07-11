@@ -693,6 +693,8 @@
    + [ ] The "thug" character from Nail?
    + [ ] Ancient Demons are the salesmen who sell you cards at shops.
    + [ ] Representation (cameos?) from Growing Up?
+     - [ ] "Ricky Riddle" in particular is just asking to be made into
+       a supervillain ;)
    + [ ] Fast travel system is being dug by a new, original mole
      character who happens to know Marty the Mole.
    + [ ] Boss support? The /only/ boss interactions right now are
@@ -731,6 +733,8 @@
    + [ ] A way to store EP for a future turn (maybe a factory card?)
    + [ ] Diceman and dice pseudo-archetype (for random effects, lots
      of synergy options)
+   + [ ] Something that costs 9 EP. I checked; we can fit nine stars
+     on the card.
 ** SCRAPPED IDEAS
    Various ideas that didn't end up working out or were cut for one
    reason or another.

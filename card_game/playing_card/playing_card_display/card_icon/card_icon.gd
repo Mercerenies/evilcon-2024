@@ -70,6 +70,9 @@ enum Frame {
     #
     # Example: Last Stand
     DOOMED = 26,
+    # All tribes at once. A card with this icon counts as
+    # *everything*.
+    WILDCARD = 27,
 }
 
 var frame: int = 0:
