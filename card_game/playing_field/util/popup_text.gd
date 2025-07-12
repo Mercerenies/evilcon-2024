@@ -8,6 +8,7 @@ const BLOCKED = &"BLOCKED"
 const CLOWNED = &"CLOWNED"
 const DEMONED = &"DEMONED"
 const ROBOTED = &"ROBOTED"
+const WILDED = &"WILDED"
 
 class Text:
     var contents: String
@@ -30,6 +31,8 @@ static func get_text(value: StringName):
             return Text.new("Bedeviled!", Color.WEB_PURPLE)
         &"ROBOTED":
             return Text.new("Upgraded!", Color.WEB_PURPLE)
+        &"WILDED":
+            return Text.new("Wild!", Color.WEB_PURPLE)
         _:
             push_error("Invalid text value: %s" % value)
             return null

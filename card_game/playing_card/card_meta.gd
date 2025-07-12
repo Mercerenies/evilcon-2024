@@ -21,6 +21,11 @@ const TURN_COUNTER = &"TURN_COUNTER"
 # all base archetypes if present.
 const ARCHETYPE_OVERRIDES = &"ARCHETYPE_OVERRIDES"
 
+# Boolean. Set to true if the card is considered to belong to EVERY
+# archetype at once. This overrides both the base archetypes AND
+# ARCHETYPE_OVERRIDES.
+const WILDCARD = &"WILDCARD"
+
 # Boolean. Set to true if the next Morale Phase should be skipped for
 # this card. This value is almost always false. See
 # MinionCardType.on_instantiate for the rationale behind this field.

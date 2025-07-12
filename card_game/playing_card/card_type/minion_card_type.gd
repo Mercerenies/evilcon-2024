@@ -8,6 +8,8 @@ func get_base_archetypes() -> Array:
 
 
 func get_archetypes(_playing_field, card) -> Array:
+    if card.metadata.get(CardMeta.WILDCARD, false):
+        return Archetype.all()
     var base = get_base_archetypes()
     var overrides = card.metadata[CardMeta.ARCHETYPE_OVERRIDES]
     return overrides if overrides != null else base

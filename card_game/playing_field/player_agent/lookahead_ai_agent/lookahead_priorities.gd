@@ -90,6 +90,10 @@ const BEDEVILING := &"BEDEVILING"
 # characters running a ROBOT deck will care.
 const ROBOTING := &"ROBOTING"
 
+# The value of converting a friendly Minion to a Wildcard Minion. Most
+# decks care minimally about this, so the default value is small.
+const WILDING = &"WILDING"
+
 # The value of playing a "Spiky" Minion. Alternatively, the value of
 # taking an existing friendly Minion and making it "Spiky". This is in
 # units of "1 / Minion*turn", so it should generally be multiplied by
@@ -177,6 +181,7 @@ const DEFAULT_PRIORITIES := {
     &"CLOWNING": 0.0,
     &"BEDEVILING": 0.0,
     &"ROBOTING": 0.0,
+    &"WILDING": 0.4,
     &"SPIKY": 0.0,
     &"ELIMINATE_HERO_CHECK": 0.2,
     &"HERO_SCRY": 0.6,

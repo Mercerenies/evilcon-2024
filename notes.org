@@ -444,8 +444,8 @@
      "All [icon]BEE[/icon] BEE Minions", NOT simply "All
      [icon]BEE[/icon] BEEs".
    + The following words are capitalized: Minion, Effect (in the
-     context of an Effect card), Hero, Cost, Level, Morale, each phase
-     name.
+     context of an Effect card), Hero, Cost, Level, Morale, Tribe,
+     each phase name.
    + The following words needn't be capitalized: card, discard pile,
      fortress, phase (on its own), defense.
    + The word "Spiky", in the context of the pseudo-archetype of
@@ -465,6 +465,8 @@
    + Minions are always referred to with the pronoun "it".
    + The player's fortress should be referred to with the word
      "fortress". Its health is called "defense" or "fortress defense".
+   + On the offchance that we need to refer abstractly to the notion
+     of "archetype", the correct user-facing term is "tribe".
 ** CARD RULINGS
    Specific rulings on weird or potentially unintuitive interactions.
 *** DEFINITIONS
@@ -704,7 +706,7 @@
      "playing" the other if a hero card intercepted it
    + [X] Reskin vitamin capsule to make it more clear that it's a Dr.
      Mario reference
-   + [ ] A "jester" / "joker" card that makes a Minion count as /all/
+   + [X] A "jester" / "joker" card that makes a Minion count as /all/
      archetypes at once
    + [X] Should Destiny's Song be a Hero card? I like that idea
      because it means the opponent can defend against a Destiny's Song

@@ -21,3 +21,21 @@ static func to_icon_index(archetype: int) -> int:
     # It's an implementation detail that these numbers match up.
     # Currently, it's simply the easiest way to store these.
     return archetype
+
+
+static func all() -> Array:
+    return [
+        HUMAN,
+        NATURE,
+        TURTLE,
+        SHAPE,
+        PASTA,
+        CLOWN,
+        ROBOT,
+        BEE,
+        NINJA,
+        BOSS,
+        UNDEAD,
+        FARM,
+        DEMON,
+    ]

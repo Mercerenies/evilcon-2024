@@ -63,9 +63,12 @@ func get_overlay_icons(_playing_field) -> Array:
 
     # Archetype overrides
     if card_type is MinionCardType:
-        var archetype_overrides = metadata[CardMeta.ARCHETYPE_OVERRIDES]
-        if archetype_overrides != null:
-            icons.append_array(archetype_overrides.map(Archetype.to_icon_index))
+        if metadata.get(CardMeta.WILDCARD, false):
+            icons.append(CardIcon.Frame.WILDCARD)
+        else:
+            var archetype_overrides = metadata[CardMeta.ARCHETYPE_OVERRIDES]
+            if archetype_overrides != null:
+                icons.append_array(archetype_overrides.map(Archetype.to_icon_index))
 
     return icons
 
@@ -74,6 +77,10 @@ func has_archetype(playing_field, archetype: int) -> bool:
     if not (card_type is MinionCardType):
         push_warning("Attempt to check Archetype of non-Minion card %s" % self)
         return false
+    if metadata.get(CardMeta.WILDCARD, false):
+        # Technically, the below code will still handle this case. But
+        # we can optimize to 'return true' and avoid a linear search.
+        return true
     var archetypes = card_type.get_archetypes(playing_field, self)
     return archetype in archetypes
 
