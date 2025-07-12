@@ -140,6 +140,16 @@ static func exile_top_of_deck(playing_field, player: StringName) -> void:
     playing_field.emit_cards_moved()
 
 
+# Returns true if the given player controls an instance of the card
+# Rule 22.
+static func has_rule_22(playing_field, player: StringName) -> bool:
+    return (
+        Query.on(playing_field)
+        .effects(player)
+        .any(Query.by_id(PlayingCardCodex.ID.RULE_22))
+    )
+
+
 # The "less than" comparison operator for Minion cards by their
 # "power" level. This is the comparison used by all of the card
 # effects that refer to the "most powerful" or "least powerful" Minion

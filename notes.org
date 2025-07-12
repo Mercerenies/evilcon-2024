@@ -701,7 +701,7 @@
      character who happens to know Marty the Mole.
    + [ ] Boss support? The /only/ boss interactions right now are
      Prisman and Evil Lair. And Prisman is a debuff for bosses.
-   + [ ] "Spaghetti Code" (Pasta + Robot synergy :))
+   + [X] "Spaghetti Code" (Pasta + Robot synergy :))
    + [X] Clarify on Squaredude/Circlegirl whether it counts as
      "playing" the other if a hero card intercepted it
    + [X] Reskin vitamin capsule to make it more clear that it's a Dr.
@@ -732,7 +732,10 @@
    + [X] Change "Destiny's Song" to "Destiny's Singer", so it makes
      more sense why it's a hero card.
    + [ ] Investigate fullscreen and window resizing behavior
-   + [ ] A way to store EP for a future turn (maybe a factory card?)
+   + [X] A way to store EP for a future turn (maybe a factory card?)
+     - It's called Refrigeration and is intended as Factory support
+       (also works really well for large combos, like Ultimate Fusion
+       and /especially/ Team Cobra)
    + [ ] Diceman and dice pseudo-archetype (for random effects, lots
      of synergy options)
    + [ ] Something that costs 9 EP. I checked; we can fit nine stars

@@ -165,6 +165,13 @@ const MINOR_RIGHT_ORDER := &"MINOR_RIGHT_ORDER"
 # very lower number. The default value is higher.
 const DEVIL_OPPORTUNITY := &"DEVIL_OPPORTUNITY"
 
+# Value of playing Rule 22. This is only useful in decks that have a
+# high number of Shape Minions *and* have other Rule 22 based cards to
+# synergize with it. Default value is 0.0. Keep in mind that Rule 22
+# has a base valuation of -8.0, so a Shape deck needs to overcome
+# this.
+const RULE_22 := &"RULE_22"
+
 const DEFAULT_PRIORITIES := {
     &"EVIL_POINT": 1.0,
     &"FORT_DEFENSE": 1.0,
@@ -194,6 +201,7 @@ const DEFAULT_PRIORITIES := {
     &"RIGHT_ORDER": 10.0,
     &"MINOR_RIGHT_ORDER": 1.1,
     &"DEVIL_OPPORTUNITY": 3.5,
+    &"RULE_22": 0.0,
 }
 
 var _data: Dictionary

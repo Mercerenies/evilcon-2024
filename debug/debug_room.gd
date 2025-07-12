@@ -46,6 +46,7 @@ func _debug_interactive_game():
         LookaheadPriorities.SPIKY: 0.3,
         LookaheadPriorities.HAND_LIMIT_UP: 0.6,
         LookaheadPriorities.FARM_RECOVERY: 0.3,
+        LookaheadPriorities.RULE_22: 9.0,
     })
     var ai = LookaheadAIAgent.instantiate()
     ai.priorities = ai_priorities
@@ -62,8 +63,8 @@ func _debug_interactive_game():
     top_deck.cards().shuffle()
 
     $PlayingField.turn_number = 10  # Get extra EP :)
-    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.REFRIGERATION))
-    $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.REFRIGERATION))
+    #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.REFRIGERATION))
+    #$PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.REFRIGERATION))
     #$PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DUCK))
     #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.KING_TURTLE))
     #$PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DR_BADGUY_DOOMCAKE))
@@ -86,19 +87,19 @@ func _debug_interactive_game():
 
 func _sample_deck():
     return [
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.GREEN_RANGER),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.GREEN_RANGER),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.GREEN_RANGER),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.HYPERACTIVE_BEE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.HYPERACTIVE_BEE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.HYPERACTIVE_BEE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.ICE_MOTH),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.ICE_MOTH),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.ICE_MOTH),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.TEAM_COBRA),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.TEAM_COBRA),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.TEAM_COBRA),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.ICOSAKING),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.REFRIGERATION),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.TRIANGLE_TROOPER),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.TRIANGLE_TROOPER),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.SERGEANT_SQUARE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.RHOMBUS_RANGER),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.RHOMBUS_RANGER),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.PENTAGON_PROTECTOR),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CAPTAIN_CIRCLE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.POT_OF_LINGUINE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.RULE_22),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.RULE_OF_STRENGTH),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.GREEDY_GOBLIN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.MILK_DELIVERY),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.PET_COW),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.MILK_DELIVERY),
