@@ -46,10 +46,11 @@ const ROBOTED_COLOR := Color.WEB_PURPLE
 #   supplied as a scalar, it is multiplied by CARD_MULTI_UI_OFFSET.
 static func play_animation_for_stat_change(playing_field, stat_node, delta: int, opts = {}) -> void:
     await playing_field.with_animation(func(animation_layer):
-        if stat_node is Callable:
-            stat_node = stat_node.call()
+        var _stat_node = stat_node
+        if _stat_node is Callable:
+            _stat_node = _stat_node.call()
         var animation = NumberAnimation.instantiate()
-        animation.position = animation_layer.to_local(stat_node.global_position) + opts.get("offset", Vector2.ZERO)
+        animation.position = animation_layer.to_local(_stat_node.global_position) + opts.get("offset", Vector2.ZERO)
         animation.amount = delta
         if opts.has("custom_label_text"):
             animation.custom_label_text = opts["custom_label_text"]
