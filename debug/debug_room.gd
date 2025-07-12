@@ -106,7 +106,7 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.RULE_OF_BRAVERY),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.WITH_EXTRA_CHEESE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.BOILING_POT_OF_WATER),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.COVER_OF_MOONLIGHT),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.RULE_OF_KNOWLEDGE),
     ]
 
     # return [
