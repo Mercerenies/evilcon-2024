@@ -35,7 +35,9 @@ func on_play(playing_field, card) -> void:
         Stats.show_text(playing_field, card, PopupText.NO_TARGET)
     else:
         for minion in minions:
-            await Stats.add_morale(playing_field, minion, 1)
+            var can_influence = minion.card_type.do_influence_check(playing_field, minion, card, false)
+            if can_influence:
+                await Stats.add_morale(playing_field, minion, 1)
     await CardGameApi.destroy_card(playing_field, card)
 
 
@@ -43,9 +45,11 @@ func ai_get_score(playing_field, player: StringName, priorities) -> float:
     var score = super.ai_get_score(playing_field, player, priorities)
     var defense_points = (
         Query.on(playing_field).minions(player)
+        .filter(Query.influenced_by(self, player))
         .map_sum(Query.level().value())
     ) - (
         Query.on(playing_field).minions(CardPlayer.other(player))
+        .filter(Query.influenced_by(self, player))
         .map_sum(Query.level().value())
     )
     score += defense_points * priorities.of(LookaheadPriorities.FORT_DEFENSE)

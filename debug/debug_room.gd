@@ -103,7 +103,7 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.MILK_DELIVERY),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.PET_COW),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.MILK_DELIVERY),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.SECOND_COURSE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.RULE_OF_BRAVERY),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.WITH_EXTRA_CHEESE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.BOILING_POT_OF_WATER),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.COVER_OF_MOONLIGHT),
