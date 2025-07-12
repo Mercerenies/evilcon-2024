@@ -4,7 +4,7 @@ use super::identifier::Identifier;
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Default)]
 pub struct SourceFile {
   pub extends_clause: Option<ExtendsClause>,
-  pub class_name: Option<String>,
+  pub class_name: Option<Identifier>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]

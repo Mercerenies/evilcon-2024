@@ -1,63 +1,40 @@
 
 use super::sitter::gdscript_tree_sitter_parser;
+use crate::ast::identifier::Identifier;
 
 use tree_sitter::{Tree, TreeCursor, Node};
-use tree_sitter::ffi::TSTreeCursor;
 
-use std::pin::Pin;
-use std::marker::PhantomPinned;
-use std::ops::Deref;
+use std::str::Utf8Error;
 
 #[derive(Debug)]
 pub(super) struct GdscriptParser<'s> {
   source_code: &'s str,
-  tree: Pin<Box<PinnedTree>>,
-  // safety: References only self.root, which is valid for the entire
-  // lifetime of self.
-  cursor: TSTreeCursor,
-}
-
-#[derive(Debug)]
-struct PinnedTree {
   tree: Tree,
-  _unpin: PhantomPinned,
 }
 
 impl<'s> GdscriptParser<'s> {
-  pub(super) fn new(source_code: &'s str) -> Self {
+  pub(super) fn new(source_code: &'s str, tree: Tree) -> Self {
+    Self { source_code, tree }
+  }
+
+  pub(super) fn from_source(source_code: &'s str) -> Self {
     let mut raw_parser = gdscript_tree_sitter_parser();
     let tree = raw_parser.parse(source_code, None)
       .expect("Failed to parse GDScript source code");
-    let tree = Box::pin(PinnedTree { tree, _unpin: PhantomPinned });
-    let cursor = tree.walk().into_raw();
-    Self { source_code, tree, cursor }
+    Self::new(source_code, tree)
   }
 
   pub(super) fn root_node(&self) -> Node<'_> {
     self.tree.root_node()
   }
 
-  pub(super) fn cursor(&mut self) -> &mut TreeCursor<'_> {
-    // safety: `self.cursor` always references pinned data in `self`.
-    unsafe {
-      TreeCursor::from_raw(self.cursor)
-    }
+  /// See [`Tree::walk`].
+  pub(super) fn cursor(&self) -> TreeCursor<'_> {
+    self.tree.walk()
   }
-}
 
-impl<'s> Drop for GdscriptParser<'s> {
-  fn drop(&mut self) {
-    // safety: `self.cursor` always references pinned data in `self`.
-    unsafe {
-      let cursor = TreeCursor::from_raw(self.cursor);
-    }
-  }
-}
-
-impl Deref for PinnedTree {
-  type Target = Tree;
-
-  fn deref(&self) -> &Self::Target {
-    &self.tree
+  pub(super) fn identifier(&self, node: &Node) -> Result<Identifier, Utf8Error> {
+    let id_text = node.utf8_text(self.source_code.as_bytes())?;
+    Ok(Identifier(id_text.to_owned()))
   }
 }

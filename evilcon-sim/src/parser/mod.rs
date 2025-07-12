@@ -6,16 +6,19 @@ mod base;
 pub mod error;
 pub mod sitter;
 
+use base::GdscriptParser;
 use error::ParseError;
 use crate::ast::file::SourceFile;
+use crate::ast::identifier::Identifier;
 
-use tree_sitter::{Tree, TreeCursor, Node};
+use tree_sitter::Node;
 
 use std::iter::Peekable;
 
-pub fn read_from_tree(tree: Tree) -> Result<SourceFile, ParseError> {
-  let mut cursor = tree.walk();
-  let root = tree.root_node();
+pub fn read_from_string(s: &str) -> Result<SourceFile, ParseError> {
+  let parser = GdscriptParser::from_source(s);
+  let root = parser.root_node();
+  let mut cursor = parser.cursor();
 
   println!("{:?}", root.to_sexp());
 
@@ -31,22 +34,15 @@ pub fn read_from_tree(tree: Tree) -> Result<SourceFile, ParseError> {
   let mut root_children = root_children.into_iter().peekable();
 
   let mut source_file = SourceFile::new();
-  parse_prologue(&mut source_file, &mut root_children, &mut cursor)?;
+  parse_prologue(&parser, &mut source_file, &mut root_children)?;
   // TODO
   Ok(source_file)
 }
 
-pub fn read_from_string(s: &str) -> Result<SourceFile, ParseError> {
-  let mut parser = sitter::gdscript_tree_sitter_parser();
-  let tree = parser.parse(s, None)
-    .expect("Failed to parse GDScript");
-  read_from_tree(tree)
-}
-
 fn parse_prologue<'tree, I>(
+  parser: &GdscriptParser,
   source_file: &mut SourceFile,
   nodes: &mut Peekable<I>,
-  cursor: &mut TreeCursor<'tree>,
 ) -> Result<(), ParseError>
 where I: Iterator<Item = Node<'tree>> {
   loop {
@@ -62,7 +58,7 @@ where I: Iterator<Item = Node<'tree>> {
         //todo!()
       }
       "class_name_statement" => {
-        source_file.class_name = Some(parse_class_name_statement(&next, cursor)?);
+        source_file.class_name = Some(parse_class_name_statement(parser, &next)?);
       }
       _ => unreachable!(),
     }
@@ -70,13 +66,12 @@ where I: Iterator<Item = Node<'tree>> {
   Ok(())
 }
 
-fn parse_class_name_statement<'tree>(
-  node: &Node<'tree>,
-  cursor: &mut TreeCursor<'tree>,
-) -> Result<String, ParseError> {
+fn parse_class_name_statement(
+  parser: &GdscriptParser,
+  node: &Node,
+) -> Result<Identifier, ParseError> {
   let Some(name_node) = node.child(1) else {
     return Err(ParseError::MissingField("name".to_owned()));
   };
-  dbg!(name_node);
-  todo!()
+  Ok(parser.identifier(&name_node)?)
 }
