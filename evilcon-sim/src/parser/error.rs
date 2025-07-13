@@ -23,6 +23,8 @@ pub enum ParseError {
   UnknownDecl(String),
   #[error("Unknown expression type {0}")]
   UnknownExpr(String),
+  #[error("Unknown statement type {0}")]
+  UnknownStmt(String),
 }
 
 #[derive(Debug, Clone)]

@@ -14,8 +14,12 @@ pub(super) fn parse_expr(
       let string_lit = parser.string_lit(node)?;
       Ok(Literal::String(string_lit).into())
     }
+    "identifier" => {
+      let ident = parser.identifier(node)?;
+      Ok(Expr::Name(ident))
+    }
     kind => {
-      Err(ParseError::UnknownDecl(kind.to_owned()))
+      Err(ParseError::UnknownExpr(kind.to_owned()))
     }
   }
 }

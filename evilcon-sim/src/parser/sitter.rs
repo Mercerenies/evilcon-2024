@@ -39,12 +39,16 @@ pub fn validate_kind(node: Node, expected_kind: &str) -> Result<(), ParseError> 
   validate_kind_any(node, [expected_kind])
 }
 
-pub fn nth_child_of<'tree>(node: Node<'tree>, idx: usize, expected_kind: &str) -> Result<Node<'tree>, ParseError> {
-  validate_kind(node, expected_kind)?;
+pub fn nth_child<'tree>(node: Node<'tree>, idx: usize) -> Result<Node<'tree>, ParseError> {
   let Some(child_node) = node.child(idx) else {
-    return Err(ParseError::ExpectedArg { index: idx, kind: expected_kind.to_owned() });
+    return Err(ParseError::ExpectedArg { index: idx, kind: node.kind().to_owned() });
   };
   Ok(child_node)
+}
+
+pub fn nth_child_of<'tree>(node: Node<'tree>, idx: usize, expected_kind: &str) -> Result<Node<'tree>, ParseError> {
+  validate_kind(node, expected_kind)?;
+  nth_child(node, idx)
 }
 
 pub fn named_child<'tree>(node: Node<'tree>, field_name: &str) -> Result<Node<'tree>, ParseError> {

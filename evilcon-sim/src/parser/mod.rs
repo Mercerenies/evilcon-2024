@@ -5,6 +5,7 @@
 mod base;
 mod decl;
 mod expr;
+mod stmt;
 
 pub mod error;
 pub mod sitter;
