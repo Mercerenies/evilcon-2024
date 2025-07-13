@@ -3,12 +3,16 @@
 //! card game.
 
 mod base;
+mod decl;
+mod expr;
+
 pub mod error;
 pub mod sitter;
 
 use base::GdscriptParser;
 use error::ParseError;
-use sitter::{nth_child_of, is_string_lit};
+use decl::parse_decl;
+use sitter::{validate_kind, nth_child_of, is_string_lit};
 use crate::ast::file::{SourceFile, ExtendsClause};
 use crate::ast::identifier::Identifier;
 
@@ -23,12 +27,7 @@ pub fn read_from_string(s: &str) -> Result<SourceFile, ParseError> {
 
   println!("{:?}", root.to_sexp());
 
-  if root.kind() != "source" {
-    return Err(ParseError::Unexpected {
-      expected: String::from("source"),
-      actual: root.kind().to_owned(),
-    });
-  }
+  validate_kind(&root, "source")?;
 
   let root_children = root.children(&mut cursor)
     .collect::<Vec<_>>();
@@ -36,7 +35,12 @@ pub fn read_from_string(s: &str) -> Result<SourceFile, ParseError> {
 
   let mut source_file = SourceFile::new();
   parse_prologue(&parser, &mut source_file, &mut root_children)?;
-  // TODO
+
+  // Parse all remaining nodes as declarations.
+  for node in root_children {
+    source_file.decls.push(parse_decl(&parser, &node)?);
+  }
+
   Ok(source_file)
 }
 
@@ -84,7 +88,8 @@ fn parse_extends_clause(
     parser.string_lit(&body_node)
       .map(ExtendsClause::Path)
   } else {
-    parser.identifier(&body_node)
+    let identifier_node = nth_child_of(&body_node, 0, "type")?;
+    parser.identifier(&identifier_node)
       .map(ExtendsClause::Id)
   }
 }

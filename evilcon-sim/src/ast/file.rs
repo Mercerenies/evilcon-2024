@@ -1,11 +1,13 @@
 
 use super::identifier::Identifier;
 use super::string::GdString;
+use super::decl::Decl;
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Default)]
 pub struct SourceFile {
   pub extends_clause: Option<ExtendsClause>,
   pub class_name: Option<Identifier>,
+  pub decls: Vec<Decl>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
