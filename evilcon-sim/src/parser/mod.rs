@@ -27,7 +27,7 @@ pub fn read_from_string(s: &str) -> Result<SourceFile, ParseError> {
 
   println!("{:?}", root.to_sexp());
 
-  validate_kind(&root, "source")?;
+  validate_kind(root, "source")?;
 
   let root_children = root.children(&mut cursor)
     .collect::<Vec<_>>();
@@ -38,7 +38,7 @@ pub fn read_from_string(s: &str) -> Result<SourceFile, ParseError> {
 
   // Parse all remaining nodes as declarations.
   for node in root_children {
-    source_file.decls.push(parse_decl(&parser, &node)?);
+    source_file.decls.push(parse_decl(&parser, node)?);
   }
 
   Ok(source_file)
@@ -60,10 +60,10 @@ where I: Iterator<Item = Node<'tree>> {
     let next = nodes.next().unwrap();
     match next.kind() {
       "extends_statement" => {
-        source_file.extends_clause = Some(parse_extends_clause(parser, &next)?);
+        source_file.extends_clause = Some(parse_extends_clause(parser, next)?);
       }
       "class_name_statement" => {
-        source_file.class_name = Some(parse_class_name_statement(parser, &next)?);
+        source_file.class_name = Some(parse_class_name_statement(parser, next)?);
       }
       _ => unreachable!(),
     }
@@ -73,23 +73,23 @@ where I: Iterator<Item = Node<'tree>> {
 
 fn parse_class_name_statement(
   parser: &GdscriptParser,
-  node: &Node,
+  node: Node,
 ) -> Result<Identifier, ParseError> {
   let name_node = nth_child_of(node, 1, "class_name_statement")?;
-  parser.identifier(&name_node)
+  parser.identifier(name_node)
 }
 
 fn parse_extends_clause(
   parser: &GdscriptParser,
-  node: &Node,
+  node: Node,
 ) -> Result<ExtendsClause, ParseError> {
   let body_node = nth_child_of(node, 1, "extends_statement")?;
-  if is_string_lit(&body_node) {
-    parser.string_lit(&body_node)
+  if is_string_lit(body_node) {
+    parser.string_lit(body_node)
       .map(ExtendsClause::Path)
   } else {
-    let identifier_node = nth_child_of(&body_node, 0, "type")?;
-    parser.identifier(&identifier_node)
+    let identifier_node = nth_child_of(body_node, 0, "type")?;
+    parser.identifier(identifier_node)
       .map(ExtendsClause::Id)
   }
 }

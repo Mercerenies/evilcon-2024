@@ -9,12 +9,12 @@ use tree_sitter::Node;
 
 pub(super) fn parse_decl(
   parser: &GdscriptParser,
-  node: &Node,
+  node: Node,
 ) -> Result<Decl, ParseError> {
   match node.kind() {
     "const_statement" => {
-      let name = parser.identifier(&named_child(node, "name")?)?;
-      let value = parse_expr(parser, &named_child(node, "value")?)?;
+      let name = parser.identifier(named_child(node, "name")?)?;
+      let value = parse_expr(parser, named_child(node, "value")?)?;
       Ok(Decl::Const { name, value })
     }
     kind => {

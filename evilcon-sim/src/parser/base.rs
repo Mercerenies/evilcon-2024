@@ -34,13 +34,13 @@ impl<'s> GdscriptParser<'s> {
     self.tree.walk()
   }
 
-  pub(super) fn identifier(&self, node: &Node) -> Result<Identifier, ParseError> {
+  pub(super) fn identifier(&self, node: Node) -> Result<Identifier, ParseError> {
     validate_kind_any(node, IDENTIFIER_KINDS)?;
     let id_text = node.utf8_text(self.source_code.as_bytes())?;
     Ok(Identifier(id_text.to_owned()))
   }
 
-  pub(super) fn string_lit(&self, node: &Node) -> Result<GdString, ParseError> {
+  pub(super) fn string_lit(&self, node: Node) -> Result<GdString, ParseError> {
     validate_kind(node, STRING_KIND)?;
     Ok(node.utf8_text(self.source_code.as_bytes())?.parse()?)
   }

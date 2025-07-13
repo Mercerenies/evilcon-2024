@@ -7,7 +7,7 @@ use tree_sitter::Node;
 
 pub(super) fn parse_expr(
   parser: &GdscriptParser,
-  node: &Node,
+  node: Node,
 ) -> Result<Expr, ParseError> {
   match node.kind() {
     "string" => {
