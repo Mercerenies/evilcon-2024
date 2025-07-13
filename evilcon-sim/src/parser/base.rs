@@ -1,10 +1,10 @@
 
-use super::sitter::gdscript_tree_sitter_parser;
+use super::sitter::{gdscript_tree_sitter_parser, STRING_KIND, IDENTIFIER_KIND, validate_kind};
+use super::error::ParseError;
 use crate::ast::identifier::Identifier;
+use crate::ast::string::GdString;
 
 use tree_sitter::{Tree, TreeCursor, Node};
-
-use std::str::Utf8Error;
 
 #[derive(Debug)]
 pub(super) struct GdscriptParser<'s> {
@@ -33,8 +33,14 @@ impl<'s> GdscriptParser<'s> {
     self.tree.walk()
   }
 
-  pub(super) fn identifier(&self, node: &Node) -> Result<Identifier, Utf8Error> {
+  pub(super) fn identifier(&self, node: &Node) -> Result<Identifier, ParseError> {
+    validate_kind(node, IDENTIFIER_KIND)?;
     let id_text = node.utf8_text(self.source_code.as_bytes())?;
     Ok(Identifier(id_text.to_owned()))
+  }
+
+  pub(super) fn string_lit(&self, node: &Node) -> Result<GdString, ParseError> {
+    validate_kind(node, STRING_KIND)?;
+    Ok(node.utf8_text(self.source_code.as_bytes())?.parse()?)
   }
 }

@@ -1,5 +1,6 @@
 
 use super::identifier::Identifier;
+use super::string::GdString;
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Default)]
 pub struct SourceFile {
@@ -10,7 +11,7 @@ pub struct SourceFile {
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum ExtendsClause {
   Id(Identifier),
-  Path(String),
+  Path(GdString),
 }
 
 impl SourceFile {

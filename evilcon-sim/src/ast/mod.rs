@@ -3,3 +3,4 @@
 
 pub mod file;
 pub mod identifier;
+pub mod string;

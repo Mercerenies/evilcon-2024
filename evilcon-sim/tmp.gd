@@ -1,2 +1,2 @@
-extends "F"
+extends F
 class_name Seven

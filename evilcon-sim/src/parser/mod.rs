@@ -8,7 +8,8 @@ pub mod sitter;
 
 use base::GdscriptParser;
 use error::ParseError;
-use crate::ast::file::SourceFile;
+use sitter::{nth_child_of, is_string_lit};
+use crate::ast::file::{SourceFile, ExtendsClause};
 use crate::ast::identifier::Identifier;
 
 use tree_sitter::Node;
@@ -55,7 +56,7 @@ where I: Iterator<Item = Node<'tree>> {
     let next = nodes.next().unwrap();
     match next.kind() {
       "extends_statement" => {
-        //todo!()
+        source_file.extends_clause = Some(parse_extends_clause(parser, &next)?);
       }
       "class_name_statement" => {
         source_file.class_name = Some(parse_class_name_statement(parser, &next)?);
@@ -70,8 +71,20 @@ fn parse_class_name_statement(
   parser: &GdscriptParser,
   node: &Node,
 ) -> Result<Identifier, ParseError> {
-  let Some(name_node) = node.child(1) else {
-    return Err(ParseError::MissingField("name".to_owned()));
-  };
-  Ok(parser.identifier(&name_node)?)
+  let name_node = nth_child_of(node, 1, "class_name_statement")?;
+  parser.identifier(&name_node)
+}
+
+fn parse_extends_clause(
+  parser: &GdscriptParser,
+  node: &Node,
+) -> Result<ExtendsClause, ParseError> {
+  let body_node = nth_child_of(node, 1, "extends_statement")?;
+  if is_string_lit(&body_node) {
+    parser.string_lit(&body_node)
+      .map(ExtendsClause::Path)
+  } else {
+    parser.identifier(&body_node)
+      .map(ExtendsClause::Id)
+  }
 }
