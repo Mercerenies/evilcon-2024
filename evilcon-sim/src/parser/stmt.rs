@@ -8,6 +8,7 @@ use super::expr::parse_expr;
 use tree_sitter::Node;
 
 pub(super) const BODY_KIND: &str = "body";
+pub(super) const COMMENT_KIND: &str = "comment";
 
 pub(super) fn parse_body(
   parser: &GdscriptParser,
@@ -16,6 +17,7 @@ pub(super) fn parse_body(
   validate_kind(node, BODY_KIND)?;
   let mut cursor = node.walk();
   node.children(&mut cursor)
+    .filter(|child| child.kind() != COMMENT_KIND)
     .map(|child| parse_stmt(parser, child))
     .collect()
 }

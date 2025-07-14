@@ -1,5 +1,5 @@
 
-use crate::ast::expr::{Expr, Literal};
+use crate::ast::expr::{Expr, AttrTarget, Literal};
 use super::error::ParseError;
 use super::base::GdscriptParser;
 use super::sitter::{nth_named_child, validate_kind};
@@ -44,6 +44,14 @@ pub(super) fn parse_expr(
       let args = parse_args(parser, nth_named_child(node, 1)?)?;
       Ok(Expr::Call { func: Box::new(func), args })
     }
+    "subscript" => {
+      let lhs = parse_expr(parser, nth_named_child(node, 0)?)?;
+      let rhs = parse_expr(parser, nth_named_child(node, 1)?)?;
+      Ok(Expr::Subscript(Box::new(lhs), Box::new(rhs)))
+    }
+    "attribute" => {
+      parse_attribute(parser, node)
+    }
     kind => {
       Err(ParseError::UnknownExpr(kind.to_owned()))
     }
@@ -59,4 +67,46 @@ fn parse_args(
   node.named_children(&mut cursor)
     .map(|child| parse_expr(parser, child))
     .collect()
+}
+
+fn parse_attribute(
+  parser: &GdscriptParser,
+  node: Node,
+) -> Result<Expr, ParseError> {
+  assert_eq!(node.kind(), "attribute");
+  let mut cursor = node.walk();
+  let mut args = node.named_children(&mut cursor);
+  let Some(lhs) = args.next() else {
+    return Err(ParseError::ExpectedArg { index: 0, kind: "attribute".to_owned() });
+  };
+  let lhs = parse_expr(parser, lhs)?;
+  args.try_fold(lhs, |lhs, rhs| {
+    let rhs = parse_attribute_rhs(parser, rhs)?;
+    Ok(lhs.attr(rhs))
+  })
+}
+
+fn parse_attribute_rhs(
+  parser: &GdscriptParser,
+  node: Node,
+) -> Result<AttrTarget, ParseError> {
+  match node.kind() {
+    "identifier" => {
+      let id = parser.identifier(node)?;
+      Ok(AttrTarget::Name(id))
+    }
+    "attribute_subscript" => {
+      let name = parser.identifier(nth_named_child(node, 0)?)?;
+      let key = parse_expr(parser, nth_named_child(node, 1)?)?;
+      Ok(AttrTarget::Subscript(name, Box::new(key)))
+    }
+    "attribute_call" => {
+      let name = parser.identifier(nth_named_child(node, 0)?)?;
+      let args = parse_args(parser, nth_named_child(node, 1)?)?;
+      Ok(AttrTarget::Call(name, args))
+    }
+    kind => {
+      Err(ParseError::UnknownExpr(kind.to_owned()))
+    }
+  }
 }
