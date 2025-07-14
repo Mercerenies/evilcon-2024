@@ -7,10 +7,25 @@ pub enum Stmt {
   ExprStmt(Box<Expr>),
   Var(VarStmt),
   Return(Box<Expr>),
+  If(IfStmt),
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct VarStmt {
   pub name: Identifier,
   pub initial_value: Option<Box<Expr>>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub struct IfStmt {
+  pub condition: Box<Expr>,
+  pub body: Vec<Stmt>,
+  pub elif_clauses: Vec<ElifClause>,
+  pub else_clause: Option<Vec<Stmt>>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub struct ElifClause {
+  pub condition: Box<Expr>,
+  pub body: Vec<Stmt>,
 }
