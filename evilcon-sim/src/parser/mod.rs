@@ -12,7 +12,7 @@ pub mod sitter;
 
 use base::GdscriptParser;
 use error::ParseError;
-use decl::parse_decl;
+use decl::parse_decl_seq;
 use sitter::{validate_kind, nth_child_of, is_string_lit};
 use crate::ast::file::{SourceFile, ExtendsClause};
 use crate::ast::identifier::Identifier;
@@ -38,9 +38,7 @@ pub fn read_from_string(s: &str) -> Result<SourceFile, ParseError> {
   parse_prologue(&parser, &mut source_file, &mut root_children)?;
 
   // Parse all remaining nodes as declarations.
-  for node in root_children {
-    source_file.decls.push(parse_decl(&parser, node)?);
-  }
+  source_file.decls.extend(parse_decl_seq(&parser, root_children)?);
 
   Ok(source_file)
 }

@@ -1,11 +1,12 @@
 
 use super::identifier::Identifier;
 use super::expr::Expr;
-use super::stmt::Stmt;
+use super::stmt::{Stmt, VarStmt};
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum Decl {
   Const { name: Identifier, value: Box<Expr> },
+  Var(VarStmt),
   Function(FunctionDecl),
 }
 

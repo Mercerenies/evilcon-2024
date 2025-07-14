@@ -5,9 +5,20 @@ use super::error::ParseError;
 use super::base::GdscriptParser;
 use super::sitter::{named_child, nth_child, validate_kind, is_identifier};
 use super::expr::parse_expr;
-use super::stmt::parse_body;
+use super::stmt::{parse_body, parse_var_stmt, COMMENT_KIND};
 
 use tree_sitter::Node;
+
+pub(super) fn parse_decl_seq<'tree>(
+  parser: &GdscriptParser,
+  nodes: impl IntoIterator<Item = Node<'tree>>,
+) -> Result<Vec<Decl>, ParseError> {
+  nodes
+    .into_iter()
+    .filter(|child| child.kind() != COMMENT_KIND)
+    .map(|child| parse_decl(parser, child))
+    .collect()
+}
 
 pub(super) fn parse_decl(
   parser: &GdscriptParser,
@@ -22,6 +33,10 @@ pub(super) fn parse_decl(
     "function_definition" => {
       let function_decl = parse_function_decl(parser, node)?;
       Ok(Decl::Function(function_decl))
+    }
+    "variable_statement" => {
+      let var_stmt = parse_var_stmt(parser, node)?;
+      Ok(Decl::Var(var_stmt))
     }
     kind => {
       Err(ParseError::UnknownDecl(kind.to_owned()))
