@@ -7,6 +7,7 @@ pub enum Expr {
   Array(Vec<Expr>),
   Literal(Literal),
   Name(Identifier),
+  Call { func: Box<Expr>, args: Vec<Expr> },
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]

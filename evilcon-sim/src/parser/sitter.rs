@@ -56,3 +56,10 @@ pub fn named_child<'tree>(node: Node<'tree>, field_name: &str) -> Result<Node<'t
     ParseError::MissingField(field_name.to_owned())
   })
 }
+
+pub fn nth_named_child<'tree>(node: Node<'tree>, idx: usize) -> Result<Node<'tree>, ParseError> {
+  let Some(child_node) = node.named_child(idx) else {
+    return Err(ParseError::ExpectedArg { index: idx, kind: node.kind().to_owned() });
+  };
+  Ok(child_node)
+}

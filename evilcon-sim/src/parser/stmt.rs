@@ -25,6 +25,10 @@ pub(super) fn parse_stmt(
   node: Node,
 ) -> Result<Stmt, ParseError> {
   match node.kind() {
+    "expression_statement" => {
+      let value = parse_expr(parser, nth_child(node, 0)?)?;
+      Ok(Stmt::ExprStmt(Box::new(value)))
+    }
     "return_statement" => {
       let value = parse_expr(parser, nth_child(node, 1)?)?;
       Ok(Stmt::Return(Box::new(value)))
