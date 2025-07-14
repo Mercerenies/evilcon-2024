@@ -3,5 +3,5 @@ class_name Seven
 
 const X = "A"
 
-func test(a, b: int) -> int:
-    return a
+func test(a, b: int):
+    return [a, b]

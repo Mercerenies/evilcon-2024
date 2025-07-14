@@ -34,6 +34,10 @@ impl<'s> GdscriptParser<'s> {
     self.tree.walk()
   }
 
+  pub(super) fn utf8_text(&self, node: Node) -> Result<&str, ParseError> {
+    Ok(node.utf8_text(self.source_code.as_bytes())?)
+  }
+
   pub(super) fn identifier(&self, node: Node) -> Result<Identifier, ParseError> {
     validate_kind_any(node, IDENTIFIER_KINDS)?;
     let id_text = node.utf8_text(self.source_code.as_bytes())?;

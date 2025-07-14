@@ -19,6 +19,8 @@ pub enum ParseError {
   Utf8Error(#[from] Utf8Error),
   #[error("Error parsing string literal: {0}")]
   StringError(#[from] StringLitFromStrError),
+  #[error("Invalid integer literal {0:?}")]
+  InvalidInt(String),
   #[error("Unknown declaration type {0}")]
   UnknownDecl(String),
   #[error("Unknown expression type {0}")]
