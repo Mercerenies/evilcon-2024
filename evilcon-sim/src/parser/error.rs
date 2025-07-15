@@ -32,6 +32,8 @@ pub enum ParseError {
   UnknownStmt(String),
   #[error("Unknown clause type {0}")]
   UnknownClause(String),
+  #[error("Malformed lambda")]
+  MalformedLambda,
   #[error("{0}")]
   OpError(#[from] OpFromStrError),
 }

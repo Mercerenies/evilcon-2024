@@ -1,8 +1,4 @@
 
 func test(a, b: int):
-    if a:
-        return 1 + 1
-    elif b:
-        return 3
-    else:
-        return 2
+    var a = func x(): return 0
+    var b = func(): return 1

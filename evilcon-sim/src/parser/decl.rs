@@ -58,7 +58,7 @@ fn parse_function_decl(
   })
 }
 
-fn parse_function_parameters(
+pub(super) fn parse_function_parameters(
   parser: &GdscriptParser,
   node: Node,
 ) -> Result<Vec<Identifier>, ParseError> {

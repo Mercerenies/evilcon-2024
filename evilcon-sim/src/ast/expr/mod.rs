@@ -2,6 +2,7 @@
 pub mod operator;
 
 use super::string::GdString;
+use super::stmt::Stmt;
 use super::identifier::Identifier;
 use operator::{UnaryOp, BinaryOp, AssignOp};
 
@@ -23,6 +24,12 @@ pub enum Expr {
   AssignOp(Box<Expr>, AssignOp, Box<Expr>),
   UnaryOp(UnaryOp, Box<Expr>),
   Await(Box<Expr>),
+  Lambda(Lambda),
+  Conditional {
+    if_true: Box<Expr>,
+    cond: Box<Expr>,
+    if_false: Box<Expr>,
+  }
 }
 
 /// Intermediate type used in compiling attribute expressions.
@@ -40,6 +47,13 @@ pub enum Literal {
   Int(i64),
   Float(OrderedFloat<f64>),
   String(GdString),
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub struct Lambda {
+  pub name: Option<Identifier>,
+  pub params: Vec<Identifier>,
+  pub body: Vec<Stmt>,
 }
 
 impl Expr {

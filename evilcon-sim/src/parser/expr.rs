@@ -1,7 +1,10 @@
 
-use crate::ast::expr::{Expr, AttrTarget, Literal};
+use crate::ast::expr::{Expr, AttrTarget, Literal, Lambda};
+use crate::ast::expr::operator::AssignOp;
 use super::error::ParseError;
 use super::base::GdscriptParser;
+use super::decl::parse_function_parameters;
+use super::stmt::parse_body;
 use super::sitter::{nth_child, nth_named_child, validate_kind};
 
 use tree_sitter::Node;
@@ -66,6 +69,12 @@ pub(super) fn parse_expr(
       let op = parser.utf8_text(nth_child(node, 1)?)?.parse()?;
       Ok(Expr::BinaryOp(Box::new(lhs), op, Box::new(rhs)))
     }
+    "assignment" => {
+      let lhs = parse_expr(parser, nth_named_child(node, 0)?)?;
+      let rhs = parse_expr(parser, nth_named_child(node, 1)?)?;
+      let op = AssignOp::default();
+      Ok(Expr::AssignOp(Box::new(lhs), op, Box::new(rhs)))
+    }
     "augmented_assignment" => {
       let lhs = parse_expr(parser, nth_named_child(node, 0)?)?;
       let rhs = parse_expr(parser, nth_named_child(node, 1)?)?;
@@ -83,6 +92,20 @@ pub(super) fn parse_expr(
     "await_expression" => {
       let inner = parse_expr(parser, nth_named_child(node, 0)?)?;
       Ok(Expr::Await(Box::new(inner)))
+    }
+    "conditional_expression" => {
+      let if_true = parse_expr(parser, nth_named_child(node, 0)?)?;
+      let cond = parse_expr(parser, nth_named_child(node, 1)?)?;
+      let if_false = parse_expr(parser, nth_named_child(node, 2)?)?;
+      Ok(Expr::Conditional {
+        if_true: Box::new(if_true),
+        cond: Box::new(cond),
+        if_false: Box::new(if_false),
+      })
+    }
+    "lambda" => {
+      let lambda = parse_lambda(parser, node)?;
+      Ok(Expr::Lambda(lambda))
     }
     kind => {
       Err(ParseError::UnknownExpr(kind.to_owned()))
@@ -139,6 +162,30 @@ fn parse_attribute_rhs(
     }
     kind => {
       Err(ParseError::UnknownExpr(kind.to_owned()))
+    }
+  }
+}
+
+fn parse_lambda(
+  parser: &GdscriptParser,
+  node: Node,
+) -> Result<Lambda, ParseError> {
+  match node.named_child_count() {
+    2 => {
+      // Unnamed lambda
+      let params = parse_function_parameters(parser, nth_named_child(node, 0).unwrap())?;
+      let body = parse_body(parser, nth_named_child(node, 1).unwrap())?;
+      Ok(Lambda { name: None, params, body })
+    }
+    3 => {
+      // Named lambda
+      let name = parser.identifier(nth_named_child(node, 0).unwrap())?;
+      let params = parse_function_parameters(parser, nth_named_child(node, 1).unwrap())?;
+      let body = parse_body(parser, nth_named_child(node, 2).unwrap())?;
+      Ok(Lambda { name: Some(name), params, body })
+    }
+    _ => {
+      Err(ParseError::MalformedLambda)
     }
   }
 }

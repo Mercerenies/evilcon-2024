@@ -6,7 +6,7 @@ use super::expr::Expr;
 pub enum Stmt {
   ExprStmt(Box<Expr>),
   Var(VarStmt),
-  Return(Box<Expr>),
+  Return(Option<Box<Expr>>),
   If(IfStmt),
   For(ForStmt),
   Pass,

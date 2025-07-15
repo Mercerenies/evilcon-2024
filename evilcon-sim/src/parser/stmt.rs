@@ -32,8 +32,12 @@ pub(super) fn parse_stmt(
       Ok(Stmt::ExprStmt(Box::new(value)))
     }
     "return_statement" => {
-      let value = parse_expr(parser, nth_child(node, 1)?)?;
-      Ok(Stmt::Return(Box::new(value)))
+      let value = if let Ok(value) = nth_child(node, 1) {
+        Some(Box::new(parse_expr(parser, value)?))
+      } else {
+        None
+      };
+      Ok(Stmt::Return(value))
     }
     "variable_statement" => {
       let var_stmt = parse_var_stmt(parser, node)?;

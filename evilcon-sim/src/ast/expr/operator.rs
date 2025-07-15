@@ -64,8 +64,9 @@ pub enum BinaryOp {
   In,
 }
 
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, Display)]
+#[derive(Default, Debug, Copy, Clone, PartialEq, Eq, Hash, Display)]
 pub enum AssignOp {
+  #[default]
   #[strum(serialize = "=")]
   Eq,
   #[strum(serialize = "+=")]
