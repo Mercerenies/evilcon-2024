@@ -22,6 +22,8 @@ pub enum ParseError {
   StringError(#[from] StringLitFromStrError),
   #[error("Invalid integer literal {0:?}")]
   InvalidInt(String),
+  #[error("Invalid float literal {0:?}")]
+  InvalidFloat(String),
   #[error("Unknown declaration type {0}")]
   UnknownDecl(String),
   #[error("Unknown expression type {0}")]

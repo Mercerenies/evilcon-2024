@@ -8,6 +8,10 @@ pub enum Stmt {
   Var(VarStmt),
   Return(Box<Expr>),
   If(IfStmt),
+  For(ForStmt),
+  Pass,
+  Break,
+  Continue,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
@@ -27,5 +31,12 @@ pub struct IfStmt {
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct ElifClause {
   pub condition: Box<Expr>,
+  pub body: Vec<Stmt>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub struct ForStmt {
+  pub variable: Identifier,
+  pub iterable: Box<Expr>,
   pub body: Vec<Stmt>,
 }

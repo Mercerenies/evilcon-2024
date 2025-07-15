@@ -22,6 +22,14 @@ pub(super) fn parse_expr(
       let int_lit: i64 = raw.parse().map_err(|_| ParseError::InvalidInt(raw.to_owned()))?;
       Ok(Expr::from(int_lit))
     }
+    "float" => {
+      let raw = parser.utf8_text(node)?;
+      let float_lit: f64 = raw.parse().map_err(|_| ParseError::InvalidFloat(raw.to_owned()))?;
+      Ok(Expr::from(float_lit))
+    }
+    "null" => {
+      Ok(Expr::from(Literal::Null))
+    }
     "true" => {
       Ok(Expr::from(true))
     }
@@ -71,6 +79,10 @@ pub(super) fn parse_expr(
     }
     "parenthesized_expression" => {
       Ok(parse_expr(parser, nth_named_child(node, 0)?)?)
+    }
+    "await_expression" => {
+      let inner = parse_expr(parser, nth_named_child(node, 0)?)?;
+      Ok(Expr::Await(Box::new(inner)))
     }
     kind => {
       Err(ParseError::UnknownExpr(kind.to_owned()))

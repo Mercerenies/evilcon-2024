@@ -1,5 +1,5 @@
 
-use crate::ast::stmt::{Stmt, VarStmt, IfStmt, ElifClause};
+use crate::ast::stmt::{Stmt, VarStmt, IfStmt, ForStmt, ElifClause};
 use super::sitter::{validate_kind, nth_child, named_child};
 use super::error::ParseError;
 use super::base::GdscriptParser;
@@ -42,6 +42,19 @@ pub(super) fn parse_stmt(
     "if_statement" => {
       let if_stmt = parse_if_stmt(parser, node)?;
       Ok(Stmt::If(if_stmt))
+    }
+    "for_statement" => {
+      let for_stmt = parse_for_stmt(parser, node)?;
+      Ok(Stmt::For(for_stmt))
+    }
+    "pass_statement" => {
+      Ok(Stmt::Pass)
+    }
+    "break_statement" => {
+      Ok(Stmt::Break)
+    }
+    "continue_statement" => {
+      Ok(Stmt::Continue)
     }
     kind => {
       Err(ParseError::UnknownStmt(kind.to_owned()))
@@ -94,5 +107,22 @@ pub(super) fn parse_if_stmt(
     body,
     elif_clauses,
     else_clause,
+  })
+}
+
+pub(super) fn parse_for_stmt(
+  parser: &GdscriptParser,
+  node: Node,
+) -> Result<crate::ast::stmt::ForStmt, ParseError> {
+  assert_eq!(node.kind(), "for_statement");
+
+  let variable = parser.identifier(named_child(node, "left")?)?;
+  let iterable = parse_expr(parser, named_child(node, "right")?)?;
+  let body = parse_body(parser, named_child(node, "body")?)?;
+
+  Ok(ForStmt {
+    variable,
+    iterable: Box::new(iterable),
+    body,
   })
 }

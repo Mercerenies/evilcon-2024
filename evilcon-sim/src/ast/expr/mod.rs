@@ -5,6 +5,8 @@ use super::string::GdString;
 use super::identifier::Identifier;
 use operator::{UnaryOp, BinaryOp, AssignOp};
 
+use ordered_float::OrderedFloat;
+
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum Expr {
   Array(Vec<Expr>),
@@ -20,6 +22,7 @@ pub enum Expr {
   /// semantics.
   AssignOp(Box<Expr>, AssignOp, Box<Expr>),
   UnaryOp(UnaryOp, Box<Expr>),
+  Await(Box<Expr>),
 }
 
 /// Intermediate type used in compiling attribute expressions.
@@ -32,8 +35,10 @@ pub enum AttrTarget {
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum Literal {
+  Null,
   Bool(bool),
   Int(i64),
+  Float(OrderedFloat<f64>),
   String(GdString),
 }
 
@@ -64,6 +69,12 @@ impl From<i64> for Literal {
   }
 }
 
+impl From<f64> for Literal {
+  fn from(f: f64) -> Self {
+    Literal::Float(OrderedFloat(f))
+  }
+}
+
 impl From<bool> for Literal {
   fn from(b: bool) -> Self {
     Literal::Bool(b)
@@ -73,6 +84,12 @@ impl From<bool> for Literal {
 impl From<i64> for Expr {
   fn from(i: i64) -> Self {
     Expr::Literal(Literal::Int(i))
+  }
+}
+
+impl From<f64> for Expr {
+  fn from(f: f64) -> Self {
+    Expr::Literal(Literal::Float(OrderedFloat(f)))
   }
 }
 
