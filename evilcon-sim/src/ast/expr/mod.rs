@@ -11,6 +11,7 @@ use ordered_float::OrderedFloat;
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum Expr {
   Array(Vec<Expr>),
+  Dictionary(Vec<DictEntry>),
   Literal(Literal),
   Name(Identifier),
   Call { func: Box<Expr>, args: Vec<Expr> },
@@ -30,6 +31,12 @@ pub enum Expr {
     cond: Box<Expr>,
     if_false: Box<Expr>,
   }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub struct DictEntry {
+  pub key: Expr,
+  pub value: Expr,
 }
 
 /// Intermediate type used in compiling attribute expressions.

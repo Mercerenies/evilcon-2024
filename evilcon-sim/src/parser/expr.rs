@@ -1,11 +1,11 @@
 
-use crate::ast::expr::{Expr, AttrTarget, Literal, Lambda};
+use crate::ast::expr::{Expr, AttrTarget, Literal, Lambda, DictEntry};
 use crate::ast::expr::operator::AssignOp;
 use super::error::ParseError;
 use super::base::GdscriptParser;
 use super::decl::parse_function_parameters;
-use super::stmt::parse_body;
-use super::sitter::{nth_child, nth_named_child, validate_kind};
+use super::stmt::{parse_body, COMMENT_KIND};
+use super::sitter::{nth_child, nth_named_child, named_child, validate_kind};
 
 use tree_sitter::Node;
 
@@ -46,9 +46,18 @@ pub(super) fn parse_expr(
     "array" => {
       let mut cursor = node.walk();
       let elements = node.named_children(&mut cursor)
+        .filter(|child| child.kind() != COMMENT_KIND)
         .map(|child| parse_expr(parser, child))
         .collect::<Result<_, _>>()?;
       Ok(Expr::Array(elements))
+    }
+    "dictionary" => {
+      let mut cursor = node.walk();
+      let elements = node.named_children(&mut cursor)
+        .filter(|child| child.kind() != COMMENT_KIND)
+        .map(|child| parse_dict_entry(parser, child))
+        .collect::<Result<_, _>>()?;
+      Ok(Expr::Dictionary(elements))
     }
     "call" => {
       let func = parse_expr(parser, nth_named_child(node, 0)?)?;
@@ -139,6 +148,16 @@ fn parse_attribute(
     let rhs = parse_attribute_rhs(parser, rhs)?;
     Ok(lhs.attr(rhs))
   })
+}
+
+fn parse_dict_entry(
+  parser: &GdscriptParser,
+  node: Node,
+) -> Result<DictEntry, ParseError> {
+  assert_eq!(node.kind(), "pair");
+  let key = parse_expr(parser, named_child(node, "key")?)?;
+  let value = parse_expr(parser, named_child(node, "value")?)?;
+  Ok(DictEntry { key, value })
 }
 
 fn parse_attribute_rhs(
