@@ -1,6 +1,9 @@
 
+pub mod operator;
+
 use super::string::GdString;
 use super::identifier::Identifier;
+use operator::{UnaryOp, BinaryOp, AssignOp};
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum Expr {
@@ -11,6 +14,12 @@ pub enum Expr {
   Subscript(Box<Expr>, Box<Expr>),
   Attr(Box<Expr>, Identifier),
   AttrCall(Box<Expr>, Identifier, Vec<Expr>),
+  BinaryOp(Box<Expr>, BinaryOp, Box<Expr>),
+  /// The tree_sitter parser treats this as an expression even though
+  /// Godot treats it as a statement. We choose to match the parser
+  /// semantics.
+  AssignOp(Box<Expr>, AssignOp, Box<Expr>),
+  UnaryOp(UnaryOp, Box<Expr>),
 }
 
 /// Intermediate type used in compiling attribute expressions.

@@ -1,5 +1,6 @@
 
 use crate::ast::string::StringLitFromStrError;
+use crate::ast::expr::operator::OpFromStrError;
 
 use thiserror::Error;
 
@@ -29,6 +30,8 @@ pub enum ParseError {
   UnknownStmt(String),
   #[error("Unknown clause type {0}")]
   UnknownClause(String),
+  #[error("{0}")]
+  OpError(#[from] OpFromStrError),
 }
 
 #[derive(Debug, Clone)]

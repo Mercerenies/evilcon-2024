@@ -2,7 +2,7 @@
 use crate::ast::expr::{Expr, AttrTarget, Literal};
 use super::error::ParseError;
 use super::base::GdscriptParser;
-use super::sitter::{nth_named_child, validate_kind};
+use super::sitter::{nth_child, nth_named_child, validate_kind};
 
 use tree_sitter::Node;
 
@@ -51,6 +51,26 @@ pub(super) fn parse_expr(
     }
     "attribute" => {
       parse_attribute(parser, node)
+    }
+    "binary_operator" => {
+      let lhs = parse_expr(parser, nth_named_child(node, 0)?)?;
+      let rhs = parse_expr(parser, nth_named_child(node, 1)?)?;
+      let op = parser.utf8_text(nth_child(node, 1)?)?.parse()?;
+      Ok(Expr::BinaryOp(Box::new(lhs), op, Box::new(rhs)))
+    }
+    "augmented_assignment" => {
+      let lhs = parse_expr(parser, nth_named_child(node, 0)?)?;
+      let rhs = parse_expr(parser, nth_named_child(node, 1)?)?;
+      let op = parser.utf8_text(nth_child(node, 1)?)?.parse()?;
+      Ok(Expr::AssignOp(Box::new(lhs), op, Box::new(rhs)))
+    }
+    "unary_operator" => {
+      let rhs = parse_expr(parser, nth_named_child(node, 0)?)?;
+      let op = parser.utf8_text(nth_child(node, 0)?)?.parse()?;
+      Ok(Expr::UnaryOp(op, Box::new(rhs)))
+    }
+    "parenthesized_expression" => {
+      Ok(parse_expr(parser, nth_named_child(node, 0)?)?)
     }
     kind => {
       Err(ParseError::UnknownExpr(kind.to_owned()))
