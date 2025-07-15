@@ -179,6 +179,15 @@ fn read_string_prefix(s: &str) -> (StringPrefix, &str) {
 }
 
 fn read_delimiter(s: &str) -> Option<(bool, char, &str)> {
+  // Special cases: empty strings will incorrectly parse as
+  // badly-triple-quoted strings if we don't do them here.
+  if s == "\"\"" {
+    return Some((false, '"', &s[1..]));
+  }
+  if s == "''" {
+    return Some((false, '\'', &s[1..]));
+  }
+
   let mut iter = s.chars();
   let ch = iter.next()?;
   if ch != '"' && ch != '\'' {
