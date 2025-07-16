@@ -25,6 +25,7 @@ pub enum Value {
   DictRef(Rc<RefCell<HashMap<HashKey, Value>>>),
   ClassRef(Rc<Class>),
   ObjectRef(EqPtr<ObjectInst>),
+  BoundMethod(EqPtr<BoundMethod>),
 }
 
 #[derive(Debug, Clone)]
@@ -56,6 +57,12 @@ pub struct EqPtr<T> {
 pub struct ObjectInst {
   class: Rc<Class>,
   dict: HashMap<String, Value>,
+}
+
+#[derive(Debug, Clone)]
+pub struct BoundMethod {
+  self_instance: Value,
+  method: Method,
 }
 
 /// Thin wrapper around `Box<dyn Iterator>`, used for [`Value`].
@@ -99,10 +106,11 @@ impl Value {
   }
 
   pub fn get_value(&self, name: &str) -> Result<Value, NoSuchVar> {
-    // TODO Funcrefs
     if let Value::ObjectRef(obj) = self {
       let obj = obj.borrow();
       obj.dict.get(name).cloned().ok_or(NoSuchVar(name.to_owned()))
+    } else if let Ok(func) = self.get_func(name) {
+      Ok(Value::BoundMethod(EqPtr::new(BoundMethod::new(self.clone(), func))))
     } else {
       Err(NoSuchVar(name.to_owned()))
     }
@@ -169,6 +177,20 @@ impl Value {
       _ => {
         Err(EvalError::CannotIterate(self.clone()))
       }
+    }
+  }
+}
+
+impl BoundMethod {
+  pub fn new(self_instance: Value, method: Method) -> Self {
+    BoundMethod { self_instance, method }
+  }
+}
+
+impl<T> EqPtr<T> {
+  pub fn new(value: T) -> Self {
+    EqPtr {
+      value: Rc::new(RefCell::new(value)),
     }
   }
 }
