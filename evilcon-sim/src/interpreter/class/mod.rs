@@ -32,6 +32,11 @@ pub struct InstanceVar {
   pub initial_value: Expr,
 }
 
+#[derive(Debug, Clone)]
+pub struct ClassSupertypesIter {
+  curr: Option<Rc<Class>>,
+}
+
 impl Class {
   pub fn load_from_file(superglobals: &mut SuperglobalState, file: SourceFile) -> Result<Self, EvalError> {
     let name = file.class_name;
@@ -90,6 +95,23 @@ impl Class {
       curr = cls.parent.as_deref();
     }
     Err(NoSuchFunc(name.into()))
+  }
+
+  pub fn supertypes(self: Rc<Class>) -> ClassSupertypesIter {
+    ClassSupertypesIter { curr: Some(self) }
+  }
+}
+
+impl Iterator for ClassSupertypesIter {
+  type Item = Rc<Class>;
+
+  fn next(&mut self) -> Option<Self::Item> {
+    if let Some(cls) = self.curr.clone() {
+      self.curr = cls.parent.clone();
+      Some(cls)
+    } else {
+      None
+    }
   }
 }
 

@@ -6,6 +6,7 @@ use super::error::EvalError;
 use ordered_float::OrderedFloat;
 
 use std::cmp::Ordering;
+use std::rc::Rc;
 
 pub fn eval_unary_op(op: UnaryOp, value: Value) -> Result<Value, EvalError> {
   match op {
@@ -46,22 +47,40 @@ pub fn eval_binary_op(lhs: Value, op: BinaryOp, rhs: Value) -> Result<Value, Eva
     BinaryOp::And => Ok(Value::Bool(lhs.as_bool() && rhs.as_bool())),
     BinaryOp::Or => Ok(Value::Bool(lhs.as_bool() || rhs.as_bool())),
     BinaryOp::Is => {
-      todo!()
+      let check = do_type_check(lhs, rhs)?;
+      Ok(Value::Bool(check))
     }
     BinaryOp::IsNot => {
-      todo!()
+      let check = do_type_check(lhs, rhs)?;
+      Ok(Value::Bool(!check))
     }
     BinaryOp::In => {
-      todo!()
+      let check = do_elem_check(lhs, rhs)?;
+      Ok(Value::Bool(check))
     }
     BinaryOp::NotIn => {
-      todo!()
+      let check = do_elem_check(lhs, rhs)?;
+      Ok(Value::Bool(!check))
     }
     BinaryOp::Pow | BinaryOp::LShift | BinaryOp::RShift | BinaryOp::BitAnd | BinaryOp::BitOr | BinaryOp::BitXor => {
       // Don't think I need it
       unimplemented!()
     }
   }
+}
+
+fn do_type_check(lhs: Value, rhs: Value) -> Result<bool, EvalError> {
+  let Value::ClassRef(rhs) = rhs else {
+    return Err(EvalError::type_error("class", rhs));
+  };
+  let Some(lhs_class) = lhs.get_class() else {
+    return Ok(false);
+  };
+  Ok(lhs_class.supertypes().any(|ty| Rc::ptr_eq(&ty, &rhs)))
+}
+
+fn do_elem_check(lhs: Value, rhs: Value) -> Result<bool, EvalError> {
+  Ok(rhs.try_iter()?.any(|elem| elem == lhs))
 }
 
 fn expect_int(value: Value) -> Result<i64, EvalError> {
