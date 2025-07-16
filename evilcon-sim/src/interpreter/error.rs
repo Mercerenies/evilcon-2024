@@ -10,11 +10,17 @@ pub enum EvalErrorOrControlFlow {
   ControlFlow(ControlFlow),
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum ControlFlow {
   Break,
   Continue,
   Return(Value),
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub enum LoopControlFlow {
+  Break,
+  Continue,
 }
 
 #[derive(Debug, Clone, Error)]
@@ -59,6 +65,15 @@ impl ControlFlow {
 
   pub fn expect_return_or_null(value: Result<(), EvalErrorOrControlFlow>) -> Result<Value, EvalError> {
     Self::expect_return(value.map(|_| Value::Null))
+  }
+
+  pub fn extract_loop_control(value: Result<(), EvalErrorOrControlFlow>) -> Result<Option<LoopControlFlow>, EvalErrorOrControlFlow> {
+    match value {
+      Err(EvalErrorOrControlFlow::ControlFlow(ControlFlow::Break)) => Ok(Some(LoopControlFlow::Break)),
+      Err(EvalErrorOrControlFlow::ControlFlow(ControlFlow::Continue)) => Ok(Some(LoopControlFlow::Continue)),
+      Ok(()) => Ok(None),
+      Err(err) => Err(err),
+    }
   }
 }
 

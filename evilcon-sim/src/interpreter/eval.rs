@@ -3,7 +3,7 @@ use super::class::Class;
 use super::class::constant::LazyConst;
 use super::value::Value;
 use super::method::{Method, MethodArgs};
-use super::error::{EvalError, EvalErrorOrControlFlow, ControlFlow};
+use super::error::{EvalError, EvalErrorOrControlFlow, ControlFlow, LoopControlFlow};
 use crate::ast::identifier::Identifier;
 use crate::ast::file::SourceFile;
 use crate::ast::expr::Expr;
@@ -208,6 +208,42 @@ impl EvaluatorState {
       }
       Stmt::Continue => {
         return Err(ControlFlow::Continue.into());
+      }
+      Stmt::If(if_stmt) => {
+        if bool::from(self.eval_expr(&if_stmt.condition)?) {
+          let mut inner_scope = self.clone();
+          inner_scope.eval_body(&if_stmt.body)?;
+        } else {
+          let mut matched = false;
+          for elif_clause in &if_stmt.elif_clauses {
+            if bool::from(self.eval_expr(&elif_clause.condition)?) {
+              let mut inner_scope = self.clone();
+              inner_scope.eval_body(&elif_clause.body)?;
+              matched = true;
+              break;
+            }
+          }
+          if !matched && let Some(body) = &if_stmt.else_clause {
+            self.eval_body(body)?;
+          }
+        }
+      }
+      Stmt::While(while_stmt) => {
+        while bool::from(self.eval_expr(&while_stmt.condition)?) {
+          let mut inner_scope = self.clone();
+          let inner_res = inner_scope.eval_body(&while_stmt.body);
+          if let Some(cf) = ControlFlow::extract_loop_control(inner_res)? {
+            if cf == LoopControlFlow::Break {
+              break;
+            }
+          }
+        }
+      }
+      Stmt::For(for_stmt) => {
+        todo!()
+      }
+      Stmt::AssignOp(left, op, right) => {
+        todo!()
       }
     }
     Ok(())
