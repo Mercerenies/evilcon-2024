@@ -7,4 +7,6 @@ use thiserror::Error;
 pub enum EvalError {
   #[error("{0}")]
   InvalidHashKey(#[from] InvalidHashKey),
+  #[error("Unknown class {0}")]
+  UnknownClass(String),
 }

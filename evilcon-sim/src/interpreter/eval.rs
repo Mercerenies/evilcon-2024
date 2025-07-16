@@ -2,7 +2,9 @@
 use super::class::Class;
 use super::value::Value;
 use super::method::Method;
+use super::error::EvalError;
 use crate::ast::identifier::Identifier;
+use crate::ast::file::SourceFile;
 
 use std::collections::HashMap;
 use std::rc::Rc;
@@ -80,6 +82,11 @@ impl SuperglobalState {
 
   pub fn add_file(&mut self, path: String, class: Class) {
     self.loaded_files.insert(path, class);
+  }
+
+  pub fn load_file(&mut self, path: String, source_file: SourceFile) -> Result<(), EvalError> {
+    self.loaded_files.insert(path, Class::load_from_file(source_file)?);
+    Ok(())
   }
 
   pub fn get_var(&self, ident: &Identifier) -> Option<&Value> {

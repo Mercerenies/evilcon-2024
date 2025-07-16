@@ -1,7 +1,11 @@
 
 use crate::ast::identifier::Identifier;
+use crate::ast::file::SourceFile;
+use crate::ast::expr::Expr;
 use super::value::Value;
 use super::method::Method;
+use super::error::EvalError;
+use super::eval::SuperglobalState;
 
 use std::hash::{Hash, Hasher};
 use std::rc::Rc;
@@ -20,7 +24,14 @@ pub struct Class {
 #[derive(Debug, Clone)]
 pub struct InstanceVar {
   pub name: Identifier,
-  pub initial_value: Value,
+  pub initial_value: Expr,
+}
+
+impl Class {
+  pub fn load_from_file(superglobals: &mut SuperglobalState, file: SourceFile) -> Result<Self, EvalError> {
+    let name = file.class_name;
+    todo!()
+  }
 }
 
 impl PartialEq for Class {
