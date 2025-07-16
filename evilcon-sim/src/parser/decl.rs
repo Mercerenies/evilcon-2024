@@ -51,10 +51,16 @@ fn parse_function_decl(
   let name = parser.identifier(named_child(node, "name")?)?;
   let params = parse_function_parameters(parser, named_child(node, "parameters")?)?;
   let body = parse_body(parser, named_child(node, "body")?)?;
+  let is_static = {
+    let mut cursor = node.walk();
+    let is_static = node.children(&mut cursor).any(|child| child.kind() == "static_keyword");
+    is_static
+  };
   Ok(FunctionDecl {
     name,
     params,
     body,
+    is_static,
   })
 }
 

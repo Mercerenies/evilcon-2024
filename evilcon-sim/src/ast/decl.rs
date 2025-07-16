@@ -14,5 +14,6 @@ pub enum Decl {
 pub struct FunctionDecl {
   pub name: Identifier,
   pub params: Vec<Identifier>,
+  pub is_static: bool,
   pub body: Vec<Stmt>,
 }
