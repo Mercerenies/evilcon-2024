@@ -6,6 +6,7 @@ use super::method::Method;
 use super::error::EvalError;
 use crate::ast::identifier::Identifier;
 use crate::ast::file::SourceFile;
+use crate::ast::expr::Expr;
 
 use std::collections::HashMap;
 use std::rc::Rc;
@@ -22,7 +23,7 @@ pub struct EvaluatorState {
 pub struct SuperglobalState {
   vars: HashMap<Identifier, Value>,
   functions: HashMap<Identifier, Method>,
-  loaded_files: HashMap<String, Class>,
+  loaded_files: HashMap<String, Rc<Class>>,
 }
 
 impl EvaluatorState {
@@ -75,8 +76,12 @@ impl EvaluatorState {
     self.superglobal_state.get_func(ident)
   }
 
-  pub fn get_file(&self, path: &str) -> Option<&Class> {
+  pub fn get_file(&self, path: &str) -> Option<Rc<Class>> {
     self.superglobal_state.get_file(path)
+  }
+
+  pub fn eval_expr(&self, expr: &Expr) -> Result<Value, EvalError> {
+    todo!()
   }
 }
 
@@ -94,12 +99,12 @@ impl SuperglobalState {
   }
 
   pub fn add_file(&mut self, path: String, class: Class) {
-    self.loaded_files.insert(path, class);
+    self.loaded_files.insert(path, Rc::new(class));
   }
 
   pub fn load_file(&mut self, path: String, source_file: SourceFile) -> Result<(), EvalError> {
     let class = Class::load_from_file(self, source_file)?;
-    self.loaded_files.insert(path, class);
+    self.loaded_files.insert(path, Rc::new(class));
     Ok(())
   }
 
@@ -111,7 +116,7 @@ impl SuperglobalState {
     self.functions.get(ident)
   }
 
-  pub fn get_file(&self, path: &str) -> Option<&Class> {
-    self.loaded_files.get(path)
+  pub fn get_file(&self, path: &str) -> Option<Rc<Class>> {
+    self.loaded_files.get(path).cloned()
   }
 }

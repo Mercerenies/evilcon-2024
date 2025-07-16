@@ -21,3 +21,9 @@ impl SourceFile {
     Default::default()
   }
 }
+
+impl Default for ExtendsClause {
+  fn default() -> Self {
+    ExtendsClause::Id(Identifier(String::from("RefCounted")))
+  }
+}

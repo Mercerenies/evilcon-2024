@@ -148,6 +148,12 @@ impl From<GdString> for String {
   }
 }
 
+impl AsRef<str> for GdString {
+  fn as_ref(&self) -> &str {
+    &self.contents
+  }
+}
+
 impl FromStr for GdString {
   type Err = StringLitFromStrError;
 

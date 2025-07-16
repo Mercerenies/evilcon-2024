@@ -14,3 +14,9 @@ impl<'a> From<&'a str> for Identifier {
     Self(s.to_owned())
   }
 }
+
+impl From<Identifier> for String {
+  fn from(i: Identifier) -> Self {
+    i.0
+  }
+}
