@@ -114,6 +114,14 @@ impl EvaluatorState {
         }
         Err(EvalError::UndefinedVariable(name.clone().into()))
       }
+      Expr::GetNode(node) => {
+        // Okay, this is only used (currently) in LookaheadAiAgent.
+        // And its used to evaluate animations (which don't run in
+        // this simulation). We have to parse it because it's part of
+        // the code, but if we try to eval a GetNode then we've gone
+        // down a code path I didn't expect.
+        Err(EvalError::UnexpectedGetNode(node.clone().into()))
+      }
       _ => todo!(),
     }
   }

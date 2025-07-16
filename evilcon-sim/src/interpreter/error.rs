@@ -15,6 +15,8 @@ pub enum EvalError {
   UndefinedVariable(String),
   #[error("Unknown function {0}")]
   UndefinedFunc(String),
+  #[error("Unexpected GetNode {0}")]
+  UnexpectedGetNode(String),
 }
 
 impl From<NoSuchVar> for EvalError {
