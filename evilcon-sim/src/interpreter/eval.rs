@@ -123,7 +123,53 @@ impl EvaluatorState {
         // down a code path I didn't expect.
         Err(EvalError::UnexpectedGetNode(node.clone().into()))
       }
-      _ => todo!(),
+      Expr::Call { func, args } => {
+        let func = match func.as_ref() {
+          Expr::Name(id) => self.get_func(id).ok_or_else(|| EvalError::UndefinedFunc(id.clone().into()))?,
+          func => { return Err(EvalError::CannotCall(func.clone())); }
+        };
+        let args = MethodArgs(args.iter().map(|arg| self.eval_expr(arg)).collect::<Result<Vec<_>, _>>()?);
+        self.call_function(Some(self.globals.clone()), &func, self.self_instance.as_ref().map(Box::clone), args)
+      }
+      Expr::Subscript(left, right) => {
+        let left = self.eval_expr(left)?;
+        let func = left.get_func("__getitem__")?; // Just do it the Python way, even though Godot doesn't :)
+        let args = MethodArgs(vec![self.eval_expr(right)?]);
+        let globals = left.get_class().map(|class| Rc::clone(&class.constants));
+        self.call_function(globals, &func, Some(Box::new(left)), args)
+      }
+      Expr::Attr(left, name) => {
+        let left = self.eval_expr(left)?;
+        Ok(left.get_value(name.as_ref())?)
+      }
+      Expr::AttrCall(left, name, args) => {
+        let left = self.eval_expr(left)?;
+        let func = left.get_func(name.as_ref())?;
+        let args = MethodArgs(args.iter().map(|arg| self.eval_expr(arg)).collect::<Result<Vec<_>, _>>()?);
+        let globals = left.get_class().map(|class| Rc::clone(&class.constants));
+        self.call_function(globals, &func, Some(Box::new(left)), args)
+      }
+      Expr::BinaryOp(_left, _op, _right) => {
+        todo!()
+      }
+      Expr::UnaryOp(_op, _right) => {
+        todo!()
+      }
+      Expr::Await(expr) => {
+        // Whee, ignore `await` expressions!
+        self.eval_expr(expr)
+      }
+      Expr::Lambda(_lambda) => {
+        todo!()
+      }
+      Expr::Conditional { if_true, cond, if_false } => {
+        let cond = self.eval_expr(cond)?;
+        if cond.into() {
+          self.eval_expr(if_true)
+        } else {
+          self.eval_expr(if_false)
+        }
+      }
     }
   }
 
@@ -132,13 +178,13 @@ impl EvaluatorState {
   }
 
   pub fn call_function(&self,
-                       owning_class: Option<Rc<Class>>,
+                       globals: Option<Rc<HashMap<Identifier, LazyConst>>>,
                        method: &Method,
                        self_instance: Option<Box<Value>>,
                        args: MethodArgs) -> Result<Value, EvalError> {
     let mut method_scope = EvaluatorState::new(Rc::clone(&self.superglobal_state)).with_self(self_instance);
-    if let Some(owning_class) = owning_class.as_ref() {
-      method_scope = method_scope.with_globals(owning_class.constants.clone());
+    if let Some(globals) = globals {
+      method_scope = method_scope.with_globals(globals);
     }
     match method {
       Method::GdMethod(method) => {

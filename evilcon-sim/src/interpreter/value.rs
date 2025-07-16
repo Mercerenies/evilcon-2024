@@ -133,6 +133,18 @@ impl From<HashKey> for Value {
   }
 }
 
+impl From<Value> for bool {
+  fn from(v: Value) -> Self {
+    match v {
+      Value::Bool(b) => b,
+      Value::Int(i) => i != 0,
+      Value::Float(f) => f != 0.0,
+      Value::Null => false,
+      _ => true,
+    }
+  }
+}
+
 impl TryFrom<Value> for HashKey {
   type Error = InvalidHashKey;
 

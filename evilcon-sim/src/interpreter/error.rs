@@ -1,5 +1,6 @@
 
 use super::value::{Value, InvalidHashKey, NoSuchVar, NoSuchFunc};
+use crate::ast::expr::Expr;
 
 use thiserror::Error;
 
@@ -34,6 +35,8 @@ pub enum EvalError {
   WrongArity { actual: usize, expected: usize },
   #[error("Unexpected control flow {0:?}")]
   UnexpectedControlFlow(ControlFlow),
+  #[error("Cannot call {0:?}")]
+  CannotCall(Expr),
 }
 
 impl ControlFlow {
