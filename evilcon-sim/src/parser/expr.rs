@@ -92,15 +92,15 @@ pub(super) fn parse_expr(
     }
     "unary_operator" => {
       let rhs = parse_expr(parser, nth_named_child(node, 0)?)?;
-      let op = parser.utf8_text(nth_child(node, 0)?)?.parse()?;
-      Ok(Expr::UnaryOp(op, Box::new(rhs)))
+      let op = parser.utf8_text(nth_child(node, 0)?)?;
+      if op == "await" {
+        Ok(Expr::Await(Box::new(rhs)))
+      } else {
+        Ok(Expr::UnaryOp(op.parse()?, Box::new(rhs)))
+      }
     }
     "parenthesized_expression" => {
       Ok(parse_expr(parser, nth_named_child(node, 0)?)?)
-    }
-    "await_expression" => {
-      let inner = parse_expr(parser, nth_named_child(node, 0)?)?;
-      Ok(Expr::Await(Box::new(inner)))
     }
     "conditional_expression" => {
       let if_true = parse_expr(parser, nth_named_child(node, 0)?)?;
