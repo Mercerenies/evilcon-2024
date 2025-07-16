@@ -2,6 +2,7 @@
 use crate::ast::expr::operator::{BinaryOp, UnaryOp};
 use super::value::Value;
 use super::error::EvalError;
+use super::bootstrapping::BootstrappedTypes;
 
 use ordered_float::OrderedFloat;
 
@@ -26,7 +27,7 @@ pub fn eval_unary_op(op: UnaryOp, value: Value) -> Result<Value, EvalError> {
   }
 }
 
-pub fn eval_binary_op(lhs: Value, op: BinaryOp, rhs: Value) -> Result<Value, EvalError> {
+pub fn eval_binary_op(bootstrapping: &BootstrappedTypes, lhs: Value, op: BinaryOp, rhs: Value) -> Result<Value, EvalError> {
   match op {
     BinaryOp::Add => promote_binary_nums(lhs, rhs, |lhs, rhs| Ok(lhs + rhs), |lhs, rhs| Ok(lhs + rhs)),
     BinaryOp::Sub => promote_binary_nums(lhs, rhs, |lhs, rhs| Ok(lhs - rhs), |lhs, rhs| Ok(lhs - rhs)),
@@ -47,11 +48,11 @@ pub fn eval_binary_op(lhs: Value, op: BinaryOp, rhs: Value) -> Result<Value, Eva
     BinaryOp::And => Ok(Value::Bool(lhs.as_bool() && rhs.as_bool())),
     BinaryOp::Or => Ok(Value::Bool(lhs.as_bool() || rhs.as_bool())),
     BinaryOp::Is => {
-      let check = do_type_check(lhs, rhs)?;
+      let check = do_type_check(bootstrapping, lhs, rhs)?;
       Ok(Value::Bool(check))
     }
     BinaryOp::IsNot => {
-      let check = do_type_check(lhs, rhs)?;
+      let check = do_type_check(bootstrapping, lhs, rhs)?;
       Ok(Value::Bool(!check))
     }
     BinaryOp::In => {
@@ -69,11 +70,11 @@ pub fn eval_binary_op(lhs: Value, op: BinaryOp, rhs: Value) -> Result<Value, Eva
   }
 }
 
-fn do_type_check(lhs: Value, rhs: Value) -> Result<bool, EvalError> {
+fn do_type_check(bootstrapping: &BootstrappedTypes, lhs: Value, rhs: Value) -> Result<bool, EvalError> {
   let Value::ClassRef(rhs) = rhs else {
     return Err(EvalError::type_error("class", rhs));
   };
-  let Some(lhs_class) = lhs.get_class() else {
+  let Some(lhs_class) = lhs.get_class(bootstrapping) else {
     return Ok(false);
   };
   Ok(lhs_class.supertypes().any(|ty| Rc::ptr_eq(&ty, &rhs)))

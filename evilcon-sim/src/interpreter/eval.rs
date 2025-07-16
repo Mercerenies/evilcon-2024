@@ -82,7 +82,7 @@ impl EvaluatorState {
 
   pub fn get_func(&self, ident: &Identifier) -> Option<Method> {
     if let Some(self_instance) = &self.self_instance {
-      if let Ok(func) = self_instance.get_func(ident.as_ref()) {
+      if let Ok(func) = self_instance.get_func(ident.as_ref(), self.superglobal_state.bootstrapped_classes()) {
         return Some(func);
       }
     }
@@ -118,7 +118,7 @@ impl EvaluatorState {
           return Ok(value.clone());
         }
         // Try to look up on `self`.
-        if let Some(obj) = self.self_instance() && let Ok(value) = obj.get_value(name.as_ref()) {
+        if let Some(obj) = self.self_instance() && let Ok(value) = obj.get_value(name.as_ref(), self.superglobal_state.bootstrapped_classes()) {
           return Ok(value.clone());
         }
         Err(EvalError::UndefinedVariable(name.clone().into()))
@@ -141,20 +141,20 @@ impl EvaluatorState {
       }
       Expr::Subscript(left, right) => {
         let left = self.eval_expr(left)?;
-        let func = left.get_func("__getitem__")?; // Just do it the Python way, even though Godot doesn't :)
+        let func = left.get_func("__getitem__", self.superglobal_state.bootstrapped_classes())?; // Just do it the Python way, even though Godot doesn't :)
         let args = MethodArgs(vec![self.eval_expr(right)?]);
-        let globals = left.get_class().map(|class| Rc::clone(&class.constants));
+        let globals = left.get_class(self.superglobal_state.bootstrapped_classes()).map(|class| Rc::clone(&class.constants));
         self.call_function(globals, &func, Some(Box::new(left)), args)
       }
       Expr::Attr(left, name) => {
         let left = self.eval_expr(left)?;
-        Ok(left.get_value(name.as_ref())?)
+        Ok(left.get_value(name.as_ref(), self.superglobal_state.bootstrapped_classes())?)
       }
       Expr::AttrCall(left, name, args) => {
         let left = self.eval_expr(left)?;
-        let func = left.get_func(name.as_ref())?;
+        let func = left.get_func(name.as_ref(), self.superglobal_state.bootstrapped_classes())?;
         let args = MethodArgs(args.iter().map(|arg| self.eval_expr(arg)).collect::<Result<Vec<_>, _>>()?);
-        let globals = left.get_class().map(|class| Rc::clone(&class.constants));
+        let globals = left.get_class(self.superglobal_state.bootstrapped_classes()).map(|class| Rc::clone(&class.constants));
         self.call_function(globals, &func, Some(Box::new(left)), args)
       }
       Expr::BinaryOp(left, op, right) => {
@@ -177,7 +177,7 @@ impl EvaluatorState {
           }
           op => {
             let right = self.eval_expr(right)?;
-            eval_binary_op(left, *op, right)
+            eval_binary_op(self.superglobal_state.bootstrapped_classes(), left, *op, right)
           }
         }
       }
@@ -229,13 +229,13 @@ impl EvaluatorState {
         self.eval_expr(&Expr::Name(name.clone().into()))
       }
       AssignmentLeftHand::Subscript(left, right) => {
-        let func = left.get_func("__getitem__")?; // Just do it the Python way, even though Godot doesn't :)
+        let func = left.get_func("__getitem__", self.superglobal_state.bootstrapped_classes())?; // Just do it the Python way, even though Godot doesn't :)
         let args = MethodArgs(vec![right.clone()]);
-        let globals = left.get_class().map(|class| Rc::clone(&class.constants));
+        let globals = left.get_class(self.superglobal_state.bootstrapped_classes()).map(|class| Rc::clone(&class.constants));
         self.call_function(globals, &func, Some(Box::new(left.clone())), args)
       }
       AssignmentLeftHand::Attr(left, name) => {
-        Ok(left.get_value(name.as_ref())?)
+        Ok(left.get_value(name.as_ref(), self.superglobal_state.bootstrapped_classes())?)
       }
 
     }
@@ -324,7 +324,7 @@ impl EvaluatorState {
           let bin_op = op.as_binary().expect("Expected compound assignment");
           let left = self.eval_assignment_left_hand_as_expr(&left_hand)?;
           let right = self.eval_expr(right)?;
-          self.do_assignment(left_hand, eval_binary_op(left, bin_op, right)?)?;
+          self.do_assignment(left_hand, eval_binary_op(self.superglobal_state.bootstrapped_classes(), left, bin_op, right)?)?;
         }
       }
     }

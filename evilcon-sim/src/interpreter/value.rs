@@ -4,6 +4,7 @@ use crate::ast::identifier::Identifier;
 use super::class::Class;
 use super::method::Method;
 use super::error::EvalError;
+use super::bootstrapping::BootstrappedTypes;
 
 use ordered_float::OrderedFloat;
 use thiserror::Error;
@@ -111,11 +112,11 @@ impl Value {
     }
   }
 
-  pub fn get_value(&self, name: &str) -> Result<Value, NoSuchVar> {
+  pub fn get_value(&self, name: &str, bootstrapping: &BootstrappedTypes) -> Result<Value, NoSuchVar> {
     if let Value::ObjectRef(obj) = self {
       let obj = obj.borrow();
       obj.dict.get(name).cloned().ok_or(NoSuchVar(name.to_owned()))
-    } else if let Ok(func) = self.get_func(name) {
+    } else if let Ok(func) = self.get_func(name, bootstrapping) {
       Ok(Value::BoundMethod(EqPtr::new(BoundMethod::new(self.clone(), func))))
     } else {
       Err(NoSuchVar(name.to_owned()))
@@ -157,14 +158,17 @@ impl Value {
     }
   }
 
-  pub fn get_func(&self, name: &str) -> Result<Method, NoSuchFunc> {
-    let class = self.get_class().ok_or(NoSuchFunc(name.to_owned()))?;
+  pub fn get_func(&self, name: &str, bootstrapping: &BootstrappedTypes) -> Result<Method, NoSuchFunc> {
+    let class = self.get_class(bootstrapping).ok_or(NoSuchFunc(name.to_owned()))?;
     class.get_func(name).cloned()
   }
 
-  pub fn get_class(&self) -> Option<Rc<Class>> {
+  pub fn get_class(&self, bootstrapping: &BootstrappedTypes) -> Option<Rc<Class>> {
     match self {
       Value::ObjectRef(obj) => Some(obj.borrow().class.clone()),
+      Value::ArrayRef(_) => Some(Rc::clone(bootstrapping.array())),
+      Value::DictRef(_) => Some(Rc::clone(bootstrapping.dictionary())),
+      Value::BoundMethod(_) => Some(Rc::clone(bootstrapping.callable())),
       _ => None,
     }
   }
