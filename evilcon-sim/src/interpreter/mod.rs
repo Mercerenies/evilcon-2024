@@ -1,4 +1,5 @@
 
+pub mod bootstrapping;
 pub mod class;
 pub mod eval;
 pub mod error;

@@ -5,6 +5,7 @@ use super::value::{Value, AssignmentLeftHand, EqPtr};
 use super::method::{Method, MethodArgs};
 use super::error::{EvalError, EvalErrorOrControlFlow, ControlFlow, LoopControlFlow};
 use super::operator::{eval_unary_op, eval_binary_op};
+use super::bootstrapping::BootstrappedTypes;
 use crate::ast::identifier::Identifier;
 use crate::ast::file::SourceFile;
 use crate::ast::expr::Expr;
@@ -22,11 +23,12 @@ pub struct EvaluatorState {
   superglobal_state: Rc<SuperglobalState>,
 }
 
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone)]
 pub struct SuperglobalState {
   vars: HashMap<Identifier, Value>,
   functions: HashMap<Identifier, Method>,
   loaded_files: HashMap<String, Rc<Class>>,
+  bootstrapped_classes: BootstrappedTypes,
 }
 
 impl EvaluatorState {
@@ -381,7 +383,20 @@ impl EvaluatorState {
 
 impl SuperglobalState {
   pub fn new() -> Self {
-    Self::default()
+    let mut result = Self {
+      vars: HashMap::new(),
+      functions: HashMap::new(),
+      loaded_files: HashMap::new(),
+      bootstrapped_classes: BootstrappedTypes::bootstrap(),
+    };
+    for (name, cls) in result.bootstrapped_classes.all_global_names() {
+      result.vars.insert(Identifier::new(name), Value::ClassRef(cls));
+    }
+    result
+  }
+
+  pub fn bootstrapped_classes(&self) -> &BootstrappedTypes {
+    &self.bootstrapped_classes
   }
 
   pub fn bind_var(&mut self, ident: Identifier, value: Value) {
@@ -412,5 +427,11 @@ impl SuperglobalState {
 
   pub fn get_file(&self, path: &str) -> Option<Rc<Class>> {
     self.loaded_files.get(path).cloned()
+  }
+}
+
+impl Default for SuperglobalState {
+  fn default() -> Self {
+    Self::new()
   }
 }
