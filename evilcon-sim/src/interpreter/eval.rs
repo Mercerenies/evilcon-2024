@@ -174,7 +174,43 @@ impl EvaluatorState {
   }
 
   pub fn eval_body(&mut self, body: &[Stmt]) -> Result<(), EvalErrorOrControlFlow> {
-    todo!()
+    for stmt in body {
+      self.eval_stmt(stmt)?;
+    }
+    Ok(())
+  }
+
+  pub fn eval_stmt(&mut self, stmt: &Stmt) -> Result<(), EvalErrorOrControlFlow> {
+    match stmt {
+      Stmt::ExprStmt(expr) => {
+        // Evaluate for side effects, then discard
+        self.eval_expr(expr)?;
+      }
+      Stmt::Var(var_stmt) => {
+        let initial_value = match var_stmt.initial_value.as_ref() {
+          None => Value::default(),
+          Some(expr) => self.eval_expr(expr)?,
+        };
+        self.set_local_var(var_stmt.name.clone(), initial_value);
+      }
+      Stmt::Return(inner) => {
+        let inner = match inner.as_ref() {
+          None => Value::default(),
+          Some(expr) => self.eval_expr(expr)?,
+        };
+        return Err(ControlFlow::Return(inner).into());
+      }
+      Stmt::Pass => {
+        // Do nothing :)
+      }
+      Stmt::Break => {
+        return Err(ControlFlow::Break.into());
+      }
+      Stmt::Continue => {
+        return Err(ControlFlow::Continue.into());
+      }
+    }
+    Ok(())
   }
 
   pub fn call_function(&self,

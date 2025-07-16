@@ -79,3 +79,9 @@ impl From<EvalError> for EvalErrorOrControlFlow {
     EvalErrorOrControlFlow::EvalError(e)
   }
 }
+
+impl From<ControlFlow> for EvalErrorOrControlFlow {
+  fn from(e: ControlFlow) -> Self {
+    EvalErrorOrControlFlow::ControlFlow(e)
+  }
+}
