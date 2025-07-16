@@ -1,6 +1,7 @@
 
 use crate::ast::expr::Literal;
 use super::class::Class;
+use super::method::Method;
 
 use ordered_float::OrderedFloat;
 use thiserror::Error;
@@ -8,6 +9,7 @@ use thiserror::Error;
 use std::collections::HashMap;
 use std::rc::Rc;
 use std::cell::RefCell;
+use std::ops::Deref;
 
 #[derive(Debug, Clone, Default, PartialEq, Eq)]
 pub enum Value {
@@ -43,13 +45,61 @@ pub struct ObjectPtr {
 
 #[derive(Debug, Clone)]
 pub struct ObjectInst {
-  pub class: Rc<Class>,
-  pub dict: Rc<RefCell<HashMap<String, Value>>>,
+  class: Rc<Class>,
+  dict: HashMap<String, Value>,
 }
 
 #[derive(Debug, Clone, Error)]
 #[error("Invalid hash key {0:?}")]
 pub struct InvalidHashKey(pub Value);
+
+#[derive(Debug, Clone, Error)]
+#[error("No such variable {0}")]
+pub struct NoSuchVar(pub String);
+
+#[derive(Debug, Clone, Error)]
+#[error("No such function {0}")]
+pub struct NoSuchFunc(pub String);
+
+impl Value {
+  pub fn new_array(values: Vec<Value>) -> Self {
+    Value::ArrayRef(Rc::new(RefCell::new(values)))
+  }
+
+  pub fn new_dict(values: HashMap<HashKey, Value>) -> Self {
+    Value::DictRef(Rc::new(RefCell::new(values)))
+  }
+
+  pub fn get_value(&self, name: &str) -> Result<Value, NoSuchVar> {
+    // TODO Funcrefs
+    if let Value::ObjectRef(obj) = self {
+      let obj = obj.borrow();
+      obj.dict.get(name).cloned().ok_or(NoSuchVar(name.to_owned()))
+    } else {
+      Err(NoSuchVar(name.to_owned()))
+    }
+  }
+
+  pub fn get_func(&self, name: &str) -> Result<Method, NoSuchFunc> {
+    let class = self.get_class().ok_or(NoSuchFunc(name.to_owned()))?;
+    class.get_func(name).cloned()
+  }
+
+  pub fn get_class(&self) -> Option<Rc<Class>> {
+    match self {
+      Value::ObjectRef(obj) => Some(obj.borrow().class.clone()),
+      _ => None,
+    }
+  }
+}
+
+impl Deref for ObjectPtr {
+  type Target = Rc<RefCell<ObjectInst>>;
+
+  fn deref(&self) -> &Self::Target {
+    &self.value
+  }
+}
 
 impl PartialEq for ObjectPtr {
   fn eq(&self, other: &Self) -> bool {

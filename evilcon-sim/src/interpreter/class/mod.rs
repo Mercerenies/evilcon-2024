@@ -5,11 +5,11 @@ use crate::ast::identifier::Identifier;
 use crate::ast::file::{SourceFile, ExtendsClause};
 use crate::ast::expr::{Expr, Literal};
 use crate::ast::stmt::VarStmt;
-use crate::ast::decl::Decl;
+use crate::ast::decl::{Decl, FunctionDecl};
 use super::method::Method;
 use super::error::EvalError;
 use super::eval::SuperglobalState;
-use super::value::Value;
+use super::value::{Value, NoSuchFunc};
 use constant::LazyConst;
 
 use std::hash::{Hash, Hasher};
@@ -58,8 +58,17 @@ impl Class {
         Decl::Var(var_stmt) => {
           instance_vars.push(var_stmt.into());
         }
+        Decl::Constructor(constructor) => {
+          let func = FunctionDecl {
+            name: Identifier::new("_init"),
+            params: constructor.params,
+            is_static: false,
+            body: constructor.body,
+          };
+          methods.insert(Identifier::new("_init"), Method::GdMethod(Rc::new(func)));
+        }
         Decl::Function(function) => {
-          methods.insert(function.name.to_owned(), Method::GdMethod(function));
+          methods.insert(function.name.to_owned(), Method::GdMethod(Rc::new(function)));
         }
       };
     }
@@ -70,6 +79,17 @@ impl Class {
       instance_vars,
       methods,
     })
+  }
+
+  pub fn get_func(&self, name: &str) -> Result<&Method, NoSuchFunc> {
+    let mut curr = Some(self);
+    while let Some(cls) = curr {
+      if let Some(method) = cls.methods.get(name) {
+        return Ok(method);
+      }
+      curr = cls.parent.as_deref();
+    }
+    Err(NoSuchFunc(name.into()))
   }
 }
 

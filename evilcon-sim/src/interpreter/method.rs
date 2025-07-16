@@ -11,7 +11,7 @@ use std::fmt::{Formatter, Debug};
 #[derive(Debug, Clone)]
 pub enum Method {
   /// Method defined in GDScript code.
-  GdMethod(FunctionDecl),
+  GdMethod(Rc<FunctionDecl>),
   /// Method written in Rust.
   RustMethod(RustMethod),
 }

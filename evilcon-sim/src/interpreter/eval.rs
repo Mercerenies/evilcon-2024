@@ -54,8 +54,7 @@ impl EvaluatorState {
     self.locals.insert(ident, value);
   }
 
-  pub fn get_var(&mut self, ident: &Identifier) -> Result<Option<&Value>, EvalError> {
-    // TODO Global access
+  pub fn get_var(&self, ident: &Identifier) -> Result<Option<&Value>, EvalError> {
     if let Some(local) = self.locals.get(ident) {
       return Ok(Some(local));
     }
@@ -72,7 +71,16 @@ impl EvaluatorState {
     glob.get(self).map(Some)
   }
 
-  pub fn get_func(&self, ident: &Identifier) -> Option<&Method> {
+  pub fn get_func(&self, ident: &Identifier) -> Option<Method> {
+    if let Some(self_instance) = &self.self_instance {
+      if let Ok(func) = self_instance.get_func(ident.as_ref()) {
+        return Some(func);
+      }
+    }
+    self.get_superglobal_func(ident).cloned()
+  }
+
+  pub fn get_superglobal_func(&self, ident: &Identifier) -> Option<&Method> {
     self.superglobal_state.get_func(ident)
   }
 
@@ -81,7 +89,33 @@ impl EvaluatorState {
   }
 
   pub fn eval_expr(&self, expr: &Expr) -> Result<Value, EvalError> {
-    todo!()
+    match expr {
+      Expr::Array(args) => {
+        let args = args.iter().map(|arg| self.eval_expr(arg)).collect::<Result<Vec<_>, _>>()?;
+        Ok(Value::new_array(args))
+      }
+      Expr::Dictionary(pairs) => {
+        let entries = pairs.iter()
+          .map(|entry| Ok((self.eval_expr(&entry.key)?.try_into()?, self.eval_expr(&entry.value)?)))
+          .collect::<Result<HashMap<_, _>, EvalError>>()?;
+        Ok(Value::new_dict(entries))
+      }
+      Expr::Literal(lit) => {
+        Ok(lit.clone().into())
+      }
+      Expr::Name(name) => {
+        let value = self.get_var(name)?;
+        if let Some(value) = value {
+          return Ok(value.clone());
+        }
+        // Try to look up on `self`.
+        if let Some(obj) = self.self_instance() && let Ok(value) = obj.get_value(name.as_ref()) {
+          return Ok(value.clone());
+        }
+        Err(EvalError::UndefinedVariable(name.clone().into()))
+      }
+      _ => todo!(),
+    }
   }
 }
 
