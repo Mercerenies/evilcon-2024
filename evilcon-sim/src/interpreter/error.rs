@@ -45,6 +45,17 @@ pub enum EvalError {
   CannotCall(Expr),
   #[error("{0:?} is not iterable")]
   CannotIterate(Value),
+  #[error("Type error: Expected {expected_type}, got {value:?}")]
+  TypeError { expected_type: String, value: Value },
+}
+
+impl EvalError {
+  pub fn type_error(expected: impl Into<String>, value: Value) -> Self {
+    Self::TypeError {
+      expected_type: expected.into(),
+      value,
+    }
+  }
 }
 
 impl ControlFlow {

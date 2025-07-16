@@ -68,12 +68,26 @@ pub struct NoSuchVar(pub String);
 pub struct NoSuchFunc(pub String);
 
 impl Value {
+  pub fn float(f: impl Into<OrderedFloat<f64>>) -> Self {
+    Value::Float(f.into())
+  }
+
   pub fn new_array(values: Vec<Value>) -> Self {
     Value::ArrayRef(Rc::new(RefCell::new(values)))
   }
 
   pub fn new_dict(values: HashMap<HashKey, Value>) -> Self {
     Value::DictRef(Rc::new(RefCell::new(values)))
+  }
+
+  pub fn as_bool(&self) -> bool {
+    match self {
+      Value::Bool(b) => *b,
+      Value::Int(i) => *i != 0,
+      Value::Float(f) => *f != 0.0,
+      Value::Null => false,
+      _ => true,
+    }
   }
 
   pub fn get_value(&self, name: &str) -> Result<Value, NoSuchVar> {
@@ -160,18 +174,6 @@ impl From<HashKey> for Value {
       HashKey::Int(i) => Value::Int(i),
       HashKey::Float(f) => Value::Float(f),
       HashKey::String(s) => Value::String(s),
-    }
-  }
-}
-
-impl From<Value> for bool {
-  fn from(v: Value) -> Self {
-    match v {
-      Value::Bool(b) => b,
-      Value::Int(i) => i != 0,
-      Value::Float(f) => f != 0.0,
-      Value::Null => false,
-      _ => true,
     }
   }
 }

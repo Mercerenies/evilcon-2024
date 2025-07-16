@@ -4,9 +4,11 @@ use super::class::constant::LazyConst;
 use super::value::Value;
 use super::method::{Method, MethodArgs};
 use super::error::{EvalError, EvalErrorOrControlFlow, ControlFlow, LoopControlFlow};
+use super::operator::{eval_unary_op, eval_binary_op};
 use crate::ast::identifier::Identifier;
 use crate::ast::file::SourceFile;
 use crate::ast::expr::Expr;
+use crate::ast::expr::operator::BinaryOp;
 use crate::ast::stmt::Stmt;
 
 use std::collections::HashMap;
@@ -149,11 +151,33 @@ impl EvaluatorState {
         let globals = left.get_class().map(|class| Rc::clone(&class.constants));
         self.call_function(globals, &func, Some(Box::new(left)), args)
       }
-      Expr::BinaryOp(_left, _op, _right) => {
-        todo!()
+      Expr::BinaryOp(left, op, right) => {
+        let left = self.eval_expr(left)?;
+        // Handle short-circuiting ops
+        match op {
+          BinaryOp::And => {
+            if left.as_bool() {
+              self.eval_expr(right)
+            } else {
+              Ok(Value::Bool(false))
+            }
+          }
+          BinaryOp::Or => {
+            if left.as_bool() {
+              Ok(left.clone())
+            } else {
+              self.eval_expr(right)
+            }
+          }
+          op => {
+            let right = self.eval_expr(right)?;
+            eval_binary_op(left, *op, right)
+          }
+        }
       }
-      Expr::UnaryOp(_op, _right) => {
-        todo!()
+      Expr::UnaryOp(op, right) => {
+        let right = self.eval_expr(right)?;
+        eval_unary_op(*op, right)
       }
       Expr::Await(expr) => {
         // Whee, ignore `await` expressions!
@@ -164,7 +188,7 @@ impl EvaluatorState {
       }
       Expr::Conditional { if_true, cond, if_false } => {
         let cond = self.eval_expr(cond)?;
-        if cond.into() {
+        if cond.as_bool() {
           self.eval_expr(if_true)
         } else {
           self.eval_expr(if_false)
@@ -210,13 +234,13 @@ impl EvaluatorState {
         return Err(ControlFlow::Continue.into());
       }
       Stmt::If(if_stmt) => {
-        if bool::from(self.eval_expr(&if_stmt.condition)?) {
+        if self.eval_expr(&if_stmt.condition)?.as_bool() {
           let mut inner_scope = self.clone();
           inner_scope.eval_body(&if_stmt.body)?;
         } else {
           let mut matched = false;
           for elif_clause in &if_stmt.elif_clauses {
-            if bool::from(self.eval_expr(&elif_clause.condition)?) {
+            if self.eval_expr(&elif_clause.condition)?.as_bool() {
               let mut inner_scope = self.clone();
               inner_scope.eval_body(&elif_clause.body)?;
               matched = true;
@@ -229,7 +253,7 @@ impl EvaluatorState {
         }
       }
       Stmt::While(while_stmt) => {
-        while bool::from(self.eval_expr(&while_stmt.condition)?) {
+        while self.eval_expr(&while_stmt.condition)?.as_bool() {
           let mut inner_scope = self.clone();
           let inner_res = inner_scope.eval_body(&while_stmt.body);
           if let Some(cf) = ControlFlow::extract_loop_control(inner_res)? {
