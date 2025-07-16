@@ -1,5 +1,9 @@
 
 use super::class::Class;
+use super::eval::EvaluatorState;
+use super::value::Value;
+use super::error::EvalError;
+use super::method::{MethodArgs, RustMethod, Method};
 
 use std::rc::Rc;
 use std::collections::HashMap;
@@ -118,4 +122,8 @@ fn callable_class() -> Class {
     instance_vars: vec![],
     methods,
   }
+}
+
+fn call_func(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
+  todo!() /////
 }

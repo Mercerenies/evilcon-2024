@@ -68,8 +68,8 @@ pub struct ObjectInst {
 
 #[derive(Debug, Clone)]
 pub struct BoundMethod {
-  self_instance: Value,
-  method: Method,
+  pub self_instance: Value,
+  pub method: Method,
 }
 
 /// Thin wrapper around `Box<dyn Iterator>`, used for [`Value`].
@@ -168,7 +168,7 @@ impl Value {
       Value::ObjectRef(obj) => Some(obj.borrow().class.clone()),
       Value::ArrayRef(_) => Some(Rc::clone(bootstrapping.array())),
       Value::DictRef(_) => Some(Rc::clone(bootstrapping.dictionary())),
-      Value::BoundMethod(_) => Some(Rc::clone(bootstrapping.callable())),
+      Value::BoundMethod(_) | Value::Lambda(_) => Some(Rc::clone(bootstrapping.callable())),
       _ => None,
     }
   }
