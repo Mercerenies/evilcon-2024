@@ -4,7 +4,7 @@ pub mod operator;
 use super::string::GdString;
 use super::stmt::Stmt;
 use super::identifier::Identifier;
-use operator::{UnaryOp, BinaryOp, AssignOp};
+use operator::{UnaryOp, BinaryOp};
 
 use ordered_float::OrderedFloat;
 
@@ -19,10 +19,6 @@ pub enum Expr {
   Attr(Box<Expr>, Identifier),
   AttrCall(Box<Expr>, Identifier, Vec<Expr>),
   BinaryOp(Box<Expr>, BinaryOp, Box<Expr>),
-  /// The tree_sitter parser treats this as an expression even though
-  /// Godot treats it as a statement. We choose to match the parser
-  /// semantics.
-  AssignOp(Box<Expr>, AssignOp, Box<Expr>),
   UnaryOp(UnaryOp, Box<Expr>),
   Await(Box<Expr>),
   Lambda(Lambda),

@@ -9,4 +9,6 @@ pub enum EvalError {
   InvalidHashKey(#[from] InvalidHashKey),
   #[error("Unknown class {0}")]
   UnknownClass(String),
+  #[error("Poisoned constant")]
+  PoisonedConstant,
 }

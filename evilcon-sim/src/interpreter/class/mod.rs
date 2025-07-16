@@ -1,11 +1,13 @@
 
+pub mod constant;
+
 use crate::ast::identifier::Identifier;
 use crate::ast::file::SourceFile;
 use crate::ast::expr::Expr;
-use super::value::Value;
 use super::method::Method;
 use super::error::EvalError;
 use super::eval::SuperglobalState;
+use constant::LazyConst;
 
 use std::hash::{Hash, Hasher};
 use std::rc::Rc;
@@ -16,7 +18,7 @@ use std::collections::HashMap;
 pub struct Class {
   pub name: Option<String>,
   pub parent: Option<Rc<Class>>,
-  pub constants: Rc<HashMap<Identifier, Value>>,
+  pub constants: Rc<HashMap<Identifier, LazyConst>>,
   pub instance_vars: Vec<InstanceVar>,
   pub methods: HashMap<Identifier, Method>,
 }

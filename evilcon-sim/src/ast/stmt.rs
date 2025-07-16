@@ -1,6 +1,7 @@
 
 use super::identifier::Identifier;
 use super::expr::Expr;
+use super::expr::operator::AssignOp;
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum Stmt {
@@ -12,6 +13,7 @@ pub enum Stmt {
   Pass,
   Break,
   Continue,
+  AssignOp(Box<Expr>, AssignOp, Box<Expr>),
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]

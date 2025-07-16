@@ -1,5 +1,6 @@
 
 use super::class::Class;
+use super::class::constant::LazyConst;
 use super::value::Value;
 use super::method::Method;
 use super::error::EvalError;
@@ -13,7 +14,7 @@ use std::rc::Rc;
 pub struct EvaluatorState {
   self_instance: Option<Box<Value>>,
   locals: HashMap<Identifier, Value>,
-  globals: Rc<HashMap<Identifier, Value>>,
+  globals: Rc<HashMap<Identifier, LazyConst>>,
   superglobal_state: Rc<SuperglobalState>,
 }
 
@@ -34,7 +35,7 @@ impl EvaluatorState {
     }
   }
 
-  pub fn with_globals(mut self, globals: Rc<HashMap<Identifier, Value>>) -> Self {
+  pub fn with_globals(mut self, globals: Rc<HashMap<Identifier, LazyConst>>) -> Self {
     self.globals = globals;
     self
   }
@@ -52,10 +53,22 @@ impl EvaluatorState {
     self.locals.insert(ident, value);
   }
 
-  pub fn get_var(&self, ident: &Identifier) -> Option<&Value> {
-    self.locals.get(ident)
-      .or_else(|| self.globals.get(ident))
-      .or_else(|| self.superglobal_state.get_var(ident))
+  pub fn get_var(&mut self, ident: &Identifier) -> Result<Option<&Value>, EvalError> {
+    // TODO Global access
+    if let Some(local) = self.locals.get(ident) {
+      return Ok(Some(local));
+    }
+    if let Some(glob) = self.get_global(ident)? {
+      return Ok(Some(glob));
+    }
+    Ok(self.superglobal_state.get_var(ident))
+  }
+
+  fn get_global(&self, ident: &Identifier) -> Result<Option<&Value>, EvalError> {
+    let Some(glob) = self.globals.get(ident) else {
+      return Ok(None);
+    };
+    glob.get(self).map(Some)
   }
 
   pub fn get_func(&self, ident: &Identifier) -> Option<&Method> {
@@ -85,7 +98,8 @@ impl SuperglobalState {
   }
 
   pub fn load_file(&mut self, path: String, source_file: SourceFile) -> Result<(), EvalError> {
-    self.loaded_files.insert(path, Class::load_from_file(source_file)?);
+    let class = Class::load_from_file(self, source_file)?;
+    self.loaded_files.insert(path, class);
     Ok(())
   }
 

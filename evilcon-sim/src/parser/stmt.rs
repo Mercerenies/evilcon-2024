@@ -1,6 +1,7 @@
 
 use crate::ast::stmt::{Stmt, VarStmt, IfStmt, ForStmt, ElifClause};
-use super::sitter::{validate_kind, nth_child, named_child};
+use crate::ast::expr::operator::AssignOp;
+use super::sitter::{validate_kind, nth_child, nth_named_child, named_child};
 use super::error::ParseError;
 use super::base::GdscriptParser;
 use super::expr::parse_expr;
@@ -28,8 +29,27 @@ pub(super) fn parse_stmt(
 ) -> Result<Stmt, ParseError> {
   match node.kind() {
     "expression_statement" => {
-      let value = parse_expr(parser, nth_child(node, 0)?)?;
-      Ok(Stmt::ExprStmt(Box::new(value)))
+      // tree-sitter parses assignments as expressions, even though
+      // Godot treats them as statements. We correct that here.
+      let value = nth_child(node, 0)?;
+      match value.kind() {
+        "assignment" => {
+          let lhs = parse_expr(parser, nth_named_child(node, 0)?)?;
+          let rhs = parse_expr(parser, nth_named_child(node, 1)?)?;
+          let op = AssignOp::default();
+          Ok(Stmt::AssignOp(Box::new(lhs), op, Box::new(rhs)))
+        }
+        "augmented_assignment" => {
+          let lhs = parse_expr(parser, nth_named_child(node, 0)?)?;
+          let rhs = parse_expr(parser, nth_named_child(node, 1)?)?;
+          let op = parser.utf8_text(nth_child(node, 1)?)?.parse()?;
+          Ok(Stmt::AssignOp(Box::new(lhs), op, Box::new(rhs)))
+        }
+        _ => {
+          let value = parse_expr(parser, value)?;
+          Ok(Stmt::ExprStmt(Box::new(value)))
+        }
+      }
     }
     "return_statement" => {
       let value = if let Ok(value) = nth_child(node, 1) {
