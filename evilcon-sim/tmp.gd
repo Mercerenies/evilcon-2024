@@ -1,4 +1,6 @@
 
 func test(a, b: int):
-    var a = func x(): return 0
-    var b = func(): return 1
+    pass
+
+static func test1(a, b: int):
+    pass
