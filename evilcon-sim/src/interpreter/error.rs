@@ -43,6 +43,8 @@ pub enum EvalError {
   UnexpectedControlFlow(ControlFlow),
   #[error("Cannot call {0:?}")]
   CannotCall(Expr),
+  #[error("{0:?} is not iterable")]
+  CannotIterate(Value),
 }
 
 impl ControlFlow {

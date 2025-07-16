@@ -240,7 +240,12 @@ impl EvaluatorState {
         }
       }
       Stmt::For(for_stmt) => {
-        todo!()
+        let iterable = self.eval_expr(&for_stmt.iterable)?.try_iter()?;
+        for elem in iterable {
+          let mut inner_scope = self.clone();
+          inner_scope.set_local_var(for_stmt.variable.clone(), elem);
+          self.eval_body(&for_stmt.body)?;
+        }
       }
       Stmt::AssignOp(left, op, right) => {
         todo!()

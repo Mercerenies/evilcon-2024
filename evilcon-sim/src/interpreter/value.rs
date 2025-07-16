@@ -2,6 +2,7 @@
 use crate::ast::expr::Literal;
 use super::class::Class;
 use super::method::Method;
+use super::error::EvalError;
 
 use ordered_float::OrderedFloat;
 use thiserror::Error;
@@ -49,6 +50,11 @@ pub struct ObjectInst {
   dict: HashMap<String, Value>,
 }
 
+/// Thin wrapper around `Box<dyn Iterator>`, used for [`Value`].
+pub struct ValueIter {
+  inner: Box<dyn Iterator<Item = Value> + 'static>,
+}
+
 #[derive(Debug, Clone, Error)]
 #[error("Invalid hash key {0:?}")]
 pub struct InvalidHashKey(pub Value);
@@ -90,6 +96,31 @@ impl Value {
       Value::ObjectRef(obj) => Some(obj.borrow().class.clone()),
       _ => None,
     }
+  }
+
+  pub fn try_iter(&self) -> Result<ValueIter, EvalError> {
+    // Currently we only support arrays and dictionaries.
+    match self {
+      Value::ArrayRef(arr) => {
+        let elems = arr.borrow().clone();
+        Ok(ValueIter { inner: Box::new(elems.into_iter()) })
+      }
+      Value::DictRef(d) => {
+        let entries = d.borrow().clone();
+        Ok(ValueIter { inner: Box::new(entries.into_keys().map(Value::from)) })
+      }
+      _ => {
+        Err(EvalError::CannotIterate(self.clone()))
+      }
+    }
+  }
+}
+
+impl Iterator for ValueIter {
+  type Item = Value;
+
+  fn next(&mut self) -> Option<Self::Item> {
+    self.inner.next()
   }
 }
 
