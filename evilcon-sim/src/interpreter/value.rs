@@ -24,7 +24,7 @@ pub enum Value {
   ArrayRef(Rc<RefCell<Vec<Value>>>),
   DictRef(Rc<RefCell<HashMap<HashKey, Value>>>),
   ClassRef(Rc<Class>),
-  ObjectRef(ObjectPtr),
+  ObjectRef(EqPtr<ObjectInst>),
 }
 
 #[derive(Debug, Clone)]
@@ -47,9 +47,9 @@ pub enum HashKey {
   String(String),
 }
 
-#[derive(Debug, Clone)]
-pub struct ObjectPtr {
-  pub value: Rc<RefCell<ObjectInst>>,
+#[derive(Debug)]
+pub struct EqPtr<T> {
+  pub value: Rc<RefCell<T>>,
 }
 
 #[derive(Debug, Clone)]
@@ -173,6 +173,14 @@ impl Value {
   }
 }
 
+impl<T> Clone for EqPtr<T> {
+  fn clone(&self) -> Self {
+    EqPtr {
+      value: Rc::clone(&self.value),
+    }
+  }
+}
+
 impl Iterator for ValueIter {
   type Item = Value;
 
@@ -181,21 +189,21 @@ impl Iterator for ValueIter {
   }
 }
 
-impl Deref for ObjectPtr {
-  type Target = Rc<RefCell<ObjectInst>>;
+impl<T> Deref for EqPtr<T> {
+  type Target = Rc<RefCell<T>>;
 
   fn deref(&self) -> &Self::Target {
     &self.value
   }
 }
 
-impl PartialEq for ObjectPtr {
+impl<T> PartialEq for EqPtr<T> {
   fn eq(&self, other: &Self) -> bool {
     Rc::ptr_eq(&self.value, &other.value)
   }
 }
 
-impl Eq for ObjectPtr {}
+impl<T> Eq for EqPtr<T> {}
 
 impl From<Literal> for Value {
   fn from(lit: Literal) -> Self {
