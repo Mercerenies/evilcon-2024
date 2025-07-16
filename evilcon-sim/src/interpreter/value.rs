@@ -1,5 +1,5 @@
 
-use crate::ast::expr::Literal;
+use crate::ast::expr::{Literal, Lambda};
 use crate::ast::identifier::Identifier;
 use super::class::Class;
 use super::method::Method;
@@ -24,8 +24,9 @@ pub enum Value {
   ArrayRef(Rc<RefCell<Vec<Value>>>),
   DictRef(Rc<RefCell<HashMap<HashKey, Value>>>),
   ClassRef(Rc<Class>),
-  ObjectRef(EqPtr<ObjectInst>),
+  ObjectRef(EqPtrMut<ObjectInst>),
   BoundMethod(EqPtr<BoundMethod>),
+  Lambda(EqPtr<Lambda>),
 }
 
 #[derive(Debug, Clone)]
@@ -49,8 +50,13 @@ pub enum HashKey {
 }
 
 #[derive(Debug)]
-pub struct EqPtr<T> {
+pub struct EqPtrMut<T> {
   pub value: Rc<RefCell<T>>,
+}
+
+#[derive(Debug)]
+pub struct EqPtr<T> {
+  pub value: Rc<T>,
 }
 
 #[derive(Debug, Clone)]
@@ -187,10 +193,18 @@ impl BoundMethod {
   }
 }
 
+impl<T> EqPtrMut<T> {
+  pub fn new(value: T) -> Self {
+    EqPtrMut {
+      value: Rc::new(RefCell::new(value)),
+    }
+  }
+}
+
 impl<T> EqPtr<T> {
   pub fn new(value: T) -> Self {
     EqPtr {
-      value: Rc::new(RefCell::new(value)),
+      value: Rc::new(value),
     }
   }
 }
@@ -198,6 +212,14 @@ impl<T> EqPtr<T> {
 impl<T> Clone for EqPtr<T> {
   fn clone(&self) -> Self {
     EqPtr {
+      value: Rc::clone(&self.value),
+    }
+  }
+}
+
+impl<T> Clone for EqPtrMut<T> {
+  fn clone(&self) -> Self {
+    EqPtrMut {
       value: Rc::clone(&self.value),
     }
   }
@@ -211,8 +233,16 @@ impl Iterator for ValueIter {
   }
 }
 
-impl<T> Deref for EqPtr<T> {
+impl<T> Deref for EqPtrMut<T> {
   type Target = Rc<RefCell<T>>;
+
+  fn deref(&self) -> &Self::Target {
+    &self.value
+  }
+}
+
+impl<T> Deref for EqPtr<T> {
+  type Target = Rc<T>;
 
   fn deref(&self) -> &Self::Target {
     &self.value
@@ -226,6 +256,14 @@ impl<T> PartialEq for EqPtr<T> {
 }
 
 impl<T> Eq for EqPtr<T> {}
+
+impl<T> PartialEq for EqPtrMut<T> {
+  fn eq(&self, other: &Self) -> bool {
+    Rc::ptr_eq(&self.value, &other.value)
+  }
+}
+
+impl<T> Eq for EqPtrMut<T> {}
 
 impl From<Literal> for Value {
   fn from(lit: Literal) -> Self {

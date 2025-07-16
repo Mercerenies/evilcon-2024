@@ -1,6 +1,5 @@
 
 use crate::ast::expr::{Expr, AttrTarget, Literal, Lambda, DictEntry};
-use crate::ast::expr::operator::AssignOp;
 use crate::ast::identifier::Identifier;
 use super::error::ParseError;
 use super::base::GdscriptParser;
@@ -9,6 +8,8 @@ use super::stmt::{parse_body, COMMENT_KIND};
 use super::sitter::{nth_child, nth_named_child, named_child, validate_kind};
 
 use tree_sitter::Node;
+
+use std::rc::Rc;
 
 pub const ARGS_KIND: &'static str = "arguments";
 
@@ -117,7 +118,7 @@ pub(super) fn parse_expr(
     }
     "lambda" => {
       let lambda = parse_lambda(parser, node)?;
-      Ok(Expr::Lambda(lambda))
+      Ok(Expr::Lambda(Rc::new(lambda)))
     }
     kind => {
       Err(ParseError::UnknownExpr(kind.to_owned()))

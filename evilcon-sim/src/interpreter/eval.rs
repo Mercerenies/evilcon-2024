@@ -1,7 +1,7 @@
 
 use super::class::Class;
 use super::class::constant::LazyConst;
-use super::value::{Value, AssignmentLeftHand};
+use super::value::{Value, AssignmentLeftHand, EqPtr};
 use super::method::{Method, MethodArgs};
 use super::error::{EvalError, EvalErrorOrControlFlow, ControlFlow, LoopControlFlow};
 use super::operator::{eval_unary_op, eval_binary_op};
@@ -187,8 +187,8 @@ impl EvaluatorState {
         // Whee, ignore `await` expressions!
         self.eval_expr(expr)
       }
-      Expr::Lambda(_lambda) => {
-        todo!()
+      Expr::Lambda(lambda) => {
+        Ok(Value::Lambda(EqPtr { value: lambda.clone() }))
       }
       Expr::Conditional { if_true, cond, if_false } => {
         let cond = self.eval_expr(cond)?;

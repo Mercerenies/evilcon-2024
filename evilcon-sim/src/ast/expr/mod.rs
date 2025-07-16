@@ -8,6 +8,8 @@ use operator::{UnaryOp, BinaryOp};
 
 use ordered_float::OrderedFloat;
 
+use std::rc::Rc;
+
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum Expr {
   Array(Vec<Expr>),
@@ -22,7 +24,8 @@ pub enum Expr {
   BinaryOp(Box<Expr>, BinaryOp, Box<Expr>),
   UnaryOp(UnaryOp, Box<Expr>),
   Await(Box<Expr>),
-  Lambda(Lambda),
+  /// `Rc` so we can easily clone it into runtime values.
+  Lambda(Rc<Lambda>),
   Conditional {
     if_true: Box<Expr>,
     cond: Box<Expr>,
