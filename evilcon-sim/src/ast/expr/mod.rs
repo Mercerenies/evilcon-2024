@@ -14,6 +14,7 @@ pub enum Expr {
   Dictionary(Vec<DictEntry>),
   Literal(Literal),
   Name(Identifier),
+  GetNode(Identifier),
   Call { func: Box<Expr>, args: Vec<Expr> },
   Subscript(Box<Expr>, Box<Expr>),
   Attr(Box<Expr>, Identifier),

@@ -1,6 +1,7 @@
 
 use crate::ast::expr::{Expr, AttrTarget, Literal, Lambda, DictEntry};
 use crate::ast::expr::operator::AssignOp;
+use crate::ast::identifier::Identifier;
 use super::error::ParseError;
 use super::base::GdscriptParser;
 use super::decl::parse_function_parameters;
@@ -38,6 +39,11 @@ pub(super) fn parse_expr(
     }
     "false" => {
       Ok(Expr::from(false))
+    }
+    "get_node" => {
+      let mut text = parser.utf8_text(node)?.to_owned();
+      text.remove(0); // Drop the leading dollar-sign
+      Ok(Expr::GetNode(Identifier(text)))
     }
     "identifier" => {
       let ident = parser.identifier(node)?;
