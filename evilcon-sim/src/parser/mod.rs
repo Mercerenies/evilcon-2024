@@ -13,9 +13,11 @@ pub mod sitter;
 use base::GdscriptParser;
 use error::ParseError;
 use decl::parse_decl_seq;
+use stmt::COMMENT_KIND;
 use sitter::{validate_kind, nth_child_of, is_string_lit};
 use crate::ast::file::{SourceFile, ExtendsClause};
 use crate::ast::identifier::Identifier;
+use crate::util::skip_while;
 
 use tree_sitter::Node;
 
@@ -49,6 +51,9 @@ fn parse_prologue<'tree, I>(
   nodes: &mut Peekable<I>,
 ) -> Result<(), ParseError>
 where I: Iterator<Item = Node<'tree>> {
+  // Skip any leading comments
+  skip_while(nodes, |node| node.kind() == COMMENT_KIND);
+
   loop {
     let Some(next_kind) = nodes.peek().map(|node| node.kind()) else {
       break;

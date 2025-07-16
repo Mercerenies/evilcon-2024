@@ -18,11 +18,10 @@ where I: Iterator {
 }
 
 /// Drop elements of a peekable iterator while the condition is true.
-pub fn drop_while<I, F>(mut iter: Peekable<I>, mut cond: F) -> Peekable<I>
+pub fn skip_while<I, F>(iter: &mut Peekable<I>, mut cond: F)
 where I: Iterator,
       F: FnMut(&I::Item) -> bool {
   while let Some(next) = iter.peek() && cond(next) {
     iter.next().unwrap();
   }
-  iter
 }
