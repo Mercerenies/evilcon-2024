@@ -45,8 +45,12 @@ pub enum EvalError {
   CannotCall(Expr),
   #[error("{0:?} is not iterable")]
   CannotIterate(Value),
+  #[error("{0:?} is not assignable")]
+  CannotAssignTo(Expr),
   #[error("Type error: Expected {expected_type}, got {value:?}")]
   TypeError { expected_type: String, value: Value },
+  #[error("Index {0} out of bounds")]
+  IndexOutOfBounds(usize),
 }
 
 impl EvalError {

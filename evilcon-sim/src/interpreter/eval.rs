@@ -1,14 +1,14 @@
 
 use super::class::Class;
 use super::class::constant::LazyConst;
-use super::value::Value;
+use super::value::{Value, AssignmentLeftHand};
 use super::method::{Method, MethodArgs};
 use super::error::{EvalError, EvalErrorOrControlFlow, ControlFlow, LoopControlFlow};
 use super::operator::{eval_unary_op, eval_binary_op};
 use crate::ast::identifier::Identifier;
 use crate::ast::file::SourceFile;
 use crate::ast::expr::Expr;
-use crate::ast::expr::operator::BinaryOp;
+use crate::ast::expr::operator::{BinaryOp, AssignOp};
 use crate::ast::stmt::Stmt;
 
 use std::collections::HashMap;
@@ -51,6 +51,10 @@ impl EvaluatorState {
 
   pub fn self_instance(&self) -> Option<&Value> {
     self.self_instance.as_ref().map(|i| i.as_ref())
+  }
+
+  pub fn has_local_var(&mut self, ident: &Identifier) -> bool {
+    self.locals.contains_key(ident)
   }
 
   pub fn set_local_var(&mut self, ident: Identifier, value: Value) {
@@ -197,6 +201,44 @@ impl EvaluatorState {
     }
   }
 
+  pub fn eval_expr_for_assignment(&self, expr: &Expr) -> Result<AssignmentLeftHand, EvalError> {
+    match expr {
+      Expr::Name(name) => {
+        Ok(AssignmentLeftHand::Name(name.clone().into()))
+      }
+      Expr::Subscript(left, right) => {
+        let left = self.eval_expr(left)?;
+        let right = self.eval_expr(right)?;
+        Ok(AssignmentLeftHand::Subscript(left, right))
+      }
+      Expr::Attr(left, name) => {
+        let left = self.eval_expr(left)?;
+        Ok(AssignmentLeftHand::Attr(left, name.clone().into()))
+      }
+      other => {
+        Err(EvalError::CannotAssignTo(other.clone()))
+      }
+    }
+  }
+
+  pub fn eval_assignment_left_hand_as_expr(&self, left_hand: &AssignmentLeftHand) -> Result<Value, EvalError> {
+    match left_hand {
+      AssignmentLeftHand::Name(name) => {
+        self.eval_expr(&Expr::Name(name.clone().into()))
+      }
+      AssignmentLeftHand::Subscript(left, right) => {
+        let func = left.get_func("__getitem__")?; // Just do it the Python way, even though Godot doesn't :)
+        let args = MethodArgs(vec![right.clone()]);
+        let globals = left.get_class().map(|class| Rc::clone(&class.constants));
+        self.call_function(globals, &func, Some(Box::new(left.clone())), args)
+      }
+      AssignmentLeftHand::Attr(left, name) => {
+        Ok(left.get_value(name.as_ref())?)
+      }
+
+    }
+  }
+
   pub fn eval_body(&mut self, body: &[Stmt]) -> Result<(), EvalErrorOrControlFlow> {
     for stmt in body {
       self.eval_stmt(stmt)?;
@@ -272,7 +314,36 @@ impl EvaluatorState {
         }
       }
       Stmt::AssignOp(left, op, right) => {
-        todo!()
+        let left_hand = self.eval_expr_for_assignment(left)?;
+        if *op == AssignOp::Eq {
+          // Basic assignment
+          self.do_assignment(left_hand, self.eval_expr(right)?)?;
+        } else {
+          let bin_op = op.as_binary().expect("Expected compound assignment");
+          let left = self.eval_assignment_left_hand_as_expr(&left_hand)?;
+          let right = self.eval_expr(right)?;
+          self.do_assignment(left_hand, eval_binary_op(left, bin_op, right)?)?;
+        }
+      }
+    }
+    Ok(())
+  }
+
+  pub fn do_assignment(&mut self,
+                       left_hand: AssignmentLeftHand,
+                       value: Value) -> Result<(), EvalError> {
+    match left_hand {
+      AssignmentLeftHand::Name(id) => {
+        if !self.has_local_var(&id) {
+          return Err(EvalError::UndefinedVariable(id.into()));
+        }
+        self.set_local_var(id, value);
+      }
+      AssignmentLeftHand::Subscript(left, index) => {
+        left.set_index(index, value)?;
+      }
+      AssignmentLeftHand::Attr(left, name) => {
+        left.set_value(name.as_ref(), value)?;
       }
     }
     Ok(())

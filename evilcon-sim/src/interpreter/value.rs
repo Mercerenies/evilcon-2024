@@ -1,5 +1,6 @@
 
 use crate::ast::expr::Literal;
+use crate::ast::identifier::Identifier;
 use super::class::Class;
 use super::method::Method;
 use super::error::EvalError;
@@ -24,6 +25,13 @@ pub enum Value {
   DictRef(Rc<RefCell<HashMap<HashKey, Value>>>),
   ClassRef(Rc<Class>),
   ObjectRef(ObjectPtr),
+}
+
+#[derive(Debug, Clone)]
+pub enum AssignmentLeftHand {
+  Name(Identifier),
+  Subscript(Value, Value),
+  Attr(Value, Identifier),
 }
 
 /// Technically, Godot allows *any* language value to be a dictionary
@@ -97,6 +105,41 @@ impl Value {
       obj.dict.get(name).cloned().ok_or(NoSuchVar(name.to_owned()))
     } else {
       Err(NoSuchVar(name.to_owned()))
+    }
+  }
+
+  pub fn set_value(&self, name: &str, value: Value) -> Result<(), EvalError> {
+    if let Value::ObjectRef(obj) = self {
+      let mut obj = obj.borrow_mut();
+      obj.dict.insert(name.to_owned(), value);
+      Ok(())
+    } else {
+      Err(EvalError::type_error("object", self.clone()))
+    }
+  }
+
+  pub fn set_index(&self, index: Value, value: Value) -> Result<(), EvalError> {
+    match self {
+      Value::ArrayRef(arr) => {
+        let mut arr = arr.borrow_mut();
+        if let Value::Int(index) = index {
+          if (0..arr.len() as i64).contains(&index) {
+            arr[index as usize] = value;
+            Ok(())
+          } else {
+            Err(EvalError::IndexOutOfBounds(index as usize))
+          }
+        } else {
+          Err(EvalError::type_error("integer", value))
+        }
+      }
+      Value::DictRef(d) => {
+        let mut d = d.borrow_mut();
+        let key = HashKey::try_from(index)?;
+        d.insert(key, value);
+        Ok(())
+      }
+      _ => Err(EvalError::type_error("array or dictionary", self.clone())),
     }
   }
 

@@ -101,6 +101,25 @@ pub enum AssignOp {
 #[error("Failed to parse operator {0}")]
 pub struct OpFromStrError(String);
 
+impl AssignOp {
+  pub fn as_binary(self) -> Option<BinaryOp> {
+    match self {
+      AssignOp::Eq => None,
+      AssignOp::AddEq => Some(BinaryOp::Add),
+      AssignOp::SubEq => Some(BinaryOp::Sub),
+      AssignOp::MulEq => Some(BinaryOp::Mul),
+      AssignOp::DivEq => Some(BinaryOp::Div),
+      AssignOp::ModEq => Some(BinaryOp::Mod),
+      AssignOp::PowEq => Some(BinaryOp::Pow),
+      AssignOp::BitAndEq => Some(BinaryOp::BitAnd),
+      AssignOp::BitOrEq => Some(BinaryOp::BitOr),
+      AssignOp::BitXorEq => Some(BinaryOp::BitXor),
+      AssignOp::LShiftEq => Some(BinaryOp::LShift),
+      AssignOp::RShiftEq => Some(BinaryOp::RShift),
+    }
+  }
+}
+
 /// Note: This is not an exact round-trip for `Display`. Some
 /// operators have multiple names (such as `not` and `!`). `FromStr`
 /// will parse both but will normalize to one representation.
