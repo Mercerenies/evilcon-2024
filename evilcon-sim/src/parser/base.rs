@@ -1,6 +1,6 @@
 
-use super::sitter::{gdscript_tree_sitter_parser, STRING_KIND, IDENTIFIER_KINDS,
-                    validate_kind, validate_kind_any};
+use super::sitter::{gdscript_tree_sitter_parser, STRING_KINDS, IDENTIFIER_KINDS,
+                    validate_kind_any};
 use super::error::ParseError;
 use crate::ast::identifier::Identifier;
 use crate::ast::string::GdString;
@@ -45,7 +45,7 @@ impl<'s> GdscriptParser<'s> {
   }
 
   pub(super) fn string_lit(&self, node: Node) -> Result<GdString, ParseError> {
-    validate_kind(node, STRING_KIND)?;
+    validate_kind_any(node, STRING_KINDS)?;
     Ok(node.utf8_text(self.source_code.as_bytes())?.parse()?)
   }
 }

@@ -7,7 +7,7 @@ use tree_sitter::{Parser, Node};
 use tree_sitter_gdscript::LANGUAGE;
 
 pub const IDENTIFIER_KINDS: [&str; 2] = ["name", "identifier"];
-pub const STRING_KIND: &str = "string";
+pub const STRING_KINDS: [&str; 2] = ["string", "string_name"];
 
 pub fn gdscript_tree_sitter_parser() -> Parser {
   let mut parser = Parser::new();
@@ -22,7 +22,8 @@ pub fn is_identifier(node: Node) -> bool {
 }
 
 pub fn is_string_lit(node: Node) -> bool {
-  node.kind() == STRING_KIND
+  let kind = node.kind();
+  STRING_KINDS.iter().any(|string_kind| string_kind == &kind)
 }
 
 pub fn validate_kind_any<'a>(node: Node, expected_kinds: impl IntoIterator<Item = &'a str>) -> Result<(), ParseError> {

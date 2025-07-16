@@ -16,7 +16,7 @@ pub(super) fn parse_expr(
   node: Node,
 ) -> Result<Expr, ParseError> {
   match node.kind() {
-    "string" => {
+    "string" | "string_name" => {
       let string_lit = parser.string_lit(node)?;
       Ok(Literal::String(string_lit).into())
     }
