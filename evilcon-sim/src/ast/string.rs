@@ -142,6 +142,12 @@ where I: Iterator<Item = char> {
   read(iter, digit_count).ok_or(InvalidEscapeSequence { _priv: () })
 }
 
+impl From<GdString> for String {
+  fn from(gd_string: GdString) -> String {
+    gd_string.contents
+  }
+}
+
 impl FromStr for GdString {
   type Err = StringLitFromStrError;
 
