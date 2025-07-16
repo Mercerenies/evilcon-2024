@@ -60,8 +60,12 @@ pub enum BinaryOp {
   Or,
   #[strum(serialize = "is")]
   Is,
+  #[strum(serialize = "is not")]
+  IsNot,
   #[strum(serialize = "in")]
   In,
+  #[strum(serialize = "not in")]
+  NotIn,
 }
 
 #[derive(Default, Debug, Copy, Clone, PartialEq, Eq, Hash, Display)]
@@ -142,7 +146,9 @@ impl FromStr for BinaryOp {
       "&&" | "and" => BinaryOp::And,
       "||" | "or" => BinaryOp::Or,
       "is" => BinaryOp::Is,
+      "is not" => BinaryOp::IsNot,
       "in" => BinaryOp::In,
+      "not in" => BinaryOp::NotIn,
       _ => return Err(OpFromStrError(s.to_owned())),
     })
   }

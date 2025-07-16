@@ -75,7 +75,16 @@ pub(super) fn parse_expr(
     "binary_operator" => {
       let lhs = parse_expr(parser, nth_named_child(node, 0)?)?;
       let rhs = parse_expr(parser, nth_named_child(node, 1)?)?;
-      let op = parser.utf8_text(nth_child(node, 1)?)?.parse()?;
+
+      // Binary operators in GDScript can be multiple words. Take all
+      // but the first and last children (which are the operator
+      // arguments)
+      let op = (1..=(node.child_count() - 2))
+        .map(|i| parser.utf8_text(nth_child(node, i)?))
+        .collect::<Result<Vec<_>, _>>()?
+        .join(" ")
+        .parse()?;
+
       Ok(Expr::BinaryOp(Box::new(lhs), op, Box::new(rhs)))
     }
     "assignment" => {
