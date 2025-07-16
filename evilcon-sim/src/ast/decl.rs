@@ -8,11 +8,18 @@ pub enum Decl {
   Const { name: Identifier, value: Box<Expr> },
   Var(VarStmt),
   Function(FunctionDecl),
+  Constructor(ConstructorDecl),
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct FunctionDecl {
   pub name: Identifier,
+  pub params: Vec<Identifier>,
+  pub body: Vec<Stmt>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub struct ConstructorDecl {
   pub params: Vec<Identifier>,
   pub body: Vec<Stmt>,
 }
