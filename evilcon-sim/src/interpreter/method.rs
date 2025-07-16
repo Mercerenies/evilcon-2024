@@ -34,6 +34,16 @@ impl Method {
   }
 }
 
+impl MethodArgs {
+  pub fn is_empty(&self) -> bool {
+    self.0.is_empty()
+  }
+
+  pub fn len(&self) -> usize {
+    self.0.len()
+  }
+}
+
 impl Debug for RustMethod {
   fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
     f.debug_struct("RustMethod")

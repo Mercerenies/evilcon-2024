@@ -2,11 +2,12 @@
 use super::class::Class;
 use super::class::constant::LazyConst;
 use super::value::Value;
-use super::method::Method;
-use super::error::EvalError;
+use super::method::{Method, MethodArgs};
+use super::error::{EvalError, EvalErrorOrControlFlow, ControlFlow};
 use crate::ast::identifier::Identifier;
 use crate::ast::file::SourceFile;
 use crate::ast::expr::Expr;
+use crate::ast::stmt::Stmt;
 
 use std::collections::HashMap;
 use std::rc::Rc;
@@ -123,6 +124,39 @@ impl EvaluatorState {
         Err(EvalError::UnexpectedGetNode(node.clone().into()))
       }
       _ => todo!(),
+    }
+  }
+
+  pub fn eval_body(&mut self, body: &[Stmt]) -> Result<(), EvalErrorOrControlFlow> {
+    todo!()
+  }
+
+  pub fn call_function(&self,
+                       owning_class: Option<Rc<Class>>,
+                       method: &Method,
+                       self_instance: Option<Box<Value>>,
+                       args: MethodArgs) -> Result<Value, EvalError> {
+    let mut method_scope = EvaluatorState::new(Rc::clone(&self.superglobal_state)).with_self(self_instance);
+    if let Some(owning_class) = owning_class.as_ref() {
+      method_scope = method_scope.with_globals(owning_class.constants.clone());
+    }
+    match method {
+      Method::GdMethod(method) => {
+        if method.is_static {
+          method_scope = method_scope.with_self(None);
+        }
+        if args.len() != method.params.len() {
+          return Err(EvalError::WrongArity { expected: method.params.len(), actual: args.len() });
+        }
+        for (arg, param) in args.0.into_iter().zip(method.params.clone()) {
+          method_scope.set_local_var(param, arg);
+        }
+        let result = method_scope.eval_body(&method.body);
+        ControlFlow::expect_return_or_null(result)
+      }
+      Method::RustMethod(method) => {
+        (method.body)(&mut method_scope, args)
+      }
     }
   }
 }

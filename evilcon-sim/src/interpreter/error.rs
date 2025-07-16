@@ -1,7 +1,20 @@
 
-use super::value::{InvalidHashKey, NoSuchVar, NoSuchFunc};
+use super::value::{Value, InvalidHashKey, NoSuchVar, NoSuchFunc};
 
 use thiserror::Error;
+
+#[derive(Debug, Clone)]
+pub enum EvalErrorOrControlFlow {
+  EvalError(EvalError),
+  ControlFlow(ControlFlow),
+}
+
+#[derive(Debug, Clone)]
+pub enum ControlFlow {
+  Break,
+  Continue,
+  Return(Value),
+}
 
 #[derive(Debug, Clone, Error)]
 pub enum EvalError {
@@ -17,6 +30,33 @@ pub enum EvalError {
   UndefinedFunc(String),
   #[error("Unexpected GetNode {0}")]
   UnexpectedGetNode(String),
+  #[error("Wrong number of arguments, got {actual} but expected {expected}")]
+  WrongArity { actual: usize, expected: usize },
+  #[error("Unexpected control flow {0:?}")]
+  UnexpectedControlFlow(ControlFlow),
+}
+
+impl ControlFlow {
+  pub fn expect_normal<T>(value: Result<T, EvalErrorOrControlFlow>) -> Result<T, EvalError> {
+    match value {
+      Ok(value) => Ok(value),
+      Err(EvalErrorOrControlFlow::EvalError(e)) => Err(e),
+      Err(EvalErrorOrControlFlow::ControlFlow(cf)) => Err(EvalError::UnexpectedControlFlow(cf)),
+    }
+  }
+
+  pub fn expect_return(value: Result<Value, EvalErrorOrControlFlow>) -> Result<Value, EvalError> {
+    match value {
+      Ok(value) => Ok(value),
+      Err(EvalErrorOrControlFlow::EvalError(e)) => Err(e),
+      Err(EvalErrorOrControlFlow::ControlFlow(ControlFlow::Return(v))) => Ok(v),
+      Err(EvalErrorOrControlFlow::ControlFlow(cf)) => Err(EvalError::UnexpectedControlFlow(cf)),
+    }
+  }
+
+  pub fn expect_return_or_null(value: Result<(), EvalErrorOrControlFlow>) -> Result<Value, EvalError> {
+    Self::expect_return(value.map(|_| Value::Null))
+  }
 }
 
 impl From<NoSuchVar> for EvalError {
@@ -28,5 +68,11 @@ impl From<NoSuchVar> for EvalError {
 impl From<NoSuchFunc> for EvalError {
   fn from(e: NoSuchFunc) -> Self {
     EvalError::UndefinedFunc(e.0)
+  }
+}
+
+impl From<EvalError> for EvalErrorOrControlFlow {
+  fn from(e: EvalError) -> Self {
+    EvalErrorOrControlFlow::EvalError(e)
   }
 }
