@@ -1,5 +1,5 @@
 
-use crate::ast::decl::{Decl, FunctionDecl};
+use crate::ast::decl::{Decl, FunctionDecl, ConstructorDecl};
 use crate::ast::identifier::Identifier;
 use super::error::ParseError;
 use super::base::GdscriptParser;
@@ -34,6 +34,10 @@ pub(super) fn parse_decl(
       let function_decl = parse_function_decl(parser, node)?;
       Ok(Decl::Function(function_decl))
     }
+    "constructor_definition" => {
+      let constructor_decl = parse_constructor_decl(parser, node)?;
+      Ok(Decl::Constructor(constructor_decl))
+    }
     "variable_statement" => {
       let var_stmt = parse_var_stmt(parser, node)?;
       Ok(Decl::Var(var_stmt))
@@ -61,6 +65,18 @@ fn parse_function_decl(
     params,
     body,
     is_static,
+  })
+}
+
+fn parse_constructor_decl(
+  parser: &GdscriptParser,
+  node: Node,
+) -> Result<ConstructorDecl, ParseError> {
+  let params = parse_function_parameters(parser, named_child(node, "parameters")?)?;
+  let body = parse_body(parser, named_child(node, "body")?)?;
+  Ok(ConstructorDecl {
+    params,
+    body,
   })
 }
 

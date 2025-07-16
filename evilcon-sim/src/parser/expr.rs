@@ -1,5 +1,7 @@
 
 use crate::ast::expr::{Expr, AttrTarget, Literal, Lambda, DictEntry};
+use crate::ast::expr::operator::AssignOp;
+use crate::ast::identifier::Identifier;
 use super::error::ParseError;
 use super::base::GdscriptParser;
 use super::decl::parse_function_parameters;
@@ -15,7 +17,7 @@ pub(super) fn parse_expr(
   node: Node,
 ) -> Result<Expr, ParseError> {
   match node.kind() {
-    "string" => {
+    "string" | "string_name" => {
       let string_lit = parser.string_lit(node)?;
       Ok(Literal::String(string_lit).into())
     }
@@ -37,6 +39,11 @@ pub(super) fn parse_expr(
     }
     "false" => {
       Ok(Expr::from(false))
+    }
+    "get_node" => {
+      let mut text = parser.utf8_text(node)?.to_owned();
+      text.remove(0); // Drop the leading dollar-sign
+      Ok(Expr::GetNode(Identifier(text)))
     }
     "identifier" => {
       let ident = parser.identifier(node)?;
@@ -74,20 +81,29 @@ pub(super) fn parse_expr(
     "binary_operator" => {
       let lhs = parse_expr(parser, nth_named_child(node, 0)?)?;
       let rhs = parse_expr(parser, nth_named_child(node, 1)?)?;
-      let op = parser.utf8_text(nth_child(node, 1)?)?.parse()?;
+
+      // Binary operators in GDScript can be multiple words. Take all
+      // but the first and last children (which are the operator
+      // arguments)
+      let op = (1..=(node.child_count() - 2))
+        .map(|i| parser.utf8_text(nth_child(node, i)?))
+        .collect::<Result<Vec<_>, _>>()?
+        .join(" ")
+        .parse()?;
+
       Ok(Expr::BinaryOp(Box::new(lhs), op, Box::new(rhs)))
     }
     "unary_operator" => {
       let rhs = parse_expr(parser, nth_named_child(node, 0)?)?;
-      let op = parser.utf8_text(nth_child(node, 0)?)?.parse()?;
-      Ok(Expr::UnaryOp(op, Box::new(rhs)))
+      let op = parser.utf8_text(nth_child(node, 0)?)?;
+      if op == "await" {
+        Ok(Expr::Await(Box::new(rhs)))
+      } else {
+        Ok(Expr::UnaryOp(op.parse()?, Box::new(rhs)))
+      }
     }
     "parenthesized_expression" => {
       Ok(parse_expr(parser, nth_named_child(node, 0)?)?)
-    }
-    "await_expression" => {
-      let inner = parse_expr(parser, nth_named_child(node, 0)?)?;
-      Ok(Expr::Await(Box::new(inner)))
     }
     "conditional_expression" => {
       let if_true = parse_expr(parser, nth_named_child(node, 0)?)?;

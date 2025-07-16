@@ -9,6 +9,7 @@ pub enum Stmt {
   Var(VarStmt),
   Return(Option<Box<Expr>>),
   If(IfStmt),
+  While(WhileStmt),
   For(ForStmt),
   Pass,
   Break,
@@ -28,6 +29,12 @@ pub struct IfStmt {
   pub body: Vec<Stmt>,
   pub elif_clauses: Vec<ElifClause>,
   pub else_clause: Option<Vec<Stmt>>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub struct WhileStmt {
+  pub condition: Box<Expr>,
+  pub body: Vec<Stmt>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]

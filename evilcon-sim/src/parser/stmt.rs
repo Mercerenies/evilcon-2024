@@ -1,5 +1,5 @@
 
-use crate::ast::stmt::{Stmt, VarStmt, IfStmt, ForStmt, ElifClause};
+use crate::ast::stmt::{Stmt, VarStmt, IfStmt, WhileStmt, ForStmt, ElifClause};
 use crate::ast::expr::operator::AssignOp;
 use super::sitter::{validate_kind, nth_child, nth_named_child, named_child};
 use super::error::ParseError;
@@ -67,6 +67,10 @@ pub(super) fn parse_stmt(
       let if_stmt = parse_if_stmt(parser, node)?;
       Ok(Stmt::If(if_stmt))
     }
+    "while_statement" => {
+      let while_stmt = parse_while_stmt(parser, node)?;
+      Ok(Stmt::While(while_stmt))
+    }
     "for_statement" => {
       let for_stmt = parse_for_stmt(parser, node)?;
       Ok(Stmt::For(for_stmt))
@@ -98,10 +102,24 @@ pub(super) fn parse_var_stmt(
   Ok(VarStmt { name, initial_value: value })
 }
 
+pub(super) fn parse_while_stmt(
+  parser: &GdscriptParser,
+  node: Node,
+) -> Result<WhileStmt, ParseError> {
+  assert_eq!(node.kind(), "while_statement");
+  let condition = parse_expr(parser, named_child(node, "condition")?)?;
+  let body = parse_body(parser, named_child(node, "body")?)?;
+
+  Ok(WhileStmt {
+    condition: Box::new(condition),
+    body,
+  })
+}
+
 pub(super) fn parse_if_stmt(
   parser: &GdscriptParser,
   node: Node,
-) -> Result<crate::ast::stmt::IfStmt, ParseError> {
+) -> Result<IfStmt, ParseError> {
   assert_eq!(node.kind(), "if_statement");
   let mut cursor = node.walk();
 
@@ -137,7 +155,7 @@ pub(super) fn parse_if_stmt(
 pub(super) fn parse_for_stmt(
   parser: &GdscriptParser,
   node: Node,
-) -> Result<crate::ast::stmt::ForStmt, ParseError> {
+) -> Result<ForStmt, ParseError> {
   assert_eq!(node.kind(), "for_statement");
 
   let variable = parser.identifier(named_child(node, "left")?)?;
