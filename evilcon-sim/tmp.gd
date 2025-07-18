@@ -1,6 +1,9 @@
 
 # NOTE: This file is not used for anything other than testing. Delete me someday plz :)
 
+class A:
+    var f
+
 enum A {
   X = 1,
   Y,

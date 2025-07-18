@@ -90,6 +90,15 @@ impl Class {
           let enum_type = Value::EnumType(enum_values);
           constants.insert(enum_decl.name, LazyConst::resolved(enum_type));
         }
+        Decl::InnerClass(name, class_body) => {
+          let file = SourceFile {
+            extends_clause: None,
+            class_name: None,
+            decls: class_body,
+          };
+          let inner_class = Self::load_from_file(superglobals, file)?;
+          constants.insert(name, LazyConst::resolved(Value::ClassRef(Rc::new(inner_class))));
+        }
       };
     }
     Ok(Class {

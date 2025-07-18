@@ -10,6 +10,10 @@ pub enum Decl {
   Function(FunctionDecl),
   Constructor(ConstructorDecl),
   Enum(EnumDecl),
+  /// Very limited support for nested classes: No access to outer
+  /// scope, and nested classes ALWAYS inherit directly from
+  /// RefCounted for now.
+  InnerClass(Identifier, Vec<Decl>),
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
