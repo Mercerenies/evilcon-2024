@@ -34,15 +34,15 @@ pub(super) fn parse_stmt(
       let value = nth_child(node, 0)?;
       match value.kind() {
         "assignment" => {
-          let lhs = parse_expr(parser, nth_named_child(node, 0)?)?;
-          let rhs = parse_expr(parser, nth_named_child(node, 1)?)?;
+          let lhs = parse_expr(parser, nth_named_child(value, 0)?)?;
+          let rhs = parse_expr(parser, nth_named_child(value, 1)?)?;
           let op = AssignOp::default();
           Ok(Stmt::AssignOp(Box::new(lhs), op, Box::new(rhs)))
         }
         "augmented_assignment" => {
-          let lhs = parse_expr(parser, nth_named_child(node, 0)?)?;
-          let rhs = parse_expr(parser, nth_named_child(node, 1)?)?;
-          let op = parser.utf8_text(nth_child(node, 1)?)?.parse()?;
+          let lhs = parse_expr(parser, nth_named_child(value, 0)?)?;
+          let rhs = parse_expr(parser, nth_named_child(value, 1)?)?;
+          let op = parser.utf8_text(nth_child(value, 1)?)?.parse()?;
           Ok(Stmt::AssignOp(Box::new(lhs), op, Box::new(rhs)))
         }
         _ => {
