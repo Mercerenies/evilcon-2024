@@ -5,6 +5,7 @@ use super::class::Class;
 use super::method::Method;
 use super::error::EvalError;
 use super::bootstrapping::BootstrappedTypes;
+use super::eval::EvaluatorState;
 
 use ordered_float::OrderedFloat;
 use thiserror::Error;
@@ -27,7 +28,7 @@ pub enum Value {
   ClassRef(Rc<Class>),
   ObjectRef(EqPtrMut<ObjectInst>),
   BoundMethod(EqPtr<BoundMethod>),
-  Lambda(EqPtr<Lambda>),
+  Lambda(EqPtr<LambdaValue>),
 }
 
 #[derive(Debug, Clone)]
@@ -35,6 +36,12 @@ pub enum AssignmentLeftHand {
   Name(Identifier),
   Subscript(Value, Value),
   Attr(Value, Identifier),
+}
+
+#[derive(Debug, Clone)]
+pub struct LambdaValue {
+  pub contents: Rc<Lambda>,
+  pub outer_scope: EvaluatorState,
 }
 
 /// Technically, Godot allows *any* language value to be a dictionary

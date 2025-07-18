@@ -32,6 +32,14 @@ impl Method {
       Method::RustMethod(m) => &m.name,
     }
   }
+
+  pub fn rust_method(name: impl Into<Identifier>,
+                     body: impl Fn(&mut EvaluatorState, MethodArgs) -> Result<Value, EvalError> + 'static) -> Method {
+    Method::RustMethod(RustMethod {
+      name: name.into(),
+      body: Rc::new(body),
+    })
+  }
 }
 
 impl MethodArgs {

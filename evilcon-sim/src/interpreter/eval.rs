@@ -1,7 +1,7 @@
 
 use super::class::Class;
 use super::class::constant::LazyConst;
-use super::value::{Value, AssignmentLeftHand, EqPtr};
+use super::value::{Value, AssignmentLeftHand, EqPtr, LambdaValue};
 use super::method::{Method, MethodArgs};
 use super::error::{EvalError, EvalErrorOrControlFlow, ControlFlow, LoopControlFlow};
 use super::operator::{eval_unary_op, eval_binary_op};
@@ -39,6 +39,10 @@ impl EvaluatorState {
       globals: Rc::new(HashMap::new()),
       superglobal_state,
     }
+  }
+
+  pub fn bootstrapped_classes(&self) -> &BootstrappedTypes {
+    &self.superglobal_state.bootstrapped_classes
   }
 
   pub fn with_globals(mut self, globals: Rc<HashMap<Identifier, LazyConst>>) -> Self {
@@ -190,7 +194,12 @@ impl EvaluatorState {
         self.eval_expr(expr)
       }
       Expr::Lambda(lambda) => {
-        Ok(Value::Lambda(EqPtr { value: lambda.clone() }))
+        let outer_scope = self.clone();
+        let lambda_value = LambdaValue {
+          contents: Rc::clone(lambda),
+          outer_scope,
+        };
+        Ok(Value::Lambda(EqPtr::new(lambda_value)))
       }
       Expr::Conditional { if_true, cond, if_false } => {
         let cond = self.eval_expr(cond)?;

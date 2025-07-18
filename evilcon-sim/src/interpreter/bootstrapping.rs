@@ -2,8 +2,9 @@
 use super::class::Class;
 use super::eval::EvaluatorState;
 use super::value::Value;
-use super::error::EvalError;
-use super::method::{MethodArgs, RustMethod, Method};
+use super::error::{EvalError, ControlFlow};
+use super::method::{MethodArgs, Method};
+use crate::ast::identifier::Identifier;
 
 use std::rc::Rc;
 use std::collections::HashMap;
@@ -114,7 +115,8 @@ fn dictionary_class() -> Class {
 
 fn callable_class() -> Class {
   let constants = HashMap::new();
-  let methods = HashMap::new();
+  let mut methods = HashMap::new();
+  methods.insert(Identifier::from("call_func"), Method::rust_method("call_func", call_func));
   Class {
     name: Some(String::from("Callable")),
     parent: None,
@@ -125,5 +127,31 @@ fn callable_class() -> Class {
 }
 
 fn call_func(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
-  todo!() /////
+  match state.self_instance() {
+    Some(Value::BoundMethod(method)) => {
+      let globals = method.self_instance.get_class(state.bootstrapped_classes())
+        .map(|class| Rc::clone(&class.constants));
+      state.call_function(
+        globals,
+        &method.method,
+        Some(Box::new(method.self_instance.clone())),
+        args,
+      )
+    }
+    Some(Value::Lambda(lambda)) => {
+      let mut lambda_scope = lambda.outer_scope.clone();
+      if args.len() != lambda.contents.params.len() {
+        return Err(EvalError::WrongArity { expected: lambda.contents.params.len(), actual: args.len() });
+      }
+      for (arg, param) in args.0.into_iter().zip(lambda.contents.params.clone()) {
+        lambda_scope.set_local_var(param, arg);
+      }
+      let result = lambda_scope.eval_body(&lambda.contents.body);
+      ControlFlow::expect_return_or_null(result)
+    }
+    inst => {
+      let inst = inst.cloned().unwrap_or(Value::Null);
+      Err(EvalError::CannotCallValue(inst))
+    }
+  }
 }
