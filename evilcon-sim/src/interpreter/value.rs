@@ -29,6 +29,7 @@ pub enum Value {
   ObjectRef(EqPtrMut<ObjectInst>),
   BoundMethod(EqPtr<BoundMethod>),
   Lambda(EqPtr<LambdaValue>),
+  EnumType(HashMap<Identifier, i64>),
 }
 
 #[derive(Debug, Clone)]
@@ -120,7 +121,9 @@ impl Value {
   }
 
   pub fn get_value(&self, name: &str, bootstrapping: &BootstrappedTypes) -> Result<Value, NoSuchVar> {
-    if let Value::ObjectRef(obj) = self {
+    if let Value::EnumType(dict) = self {
+      dict.get(name).map(|i| Value::from(*i)).ok_or(NoSuchVar(name.to_owned()))
+    } else if let Value::ObjectRef(obj) = self {
       let obj = obj.borrow();
       obj.dict.get(name).cloned().ok_or(NoSuchVar(name.to_owned()))
     } else if let Ok(func) = self.get_func(name, bootstrapping) {
@@ -275,6 +278,12 @@ impl<T> PartialEq for EqPtrMut<T> {
 }
 
 impl<T> Eq for EqPtrMut<T> {}
+
+impl From<i64> for Value {
+  fn from(i: i64) -> Self {
+    Value::Int(i)
+  }
+}
 
 impl From<Literal> for Value {
   fn from(lit: Literal) -> Self {

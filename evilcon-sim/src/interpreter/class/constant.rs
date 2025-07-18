@@ -28,6 +28,11 @@ impl LazyConst {
     }
   }
 
+  /// A [`LazyConst`] guaranteed to resolve to a given constant value.
+  pub fn resolved(value: Value) -> Self {
+    Self::new(|_| Ok(value))
+  }
+
   /// If the value has not yet been initialized, initialize it and
   /// return (verbatim) whatever is returned by the initializer. If
   /// the value has been successfully initialized, return that value.

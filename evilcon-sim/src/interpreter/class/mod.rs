@@ -75,6 +75,21 @@ impl Class {
         Decl::Function(function) => {
           methods.insert(function.name.to_owned(), Method::GdMethod(Rc::new(function)));
         }
+        Decl::Enum(enum_decl) => {
+          let mut enum_values = HashMap::new();
+          let mut prev = -1i64;
+          for (name, value) in enum_decl.members {
+            let curr_value = match value {
+              None => prev + 1,
+              Some(Expr::Literal(Literal::Int(i))) => i,
+              Some(expr) => return Err(EvalError::InvalidEnumConstant(expr)),
+            };
+            enum_values.insert(name, curr_value);
+            prev = curr_value;
+          }
+          let enum_type = Value::EnumType(enum_values);
+          constants.insert(enum_decl.name, LazyConst::resolved(enum_type));
+        }
       };
     }
     Ok(Class {

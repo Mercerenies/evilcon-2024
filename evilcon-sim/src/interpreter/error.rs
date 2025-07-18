@@ -53,6 +53,8 @@ pub enum EvalError {
   TypeError { expected_type: String, value: Value },
   #[error("Index {0} out of bounds")]
   IndexOutOfBounds(usize),
+  #[error("Invalid enum constant {0:?}")]
+  InvalidEnumConstant(Expr),
 }
 
 impl EvalError {

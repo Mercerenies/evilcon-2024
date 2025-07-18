@@ -1,5 +1,5 @@
 
-use crate::ast::decl::{Decl, FunctionDecl, ConstructorDecl};
+use crate::ast::decl::{Decl, FunctionDecl, ConstructorDecl, EnumDecl};
 use crate::ast::identifier::Identifier;
 use super::error::ParseError;
 use super::base::GdscriptParser;
@@ -41,6 +41,10 @@ pub(super) fn parse_decl(
     "variable_statement" => {
       let var_stmt = parse_var_stmt(parser, node)?;
       Ok(Decl::Var(var_stmt))
+    }
+    "enum_definition" => {
+      let enum_decl = parse_enum_decl(parser, node)?;
+      Ok(Decl::Enum(enum_decl))
     }
     kind => {
       Err(ParseError::UnknownDecl(kind.to_owned()))
@@ -99,4 +103,26 @@ pub(super) fn parse_function_parameters(
       }
     })
     .collect()
+}
+
+fn parse_enum_decl(
+  parser: &GdscriptParser,
+  node: Node,
+) -> Result<EnumDecl, ParseError> {
+  let name = parser.identifier(named_child(node, "name")?)?;
+  let body = named_child(node, "body")?;
+  validate_kind(body, "enumerator_list")?;
+  let members = body.named_children(&mut body.walk())
+    .map(|child| {
+      let left = parser.identifier(named_child(child, "left")?)?;
+      let right = child.child_by_field_name("right")
+        .map(|r| parse_expr(parser, r))
+        .transpose()?;
+      Ok((left, right))
+    })
+    .collect::<Result<Vec<_>, ParseError>>()?;
+  Ok(EnumDecl {
+    name,
+    members,
+  })
 }
