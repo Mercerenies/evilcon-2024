@@ -84,6 +84,13 @@ pub(super) fn parse_stmt(
     "continue_statement" => {
       Ok(Stmt::Continue)
     }
+    "annotation" => {
+      // Oh, I'm gonna regret this ...
+      //
+      // It's fine for @warning_ignore, but I haven't fully considered
+      // the consequences for other annotations.
+      Ok(Stmt::Pass)
+    }
     kind => {
       Err(ParseError::UnknownStmt(kind.to_owned()))
     }

@@ -114,6 +114,14 @@ pub(super) fn parse_function_parameters(
           return Err(ParseError::InvalidDefaultParam(default_value));
         };
         Ok(Parameter { name: parser.identifier(name)?.into(), default_value: Some(default_value) })
+      } else if child.kind() == "typed_default_parameter" {
+        // Default parameter.
+        let name = nth_named_child(child, 0)?;
+        let default_value = parse_expr(parser, nth_named_child(child, 2)?)?;
+        let Expr::Literal(default_value) = default_value else {
+          return Err(ParseError::InvalidDefaultParam(default_value));
+        };
+        Ok(Parameter { name: parser.identifier(name)?.into(), default_value: Some(default_value) })
       } else {
         // Unrecognized
         Err(ParseError::UnknownDecl(child.kind().to_owned()))
