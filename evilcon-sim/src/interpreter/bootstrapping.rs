@@ -116,7 +116,7 @@ fn dictionary_class() -> Class {
 fn callable_class() -> Class {
   let constants = HashMap::new();
   let mut methods = HashMap::new();
-  methods.insert(Identifier::from("call_func"), Method::rust_method("call_func", call_func));
+  methods.insert(Identifier::from("call"), Method::rust_method("call", call_func));
   Class {
     name: Some(String::from("Callable")),
     parent: None,
