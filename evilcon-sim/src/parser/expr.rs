@@ -207,8 +207,17 @@ fn parse_lambda(
       let body = parse_body(parser, nth_named_child(node, 2).unwrap())?;
       Ok(Lambda { name: Some(name), params, body })
     }
+    4 => {
+      // Named lambda w/ return type
+      let name = parser.identifier(nth_named_child(node, 0).unwrap())?;
+      let params = parse_function_parameters(parser, nth_named_child(node, 1).unwrap())?;
+      let body = parse_body(parser, nth_named_child(node, 3).unwrap())?;
+      Ok(Lambda { name: Some(name), params, body })
+    }
     _ => {
       Err(ParseError::MalformedLambda)
     }
   }
+  // Note: This doesn't handle the case of "unnamed lambda w/ return
+  // type".
 }
