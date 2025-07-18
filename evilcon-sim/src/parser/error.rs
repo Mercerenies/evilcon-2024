@@ -1,5 +1,6 @@
 
 use crate::ast::string::StringLitFromStrError;
+use crate::ast::expr::Expr;
 use crate::ast::expr::operator::OpFromStrError;
 
 use thiserror::Error;
@@ -34,6 +35,8 @@ pub enum ParseError {
   UnknownClause(String),
   #[error("Malformed lambda")]
   MalformedLambda,
+  #[error("Invalid default parameter {0:?}")]
+  InvalidDefaultParam(Expr),
   #[error("{0}")]
   OpError(#[from] OpFromStrError),
 }

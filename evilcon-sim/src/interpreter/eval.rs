@@ -10,33 +10,34 @@ use crate::ast::identifier::Identifier;
 use crate::ast::file::SourceFile;
 use crate::ast::expr::Expr;
 use crate::ast::expr::operator::{BinaryOp, AssignOp};
+use crate::ast::decl::Parameter;
 use crate::ast::stmt::Stmt;
 
 use std::collections::HashMap;
-use std::rc::Rc;
+use std::sync::Arc;
 
 #[derive(Debug, Clone)]
 pub struct EvaluatorState {
   self_instance: Option<Box<Value>>,
   locals: HashMap<Identifier, Value>,
-  globals: Rc<HashMap<Identifier, LazyConst>>,
-  superglobal_state: Rc<SuperglobalState>,
+  globals: Arc<HashMap<Identifier, LazyConst>>,
+  superglobal_state: Arc<SuperglobalState>,
 }
 
 #[derive(Debug, Clone)]
 pub struct SuperglobalState {
   vars: HashMap<Identifier, Value>,
   functions: HashMap<Identifier, Method>,
-  loaded_files: HashMap<String, Rc<Class>>,
+  loaded_files: HashMap<String, Arc<Class>>,
   bootstrapped_classes: BootstrappedTypes,
 }
 
 impl EvaluatorState {
-  pub fn new(superglobal_state: Rc<SuperglobalState>) -> Self {
+  pub fn new(superglobal_state: Arc<SuperglobalState>) -> Self {
     EvaluatorState {
       self_instance: None,
       locals: HashMap::new(),
-      globals: Rc::new(HashMap::new()),
+      globals: Arc::new(HashMap::new()),
       superglobal_state,
     }
   }
@@ -45,7 +46,7 @@ impl EvaluatorState {
     &self.superglobal_state.bootstrapped_classes
   }
 
-  pub fn with_globals(mut self, globals: Rc<HashMap<Identifier, LazyConst>>) -> Self {
+  pub fn with_globals(mut self, globals: Arc<HashMap<Identifier, LazyConst>>) -> Self {
     self.globals = globals;
     self
   }
@@ -97,7 +98,7 @@ impl EvaluatorState {
     self.superglobal_state.get_func(ident)
   }
 
-  pub fn get_file(&self, path: &str) -> Option<Rc<Class>> {
+  pub fn get_file(&self, path: &str) -> Option<Arc<Class>> {
     self.superglobal_state.get_file(path)
   }
 
@@ -147,7 +148,7 @@ impl EvaluatorState {
         let left = self.eval_expr(left)?;
         let func = left.get_func("__getitem__", self.superglobal_state.bootstrapped_classes())?; // Just do it the Python way, even though Godot doesn't :)
         let args = MethodArgs(vec![self.eval_expr(right)?]);
-        let globals = left.get_class(self.superglobal_state.bootstrapped_classes()).map(|class| Rc::clone(&class.constants));
+        let globals = left.get_class(self.superglobal_state.bootstrapped_classes()).map(|class| Arc::clone(&class.constants));
         self.call_function(globals, &func, Some(Box::new(left)), args)
       }
       Expr::Attr(left, name) => {
@@ -158,7 +159,7 @@ impl EvaluatorState {
         let left = self.eval_expr(left)?;
         let func = left.get_func(name.as_ref(), self.superglobal_state.bootstrapped_classes())?;
         let args = MethodArgs(args.iter().map(|arg| self.eval_expr(arg)).collect::<Result<Vec<_>, _>>()?);
-        let globals = left.get_class(self.superglobal_state.bootstrapped_classes()).map(|class| Rc::clone(&class.constants));
+        let globals = left.get_class(self.superglobal_state.bootstrapped_classes()).map(|class| Arc::clone(&class.constants));
         self.call_function(globals, &func, Some(Box::new(left)), args)
       }
       Expr::BinaryOp(left, op, right) => {
@@ -196,7 +197,7 @@ impl EvaluatorState {
       Expr::Lambda(lambda) => {
         let outer_scope = self.clone();
         let lambda_value = LambdaValue {
-          contents: Rc::clone(lambda),
+          contents: Arc::clone(lambda),
           outer_scope,
         };
         Ok(Value::Lambda(EqPtr::new(lambda_value)))
@@ -240,7 +241,7 @@ impl EvaluatorState {
       AssignmentLeftHand::Subscript(left, right) => {
         let func = left.get_func("__getitem__", self.superglobal_state.bootstrapped_classes())?; // Just do it the Python way, even though Godot doesn't :)
         let args = MethodArgs(vec![right.clone()]);
-        let globals = left.get_class(self.superglobal_state.bootstrapped_classes()).map(|class| Rc::clone(&class.constants));
+        let globals = left.get_class(self.superglobal_state.bootstrapped_classes()).map(|class| Arc::clone(&class.constants));
         self.call_function(globals, &func, Some(Box::new(left.clone())), args)
       }
       AssignmentLeftHand::Attr(left, name) => {
@@ -361,11 +362,11 @@ impl EvaluatorState {
   }
 
   pub fn call_function(&self,
-                       globals: Option<Rc<HashMap<Identifier, LazyConst>>>,
+                       globals: Option<Arc<HashMap<Identifier, LazyConst>>>,
                        method: &Method,
                        self_instance: Option<Box<Value>>,
                        args: MethodArgs) -> Result<Value, EvalError> {
-    let mut method_scope = EvaluatorState::new(Rc::clone(&self.superglobal_state)).with_self(self_instance);
+    let mut method_scope = EvaluatorState::new(Arc::clone(&self.superglobal_state)).with_self(self_instance);
     if let Some(globals) = globals {
       method_scope = method_scope.with_globals(globals);
     }
@@ -374,12 +375,7 @@ impl EvaluatorState {
         if method.is_static {
           method_scope = method_scope.with_self(None);
         }
-        if args.len() != method.params.len() {
-          return Err(EvalError::WrongArity { expected: method.params.len(), actual: args.len() });
-        }
-        for (arg, param) in args.0.into_iter().zip(method.params.clone()) {
-          method_scope.set_local_var(param, arg);
-        }
+        method_scope.bind_arguments(args.0, method.params.clone())?;
         let result = method_scope.eval_body(&method.body);
         ControlFlow::expect_return_or_null(result)
       }
@@ -387,6 +383,24 @@ impl EvaluatorState {
         (method.body)(&mut method_scope, args)
       }
     }
+  }
+
+  /// Bind arguments for a function call. In case of error, `self` is
+  /// guaranteed to be unmodified.
+  pub fn bind_arguments(&mut self, args: Vec<Value>, params: Vec<Parameter>) -> Result<(), EvalError> {
+    let args_len = args.len();
+    let params_len = params.len();
+    let mut bindings = Vec::with_capacity(params_len);
+    let mut args = args.into_iter();
+    for param in params {
+      let next_arg = args.next().or(param.default_value.map(Value::from))
+        .ok_or_else(|| EvalError::WrongArity { expected: params_len, actual: args_len })?;
+      bindings.push((param.name, next_arg));
+    }
+    for (param, arg) in bindings {
+      self.set_local_var(param.into(), arg);
+    }
+    Ok(())
   }
 }
 
@@ -417,12 +431,12 @@ impl SuperglobalState {
   }
 
   pub fn add_file(&mut self, path: String, class: Class) {
-    self.loaded_files.insert(path, Rc::new(class));
+    self.loaded_files.insert(path, Arc::new(class));
   }
 
   pub fn load_file(&mut self, path: String, source_file: SourceFile) -> Result<(), EvalError> {
     let class = Class::load_from_file(self, source_file)?;
-    self.loaded_files.insert(path, Rc::new(class));
+    self.loaded_files.insert(path, Arc::new(class));
     Ok(())
   }
 
@@ -434,7 +448,7 @@ impl SuperglobalState {
     self.functions.get(ident)
   }
 
-  pub fn get_file(&self, path: &str) -> Option<Rc<Class>> {
+  pub fn get_file(&self, path: &str) -> Option<Arc<Class>> {
     self.loaded_files.get(path).cloned()
   }
 }

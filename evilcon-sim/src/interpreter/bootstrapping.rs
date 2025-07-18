@@ -6,25 +6,25 @@ use super::error::{EvalError, ControlFlow};
 use super::method::{MethodArgs, Method};
 use crate::ast::identifier::Identifier;
 
-use std::rc::Rc;
+use std::sync::Arc;
 use std::collections::HashMap;
 
 #[derive(Debug, Clone)]
 pub struct BootstrappedTypes {
-  object: Rc<Class>,
-  refcounted: Rc<Class>,
-  array: Rc<Class>,
-  dictionary: Rc<Class>,
-  callable: Rc<Class>,
+  object: Arc<Class>,
+  refcounted: Arc<Class>,
+  array: Arc<Class>,
+  dictionary: Arc<Class>,
+  callable: Arc<Class>,
 }
 
 impl BootstrappedTypes {
   pub fn bootstrap() -> Self {
-    let object = Rc::new(object_class());
-    let refcounted = Rc::new(refcounted_class(object.clone()));
-    let array = Rc::new(array_class());
-    let dictionary = Rc::new(dictionary_class());
-    let callable = Rc::new(callable_class());
+    let object = Arc::new(object_class());
+    let refcounted = Arc::new(refcounted_class(object.clone()));
+    let array = Arc::new(array_class());
+    let dictionary = Arc::new(dictionary_class());
+    let callable = Arc::new(callable_class());
     Self {
       object,
       refcounted,
@@ -34,7 +34,7 @@ impl BootstrappedTypes {
     }
   }
 
-  pub fn all_global_names(&self) -> Vec<(String, Rc<Class>)> {
+  pub fn all_global_names(&self) -> Vec<(String, Arc<Class>)> {
     vec![
       ("Object".into(), self.object.clone()),
       ("RefCounted".into(), self.refcounted.clone()),
@@ -44,23 +44,23 @@ impl BootstrappedTypes {
     ]
   }
 
-  pub fn object(&self) -> &Rc<Class> {
+  pub fn object(&self) -> &Arc<Class> {
     &self.object
   }
 
-  pub fn refcounted(&self) -> &Rc<Class> {
+  pub fn refcounted(&self) -> &Arc<Class> {
     &self.refcounted
   }
 
-  pub fn array(&self) -> &Rc<Class> {
+  pub fn array(&self) -> &Arc<Class> {
     &self.array
   }
 
-  pub fn dictionary(&self) -> &Rc<Class> {
+  pub fn dictionary(&self) -> &Arc<Class> {
     &self.dictionary
   }
 
-  pub fn callable(&self) -> &Rc<Class> {
+  pub fn callable(&self) -> &Arc<Class> {
     &self.callable
   }
 }
@@ -71,19 +71,19 @@ fn object_class() -> Class {
   Class {
     name: Some(String::from("Object")),
     parent: None,
-    constants: Rc::new(constants),
+    constants: Arc::new(constants),
     instance_vars: vec![],
     methods,
   }
 }
 
-fn refcounted_class(object: Rc<Class>) -> Class {
+fn refcounted_class(object: Arc<Class>) -> Class {
   let constants = HashMap::new();
   let methods = HashMap::new();
   Class {
     name: Some(String::from("RefCounted")),
     parent: Some(object),
-    constants: Rc::new(constants),
+    constants: Arc::new(constants),
     instance_vars: vec![],
     methods,
   }
@@ -95,7 +95,7 @@ fn array_class() -> Class {
   Class {
     name: Some(String::from("Array")),
     parent: None,
-    constants: Rc::new(constants),
+    constants: Arc::new(constants),
     instance_vars: vec![],
     methods,
   }
@@ -107,7 +107,7 @@ fn dictionary_class() -> Class {
   Class {
     name: Some(String::from("Dictionary")),
     parent: None,
-    constants: Rc::new(constants),
+    constants: Arc::new(constants),
     instance_vars: vec![],
     methods,
   }
@@ -120,7 +120,7 @@ fn callable_class() -> Class {
   Class {
     name: Some(String::from("Callable")),
     parent: None,
-    constants: Rc::new(constants),
+    constants: Arc::new(constants),
     instance_vars: vec![],
     methods,
   }
@@ -130,7 +130,7 @@ fn call_func(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, Eval
   match state.self_instance() {
     Some(Value::BoundMethod(method)) => {
       let globals = method.self_instance.get_class(state.bootstrapped_classes())
-        .map(|class| Rc::clone(&class.constants));
+        .map(|class| Arc::clone(&class.constants));
       state.call_function(
         globals,
         &method.method,
@@ -140,12 +140,7 @@ fn call_func(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, Eval
     }
     Some(Value::Lambda(lambda)) => {
       let mut lambda_scope = lambda.outer_scope.clone();
-      if args.len() != lambda.contents.params.len() {
-        return Err(EvalError::WrongArity { expected: lambda.contents.params.len(), actual: args.len() });
-      }
-      for (arg, param) in args.0.into_iter().zip(lambda.contents.params.clone()) {
-        lambda_scope.set_local_var(param, arg);
-      }
+      lambda_scope.bind_arguments(args.0, lambda.contents.params.clone())?;
       let result = lambda_scope.eval_body(&lambda.contents.body);
       ControlFlow::expect_return_or_null(result)
     }

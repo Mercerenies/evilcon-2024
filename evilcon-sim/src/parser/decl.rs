@@ -1,9 +1,9 @@
 
-use crate::ast::decl::{Decl, FunctionDecl, ConstructorDecl, EnumDecl};
-use crate::ast::identifier::Identifier;
+use crate::ast::decl::{Decl, FunctionDecl, ConstructorDecl, EnumDecl, Parameter};
+use crate::ast::expr::Expr;
 use super::error::ParseError;
 use super::base::GdscriptParser;
-use super::sitter::{named_child, nth_child, validate_kind, is_identifier};
+use super::sitter::{named_child, nth_child, nth_named_child, validate_kind, is_identifier};
 use super::expr::parse_expr;
 use super::stmt::{parse_body, parse_var_stmt, COMMENT_KIND};
 
@@ -93,19 +93,30 @@ fn parse_constructor_decl(
 pub(super) fn parse_function_parameters(
   parser: &GdscriptParser,
   node: Node,
-) -> Result<Vec<Identifier>, ParseError> {
+) -> Result<Vec<Parameter>, ParseError> {
   validate_kind(node, "parameters")?;
   let mut cursor = node.walk();
   node.named_children(&mut cursor)
     .map(|child| {
       if is_identifier(child) {
         // Simple identifier.
-        parser.identifier(child)
-      } else {
+        Ok(Parameter { name: parser.identifier(child)?.into(), default_value: None })
+      } else if child.kind() == "typed_parameter" {
         // Typed parameter. We don't care about the type, so just
         // parse the name.
         let name = nth_child(child, 0)?;
-        parser.identifier(name)
+        Ok(Parameter { name: parser.identifier(name)?.into(), default_value: None })
+      } else if child.kind() == "default_parameter" {
+        // Default parameter.
+        let name = nth_named_child(child, 0)?;
+        let default_value = parse_expr(parser, nth_named_child(child, 1)?)?;
+        let Expr::Literal(default_value) = default_value else {
+          return Err(ParseError::InvalidDefaultParam(default_value));
+        };
+        Ok(Parameter { name: parser.identifier(name)?.into(), default_value: Some(default_value) })
+      } else {
+        // Unrecognized
+        Err(ParseError::UnknownDecl(child.kind().to_owned()))
       }
     })
     .collect()

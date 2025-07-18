@@ -9,7 +9,7 @@ use super::sitter::{nth_child, nth_named_child, named_child, validate_kind};
 
 use tree_sitter::Node;
 
-use std::rc::Rc;
+use std::sync::Arc;
 
 pub const ARGS_KIND: &'static str = "arguments";
 
@@ -118,7 +118,7 @@ pub(super) fn parse_expr(
     }
     "lambda" => {
       let lambda = parse_lambda(parser, node)?;
-      Ok(Expr::Lambda(Rc::new(lambda)))
+      Ok(Expr::Lambda(Arc::new(lambda)))
     }
     kind => {
       Err(ParseError::UnknownExpr(kind.to_owned()))

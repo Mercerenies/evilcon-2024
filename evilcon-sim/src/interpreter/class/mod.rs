@@ -13,15 +13,15 @@ use super::value::{Value, NoSuchFunc};
 use constant::LazyConst;
 
 use std::hash::{Hash, Hasher};
-use std::rc::Rc;
+use std::sync::Arc;
 use std::collections::HashMap;
 
 /// A class written in Godot or mocked Rust-side.
 #[derive(Debug, Clone)]
 pub struct Class {
   pub name: Option<String>,
-  pub parent: Option<Rc<Class>>,
-  pub constants: Rc<HashMap<Identifier, LazyConst>>,
+  pub parent: Option<Arc<Class>>,
+  pub constants: Arc<HashMap<Identifier, LazyConst>>,
   pub instance_vars: Vec<InstanceVar>,
   pub methods: HashMap<Identifier, Method>,
 }
@@ -34,7 +34,7 @@ pub struct InstanceVar {
 
 #[derive(Debug, Clone)]
 pub struct ClassSupertypesIter {
-  curr: Option<Rc<Class>>,
+  curr: Option<Arc<Class>>,
 }
 
 impl Class {
@@ -70,10 +70,10 @@ impl Class {
             is_static: false,
             body: constructor.body,
           };
-          methods.insert(Identifier::new("_init"), Method::GdMethod(Rc::new(func)));
+          methods.insert(Identifier::new("_init"), Method::GdMethod(Arc::new(func)));
         }
         Decl::Function(function) => {
-          methods.insert(function.name.to_owned(), Method::GdMethod(Rc::new(function)));
+          methods.insert(function.name.to_owned(), Method::GdMethod(Arc::new(function)));
         }
         Decl::Enum(enum_decl) => {
           let mut enum_values = HashMap::new();
@@ -97,14 +97,14 @@ impl Class {
             decls: class_body,
           };
           let inner_class = Self::load_from_file(superglobals, file)?;
-          constants.insert(name, LazyConst::resolved(Value::ClassRef(Rc::new(inner_class))));
+          constants.insert(name, LazyConst::resolved(Value::ClassRef(Arc::new(inner_class))));
         }
       };
     }
     Ok(Class {
       name: name.map(|name| name.into()),
       parent: Some(parent),
-      constants: Rc::new(constants),
+      constants: Arc::new(constants),
       instance_vars,
       methods,
     })
@@ -121,13 +121,13 @@ impl Class {
     Err(NoSuchFunc(name.into()))
   }
 
-  pub fn supertypes(self: Rc<Class>) -> ClassSupertypesIter {
+  pub fn supertypes(self: Arc<Class>) -> ClassSupertypesIter {
     ClassSupertypesIter { curr: Some(self) }
   }
 }
 
 impl Iterator for ClassSupertypesIter {
-  type Item = Rc<Class>;
+  type Item = Arc<Class>;
 
   fn next(&mut self) -> Option<Self::Item> {
     if let Some(cls) = self.curr.clone() {

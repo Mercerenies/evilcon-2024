@@ -1,6 +1,6 @@
 
 use super::identifier::Identifier;
-use super::expr::Expr;
+use super::expr::{Expr, Literal};
 use super::stmt::{Stmt, VarStmt};
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
@@ -19,14 +19,14 @@ pub enum Decl {
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct FunctionDecl {
   pub name: Identifier,
-  pub params: Vec<Identifier>,
+  pub params: Vec<Parameter>,
   pub is_static: bool,
   pub body: Vec<Stmt>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct ConstructorDecl {
-  pub params: Vec<Identifier>,
+  pub params: Vec<Parameter>,
   pub body: Vec<Stmt>,
 }
 
@@ -34,4 +34,10 @@ pub struct ConstructorDecl {
 pub struct EnumDecl {
   pub name: Identifier,
   pub members: Vec<(Identifier, Option<Expr>)>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub struct Parameter {
+  pub name: String,
+  pub default_value: Option<Literal>,
 }

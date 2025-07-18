@@ -3,12 +3,13 @@ pub mod operator;
 
 use super::string::GdString;
 use super::stmt::Stmt;
+use super::decl::Parameter;
 use super::identifier::Identifier;
 use operator::{UnaryOp, BinaryOp};
 
 use ordered_float::OrderedFloat;
 
-use std::rc::Rc;
+use std::sync::Arc;
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum Expr {
@@ -24,8 +25,8 @@ pub enum Expr {
   BinaryOp(Box<Expr>, BinaryOp, Box<Expr>),
   UnaryOp(UnaryOp, Box<Expr>),
   Await(Box<Expr>),
-  /// `Rc` so we can easily clone it into runtime values.
-  Lambda(Rc<Lambda>),
+  /// `Arc` so we can easily clone it into runtime values.
+  Lambda(Arc<Lambda>),
   Conditional {
     if_true: Box<Expr>,
     cond: Box<Expr>,
@@ -59,7 +60,7 @@ pub enum Literal {
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct Lambda {
   pub name: Option<Identifier>,
-  pub params: Vec<Identifier>,
+  pub params: Vec<Parameter>,
   pub body: Vec<Stmt>,
 }
 

@@ -11,7 +11,7 @@ use ordered_float::OrderedFloat;
 use thiserror::Error;
 
 use std::collections::HashMap;
-use std::rc::Rc;
+use std::sync::Arc;
 use std::cell::RefCell;
 use std::ops::Deref;
 
@@ -23,9 +23,9 @@ pub enum Value {
   Int(i64),
   Float(OrderedFloat<f64>),
   String(String),
-  ArrayRef(Rc<RefCell<Vec<Value>>>),
-  DictRef(Rc<RefCell<HashMap<HashKey, Value>>>),
-  ClassRef(Rc<Class>),
+  ArrayRef(Arc<RefCell<Vec<Value>>>),
+  DictRef(Arc<RefCell<HashMap<HashKey, Value>>>),
+  ClassRef(Arc<Class>),
   ObjectRef(EqPtrMut<ObjectInst>),
   BoundMethod(EqPtr<BoundMethod>),
   Lambda(EqPtr<LambdaValue>),
@@ -41,7 +41,7 @@ pub enum AssignmentLeftHand {
 
 #[derive(Debug, Clone)]
 pub struct LambdaValue {
-  pub contents: Rc<Lambda>,
+  pub contents: Arc<Lambda>,
   pub outer_scope: EvaluatorState,
 }
 
@@ -60,17 +60,17 @@ pub enum HashKey {
 
 #[derive(Debug)]
 pub struct EqPtrMut<T> {
-  pub value: Rc<RefCell<T>>,
+  pub value: Arc<RefCell<T>>,
 }
 
 #[derive(Debug)]
 pub struct EqPtr<T> {
-  pub value: Rc<T>,
+  pub value: Arc<T>,
 }
 
 #[derive(Debug, Clone)]
 pub struct ObjectInst {
-  class: Rc<Class>,
+  class: Arc<Class>,
   dict: HashMap<String, Value>,
 }
 
@@ -103,11 +103,11 @@ impl Value {
   }
 
   pub fn new_array(values: Vec<Value>) -> Self {
-    Value::ArrayRef(Rc::new(RefCell::new(values)))
+    Value::ArrayRef(Arc::new(RefCell::new(values)))
   }
 
   pub fn new_dict(values: HashMap<HashKey, Value>) -> Self {
-    Value::DictRef(Rc::new(RefCell::new(values)))
+    Value::DictRef(Arc::new(RefCell::new(values)))
   }
 
   pub fn as_bool(&self) -> bool {
@@ -173,12 +173,12 @@ impl Value {
     class.get_func(name).cloned()
   }
 
-  pub fn get_class(&self, bootstrapping: &BootstrappedTypes) -> Option<Rc<Class>> {
+  pub fn get_class(&self, bootstrapping: &BootstrappedTypes) -> Option<Arc<Class>> {
     match self {
       Value::ObjectRef(obj) => Some(obj.borrow().class.clone()),
-      Value::ArrayRef(_) => Some(Rc::clone(bootstrapping.array())),
-      Value::DictRef(_) => Some(Rc::clone(bootstrapping.dictionary())),
-      Value::BoundMethod(_) | Value::Lambda(_) => Some(Rc::clone(bootstrapping.callable())),
+      Value::ArrayRef(_) => Some(Arc::clone(bootstrapping.array())),
+      Value::DictRef(_) => Some(Arc::clone(bootstrapping.dictionary())),
+      Value::BoundMethod(_) | Value::Lambda(_) => Some(Arc::clone(bootstrapping.callable())),
       _ => None,
     }
   }
@@ -210,7 +210,7 @@ impl BoundMethod {
 impl<T> EqPtrMut<T> {
   pub fn new(value: T) -> Self {
     EqPtrMut {
-      value: Rc::new(RefCell::new(value)),
+      value: Arc::new(RefCell::new(value)),
     }
   }
 }
@@ -218,7 +218,7 @@ impl<T> EqPtrMut<T> {
 impl<T> EqPtr<T> {
   pub fn new(value: T) -> Self {
     EqPtr {
-      value: Rc::new(value),
+      value: Arc::new(value),
     }
   }
 }
@@ -226,7 +226,7 @@ impl<T> EqPtr<T> {
 impl<T> Clone for EqPtr<T> {
   fn clone(&self) -> Self {
     EqPtr {
-      value: Rc::clone(&self.value),
+      value: Arc::clone(&self.value),
     }
   }
 }
@@ -234,7 +234,7 @@ impl<T> Clone for EqPtr<T> {
 impl<T> Clone for EqPtrMut<T> {
   fn clone(&self) -> Self {
     EqPtrMut {
-      value: Rc::clone(&self.value),
+      value: Arc::clone(&self.value),
     }
   }
 }
@@ -248,7 +248,7 @@ impl Iterator for ValueIter {
 }
 
 impl<T> Deref for EqPtrMut<T> {
-  type Target = Rc<RefCell<T>>;
+  type Target = Arc<RefCell<T>>;
 
   fn deref(&self) -> &Self::Target {
     &self.value
@@ -256,7 +256,7 @@ impl<T> Deref for EqPtrMut<T> {
 }
 
 impl<T> Deref for EqPtr<T> {
-  type Target = Rc<T>;
+  type Target = Arc<T>;
 
   fn deref(&self) -> &Self::Target {
     &self.value
@@ -265,7 +265,7 @@ impl<T> Deref for EqPtr<T> {
 
 impl<T> PartialEq for EqPtr<T> {
   fn eq(&self, other: &Self) -> bool {
-    Rc::ptr_eq(&self.value, &other.value)
+    Arc::ptr_eq(&self.value, &other.value)
   }
 }
 
@@ -273,7 +273,7 @@ impl<T> Eq for EqPtr<T> {}
 
 impl<T> PartialEq for EqPtrMut<T> {
   fn eq(&self, other: &Self) -> bool {
-    Rc::ptr_eq(&self.value, &other.value)
+    Arc::ptr_eq(&self.value, &other.value)
   }
 }
 

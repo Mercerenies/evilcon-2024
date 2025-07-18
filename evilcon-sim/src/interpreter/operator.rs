@@ -7,7 +7,7 @@ use super::bootstrapping::BootstrappedTypes;
 use ordered_float::OrderedFloat;
 
 use std::cmp::Ordering;
-use std::rc::Rc;
+use std::sync::Arc;
 
 pub fn eval_unary_op(op: UnaryOp, value: Value) -> Result<Value, EvalError> {
   match op {
@@ -77,7 +77,7 @@ fn do_type_check(bootstrapping: &BootstrappedTypes, lhs: Value, rhs: Value) -> R
   let Some(lhs_class) = lhs.get_class(bootstrapping) else {
     return Ok(false);
   };
-  Ok(lhs_class.supertypes().any(|ty| Rc::ptr_eq(&ty, &rhs)))
+  Ok(lhs_class.supertypes().any(|ty| Arc::ptr_eq(&ty, &rhs)))
 }
 
 fn do_elem_check(lhs: Value, rhs: Value) -> Result<bool, EvalError> {
