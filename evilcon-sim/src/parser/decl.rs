@@ -49,9 +49,7 @@ pub(super) fn parse_decl(
     "class_definition" => {
       let name = parser.identifier(named_child(node, "name")?)?;
       let body = named_child(node, "body")?;
-      let body = body.named_children(&mut body.walk())
-        .map(|child| parse_decl(parser, child))
-        .collect::<Result<Vec<_>, ParseError>>()?;
+      let body = parse_decl_seq(parser, body.named_children(&mut body.walk()))?;
       Ok(Decl::InnerClass(name, body))
     }
     kind => {
