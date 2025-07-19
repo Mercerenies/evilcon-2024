@@ -95,3 +95,15 @@ impl Display for ResourcePath {
     Display::fmt(&self.0, f)
   }
 }
+
+impl PartialEq<str> for Identifier {
+  fn eq(&self, other: &str) -> bool {
+    self.0 == *other
+  }
+}
+
+impl PartialEq<Identifier> for str {
+  fn eq(&self, other: &Identifier) -> bool {
+    *self == other.0
+  }
+}

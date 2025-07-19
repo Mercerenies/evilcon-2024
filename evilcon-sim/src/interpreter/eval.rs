@@ -120,6 +120,14 @@ impl EvaluatorState {
         Ok(lit.clone().into())
       }
       Expr::Name(name) => {
+        if name == "self" {
+          return Ok(self.self_instance().cloned().unwrap_or(Value::Null));
+        }
+        if name == "super" {
+          // If we encounter `super` anywhere *other* than an
+          // immediate function call, it's an error.
+          return Err(EvalError::BadSuper);
+        }
         let value = self.get_var(name)?;
         if let Some(value) = value {
           return Ok(value.clone());
@@ -158,11 +166,21 @@ impl EvaluatorState {
         Ok(left.get_value(name.as_ref(), &self.superglobal_state)?)
       }
       Expr::AttrCall(left, name, args) => {
-        let left = self.eval_expr(left)?;
-        let func = left.get_func(name.as_ref(), self.superglobal_state.bootstrapped_classes())?;
+        let left_value;
+        let func;
+        if let Expr::Name(left_name) = left.as_ref() && left_name == "super" {
+          // super call
+          left_value = self.self_instance().ok_or(EvalError::BadSuper)?.clone();
+          let left_class = left_value.get_class(self.superglobal_state.bootstrapped_classes()).ok_or(EvalError::BadSuper)?;
+          let Some(left_parent) = &left_class.parent else { return Err(EvalError::BadSuper); };
+          func = left_parent.get_func(name.as_ref())?.clone();
+        } else {
+          left_value = self.eval_expr(left)?;
+          func = left_value.get_func(name.as_ref(), self.superglobal_state.bootstrapped_classes())?;
+        }
         let args = MethodArgs(args.iter().map(|arg| self.eval_expr(arg)).collect::<Result<Vec<_>, _>>()?);
-        let globals = left.get_class(self.superglobal_state.bootstrapped_classes()).map(|class| Arc::clone(&class.constants));
-        self.call_function(globals, &func, Some(Box::new(left)), args)
+        let globals = left_value.get_class(self.superglobal_state.bootstrapped_classes()).map(|class| Arc::clone(&class.constants));
+        self.call_function(globals, &func, Some(Box::new(left_value)), args)
       }
       Expr::BinaryOp(left, op, right) => {
         let left = self.eval_expr(left)?;

@@ -58,6 +58,8 @@ pub enum EvalError {
   IndexOutOfBounds(usize),
   #[error("Invalid enum constant {0:?}")]
   InvalidEnumConstant(Expr),
+  #[error("'super' name is not allowed in this context")]
+  BadSuper,
 }
 
 impl EvalError {
