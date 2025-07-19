@@ -1,32 +1,32 @@
 
 * FILES REQUIRED TO RUN THE SIMULATION
 ** FILES LOADED FROM GODOT
-   + ~card_game/playing_field/util/card_effects.gd~
-   + ~card_game/playing_field/util/card_game_phases.gd~
-   + ~card_game/playing_field/util/card_game_turn_transitions.gd~
-   + ~card_game/playing_field/util/query.gd~
-   + ~card_game/playing_field/util/stats_calculator.gd~
-   + ~card_game/playing_field/player_agent/player_agent.gd~
-   + ~card_game/playing_field/player_agent/lookahead_ai_agent/lookahead_ai_agent.gd~
-   + ~card_game/playing_field/player_agent/lookahead_ai_agent/lookahead_priorities.gd~
-   + ~util.gd~
-   + ~card_game/playing_card/card_type/*.gd~
-   + ~card_game/playing_card/cards/*.gd~
-   + ~card_game/playing_card/playing_card_lists.gd~
+   + [ ] ~card_game/playing_field/util/card_effects.gd~
+   + [ ] ~card_game/playing_field/util/card_game_phases.gd~
+   + [ ] ~card_game/playing_field/util/card_game_turn_transitions.gd~
+   + [ ] ~card_game/playing_field/util/query.gd~
+   + [ ] ~card_game/playing_field/util/stats_calculator.gd~
+   + [ ] ~card_game/playing_field/player_agent/player_agent.gd~
+   + [ ] ~card_game/playing_field/player_agent/lookahead_ai_agent/lookahead_ai_agent.gd~
+   + [ ] ~card_game/playing_field/player_agent/lookahead_ai_agent/lookahead_priorities.gd~
+   + [ ] ~util.gd~
+   + [ ] ~card_game/playing_card/card_type/*.gd~
+   + [ ] ~card_game/playing_card/cards/*.gd~
+   + [ ] ~card_game/playing_card/playing_card_lists.gd~
 ** FILES MOCKED IN RUST
-   + ~card_game/playing_field/playing_field.gd~
-   + ~card_game/playing_field/game_stats_panel/game_stats_panel.gd~ and ~.tscn~
-   + ~card_game/playing_field/card_strip/card_strip.gd~ and ~.tscn~
-   + ~card_game/playing_card/card.gd~
-   + ~card_game/playing_card/playing_card_codex.gd~
+   + [ ] ~card_game/playing_field/playing_field.gd~
+   + [ ] ~card_game/playing_field/game_stats_panel/game_stats_panel.gd~ and ~.tscn~
+   + [ ] ~card_game/playing_field/card_strip/card_strip.gd~ and ~.tscn~
+   + [ ] ~card_game/playing_card/card.gd~
+   + [ ] ~card_game/playing_card/playing_card_codex.gd~
      - tree-sitter chokes /and/ we can't parse ~match~ clauses right
        now.
-   + ~card_game/playing_field/util/card_game_api.gd~
+   + [ ] ~card_game/playing_field/util/card_game_api.gd~
      - This one parses, but most of the logic is going to need to be
        rewritten anyway
-   + ~card_game/playing_field/util/stats.gd~
+   + [ ] ~card_game/playing_field/util/stats.gd~
      - Same logic as CardGameAPI
    + Need to exist but are never used:
-     - ~card_game/playing_field/animation/card_moving/card_moving_animation.tscn~
+     - [ ] ~card_game/playing_field/animation/card_moving/card_moving_animation.tscn~
    + Need to exist + minimal mocking maybe:
-     - ~card_game/playing_field/util/popup_text.gd~
+     - [ ] ~card_game/playing_field/util/popup_text.gd~
