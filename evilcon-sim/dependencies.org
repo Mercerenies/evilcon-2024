@@ -29,4 +29,4 @@
    + Need to exist but are never used:
      - [ ] ~card_game/playing_field/animation/card_moving/card_moving_animation.tscn~
    + Need to exist + minimal mocking maybe:
-     - [ ] ~card_game/playing_field/util/popup_text.gd~
+     - [X] ~card_game/playing_field/util/popup_text.gd~

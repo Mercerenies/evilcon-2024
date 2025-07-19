@@ -125,7 +125,7 @@ impl EvaluatorState {
           return Ok(value.clone());
         }
         // Try to look up on `self`.
-        if let Some(obj) = self.self_instance() && let Ok(value) = obj.get_value(name.as_ref(), self.superglobal_state.bootstrapped_classes()) {
+        if let Some(obj) = self.self_instance() && let Ok(value) = obj.get_value(name.as_ref(), &self.superglobal_state) {
           return Ok(value.clone());
         }
         Err(EvalError::UndefinedVariable(name.clone().into()))
@@ -155,7 +155,7 @@ impl EvaluatorState {
       }
       Expr::Attr(left, name) => {
         let left = self.eval_expr(left)?;
-        Ok(left.get_value(name.as_ref(), self.superglobal_state.bootstrapped_classes())?)
+        Ok(left.get_value(name.as_ref(), &self.superglobal_state)?)
       }
       Expr::AttrCall(left, name, args) => {
         let left = self.eval_expr(left)?;
@@ -247,7 +247,7 @@ impl EvaluatorState {
         self.call_function(globals, &func, Some(Box::new(left.clone())), args)
       }
       AssignmentLeftHand::Attr(left, name) => {
-        Ok(left.get_value(name.as_ref(), self.superglobal_state.bootstrapped_classes())?)
+        Ok(left.get_value(name.as_ref(), &self.superglobal_state)?)
       }
 
     }
@@ -442,8 +442,8 @@ impl SuperglobalState {
     self.functions.insert(ident, func);
   }
 
-  pub fn add_file(&mut self, path: ResourcePath, class: Class) {
-    self.loaded_files.insert(path, Arc::new(class));
+  pub fn add_file(&mut self, path: ResourcePath, class: Arc<Class>) {
+    self.loaded_files.insert(path, class);
   }
 
   pub fn load_file(&mut self, path: ResourcePath, source_file: SourceFile) -> Result<(), EvalError> {

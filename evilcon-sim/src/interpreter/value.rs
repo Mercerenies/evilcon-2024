@@ -5,7 +5,7 @@ use super::class::Class;
 use super::method::Method;
 use super::error::EvalError;
 use super::bootstrapping::BootstrappedTypes;
-use super::eval::EvaluatorState;
+use super::eval::{EvaluatorState, SuperglobalState};
 
 use ordered_float::OrderedFloat;
 use thiserror::Error;
@@ -121,16 +121,20 @@ impl Value {
     }
   }
 
-  pub fn get_value(&self, name: &str, bootstrapping: &BootstrappedTypes) -> Result<Value, NoSuchVar> {
+  pub fn get_value(&self, name: &str, superglobals: &Arc<SuperglobalState>) -> Result<Value, EvalError> {
     if let Value::EnumType(dict) = self {
-      dict.get(name).map(|i| Value::from(*i)).ok_or(NoSuchVar(name.to_owned()))
+      dict.get(name).map(|i| Value::from(*i)).ok_or(NoSuchVar(name.to_owned()).into())
+    } else if let Value::ClassRef(cls) = self && let Some(constant) = cls.constants.get(name) {
+      let const_context = EvaluatorState::new(Arc::clone(superglobals))
+        .with_globals(Arc::clone(&cls.constants));
+      constant.get(&const_context).cloned()
     } else if let Value::ObjectRef(obj) = self {
       let obj = obj.borrow();
-      obj.dict.get(name).cloned().ok_or(NoSuchVar(name.to_owned()))
-    } else if let Ok(func) = self.get_func(name, bootstrapping) {
+      obj.dict.get(name).cloned().ok_or(NoSuchVar(name.to_owned()).into())
+    } else if let Ok(func) = self.get_func(name, superglobals.bootstrapped_classes()) {
       Ok(Value::BoundMethod(EqPtr::new(BoundMethod::new(self.clone(), func))))
     } else {
-      Err(NoSuchVar(name.to_owned()))
+      Err(NoSuchVar(name.to_owned()).into())
     }
   }
 
@@ -298,6 +302,18 @@ impl From<Literal> for Value {
       Literal::Float(f) => Value::Float(f),
       Literal::String(s) => Value::String(s.into()),
     }
+  }
+}
+
+impl From<String> for Value {
+  fn from(s: String) -> Self {
+    Value::String(s)
+  }
+}
+
+impl<'a> From<&'a str> for Value {
+  fn from(s: &'a str) -> Self {
+    Value::String(s.into())
   }
 }
 
