@@ -58,7 +58,7 @@ impl Class {
     for decl in file.decls {
       match decl {
         Decl::Const { name, value } => {
-          constants.insert(name, const_evaluator(*value));
+          constants.insert(name, LazyConst::evaluator(*value));
         }
         Decl::Var(var_stmt) => {
           instance_vars.push(var_stmt.into());
@@ -126,6 +126,15 @@ impl Class {
   }
 }
 
+impl InstanceVar {
+  pub fn new(name: impl Into<String>, initial_value: Option<Expr>) -> Self {
+    Self {
+      name: Identifier::new(name),
+      initial_value: initial_value.unwrap_or_else(|| Expr::from(Literal::Null)),
+    }
+  }
+}
+
 impl Iterator for ClassSupertypesIter {
   type Item = Arc<Class>;
 
@@ -137,12 +146,6 @@ impl Iterator for ClassSupertypesIter {
       None
     }
   }
-}
-
-fn const_evaluator(value: Expr) -> LazyConst {
-  LazyConst::new(move |state| {
-    state.eval_expr(&value)
-  })
 }
 
 impl PartialEq for Class {

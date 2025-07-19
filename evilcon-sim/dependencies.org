@@ -1,6 +1,7 @@
 
 * FILES REQUIRED TO RUN THE SIMULATION
 ** FILES LOADED FROM GODOT
+   + [ ] ~card_game/playing_field/event_logger.gd~
    + [ ] ~card_game/playing_field/util/card_effects.gd~
    + [ ] ~card_game/playing_field/util/card_game_phases.gd~
    + [ ] ~card_game/playing_field/util/card_game_turn_transitions.gd~
@@ -15,6 +16,7 @@
    + [ ] ~card_game/playing_card/playing_card_lists.gd~
 ** FILES MOCKED IN RUST
    + [ ] ~card_game/playing_field/playing_field.gd~
+   + [ ] ~card_game/playing_field/randomness.gd~
    + [ ] ~card_game/playing_field/game_stats_panel/game_stats_panel.gd~ and ~.tscn~
    + [ ] ~card_game/playing_field/card_strip/card_strip.gd~ and ~.tscn~
    + [ ] ~card_game/playing_card/card.gd~

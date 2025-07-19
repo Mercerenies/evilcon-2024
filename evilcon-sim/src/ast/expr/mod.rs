@@ -77,6 +77,25 @@ impl Expr {
       }
     }
   }
+
+  pub fn attr_call(self, name: impl Into<String>, args: Vec<Expr>) -> Expr {
+    self.attr(AttrTarget::Call(Identifier::new(name), args))
+  }
+
+  pub fn name(s: impl Into<String>) -> Expr {
+    Expr::Name(Identifier::new(s))
+  }
+
+  pub fn string(s: impl Into<String>) -> Expr {
+    Expr::Literal(Literal::String(GdString::simple(s)))
+  }
+
+  pub fn call(name: impl Into<String>, args: Vec<Expr>) -> Expr {
+    Expr::Call {
+      func: Box::new(Self::name(name)),
+      args,
+    }
+  }
 }
 
 impl From<Literal> for Expr {

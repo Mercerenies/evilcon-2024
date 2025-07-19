@@ -2,6 +2,7 @@
 use crate::interpreter::eval::EvaluatorState;
 use crate::interpreter::value::Value;
 use crate::interpreter::error::EvalError;
+use crate::ast::expr::Expr;
 
 use std::cell::{OnceCell, Cell};
 use std::fmt::{Formatter, Debug};
@@ -31,6 +32,19 @@ impl LazyConst {
   /// A [`LazyConst`] guaranteed to resolve to a given constant value.
   pub fn resolved(value: Value) -> Self {
     Self::new(|_| Ok(value))
+  }
+
+  /// A [`LazyConst`] that evaluates an expression.
+  pub fn evaluator(expr: Expr) -> Self {
+    Self::new(move |state| {
+      state.eval_expr(&expr)
+    })
+  }
+
+  /// A [`LazyConst`] that preloads a class.
+  pub fn preload(class_path: impl Into<String>) -> Self {
+    let expr = Expr::call("preoad", vec![Expr::string(class_path)]);
+    Self::evaluator(expr)
   }
 
   /// If the value has not yet been initialized, initialize it and

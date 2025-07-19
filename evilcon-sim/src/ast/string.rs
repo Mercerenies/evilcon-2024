@@ -85,6 +85,10 @@ impl GdString {
       contents: contents.into(),
     }
   }
+
+  pub fn simple(contents: impl Into<String>) -> Self {
+    Self::new(StringType { prefix: StringPrefix::None, triple_quoted: false, quote_type: '"' }, contents)
+  }
 }
 
 impl StringType {

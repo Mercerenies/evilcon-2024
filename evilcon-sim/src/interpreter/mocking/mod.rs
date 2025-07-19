@@ -4,6 +4,8 @@
 //! Interpreter-critical classes like `Array` belong in
 //! `bootstrapping.rs`, not here.
 
+mod playing_field;
+
 use super::class::Class;
 use super::class::constant::LazyConst;
 use super::value::Value;
@@ -28,6 +30,14 @@ pub fn bind_mocked_classes(superglobals: &mut SuperglobalState) {
   // CardMovingAnimation
   let card_moving_animation = dummy_class(); // Should be entirely unused.
   superglobals.add_file(ResourcePath::new("res://card_game/playing_field/animation/card_moving/card_moving_animation.gd"), Arc::new(card_moving_animation));
+
+  // PlayingField
+  let playing_field = playing_field::playing_field_class(Arc::clone(&node));
+  superglobals.add_file(ResourcePath::new("res://card_game/playing_field/playing_field.gd"), Arc::new(playing_field));
+
+  // Randomness
+  let randomness = playing_field::randomness_class(Arc::clone(&superglobals.bootstrapped_classes().refcounted()));
+  superglobals.add_file(ResourcePath::new("res://card_game/playing_field/randomness.gd"), Arc::new(randomness));
 }
 
 fn node_class(object: Arc<Class>) -> Class {

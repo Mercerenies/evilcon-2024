@@ -3,6 +3,7 @@ use crate::loader::GdScriptLoader;
 use crate::interpreter::eval::SuperglobalState;
 
 pub const GDSCRIPT_FILES: &[&str] = &[
+  "../card_game/playing_field/event_logger.gd",
   "../card_game/playing_field/util/card_effects.gd",
   "../card_game/playing_field/util/card_game_phases.gd",
   "../card_game/playing_field/util/card_game_turn_transitions.gd",
