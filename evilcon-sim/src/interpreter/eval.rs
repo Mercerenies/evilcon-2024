@@ -434,6 +434,10 @@ impl SuperglobalState {
     self.vars.insert(ident, value);
   }
 
+  pub fn bind_class(&mut self, ident: Identifier, class: Arc<Class>) {
+    self.bind_var(ident, Value::ClassRef(class));
+  }
+
   pub fn define_func(&mut self, ident: Identifier, func: Method) {
     self.functions.insert(ident, func);
   }

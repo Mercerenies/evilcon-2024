@@ -8,6 +8,7 @@ use crate::parser::error::ParseError;
 use crate::interpreter::eval::SuperglobalState;
 use crate::interpreter::value::Value;
 use crate::interpreter::error::EvalError;
+use crate::interpreter::mocking;
 
 use thiserror::Error;
 use glob::glob;
@@ -115,6 +116,8 @@ impl GdScriptLoader {
 
   pub fn build(mut self) -> Result<SuperglobalState, BuildError> {
     let mut superglobals = SuperglobalState::new();
+    mocking::bind_mocked_classes(&mut superglobals);
+
     let dependency_graph = self.build_dependency_graph(&superglobals)?;
     let top_sort = algo::toposort(&dependency_graph, None)
       .map_err(|_| BuildError::DependencyCycle)?;
