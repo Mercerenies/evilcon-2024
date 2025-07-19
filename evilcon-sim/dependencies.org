@@ -16,7 +16,7 @@
    + [ ] ~card_game/playing_card/playing_card_lists.gd~
 ** FILES MOCKED IN RUST
    + [ ] ~card_game/playing_field/playing_field.gd~
-   + [ ] ~card_game/playing_field/randomness.gd~
+   + [X] ~card_game/playing_field/randomness.gd~
    + [ ] ~card_game/playing_field/game_stats_panel/game_stats_panel.gd~ and ~.tscn~
    + [ ] ~card_game/playing_field/card_strip/card_strip.gd~ and ~.tscn~
    + [ ] ~card_game/playing_card/card.gd~

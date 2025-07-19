@@ -89,6 +89,14 @@ impl MethodArgs {
   pub fn len(&self) -> usize {
     self.0.len()
   }
+
+  pub fn expect_arity(&self, arity: usize) -> Result<(), EvalError> {
+    if self.0.len() != arity {
+      Err(EvalError::WrongArity { expected: arity, actual: self.0.len() })
+    } else {
+      Ok(())
+    }
+  }
 }
 
 impl Debug for RustMethod {

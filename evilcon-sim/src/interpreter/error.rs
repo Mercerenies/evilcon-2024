@@ -60,6 +60,8 @@ pub enum EvalError {
   InvalidEnumConstant(Expr),
   #[error("'super' name is not allowed in this context")]
   BadSuper,
+  #[error("Domain error: {0}")]
+  DomainError(String),
 }
 
 impl EvalError {
@@ -72,6 +74,10 @@ impl EvalError {
 
   pub fn unexpected_control_flow(cf: ControlFlow) -> Self {
     Self::UnexpectedControlFlow(format!("{:?}", cf))
+  }
+
+  pub fn domain_error(error: impl Into<String>) -> Self {
+    Self::DomainError(error.into())
   }
 }
 

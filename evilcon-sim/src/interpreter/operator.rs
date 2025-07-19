@@ -8,6 +8,7 @@ use ordered_float::OrderedFloat;
 
 use std::cmp::Ordering;
 use std::sync::Arc;
+use std::cell::RefCell;
 
 pub fn eval_unary_op(op: UnaryOp, value: Value) -> Result<Value, EvalError> {
   match op {
@@ -34,8 +35,8 @@ pub fn eval_binary_op(bootstrapping: &BootstrappedTypes, lhs: Value, op: BinaryO
     BinaryOp::Mul => promote_binary_nums(lhs, rhs, |lhs, rhs| Ok(lhs * rhs), |lhs, rhs| Ok(lhs * rhs)),
     BinaryOp::Div => promote_binary_nums(lhs, rhs, |lhs, rhs| Ok(lhs / rhs), |lhs, rhs| Ok(lhs / rhs)), // Note: Integer division on ints
     BinaryOp::Mod => {
-      let lhs = expect_int(lhs)?;
-      let rhs = expect_int(rhs)?;
+      let lhs = expect_int(&lhs)?;
+      let rhs = expect_int(&rhs)?;
       Ok(Value::Int(lhs % rhs))
     }
     BinaryOp::Eq => Ok(Value::Bool(lhs == rhs)),
@@ -84,10 +85,17 @@ fn do_elem_check(lhs: Value, rhs: Value) -> Result<bool, EvalError> {
   Ok(rhs.try_iter()?.any(|elem| elem == lhs))
 }
 
-fn expect_int(value: Value) -> Result<i64, EvalError> {
+pub fn expect_int(value: &Value) -> Result<i64, EvalError> {
   match value {
-    Value::Int(n) => Ok(n),
-    value => Err(EvalError::type_error("number", value)),
+    Value::Int(n) => Ok(*n),
+    value => Err(EvalError::type_error("number", value.to_owned())),
+  }
+}
+
+pub fn expect_array(value: &Value) -> Result<&RefCell<Vec<Value>>, EvalError> {
+  match value {
+    Value::ArrayRef(arr) => Ok(arr),
+    value => Err(EvalError::type_error("number", value.to_owned())),
   }
 }
 
