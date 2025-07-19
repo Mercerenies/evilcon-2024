@@ -24,6 +24,10 @@ pub fn bind_mocked_classes(superglobals: &mut SuperglobalState) {
   let popup_text = Arc::new(popup_text);
   superglobals.bind_class(Identifier::new("PopupText"), Arc::clone(&popup_text));
   superglobals.add_file(ResourcePath::new("res://card_game/playing_field/util/popup_text.gd"), popup_text);
+
+  // CardMovingAnimation
+  let card_moving_animation = dummy_class(); // Should be entirely unused.
+  superglobals.add_file(ResourcePath::new("res://card_game/playing_field/animation/card_moving/card_moving_animation.gd"), Arc::new(card_moving_animation));
 }
 
 fn node_class(object: Arc<Class>) -> Class {
@@ -51,5 +55,18 @@ fn popup_text_class(node: Arc<Class>) -> Class {
     constants: Arc::new(constants),
     instance_vars: vec![],
     methods,
+  }
+}
+
+/// A dummy class that is intended to go completely unused. The
+/// properties of this class are not specified, other than the fact
+/// that it exists.
+fn dummy_class() -> Class {
+  Class {
+    name: None,
+    parent: None,
+    constants: Arc::new(HashMap::new()),
+    instance_vars: vec![],
+    methods: HashMap::new(),
   }
 }

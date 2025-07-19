@@ -27,6 +27,6 @@
    + [ ] ~card_game/playing_field/util/stats.gd~
      - Same logic as CardGameAPI
    + Need to exist but are never used:
-     - [ ] ~card_game/playing_field/animation/card_moving/card_moving_animation.tscn~
+     - [X] ~card_game/playing_field/animation/card_moving/card_moving_animation.tscn~
    + Need to exist + minimal mocking maybe:
      - [X] ~card_game/playing_field/util/popup_text.gd~
