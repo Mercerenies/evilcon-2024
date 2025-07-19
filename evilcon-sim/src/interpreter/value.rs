@@ -111,6 +111,10 @@ impl Value {
     Value::DictRef(Arc::new(RefCell::new(values)))
   }
 
+  pub fn new_object(class: Arc<Class>) -> Self {
+    Value::ObjectRef(EqPtrMut::new(ObjectInst { class, dict: HashMap::new() }))
+  }
+
   pub fn as_bool(&self) -> bool {
     match self {
       Value::Bool(b) => *b,
@@ -176,6 +180,9 @@ impl Value {
   pub fn get_func(&self, name: &str, bootstrapping: &BootstrappedTypes) -> Result<Method, NoSuchFunc> {
     if let Value::ClassRef(cls) = self && let Ok(method) = cls.get_func(name) && method.is_static() {
       return Ok(method.clone());
+    }
+    if let Value::ClassRef(_) = self && name == "new" {
+      return Ok(Method::constructor_method());
     }
     let class = self.get_class(bootstrapping).ok_or(NoSuchFunc(name.to_owned()))?;
     class.get_func(name).cloned()
