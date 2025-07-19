@@ -4,6 +4,9 @@ use crate::ast::expr::Expr;
 
 use thiserror::Error;
 
+/// A string representation of a [`Value`].
+pub type ValueString = String;
+
 #[derive(Debug, Clone)]
 pub enum EvalErrorOrControlFlow {
   EvalError(EvalError),
@@ -39,18 +42,18 @@ pub enum EvalError {
   UnexpectedGetNode(String),
   #[error("Wrong number of arguments, got {actual} but expected {expected}")]
   WrongArity { actual: usize, expected: usize },
-  #[error("Unexpected control flow {0:?}")]
-  UnexpectedControlFlow(ControlFlow),
+  #[error("Unexpected control flow {0}")]
+  UnexpectedControlFlow(String),
   #[error("Cannot call {0:?}")]
   CannotCall(Expr),
   #[error("Cannot call {0:?}")]
-  CannotCallValue(Value),
+  CannotCallValue(ValueString),
   #[error("{0:?} is not iterable")]
-  CannotIterate(Value),
+  CannotIterate(ValueString),
   #[error("{0:?} is not assignable")]
   CannotAssignTo(Expr),
   #[error("Type error: Expected {expected_type}, got {value:?}")]
-  TypeError { expected_type: String, value: Value },
+  TypeError { expected_type: String, value: ValueString },
   #[error("Index {0} out of bounds")]
   IndexOutOfBounds(usize),
   #[error("Invalid enum constant {0:?}")]
@@ -61,8 +64,12 @@ impl EvalError {
   pub fn type_error(expected: impl Into<String>, value: Value) -> Self {
     Self::TypeError {
       expected_type: expected.into(),
-      value,
+      value: value.to_string(),
     }
+  }
+
+  pub fn unexpected_control_flow(cf: ControlFlow) -> Self {
+    Self::UnexpectedControlFlow(format!("{:?}", cf))
   }
 }
 
@@ -71,7 +78,7 @@ impl ControlFlow {
     match value {
       Ok(value) => Ok(value),
       Err(EvalErrorOrControlFlow::EvalError(e)) => Err(e),
-      Err(EvalErrorOrControlFlow::ControlFlow(cf)) => Err(EvalError::UnexpectedControlFlow(cf)),
+      Err(EvalErrorOrControlFlow::ControlFlow(cf)) => Err(EvalError::unexpected_control_flow(cf)),
     }
   }
 
@@ -80,7 +87,7 @@ impl ControlFlow {
       Ok(value) => Ok(value),
       Err(EvalErrorOrControlFlow::EvalError(e)) => Err(e),
       Err(EvalErrorOrControlFlow::ControlFlow(ControlFlow::Return(v))) => Ok(v),
-      Err(EvalErrorOrControlFlow::ControlFlow(cf)) => Err(EvalError::UnexpectedControlFlow(cf)),
+      Err(EvalErrorOrControlFlow::ControlFlow(cf)) => Err(EvalError::unexpected_control_flow(cf)),
     }
   }
 

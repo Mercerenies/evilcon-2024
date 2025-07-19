@@ -14,6 +14,7 @@ use std::collections::HashMap;
 use std::sync::Arc;
 use std::cell::RefCell;
 use std::ops::Deref;
+use std::fmt::{Display, Formatter};
 
 #[derive(Debug, Clone, Default, PartialEq, Eq)]
 pub enum Value {
@@ -87,7 +88,7 @@ pub struct ValueIter {
 
 #[derive(Debug, Clone, Error)]
 #[error("Invalid hash key {0:?}")]
-pub struct InvalidHashKey(pub Value);
+pub struct InvalidHashKey(pub String);
 
 #[derive(Debug, Clone, Error)]
 #[error("No such variable {0}")]
@@ -195,7 +196,7 @@ impl Value {
         Ok(ValueIter { inner: Box::new(entries.into_keys().map(Value::from)) })
       }
       _ => {
-        Err(EvalError::CannotIterate(self.clone()))
+        Err(EvalError::CannotIterate(self.to_string()))
       }
     }
   }
@@ -319,7 +320,38 @@ impl TryFrom<Value> for HashKey {
       Value::Int(i) => HashKey::Int(i),
       Value::Float(f) => HashKey::Float(f),
       Value::String(s) => HashKey::String(s),
-      _ => return Err(InvalidHashKey(v)),
+      _ => return Err(InvalidHashKey(v.to_string())),
     })
+  }
+}
+
+impl Display for Value {
+  fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+    match self {
+      Value::Null => write!(f, "null"),
+      Value::Bool(b) => write!(f, "{}", b),
+      Value::Int(i) => write!(f, "{}", i),
+      Value::Float(d) => write!(f, "{}", d),
+      Value::String(s) => write!(f, "\"{}\"", s),
+      Value::ArrayRef(arr) => write!(f, "[{}]", arr.borrow().iter().map(|v| v.to_string()).collect::<Vec<_>>().join(", ")),
+      Value::DictRef(d) => write!(f, "{{{}}}", d.borrow().iter().map(|(k, v)| format!("{}: {}", k, v)).collect::<Vec<_>>().join(", ")),
+      Value::ClassRef(cls) => write!(f, "<class {}>", cls.name.as_ref().map(|x| &**x).unwrap_or("<anon>")),
+      Value::ObjectRef(_) => write!(f, "<object>"),
+      Value::BoundMethod(_) => write!(f, "<method>"),
+      Value::Lambda(_) => write!(f, "<lambda>"),
+      Value::EnumType(_) => write!(f, "<enum>"),
+    }
+  }
+}
+
+impl Display for HashKey {
+  fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+    match self {
+      HashKey::Null => write!(f, "null"),
+      HashKey::Bool(b) => write!(f, "{}", b),
+      HashKey::Int(i) => write!(f, "{}", i),
+      HashKey::Float(d) => write!(f, "{}", d),
+      HashKey::String(s) => write!(f, "\"{}\"", s),
+    }
   }
 }

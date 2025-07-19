@@ -444,7 +444,11 @@ impl SuperglobalState {
 
   pub fn load_file(&mut self, path: ResourcePath, source_file: SourceFile) -> Result<(), EvalError> {
     let class = Class::load_from_file(self, source_file)?;
-    self.loaded_files.insert(path, Arc::new(class));
+    let class = Arc::new(class);
+    self.loaded_files.insert(path, Arc::clone(&class));
+    if let Some(class_name) = &class.name {
+      self.bind_var(class_name.clone().into(), Value::ClassRef(class));
+    }
     Ok(())
   }
 

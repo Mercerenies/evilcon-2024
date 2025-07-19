@@ -2,12 +2,17 @@
 //! Top-level loader for GDScript files.
 
 use crate::ast::identifier::{ResourcePath, Identifier};
-use crate::ast::file::SourceFile;
+use crate::ast::file::{SourceFile, ExtendsClause};
 use crate::parser::read_from_string;
 use crate::parser::error::ParseError;
+use crate::interpreter::eval::SuperglobalState;
+use crate::interpreter::value::Value;
+use crate::interpreter::error::EvalError;
 
 use thiserror::Error;
 use glob::glob;
+use petgraph::algo;
+use petgraph::graph::DiGraph;
 
 use std::path::{Path, PathBuf};
 use std::sync::LazyLock;
@@ -35,6 +40,33 @@ pub enum LoadError {
   ParseError(#[from] ParseError),
   #[error("IO error: {0}")]
   IOError(#[from] io::Error),
+}
+
+#[derive(Clone, Debug, Error)]
+pub enum DependencyError {
+  #[error("Could not find named class {0}")]
+  NoSuchNamedClass(Identifier),
+  #[error("Could not find class by path {0}")]
+  NoSuchClassByPath(ResourcePath),
+}
+
+#[derive(Clone, Debug, Error)]
+pub enum BuildError {
+  #[error("{0}")]
+  DependencyError(#[from] DependencyError),
+  #[error("{0}")]
+  EvalError(#[from] EvalError),
+  #[error("Cycle in dependency graph")]
+  DependencyCycle,
+}
+
+/// Result of [`GdScriptLoader::resolve_extends_clause`].
+enum ExtendedClass<'a> {
+  /// A loaded file, recognized by this loader.
+  LoadedFile(&'a ResourcePath),
+  /// A bootstrapped or mocked file that is already loaded into the
+  /// core engine.
+  ExistingFile,
 }
 
 impl GdScriptLoader {
@@ -80,6 +112,60 @@ impl GdScriptLoader {
     let path = self.class_names.get(class_name)?;
     Some(self.files.get(path).expect("Could not find class name in files"))
   }
+
+  pub fn build(mut self) -> Result<SuperglobalState, BuildError> {
+    let mut superglobals = SuperglobalState::new();
+    let dependency_graph = self.build_dependency_graph(&superglobals)?;
+    let top_sort = algo::toposort(&dependency_graph, None)
+      .map_err(|_| BuildError::DependencyCycle)?;
+    for res_path in top_sort.into_iter().rev() {
+      let res_path = &dependency_graph[res_path];
+      let file = self.files.remove(res_path).expect("Could not find file in files");
+      superglobals.load_file(res_path.to_owned(), file)?;
+    }
+    Ok(superglobals)
+  }
+
+  fn build_dependency_graph(&self, superglobals: &SuperglobalState) -> Result<DiGraph<ResourcePath, ()>, DependencyError> {
+    let mut graph = DiGraph::new();
+
+    let mut node_indices = HashMap::new();
+    for path in self.files.keys() {
+      node_indices.insert(path, graph.add_node(path.to_owned()));
+    }
+    for (path, file) in self.files.iter() {
+      match self.resolve_extends_clause(superglobals, &file.extends_clause_or_default())? {
+        ExtendedClass::ExistingFile => {
+          // Dependency is already loaded; no need to represent it in
+          // the graph.
+        }
+        ExtendedClass::LoadedFile(class_path) => {
+          graph.add_edge(node_indices[path], node_indices[class_path], ());
+        }
+      }
+    }
+
+    Ok(graph)
+  }
+
+  fn resolve_extends_clause(&self, superglobals: &SuperglobalState, clause: &ExtendsClause) -> Result<ExtendedClass, DependencyError> {
+    resolve_extends_clause_in_superglobals(superglobals, clause)
+      .or_else(|| self.resolve_extends_clause_in_known_files(clause))
+      .ok_or_else(|| no_such_class(clause))
+  }
+
+  fn resolve_extends_clause_in_known_files(&self, clause: &ExtendsClause) -> Option<ExtendedClass> {
+    match clause {
+      ExtendsClause::Id(class_name) => {
+        self.class_names.get(class_name)
+          .map(|class_path| ExtendedClass::LoadedFile(class_path))
+      }
+      ExtendsClause::Path(class_path) => {
+        self.files.get_key_value(class_path.as_ref())
+          .map(|(k, _)| ExtendedClass::LoadedFile(k))
+      }
+    }
+  }
 }
 
 pub fn normalize_path(path: impl AsRef<Path>) -> io::Result<ResourcePath> {
@@ -87,4 +173,28 @@ pub fn normalize_path(path: impl AsRef<Path>) -> io::Result<ResourcePath> {
   let rel_path = absolute_path.strip_prefix(&*GODOT_PROJECT_ROOT)
     .map_err(|_| io::Error::new(io::ErrorKind::NotFound, "Could not normalize path"))?;
   Ok(ResourcePath::new(rel_path.to_string_lossy()))
+}
+
+fn resolve_extends_clause_in_superglobals(superglobals: &SuperglobalState, clause: &ExtendsClause) -> Option<ExtendedClass<'static>> {
+  match clause {
+    ExtendsClause::Id(class_name) => {
+      let var = superglobals.get_var(class_name)?;
+      if matches!(var, Value::ClassRef(_)) {
+        Some(ExtendedClass::ExistingFile)
+      } else {
+        None
+      }
+    }
+    ExtendsClause::Path(class_path) => {
+      superglobals.get_file(class_path.as_ref())
+        .map(|_| ExtendedClass::ExistingFile)
+    }
+  }
+}
+
+fn no_such_class(clause: &ExtendsClause) -> DependencyError {
+  match clause {
+    ExtendsClause::Id(class_name) => DependencyError::NoSuchNamedClass(class_name.clone()),
+    ExtendsClause::Path(class_path) => DependencyError::NoSuchClassByPath(ResourcePath::new(class_path.clone())),
+  }
 }

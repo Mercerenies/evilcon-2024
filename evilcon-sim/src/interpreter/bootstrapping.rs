@@ -146,7 +146,7 @@ fn call_func(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, Eval
     }
     inst => {
       let inst = inst.cloned().unwrap_or(Value::Null);
-      Err(EvalError::CannotCallValue(inst))
+      Err(EvalError::CannotCallValue(inst.to_string()))
     }
   }
 }

@@ -1,5 +1,6 @@
 
-use crate::loader::{GdScriptLoader, LoadError};
+use crate::loader::GdScriptLoader;
+use crate::interpreter::eval::SuperglobalState;
 
 pub const GDSCRIPT_FILES: &[&str] = &[
   "../card_game/playing_field/util/card_effects.gd",
@@ -19,7 +20,7 @@ pub const GDSCRIPT_GLOBS: &[&str] = &[
   "../card_game/playing_card/cards/*.gd",
 ];
 
-pub fn load_all_files() -> Result<(), LoadError> {
+pub fn load_all_files() -> anyhow::Result<SuperglobalState> {
   let mut loader = GdScriptLoader::new();
   for file in GDSCRIPT_FILES {
     loader.load_file(file)?;
@@ -27,6 +28,8 @@ pub fn load_all_files() -> Result<(), LoadError> {
   for glob in GDSCRIPT_GLOBS {
     loader.load_all_files(glob)?;
   }
-  println!("Loaded."); // DEBUG CODE
-  Ok(())
+  eprintln!("Loaded all files.");
+  let superglobals = loader.build()?;
+  eprintln!("Created interpreter environment.");
+  Ok(superglobals)
 }
