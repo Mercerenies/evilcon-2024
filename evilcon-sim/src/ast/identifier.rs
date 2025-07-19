@@ -1,5 +1,6 @@
 
 use std::borrow::Borrow;
+use std::fmt::{Display, Formatter};
 
 /// Thin wrapper around a string, marking it as an identifier.
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
@@ -80,5 +81,17 @@ impl AsRef<str> for ResourcePath {
 impl Borrow<str> for ResourcePath {
   fn borrow(&self) -> &str {
     &self.0
+  }
+}
+
+impl Display for Identifier {
+  fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+    Display::fmt(&self.0, f)
+  }
+}
+
+impl Display for ResourcePath {
+  fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+    Display::fmt(&self.0, f)
   }
 }

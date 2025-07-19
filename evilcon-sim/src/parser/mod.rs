@@ -28,7 +28,7 @@ pub fn read_from_string(s: &str) -> Result<SourceFile, ParseError> {
   let root = parser.root_node();
   let mut cursor = parser.cursor();
 
-  println!("{:?}", root.to_sexp());
+  //println!("{:?}", root.to_sexp());
 
   validate_kind(root, "source")?;
 

@@ -1,0 +1,32 @@
+
+use crate::loader::{GdScriptLoader, LoadError};
+
+pub const GDSCRIPT_FILES: &[&str] = &[
+  "../card_game/playing_field/util/card_effects.gd",
+  "../card_game/playing_field/util/card_game_phases.gd",
+  "../card_game/playing_field/util/card_game_turn_transitions.gd",
+  "../card_game/playing_field/util/query.gd",
+  "../card_game/playing_field/util/stats_calculator.gd",
+  "../card_game/playing_field/player_agent/player_agent.gd",
+  "../card_game/playing_field/player_agent/lookahead_ai_agent/lookahead_ai_agent.gd",
+  "../card_game/playing_field/player_agent/lookahead_ai_agent/lookahead_priorities.gd",
+  "../util.gd",
+  "../card_game/playing_card/playing_card_lists.gd",
+];
+
+pub const GDSCRIPT_GLOBS: &[&str] = &[
+  "../card_game/playing_card/card_type/*.gd",
+  "../card_game/playing_card/cards/*.gd",
+];
+
+pub fn load_all_files() -> Result<(), LoadError> {
+  let mut loader = GdScriptLoader::new();
+  for file in GDSCRIPT_FILES {
+    loader.load_file(file)?;
+  }
+  for glob in GDSCRIPT_GLOBS {
+    loader.load_all_files(glob)?;
+  }
+  println!("Loaded."); // DEBUG CODE
+  Ok(())
+}
