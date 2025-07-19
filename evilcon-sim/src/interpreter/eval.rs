@@ -6,15 +6,17 @@ use super::method::{Method, MethodArgs};
 use super::error::{EvalError, EvalErrorOrControlFlow, ControlFlow, LoopControlFlow};
 use super::operator::{eval_unary_op, eval_binary_op};
 use super::bootstrapping::BootstrappedTypes;
-use crate::ast::identifier::Identifier;
+use crate::ast::identifier::{Identifier, ResourcePath};
 use crate::ast::file::SourceFile;
 use crate::ast::expr::Expr;
 use crate::ast::expr::operator::{BinaryOp, AssignOp};
 use crate::ast::decl::Parameter;
 use crate::ast::stmt::Stmt;
 
+use std::hash::Hash;
 use std::collections::HashMap;
 use std::sync::Arc;
+use std::borrow::Borrow;
 
 #[derive(Debug, Clone)]
 pub struct EvaluatorState {
@@ -28,7 +30,7 @@ pub struct EvaluatorState {
 pub struct SuperglobalState {
   vars: HashMap<Identifier, Value>,
   functions: HashMap<Identifier, Method>,
-  loaded_files: HashMap<String, Arc<Class>>,
+  loaded_files: HashMap<ResourcePath, Arc<Class>>,
   bootstrapped_classes: BootstrappedTypes,
 }
 
@@ -430,25 +432,31 @@ impl SuperglobalState {
     self.functions.insert(ident, func);
   }
 
-  pub fn add_file(&mut self, path: String, class: Class) {
+  pub fn add_file(&mut self, path: ResourcePath, class: Class) {
     self.loaded_files.insert(path, Arc::new(class));
   }
 
-  pub fn load_file(&mut self, path: String, source_file: SourceFile) -> Result<(), EvalError> {
+  pub fn load_file(&mut self, path: ResourcePath, source_file: SourceFile) -> Result<(), EvalError> {
     let class = Class::load_from_file(self, source_file)?;
     self.loaded_files.insert(path, Arc::new(class));
     Ok(())
   }
 
-  pub fn get_var(&self, ident: &Identifier) -> Option<&Value> {
+  pub fn get_var<Q>(&self, ident: &Q) -> Option<&Value>
+  where Identifier: Borrow<Q>,
+        Q: Hash + Eq + ?Sized {
     self.vars.get(ident)
   }
 
-  pub fn get_func(&self, ident: &Identifier) -> Option<&Method> {
+  pub fn get_func<Q>(&self, ident: &Q) -> Option<&Method>
+  where Identifier: Borrow<Q>,
+        Q: Hash + Eq + ?Sized {
     self.functions.get(ident)
   }
 
-  pub fn get_file(&self, path: &str) -> Option<Arc<Class>> {
+  pub fn get_file<Q>(&self, path: &Q) -> Option<Arc<Class>>
+  where ResourcePath: Borrow<Q>,
+        Q: Hash + Eq + ?Sized {
     self.loaded_files.get(path).cloned()
   }
 }
