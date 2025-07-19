@@ -1,6 +1,6 @@
 
 use super::identifier::Identifier;
-use super::expr::{Expr, Literal};
+use super::expr::Expr;
 use super::stmt::{Stmt, VarStmt};
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
@@ -39,5 +39,5 @@ pub struct EnumDecl {
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct Parameter {
   pub name: String,
-  pub default_value: Option<Literal>,
+  pub default_value: Option<Expr>,
 }

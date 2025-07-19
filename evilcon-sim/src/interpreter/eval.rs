@@ -395,8 +395,14 @@ impl EvaluatorState {
     let mut bindings = Vec::with_capacity(params_len);
     let mut args = args.into_iter();
     for param in params {
-      let next_arg = args.next().or(param.default_value.map(Value::from))
-        .ok_or_else(|| EvalError::WrongArity { expected: params_len, actual: args_len })?;
+      let next_arg;
+      if let Some(provided_arg) = args.next() {
+        next_arg = provided_arg;
+      } else if let Some(expr) = &param.default_value {
+        next_arg = self.eval_expr(expr)?;
+      } else {
+        return Err(EvalError::WrongArity { expected: params_len, actual: args_len });
+      }
       bindings.push((param.name, next_arg));
     }
     for (param, arg) in bindings {
