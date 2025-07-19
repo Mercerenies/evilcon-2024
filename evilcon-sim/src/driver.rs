@@ -12,6 +12,7 @@ pub const GDSCRIPT_FILES: &[&str] = &[
   "../card_game/playing_field/player_agent/player_agent.gd",
   "../card_game/playing_field/player_agent/lookahead_ai_agent/lookahead_ai_agent.gd",
   "../card_game/playing_field/player_agent/lookahead_ai_agent/lookahead_priorities.gd",
+  "../card_game/playing_field/card_player.gd",
   "../util.gd",
   "../card_game/playing_card/playing_card_lists.gd",
 ];
