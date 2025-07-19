@@ -26,7 +26,6 @@
    + [ ] ~card_game/playing_field/util/card_game_api.gd~
      - This one parses, but most of the logic is going to need to be
        rewritten anyway
-   + [ ] Some fraction of playing card strip (playing field needs it)
    + [ ] ~card_game/playing_field/util/stats.gd~
      - Same logic as CardGameAPI
    + Need to exist but are never used:
