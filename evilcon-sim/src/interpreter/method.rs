@@ -66,6 +66,13 @@ impl Method {
     Self::rust_method("new", body)
   }
 
+  pub fn noop() -> Method {
+    fn body(_: &mut EvaluatorState, _: MethodArgs) -> Result<Value, EvalError> {
+      Ok(Value::Null)
+    }
+    Self::rust_method("noop", body)
+  }
+
   pub fn is_static(&self) -> bool {
     match self {
       Method::GdMethod(m) => m.is_static,
