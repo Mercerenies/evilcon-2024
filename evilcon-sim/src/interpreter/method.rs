@@ -19,6 +19,7 @@ pub enum Method {
 #[derive(Clone)]
 pub struct RustMethod {
   pub name: Identifier,
+  pub is_static: bool,
   pub body: Arc<dyn Fn(&mut EvaluatorState, MethodArgs) -> Result<Value, EvalError>>,
 }
 
@@ -37,8 +38,25 @@ impl Method {
                      body: impl Fn(&mut EvaluatorState, MethodArgs) -> Result<Value, EvalError> + 'static) -> Method {
     Method::RustMethod(RustMethod {
       name: name.into(),
+      is_static: false,
       body: Arc::new(body),
     })
+  }
+
+  pub fn rust_static_method(name: impl Into<Identifier>,
+                            body: impl Fn(&mut EvaluatorState, MethodArgs) -> Result<Value, EvalError> + 'static) -> Method {
+    Method::RustMethod(RustMethod {
+      name: name.into(),
+      is_static: true,
+      body: Arc::new(body),
+    })
+  }
+
+  pub fn is_static(&self) -> bool {
+    match self {
+      Method::GdMethod(m) => m.is_static,
+      Method::RustMethod(m) => m.is_static,
+    }
   }
 }
 

@@ -170,6 +170,9 @@ impl Value {
   }
 
   pub fn get_func(&self, name: &str, bootstrapping: &BootstrappedTypes) -> Result<Method, NoSuchFunc> {
+    if let Value::ClassRef(cls) = self && let Ok(method) = cls.get_func(name) && method.is_static() {
+      return Ok(method.clone());
+    }
     let class = self.get_class(bootstrapping).ok_or(NoSuchFunc(name.to_owned()))?;
     class.get_func(name).cloned()
   }
