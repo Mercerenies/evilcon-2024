@@ -7,4 +7,4 @@ static func test():
     a.resize(10)
     a.fill(9)
 
-    return a
+    return ["ABC".substr(1), "ABC".substr(1, 2)]

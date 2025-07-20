@@ -4,7 +4,7 @@ use super::eval::EvaluatorState;
 use super::value::{Value, HashKey};
 use super::error::{EvalError, ControlFlow};
 use super::method::{MethodArgs, Method};
-use super::operator::{expect_int, expect_bool, expect_array, expect_dict};
+use super::operator::{expect_int, expect_string, expect_bool, expect_array, expect_dict};
 use crate::ast::identifier::Identifier;
 
 use std::sync::Arc;
@@ -17,6 +17,7 @@ pub struct BootstrappedTypes {
   array: Arc<Class>,
   dictionary: Arc<Class>,
   callable: Arc<Class>,
+  string: Arc<Class>,
 }
 
 impl BootstrappedTypes {
@@ -26,12 +27,14 @@ impl BootstrappedTypes {
     let array = Arc::new(array_class());
     let dictionary = Arc::new(dictionary_class());
     let callable = Arc::new(callable_class());
+    let string = Arc::new(string_class());
     Self {
       object,
       refcounted,
       array,
       dictionary,
       callable,
+      string,
     }
   }
 
@@ -42,6 +45,7 @@ impl BootstrappedTypes {
       ("Array".into(), self.array.clone()),
       ("Dictionary".into(), self.dictionary.clone()),
       ("Callable".into(), self.callable.clone()),
+      ("String".into(), self.string.clone()),
     ]
   }
 
@@ -63,6 +67,10 @@ impl BootstrappedTypes {
 
   pub fn callable(&self) -> &Arc<Class> {
     &self.callable
+  }
+
+  pub fn string(&self) -> &Arc<Class> {
+    &self.string
   }
 }
 
@@ -98,7 +106,7 @@ fn array_class() -> Class {
   methods.insert(Identifier::from("append"), Method::rust_method("append", array_push_back)); // alias of push_back
   methods.insert(Identifier::from("duplicate"), Method::rust_method("duplicate", duplicate_method));
   methods.insert(Identifier::from("resize"), Method::rust_method("resize", array_resize));
-  methods.insert(Identifier::from("fill"), Method::rust_method("filf", array_fill));
+  methods.insert(Identifier::from("fill"), Method::rust_method("fill", array_fill));
   Class {
     name: Some(String::from("Array")),
     parent: None,
@@ -129,6 +137,19 @@ fn callable_class() -> Class {
   methods.insert(Identifier::from("call"), Method::rust_method("call", call_func));
   Class {
     name: Some(String::from("Callable")),
+    parent: None,
+    constants: Arc::new(constants),
+    instance_vars: vec![],
+    methods,
+  }
+}
+
+fn string_class() -> Class {
+  let constants = HashMap::new();
+  let mut methods = HashMap::new();
+  methods.insert(Identifier::from("substr"), Method::rust_method("substr", string_substr));
+  Class {
+    name: Some(String::from("String")),
     parent: None,
     constants: Arc::new(constants),
     instance_vars: vec![],
@@ -215,4 +236,17 @@ fn duplicate_method(state: &mut EvaluatorState, args: MethodArgs) -> Result<Valu
   } else {
     Ok(self_inst.shallow_copy())
   }
+}
+
+fn string_substr(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
+  let self_inst = expect_string(state.self_instance_or_null())?;
+  args.expect_arity_within(1, 2)?;
+  let from = expect_int(&args.0[0])?;
+  let to = expect_int(args.0.get(1).unwrap_or(&Value::Int(-1)))?;
+  let substr = if to == -1 {
+    &self_inst[from as usize..]
+  } else {
+    &self_inst[from as usize..(to as usize)]
+  };
+  Ok(Value::String(substr.to_string()))
 }

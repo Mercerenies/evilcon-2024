@@ -193,6 +193,7 @@ impl Value {
   pub fn get_class(&self, bootstrapping: &BootstrappedTypes) -> Option<Arc<Class>> {
     match self {
       Value::ObjectRef(obj) => Some(obj.borrow().class.clone()),
+      Value::String(_) => Some(Arc::clone(bootstrapping.string())),
       Value::ArrayRef(_) => Some(Arc::clone(bootstrapping.array())),
       Value::DictRef(_) => Some(Arc::clone(bootstrapping.dictionary())),
       Value::BoundMethod(_) | Value::Lambda(_) => Some(Arc::clone(bootstrapping.callable())),
