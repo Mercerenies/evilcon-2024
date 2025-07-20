@@ -126,6 +126,8 @@ fn dictionary_class() -> Class {
   methods.insert(Identifier::from("__getitem__"), Method::rust_method("__getitem__", dict_getitem));
   methods.insert(Identifier::from("get"), Method::rust_method("get", dict_get));
   methods.insert(Identifier::from("duplicate"), Method::rust_method("duplicate", duplicate_method));
+  methods.insert(Identifier::from("keys"), Method::rust_method("keys", dict_keys));
+  methods.insert(Identifier::from("values"), Method::rust_method("values", dict_values));
   Class {
     name: Some(String::from("Dictionary")),
     parent: None,
@@ -293,6 +295,20 @@ fn dict_get(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalE
   let key = HashKey::try_from(&args.0[0])?;
   let default_value = args.0.get(1).unwrap_or(&Value::Null);
   Ok(self_inst.get(&key).cloned().unwrap_or_else(|| default_value.clone()))
+}
+
+fn dict_keys(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
+  let self_inst = expect_dict(state.self_instance())?.borrow();
+  args.expect_arity(0)?;
+  let keys = self_inst.keys().map(|key| Value::from(key.clone())).collect();
+  Ok(Value::new_array(keys))
+}
+
+fn dict_values(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
+  let self_inst = expect_dict(state.self_instance())?.borrow();
+  args.expect_arity(0)?;
+  let values = self_inst.values().cloned().collect();
+  Ok(Value::new_array(values))
 }
 
 fn duplicate_method(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {

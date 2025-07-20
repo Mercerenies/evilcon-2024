@@ -15,6 +15,15 @@ static func test():
 
     var b = a.filter(func (z): return z % 2 == 0)
 
+    var w = {
+        "A": 3,
+        "B": 4,
+        "C": 5,
+    }
+
+    print(w.keys())
+    print(w.values())
+
     return [fmod(7, 3.4), PI]
 
 
