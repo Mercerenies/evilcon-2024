@@ -1,16 +1,6 @@
 
 # NOTE: This file is not used for anything other than testing. Delete me someday plz :)
 
-class A:
-    var f
-
-enum A {
-  X = 1,
-  Y,
-}
-
-func test(a, b: int):
-    pass
-
-static func test1(a, b = 3):
-    pass
+static func test():
+    var a = { 0: 3 }
+    return [a[0], a[1]]

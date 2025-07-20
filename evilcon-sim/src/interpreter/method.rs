@@ -82,6 +82,8 @@ impl Method {
 }
 
 impl MethodArgs {
+  pub const EMPTY: MethodArgs = MethodArgs(Vec::new());
+
   pub fn is_empty(&self) -> bool {
     self.0.is_empty()
   }

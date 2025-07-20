@@ -175,7 +175,8 @@ pub fn normalize_path(path: impl AsRef<Path>) -> io::Result<ResourcePath> {
   let absolute_path = path.as_ref().canonicalize()?;
   let rel_path = absolute_path.strip_prefix(&*GODOT_PROJECT_ROOT)
     .map_err(|_| io::Error::new(io::ErrorKind::NotFound, "Could not normalize path"))?;
-  Ok(ResourcePath::new(rel_path.to_string_lossy()))
+  let rel_path = rel_path.to_string_lossy();
+  Ok(ResourcePath::new(format!("res://{rel_path}")))
 }
 
 fn resolve_extends_clause_in_superglobals(superglobals: &SuperglobalState, clause: &ExtendsClause) -> Option<ExtendedClass<'static>> {
