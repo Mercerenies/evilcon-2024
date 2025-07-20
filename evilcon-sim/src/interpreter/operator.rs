@@ -106,6 +106,15 @@ fn do_elem_check(lhs: Value, rhs: Value) -> Result<bool, EvalError> {
 pub fn expect_int(value: &Value) -> Result<i64, EvalError> {
   match value {
     Value::Int(n) => Ok(*n),
+    value => Err(EvalError::type_error("integer", value.to_owned())),
+  }
+}
+
+/// Expect a float, but coerce integers as well.
+pub fn expect_float_loosely(value: &Value) -> Result<f64, EvalError> {
+  match value {
+    Value::Float(n) => Ok(**n),
+    Value::Int(n) => Ok(*n as f64),
     value => Err(EvalError::type_error("number", value.to_owned())),
   }
 }

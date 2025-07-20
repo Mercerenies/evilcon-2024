@@ -359,6 +359,12 @@ impl From<i64> for Value {
   }
 }
 
+impl From<f64> for Value {
+  fn from(f: f64) -> Self {
+    Value::Float(f.into())
+  }
+}
+
 impl From<Literal> for Value {
   fn from(lit: Literal) -> Self {
     match lit {

@@ -15,7 +15,7 @@ static func test():
 
     var b = a.filter(func (z): return z % 2 == 0)
 
-    return from_godot_docs1()
+    return [fmod(7, 3.4), PI]
 
 
 static func www():

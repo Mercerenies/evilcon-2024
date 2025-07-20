@@ -12,13 +12,14 @@ use super::value::Value;
 use super::eval::{SuperglobalState, EvaluatorState};
 use super::method::{MethodArgs, Method};
 use super::error::EvalError;
-use super::operator::{expect_string, expect_int};
+use super::operator::{expect_string, expect_int, expect_float_loosely};
 use crate::ast::identifier::{Identifier, ResourcePath};
 
 use itertools::Itertools;
 
 use std::sync::Arc;
 use std::collections::HashMap;
+use std::f64::consts::PI;
 
 pub fn bind_mocked_classes(superglobals: &mut SuperglobalState) {
   // Node
@@ -45,6 +46,11 @@ pub fn bind_mocked_classes(superglobals: &mut SuperglobalState) {
   superglobals.add_file(ResourcePath::new("res://card_game/playing_field/randomness.gd"), Arc::new(randomness));
 }
 
+pub fn bind_mocked_constants(superglobals: &mut SuperglobalState) {
+  // PI
+  superglobals.bind_var(Identifier::new("PI"), Value::from(PI));
+}
+
 pub fn bind_mocked_methods(superglobals: &mut SuperglobalState) {
   // load and preload (aliases)
   superglobals.define_func(Identifier::new("load"), Method::rust_method("load", preload_method));
@@ -60,6 +66,9 @@ pub fn bind_mocked_methods(superglobals: &mut SuperglobalState) {
   superglobals.define_func(Identifier::new("print"), Method::rust_method("print", print_method));
   superglobals.define_func(Identifier::new("push_error"), Method::rust_method("push_error", push_error_method));
   superglobals.define_func(Identifier::new("push_warning"), Method::rust_method("push_warning", push_warning_method));
+
+  // fmod
+  superglobals.define_func(Identifier::new("fmod"), Method::rust_method("fmod", fmod_method));
 }
 
 fn node_class(object: Arc<Class>) -> Class {
@@ -160,4 +169,11 @@ fn push_error_method(_state: &mut EvaluatorState, args: MethodArgs) -> Result<Va
 fn push_warning_method(_state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
   eprintln!("WARNING: {}", args.0.into_iter().join(""));
   Ok(Value::Null)
+}
+
+fn fmod_method(_state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
+  let (a, b) = args.expect_two_args()?;
+  let a = expect_float_loosely(&a)?;
+  let b = expect_float_loosely(&b)?;
+  Ok(Value::from(a % b))
 }
