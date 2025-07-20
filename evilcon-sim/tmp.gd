@@ -24,6 +24,9 @@ static func test():
     print(w.keys())
     print(w.values())
 
+    print(min(1, 0.5))
+    print(mini(1, 3))
+
     return [fmod(7, 3.4), PI]
 
 

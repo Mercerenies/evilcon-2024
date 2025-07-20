@@ -20,6 +20,7 @@ use itertools::Itertools;
 use std::sync::Arc;
 use std::collections::HashMap;
 use std::f64::consts::PI;
+use std::ops::Rem;
 
 pub fn bind_mocked_classes(superglobals: &mut SuperglobalState) {
   // Node
@@ -67,8 +68,12 @@ pub fn bind_mocked_methods(superglobals: &mut SuperglobalState) {
   superglobals.define_func(Identifier::new("push_error"), Method::rust_method("push_error", push_error_method));
   superglobals.define_func(Identifier::new("push_warning"), Method::rust_method("push_warning", push_warning_method));
 
-  // fmod
-  superglobals.define_func(Identifier::new("fmod"), Method::rust_method("fmod", fmod_method));
+  // Misc math operators
+  superglobals.define_func(Identifier::new("fmod"), Method::rust_method("fmod", binary_float_function(f64::rem)));
+  superglobals.define_func(Identifier::new("min"), Method::rust_method("min", binary_float_function(f64::min)));
+  superglobals.define_func(Identifier::new("max"), Method::rust_method("max", binary_float_function(f64::max)));
+  superglobals.define_func(Identifier::new("mini"), Method::rust_method("mini", binary_int_function(i64::min)));
+  superglobals.define_func(Identifier::new("maxi"), Method::rust_method("maxi", binary_int_function(i64::max)));
 }
 
 fn node_class(object: Arc<Class>) -> Class {
@@ -171,9 +176,20 @@ fn push_warning_method(_state: &mut EvaluatorState, args: MethodArgs) -> Result<
   Ok(Value::Null)
 }
 
-fn fmod_method(_state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
-  let (a, b) = args.expect_two_args()?;
-  let a = expect_float_loosely(&a)?;
-  let b = expect_float_loosely(&b)?;
-  Ok(Value::from(a % b))
+fn binary_int_function<F, R>(func: F) -> impl Fn(&mut EvaluatorState, MethodArgs) -> Result<Value, EvalError> + 'static
+where F: Fn(i64, i64) -> R + 'static,
+      Value: From<R> {
+  move |_, args| {
+    let (a, b) = args.expect_two_args()?;
+    Ok(func(expect_int(&a)?, expect_int(&b)?).into())
+  }
+}
+
+fn binary_float_function<F, R>(func: F) -> impl Fn(&mut EvaluatorState, MethodArgs) -> Result<Value, EvalError> + 'static
+where F: Fn(f64, f64) -> R + 'static,
+      Value: From<R> {
+  move |_, args| {
+    let (a, b) = args.expect_two_args()?;
+    Ok(func(expect_float_loosely(&a)?, expect_float_loosely(&b)?).into())
+  }
 }
