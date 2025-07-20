@@ -6,11 +6,12 @@
    + [ ] ~card_game/playing_field/util/card_game_phases.gd~
    + [ ] ~card_game/playing_field/util/card_game_turn_transitions.gd~
    + [ ] ~card_game/playing_field/util/query.gd~
-   + [ ] ~card_game/playing_field/util/stats_calculator.gd~
+   + [X] ~card_game/playing_field/util/stats_calculator.gd~
    + [X] ~card_game/playing_field/player_agent/player_agent.gd~
    + [X] ~card_game/playing_field/player_agent/lookahead_ai_agent/lookahead_ai_agent.gd~
-   + [ ] ~card_game/playing_field/player_agent/lookahead_ai_agent/lookahead_priorities.gd~
+   + [X] ~card_game/playing_field/player_agent/lookahead_ai_agent/lookahead_priorities.gd~
    + [X] ~card_game/playing_field/card_player.gd~
+   + [X] ~operator.gd~
    + [X] ~util.gd~
      - Note: ~free_all_children~ and ~queue_free_all_children~ are
        just unsupported. I'm not even going to try.

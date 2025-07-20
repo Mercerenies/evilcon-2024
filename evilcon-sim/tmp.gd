@@ -42,6 +42,8 @@ static func test():
     print(float(3))
     print(float(false))
 
+    print(clampi(3.9, 1, 2))
+
     return [fmod(7, 3.4), PI]
 
 

@@ -75,6 +75,7 @@ pub fn bind_mocked_methods(superglobals: &mut SuperglobalState) {
   superglobals.define_func(Identifier::new("max"), Method::rust_method("max", binary_float_function(f64::max)));
   superglobals.define_func(Identifier::new("mini"), Method::rust_method("mini", binary_int_function(i64::min)));
   superglobals.define_func(Identifier::new("maxi"), Method::rust_method("maxi", binary_int_function(i64::max)));
+  superglobals.define_func(Identifier::new("clampi"), Method::rust_method("clampi", clampi_function));
 
   // float cast
   superglobals.define_func(Identifier::new("float"), Method::rust_method("float", float_cast_function));
@@ -178,6 +179,16 @@ fn push_error_method(_state: &mut EvaluatorState, args: MethodArgs) -> Result<Va
 fn push_warning_method(_state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
   eprintln!("WARNING: {}", args.0.into_iter().join(""));
   Ok(Value::Null)
+}
+
+fn clampi_function(_: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
+  args.expect_arity(3)?;
+  let [a, b, c] = args.try_into().unwrap();
+  let a = expect_int_loosely(&a)?;
+  let b = expect_int_loosely(&b)?;
+  let c = expect_int_loosely(&c)?;
+  let result_value = if a < b { b } else if a > c { c } else { a };
+  Ok(Value::Int(result_value))
 }
 
 fn binary_int_function<F, R>(func: F) -> impl Fn(&mut EvaluatorState, MethodArgs) -> Result<Value, EvalError> + 'static
