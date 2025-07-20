@@ -93,7 +93,7 @@ fn refcounted_class(object: Arc<Class>) -> Class {
 fn array_class() -> Class {
   let constants = HashMap::new();
   let mut methods = HashMap::new();
-  methods.insert(Identifier::from("get"), Method::rust_method("get", array_getitem));
+  methods.insert(Identifier::from("__getitem__"), Method::rust_method("get", array_getitem));
   Class {
     name: Some(String::from("Array")),
     parent: None,
@@ -106,7 +106,7 @@ fn array_class() -> Class {
 fn dictionary_class() -> Class {
   let constants = HashMap::new();
   let mut methods = HashMap::new();
-  methods.insert(Identifier::from("get"), Method::rust_method("get", dict_getitem));
+  methods.insert(Identifier::from("__getitem__"), Method::rust_method("get", dict_getitem));
   Class {
     name: Some(String::from("Dictionary")),
     parent: None,
