@@ -42,6 +42,9 @@ impl BootstrappedTypes {
   }
 
   pub fn all_global_names(&self) -> Vec<(String, Arc<Class>)> {
+    // Note: We make String and StringName synonyms here. I think
+    // that's good enough for this simulation, even though it's not
+    // technically true in Godot.
     vec![
       ("Object".into(), self.object.clone()),
       ("RefCounted".into(), self.refcounted.clone()),
@@ -49,6 +52,7 @@ impl BootstrappedTypes {
       ("Dictionary".into(), self.dictionary.clone()),
       ("Callable".into(), self.callable.clone()),
       ("String".into(), self.string.clone()),
+      ("StringName".into(), self.string.clone()),
     ]
   }
 
@@ -133,6 +137,7 @@ fn dictionary_class() -> Class {
   methods.insert(Identifier::from("duplicate"), Method::rust_method("duplicate", duplicate_method));
   methods.insert(Identifier::from("keys"), Method::rust_method("keys", dict_keys));
   methods.insert(Identifier::from("values"), Method::rust_method("values", dict_values));
+  methods.insert(Identifier::from("merge"), Method::rust_method("merge", dict_merge));
   Class {
     name: Some(String::from("Dictionary")),
     parent: None,
@@ -336,6 +341,19 @@ fn dict_values(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, Ev
   args.expect_arity(0)?;
   let values = self_inst.values().cloned().collect();
   Ok(Value::new_array(values))
+}
+
+fn dict_merge(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
+  let mut self_inst = expect_dict(state.self_instance())?.borrow_mut();
+  args.expect_arity_within(1, 2)?;
+  let right_hand = expect_dict(&args.0[0])?.borrow(); // Panics if self_inst == right_hand.
+  let overwrite = expect_bool(args.0.get(1).unwrap_or(&Value::Bool(false)))?;
+  for (key, value) in right_hand.iter() {
+    if overwrite || !self_inst.contains_key(key) {
+      self_inst.insert(key.clone(), value.clone());
+    }
+  }
+  Ok(Value::Null)
 }
 
 fn duplicate_method(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {

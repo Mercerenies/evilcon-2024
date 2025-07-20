@@ -33,6 +33,11 @@ static func test():
     x.sort_custom(func(a, b): return b < a)
     print(x)
 
+    var a = {"A": 1}
+    var b = {"B": 2, "A": 99}
+    a.merge(b, true)
+    print(a)
+
     return [fmod(7, 3.4), PI]
 
 
