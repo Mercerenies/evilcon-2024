@@ -110,6 +110,14 @@ pub fn expect_int(value: &Value) -> Result<i64, EvalError> {
   }
 }
 
+pub fn expect_int_loosely(value: &Value) -> Result<i64, EvalError> {
+  match value {
+    Value::Int(n) => Ok(*n),
+    Value::Float(n) => Ok(n.floor() as i64),
+    value => Err(EvalError::type_error("integer", value.to_owned())),
+  }
+}
+
 /// Expect a float, but coerce integers as well.
 pub fn expect_float_loosely(value: &Value) -> Result<f64, EvalError> {
   match value {

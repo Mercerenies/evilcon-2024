@@ -12,7 +12,7 @@ use super::value::Value;
 use super::eval::{SuperglobalState, EvaluatorState};
 use super::method::{MethodArgs, Method};
 use super::error::EvalError;
-use super::operator::{expect_string, expect_int, expect_float_loosely};
+use super::operator::{expect_string, expect_int_loosely, expect_float_loosely};
 use crate::ast::identifier::{Identifier, ResourcePath};
 
 use itertools::Itertools;
@@ -68,7 +68,8 @@ pub fn bind_mocked_methods(superglobals: &mut SuperglobalState) {
   superglobals.define_func(Identifier::new("push_error"), Method::rust_method("push_error", push_error_method));
   superglobals.define_func(Identifier::new("push_warning"), Method::rust_method("push_warning", push_warning_method));
 
-  // Misc math operators
+  // Misc math operators (Note: min, max, and company are vararg, but
+  // we implement them as binary here)
   superglobals.define_func(Identifier::new("fmod"), Method::rust_method("fmod", binary_float_function(f64::rem)));
   superglobals.define_func(Identifier::new("min"), Method::rust_method("min", binary_float_function(f64::min)));
   superglobals.define_func(Identifier::new("max"), Method::rust_method("max", binary_float_function(f64::max)));
@@ -140,13 +141,13 @@ fn range_method(_state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, 
   args.expect_arity_within(1, 3)?;
   let (begin, end, step) = match args.len() {
     1 => {
-      (0, expect_int(&args[0])?, 1)
+      (0, expect_int_loosely(&args[0])?, 1)
     }
     2 => {
-      (expect_int(&args[0])?, expect_int(&args[1])?, 1)
+      (expect_int_loosely(&args[0])?, expect_int_loosely(&args[1])?, 1)
     }
     3 => {
-      (expect_int(&args[0])?, expect_int(&args[1])?, expect_int(&args[2])?)
+      (expect_int_loosely(&args[0])?, expect_int_loosely(&args[1])?, expect_int_loosely(&args[2])?)
     }
     _ => unreachable!(),
   };
@@ -181,7 +182,7 @@ where F: Fn(i64, i64) -> R + 'static,
       Value: From<R> {
   move |_, args| {
     let (a, b) = args.expect_two_args()?;
-    Ok(func(expect_int(&a)?, expect_int(&b)?).into())
+    Ok(func(expect_int_loosely(&a)?, expect_int_loosely(&b)?).into())
   }
 }
 
