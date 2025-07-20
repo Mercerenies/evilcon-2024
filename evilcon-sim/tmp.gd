@@ -9,6 +9,4 @@ static func test():
     a[0].push_back(1)
     a[0].append(2)
 
-    z.aaa = 0
-
-    return z
+    return "a %s b%s" % [z, 3]

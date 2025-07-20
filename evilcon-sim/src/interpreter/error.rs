@@ -1,6 +1,7 @@
 
 use super::value::{Value, InvalidHashKey, NoSuchVar, NoSuchFunc};
 use crate::ast::expr::Expr;
+use crate::ast::string::formatter::FormatterError;
 
 use thiserror::Error;
 
@@ -64,6 +65,8 @@ pub enum EvalError {
   BadSuper,
   #[error("Domain error: {0}")]
   DomainError(String),
+  #[error("Formatter error: {0}")]
+  FormatterError(#[from] FormatterError),
 }
 
 impl EvalError {

@@ -1,5 +1,6 @@
 
 use crate::ast::expr::operator::{BinaryOp, UnaryOp};
+use crate::ast::string::formatter::format_percent;
 use super::value::Value;
 use super::error::EvalError;
 use super::bootstrapping::BootstrappedTypes;
@@ -35,9 +36,25 @@ pub fn eval_binary_op(bootstrapping: &BootstrappedTypes, lhs: Value, op: BinaryO
     BinaryOp::Mul => promote_binary_nums(lhs, rhs, |lhs, rhs| Ok(lhs * rhs), |lhs, rhs| Ok(lhs * rhs)),
     BinaryOp::Div => promote_binary_nums(lhs, rhs, |lhs, rhs| Ok(lhs / rhs), |lhs, rhs| Ok(lhs / rhs)), // Note: Integer division on ints
     BinaryOp::Mod => {
-      let lhs = expect_int(&lhs)?;
-      let rhs = expect_int(&rhs)?;
-      Ok(Value::Int(lhs % rhs))
+      match lhs {
+        Value::Int(lhs) => {
+          // Integer modulo
+          let rhs = expect_int(&rhs)?;
+          Ok(Value::Int(lhs % rhs))
+        }
+        Value::String(lhs) => {
+          // String formatting
+          let rhs = match rhs {
+            Value::ArrayRef(arr) => arr.borrow().clone(),
+            rhs => vec![rhs],
+          };
+          let out_str = format_percent(&lhs, &rhs)?;
+          Ok(Value::String(out_str.into_owned()))
+        }
+        _ => {
+          Err(EvalError::type_error("string or number", lhs))
+        }
+      }
     }
     BinaryOp::Eq => Ok(Value::Bool(lhs == rhs)),
     BinaryOp::Ne => Ok(Value::Bool(lhs != rhs)),
