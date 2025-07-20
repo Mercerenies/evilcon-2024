@@ -75,6 +75,9 @@ pub fn bind_mocked_methods(superglobals: &mut SuperglobalState) {
   superglobals.define_func(Identifier::new("max"), Method::rust_method("max", binary_float_function(f64::max)));
   superglobals.define_func(Identifier::new("mini"), Method::rust_method("mini", binary_int_function(i64::min)));
   superglobals.define_func(Identifier::new("maxi"), Method::rust_method("maxi", binary_int_function(i64::max)));
+
+  // float cast
+  superglobals.define_func(Identifier::new("float"), Method::rust_method("float", float_cast_function));
 }
 
 fn node_class(object: Arc<Class>) -> Class {
@@ -192,5 +195,19 @@ where F: Fn(f64, f64) -> R + 'static,
   move |_, args| {
     let (a, b) = args.expect_two_args()?;
     Ok(func(expect_float_loosely(&a)?, expect_float_loosely(&b)?).into())
+  }
+}
+
+fn float_cast_function(_state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
+  let arg = args.expect_one_arg()?;
+  match arg {
+    Value::Float(f) => Ok(Value::from(*f)),
+    Value::Int(i) => Ok(Value::from(i as f64)),
+    Value::Bool(b) => Ok(Value::from(if b { 1.0 } else { 0.0 })),
+    Value::String(s) => {
+      let f = s.parse::<f64>().map_err(|_| EvalError::NumberParseError(s.to_owned()))?;
+      Ok(Value::from(f))
+    }
+    arg => Err(EvalError::type_error("number, string, or bool", arg)),
   }
 }

@@ -67,6 +67,8 @@ pub enum EvalError {
   DomainError(String),
   #[error("Formatter error: {0}")]
   FormatterError(#[from] FormatterError),
+  #[error("Numerical parse error on {0}")]
+  NumberParseError(String),
 }
 
 impl EvalError {

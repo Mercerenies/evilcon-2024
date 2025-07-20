@@ -38,6 +38,10 @@ static func test():
     a.merge(b, true)
     print(a)
 
+    print(float(3.4))
+    print(float(3))
+    print(float(false))
+
     return [fmod(7, 3.4), PI]
 
 
