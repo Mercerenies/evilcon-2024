@@ -7,7 +7,7 @@
    + [ ] ~card_game/playing_field/util/card_game_turn_transitions.gd~
    + [ ] ~card_game/playing_field/util/query.gd~
    + [ ] ~card_game/playing_field/util/stats_calculator.gd~
-   + [ ] ~card_game/playing_field/player_agent/player_agent.gd~
+   + [X] ~card_game/playing_field/player_agent/player_agent.gd~
    + [ ] ~card_game/playing_field/player_agent/lookahead_ai_agent/lookahead_ai_agent.gd~
    + [ ] ~card_game/playing_field/player_agent/lookahead_ai_agent/lookahead_priorities.gd~
    + [X] ~card_game/playing_field/card_player.gd~
@@ -18,7 +18,7 @@
        (BBCodeFormatter, specifically). Not going to support it.
    + [ ] ~card_game/playing_card/card_type/*.gd~
    + [ ] ~card_game/playing_card/cards/*.gd~
-   + [ ] ~card_game/playing_card/playing_card_lists.gd~
+   + [X] ~card_game/playing_card/playing_card_lists.gd~
 ** FILES MOCKED IN RUST
    + [ ] ~card_game/playing_field/playing_field.gd~
    + [X] ~card_game/playing_field/randomness.gd~

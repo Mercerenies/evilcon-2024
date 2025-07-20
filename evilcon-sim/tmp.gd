@@ -21,11 +21,17 @@ static func test():
         "C": 5,
     }
 
-    print(w.keys())
-    print(w.values())
+    #print(w.keys())
+    #print(w.values())
 
-    print(min(1, 0.5))
-    print(mini(1, 3))
+    #print(min(1, 0.5))
+    #print(mini(1, 3))
+
+    var x = [0, 4, 3, 5, 2, 1]
+    x.sort()
+    print(x)
+    x.sort_custom(func(a, b): return b < a)
+    print(x)
 
     return [fmod(7, 3.4), PI]
 

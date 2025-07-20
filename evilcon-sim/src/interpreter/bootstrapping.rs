@@ -4,11 +4,14 @@ use super::eval::EvaluatorState;
 use super::value::{Value, HashKey};
 use super::error::{EvalError, ControlFlow};
 use super::method::{MethodArgs, Method};
-use super::operator::{expect_int, expect_string, expect_bool, expect_array, expect_dict};
+use super::operator::{expect_int, expect_string, expect_bool,
+                      expect_array, expect_dict, do_comparison_op};
 use crate::ast::identifier::Identifier;
+use crate::util::try_sort_by;
 
 use std::sync::Arc;
 use std::collections::HashMap;
+use std::cmp::Ordering;
 
 #[derive(Debug, Clone)]
 pub struct BootstrappedTypes {
@@ -111,6 +114,8 @@ fn array_class() -> Class {
   methods.insert(Identifier::from("filter"), Method::rust_method("map", array_filter));
   methods.insert(Identifier::from("reduce"), Method::rust_method("reduce", array_reduce));
   methods.insert(Identifier::from("slice"), Method::rust_method("slice", array_slice));
+  methods.insert(Identifier::from("sort"), Method::rust_method("sort", array_sort));
+  methods.insert(Identifier::from("sort_custom"), Method::rust_method("sort_custom", array_sort_custom));
   Class {
     name: Some(String::from("Array")),
     parent: None,
@@ -281,6 +286,28 @@ fn array_slice(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, Ev
       .collect()
   };
   Ok(Value::new_array(arr))
+}
+
+fn array_sort(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
+  let mut arr = expect_array(state.self_instance())?.borrow_mut();
+  args.expect_arity(0)?;
+  try_sort_by(&mut arr, do_comparison_op)?;
+  Ok(Value::Null)
+}
+
+fn array_sort_custom(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
+  let mut arr = expect_array(state.self_instance())?.borrow_mut();
+  let callable = args.expect_one_arg()?;
+  let callable = callable.to_rust_function(Arc::clone(state.superglobals()));
+  // NOTE CAREFULLY: This is one of the few places in this codebase
+  // where we execute arbitrary user code inside of a
+  // RefCell::borrow_mut. A badly written sort comparator function
+  // WILL cause Rust to panic, if it tries to borrow the RefCell
+  // again.
+  try_sort_by(&mut arr, |a, b| {
+    Ok::<_, EvalError>(if callable(MethodArgs(vec![a.clone(), b.clone()]))?.as_bool() { Ordering::Less } else { Ordering::Greater })
+  })?;
+  Ok(Value::Null)
 }
 
 fn dict_getitem(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {

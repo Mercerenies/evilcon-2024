@@ -59,10 +59,10 @@ pub fn eval_binary_op(bootstrapping: &BootstrappedTypes, lhs: Value, op: BinaryO
     }
     BinaryOp::Eq => Ok(Value::Bool(lhs == rhs)),
     BinaryOp::Ne => Ok(Value::Bool(lhs != rhs)),
-    BinaryOp::Lt => do_comparison_op(lhs, rhs).map(|ord| Value::Bool(ord == Ordering::Less)),
-    BinaryOp::Le => do_comparison_op(lhs, rhs).map(|ord| Value::Bool(ord != Ordering::Greater)),
-    BinaryOp::Gt => do_comparison_op(lhs, rhs).map(|ord| Value::Bool(ord == Ordering::Greater)),
-    BinaryOp::Ge => do_comparison_op(lhs, rhs).map(|ord| Value::Bool(ord != Ordering::Less)),
+    BinaryOp::Lt => do_comparison_op(&lhs, &rhs).map(|ord| Value::Bool(ord == Ordering::Less)),
+    BinaryOp::Le => do_comparison_op(&lhs, &rhs).map(|ord| Value::Bool(ord != Ordering::Greater)),
+    BinaryOp::Gt => do_comparison_op(&lhs, &rhs).map(|ord| Value::Bool(ord == Ordering::Greater)),
+    BinaryOp::Ge => do_comparison_op(&lhs, &rhs).map(|ord| Value::Bool(ord != Ordering::Less)),
     // Note: Short-circuiting is handled elsewhere.
     BinaryOp::And => Ok(Value::Bool(lhs.as_bool() && rhs.as_bool())),
     BinaryOp::Or => Ok(Value::Bool(lhs.as_bool() || rhs.as_bool())),
@@ -167,12 +167,12 @@ where F1: FnOnce(i64, i64) -> Result<i64, EvalError>,
   }
 }
 
-fn do_comparison_op(lhs: Value, rhs: Value) -> Result<Ordering, EvalError> {
+pub fn do_comparison_op(lhs: &Value, rhs: &Value) -> Result<Ordering, EvalError> {
   match (lhs, rhs) {
     (Value::Int(lhs), Value::Int(rhs)) => Ok(lhs.cmp(&rhs)),
     (Value::Float(lhs), Value::Float(rhs)) => Ok(lhs.cmp(&rhs)),
-    (Value::Int(lhs), Value::Float(rhs)) => Ok(OrderedFloat(lhs as f64).cmp(&rhs)),
-    (Value::Float(lhs), Value::Int(rhs)) => Ok(lhs.cmp(&OrderedFloat(rhs as f64))),
+    (Value::Int(lhs), Value::Float(rhs)) => Ok(OrderedFloat(*lhs as f64).cmp(&rhs)),
+    (Value::Float(lhs), Value::Int(rhs)) => Ok(lhs.cmp(&OrderedFloat(*rhs as f64))),
     (Value::String(lhs), Value::String(rhs)) => Ok(lhs.cmp(&rhs)),
     (Value::Bool(lhs), Value::Bool(rhs)) => Ok(lhs.cmp(&rhs)),
     (Value::Null, Value::Null) => Ok(Ordering::Equal),
@@ -180,6 +180,6 @@ fn do_comparison_op(lhs: Value, rhs: Value) -> Result<Ordering, EvalError> {
       // I hope I don't need this one :(
       unimplemented!()
     }
-    (lhs, rhs) => Err(EvalError::type_error("comparable values", Value::new_array(vec![lhs, rhs]))),
+    (lhs, rhs) => Err(EvalError::type_error("comparable values", Value::new_array(vec![lhs.to_owned(), rhs.to_owned()]))),
   }
 }
