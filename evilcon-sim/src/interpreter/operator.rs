@@ -6,8 +6,8 @@ use super::error::EvalError;
 use super::bootstrapping::BootstrappedTypes;
 
 use ordered_float::OrderedFloat;
+use ordermap::OrderMap;
 
-use std::collections::HashMap;
 use std::cmp::Ordering;
 use std::sync::Arc;
 use std::cell::RefCell;
@@ -133,7 +133,7 @@ pub fn expect_array(value: &Value) -> Result<&RefCell<Vec<Value>>, EvalError> {
   }
 }
 
-pub fn expect_dict(value: &Value) -> Result<&RefCell<HashMap<HashKey, Value>>, EvalError> {
+pub fn expect_dict(value: &Value) -> Result<&RefCell<OrderMap<HashKey, Value>>, EvalError> {
   match value {
     Value::DictRef(d) => Ok(d),
     value => Err(EvalError::type_error("dictionary", value.to_owned())),

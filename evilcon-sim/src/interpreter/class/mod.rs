@@ -12,6 +12,8 @@ use super::eval::SuperglobalState;
 use super::value::{Value, NoSuchFunc};
 use constant::LazyConst;
 
+use ordermap::OrderMap;
+
 use std::hash::{Hash, Hasher};
 use std::sync::Arc;
 use std::collections::HashMap;
@@ -76,7 +78,7 @@ impl Class {
           methods.insert(function.name.to_owned(), Method::GdMethod(Arc::new(function)));
         }
         Decl::Enum(enum_decl) => {
-          let mut enum_values = HashMap::new();
+          let mut enum_values = OrderMap::new();
           let mut prev = -1i64;
           for (name, value) in enum_decl.members {
             let curr_value = match value {

@@ -13,6 +13,8 @@ use crate::ast::expr::operator::{BinaryOp, AssignOp};
 use crate::ast::decl::Parameter;
 use crate::ast::stmt::Stmt;
 
+use ordermap::OrderMap;
+
 use std::hash::Hash;
 use std::collections::HashMap;
 use std::sync::Arc;
@@ -115,7 +117,7 @@ impl EvaluatorState {
       Expr::Dictionary(pairs) => {
         let entries = pairs.iter()
           .map(|entry| Ok((self.eval_expr(&entry.key)?.try_into()?, self.eval_expr(&entry.value)?)))
-          .collect::<Result<HashMap<_, _>, EvalError>>()?;
+          .collect::<Result<OrderMap<_, _>, EvalError>>()?;
         Ok(Value::new_dict(entries))
       }
       Expr::Literal(lit) => {

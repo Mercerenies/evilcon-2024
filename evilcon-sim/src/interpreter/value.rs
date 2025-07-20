@@ -9,6 +9,7 @@ use super::eval::{EvaluatorState, SuperglobalState};
 
 use ordered_float::OrderedFloat;
 use thiserror::Error;
+use ordermap::OrderMap;
 
 use std::collections::HashMap;
 use std::sync::Arc;
@@ -25,12 +26,12 @@ pub enum Value {
   Float(OrderedFloat<f64>),
   String(String),
   ArrayRef(Arc<RefCell<Vec<Value>>>),
-  DictRef(Arc<RefCell<HashMap<HashKey, Value>>>),
+  DictRef(Arc<RefCell<OrderMap<HashKey, Value>>>),
   ClassRef(Arc<Class>),
   ObjectRef(EqPtrMut<ObjectInst>),
   BoundMethod(EqPtr<BoundMethod>),
   Lambda(EqPtr<LambdaValue>),
-  EnumType(HashMap<Identifier, i64>),
+  EnumType(OrderMap<Identifier, i64>),
 }
 
 #[derive(Debug, Clone)]
@@ -113,7 +114,7 @@ impl Value {
     Value::ArrayRef(Arc::new(RefCell::new(values)))
   }
 
-  pub fn new_dict(values: HashMap<HashKey, Value>) -> Self {
+  pub fn new_dict(values: OrderMap<HashKey, Value>) -> Self {
     Value::DictRef(Arc::new(RefCell::new(values)))
   }
 
