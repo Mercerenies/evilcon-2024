@@ -108,6 +108,7 @@ fn array_class() -> Class {
   methods.insert(Identifier::from("resize"), Method::rust_method("resize", array_resize));
   methods.insert(Identifier::from("fill"), Method::rust_method("fill", array_fill));
   methods.insert(Identifier::from("map"), Method::rust_method("map", array_map));
+  methods.insert(Identifier::from("reduce"), Method::rust_method("reduce", array_reduce));
   Class {
     name: Some(String::from("Array")),
     parent: None,
@@ -221,6 +222,22 @@ fn array_map(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, Eval
     *elem = callable(MethodArgs(vec![elem.clone()]))?;
   }
   Ok(Value::new_array(arr))
+}
+
+fn array_reduce(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
+  let arr = expect_array(state.self_instance_or_null())?.borrow().clone();
+  args.expect_arity_within(1, 2)?;
+  let callable = &args.0[0];
+  let callable = callable.to_rust_function(Arc::clone(state.superglobals()));
+  let mut accum = args.0.get(1).unwrap_or_default().clone();
+  let mut iter = arr.into_iter();
+  if accum.is_null() {
+    accum = iter.next().ok_or_else(|| EvalError::domain_error("Cannot reduce an empty array"))?;
+  }
+  for elem in iter {
+    accum = callable(MethodArgs(vec![accum, elem]))?;
+  }
+  Ok(accum)
 }
 
 fn dict_getitem(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
