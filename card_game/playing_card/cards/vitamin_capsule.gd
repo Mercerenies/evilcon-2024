@@ -37,7 +37,8 @@ func on_play(playing_field, card) -> void:
     var vitamins_in_play = _get_all_vitamin_capsules(playing_field, owner)
     if len(vitamins_in_play) >= 3:
         await CardGameApi.highlight_card(playing_field, card)
-        await _play_vitamin_animation(playing_field, vitamins_in_play)
+        await playing_field.with_animation(func(_anim):
+            await _play_vitamin_animation(playing_field, vitamins_in_play))
         await Stats.add_fort_defense(playing_field, opponent, -10)
         for vitamin in vitamins_in_play:
             await CardGameApi.destroy_card(playing_field, vitamin)

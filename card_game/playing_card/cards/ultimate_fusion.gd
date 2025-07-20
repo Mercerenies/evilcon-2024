@@ -40,7 +40,8 @@ func _evaluate_effect(playing_field, card) -> void:
     if len(tributes) < 3:
         Stats.show_text(playing_field, card, PopupText.NO_TARGET)
         return
-    await _play_rotate_animation(playing_field, tributes)
+    await playing_field.with_animation(func(_anim):
+        await _play_rotate_animation(playing_field, tributes))
     for tribute_card in tributes:
         # TODO Do we need to do influence checks here? If one of the
         # influence checks fails, I guess the whole fusion fails.

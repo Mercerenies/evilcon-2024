@@ -42,7 +42,8 @@ func _evaluate_effect(playing_field, card) -> void:
     if len(targets) < 3:
         Stats.show_text(playing_field, card, PopupText.NO_TARGET)
         return
-    await _play_rotate_animation(playing_field, targets)
+    await playing_field.with_animation(func(_anim):
+        await _play_rotate_animation(playing_field, targets))
 
     await Stats.add_fort_defense(playing_field, CardPlayer.other(owner), -15)
 
