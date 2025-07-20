@@ -5,6 +5,8 @@
    + [ ] ~card_game/playing_field/util/card_effects.gd~
    + [X] ~card_game/playing_field/util/card_game_phases.gd~
    + [ ] ~card_game/playing_field/util/card_game_turn_transitions.gd~
+     - Need to do surgery on play_full_game and play_rest_of_game
+       (they do nontrivial shenanigans with promises)
    + [ ] ~card_game/playing_field/util/query.gd~
    + [X] ~card_game/playing_field/util/stats_calculator.gd~
    + [X] ~card_game/playing_field/player_agent/player_agent.gd~
@@ -38,4 +40,5 @@
      - [X] ~card_game/playing_field/animation/card_moving/card_moving_animation.tscn~
    + Need to exist + minimal mocking maybe:
      - [X] ~card_game/playing_field/util/popup_text.gd~
-   + [ ] Promise.gd (oh boy)
+   + [X] Promise.gd
+     - Needs to exist but hopefully will not ever be /actually/ used.

@@ -38,6 +38,10 @@ pub fn bind_mocked_classes(superglobals: &mut SuperglobalState) {
   let card_moving_animation = dummy_class(); // Should be entirely unused.
   superglobals.add_file(ResourcePath::new("res://card_game/playing_field/animation/card_moving/card_moving_animation.gd"), Arc::new(card_moving_animation));
 
+  // Promise
+  let promise = dummy_class(); // I hope this one is unused...
+  superglobals.bind_class(Identifier::new("Promise"), Arc::new(promise));
+
   // PlayingField
   let playing_field = playing_field::playing_field_class(Arc::clone(&node));
   superglobals.add_file(ResourcePath::new("res://card_game/playing_field/playing_field.gd"), Arc::new(playing_field));
