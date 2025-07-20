@@ -99,6 +99,8 @@ pub struct NoSuchVar(pub String);
 pub struct NoSuchFunc(pub String);
 
 impl Value {
+  pub const GLOBAL_OK: Value = Value::Int(0);
+
   pub fn float(f: impl Into<OrderedFloat<f64>>) -> Self {
     Value::Float(f.into())
   }

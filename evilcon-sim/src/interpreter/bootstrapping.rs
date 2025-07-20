@@ -97,6 +97,8 @@ fn array_class() -> Class {
   methods.insert(Identifier::from("push_back"), Method::rust_method("push_back", array_push_back));
   methods.insert(Identifier::from("append"), Method::rust_method("append", array_push_back)); // alias of push_back
   methods.insert(Identifier::from("duplicate"), Method::rust_method("duplicate", duplicate_method));
+  methods.insert(Identifier::from("resize"), Method::rust_method("resize", array_resize));
+  methods.insert(Identifier::from("fill"), Method::rust_method("filf", array_fill));
   Class {
     name: Some(String::from("Array")),
     parent: None,
@@ -173,6 +175,20 @@ fn array_push_back(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value
   let new_value = args.expect_one_arg()?;
   self_inst.push(new_value);
   Ok(Value::Null)
+}
+
+fn array_resize(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
+  let mut self_inst = expect_array(state.self_instance_or_null())?.borrow_mut();
+  let size = expect_int(&args.expect_one_arg()?)?;
+  self_inst.resize(size as usize, Value::Null);
+  Ok(Value::GLOBAL_OK)
+}
+
+fn array_fill(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
+  let mut self_inst = expect_array(state.self_instance_or_null())?.borrow_mut();
+  let value = &args.expect_one_arg()?;
+  self_inst.fill(value.clone());
+  Ok(Value::GLOBAL_OK)
 }
 
 fn dict_getitem(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
