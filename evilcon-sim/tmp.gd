@@ -7,4 +7,6 @@ static func test():
     var a1 = a.reduce(func(a, b): return a + b)
     var a2 = a.reduce(func(a, b): return a + b, 10)
 
-    return [a1, a2]
+    var b = a.filter(func (z): return z % 2 == 0)
+
+    return [a, b]
