@@ -9,6 +9,7 @@ use thiserror::Error;
 
 use std::sync::Arc;
 use std::fmt::{Formatter, Debug};
+use std::ops::{Index, IndexMut};
 
 #[derive(Debug, Clone)]
 pub enum Method {
@@ -135,5 +136,19 @@ impl Debug for RustMethod {
       .field("name", &self.name)
       .field("body", &"<fn>")
       .finish()
+  }
+}
+
+impl Index<usize> for MethodArgs {
+  type Output = Value;
+
+  fn index(&self, index: usize) -> &Self::Output {
+    &self.0[index]
+  }
+}
+
+impl IndexMut<usize> for MethodArgs {
+  fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+    &mut self.0[index]
   }
 }

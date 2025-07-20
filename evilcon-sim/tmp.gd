@@ -15,7 +15,7 @@ static func test():
 
     var b = a.filter(func (z): return z % 2 == 0)
 
-    return xxx
+    return from_godot_docs1()
 
 
 static func www():
@@ -32,3 +32,11 @@ static func from_godot_docs():
     var d = (letters.slice(0, 6, 2))  # Prints ["A", "C", "E"]
     var e = (letters.slice(4, 1, -1)) # Prints ["E", "D", "C"]
     return [a, b, c, d, e]
+
+
+static func from_godot_docs1():
+    var x1 = (range(4))        # Prints [0, 1, 2, 3]
+    var x2 = (range(2, 5))     # Prints [2, 3, 4]
+    var x3 = (range(0, 6, 2))  # Prints [0, 2, 4]
+    var x4 = (range(4, 1, -1)) # Prints [4, 3, 2]
+    return [x1, x2, x3, x4]

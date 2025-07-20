@@ -12,7 +12,7 @@ use super::value::Value;
 use super::eval::{SuperglobalState, EvaluatorState};
 use super::method::{MethodArgs, Method};
 use super::error::EvalError;
-use super::operator::expect_string;
+use super::operator::{expect_string, expect_int};
 use crate::ast::identifier::{Identifier, ResourcePath};
 
 use std::sync::Arc;
@@ -50,6 +50,9 @@ pub fn bind_mocked_methods(superglobals: &mut SuperglobalState) {
 
   // len
   superglobals.define_func(Identifier::new("len"), Method::rust_method("len", len_method));
+
+  // range
+  superglobals.define_func(Identifier::new("range"), Method::rust_method("range", range_method));
 }
 
 fn node_class(object: Arc<Class>) -> Class {
@@ -110,4 +113,29 @@ fn len_method(_state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, Ev
     Value::String(s) => Ok(Value::Int(s.len() as i64)),
     _ => Err(EvalError::type_error("array, string, or dict", arg)),
   }
+}
+
+fn range_method(_state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
+  args.expect_arity_within(1, 3)?;
+  let (begin, end, step) = match args.len() {
+    1 => {
+      (0, expect_int(&args[0])?, 1)
+    }
+    2 => {
+      (expect_int(&args[0])?, expect_int(&args[1])?, 1)
+    }
+    3 => {
+      (expect_int(&args[0])?, expect_int(&args[1])?, expect_int(&args[2])?)
+    }
+    _ => unreachable!(),
+  };
+  if step == 0 {
+    return Err(EvalError::domain_error("step argument cannot be zero"));
+  }
+  let arr = if step > 0 {
+    (begin..end).step_by(step as usize).map(Value::from).collect()
+  } else {
+    (end+1..=begin).rev().step_by((-step) as usize).map(Value::from).collect()
+  };
+  Ok(Value::new_array(arr))
 }
