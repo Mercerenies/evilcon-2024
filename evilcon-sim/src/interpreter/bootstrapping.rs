@@ -110,6 +110,7 @@ fn array_class() -> Class {
   methods.insert(Identifier::from("map"), Method::rust_method("map", array_map));
   methods.insert(Identifier::from("filter"), Method::rust_method("map", array_filter));
   methods.insert(Identifier::from("reduce"), Method::rust_method("reduce", array_reduce));
+  methods.insert(Identifier::from("slice"), Method::rust_method("slice", array_slice));
   Class {
     name: Some(String::from("Array")),
     parent: None,
@@ -247,6 +248,38 @@ fn array_reduce(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, E
     accum = callable(MethodArgs(vec![accum, elem]))?;
   }
   Ok(accum)
+}
+
+fn array_slice(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
+  let arr = expect_array(state.self_instance_or_null())?.borrow().clone();
+  // Note: I'm explicitly not supporting the `deep` argument. I never
+  // use it and it's weird.
+  args.expect_arity_within(1, 3)?;
+  let begin = {
+    let begin = expect_int(&args.0[0])?;
+    if begin < 0 { begin + arr.len() as i64 } else { begin }
+  };
+  let end = {
+    let end = args.0.get(1).map(expect_int).transpose()?.unwrap_or(arr.len() as i64);
+    if end < 0 { end + arr.len() as i64 } else { end }
+  };
+  let step = args.0.get(2).map(expect_int).transpose()?.unwrap_or(1);
+  if step == 0 {
+    return Err(EvalError::domain_error("Step cannot be zero"));
+  }
+
+  let arr = if step < 0 {
+    (begin..end).rev()
+      .step_by(step as usize)
+      .filter_map(|i| arr.get(i as usize).cloned())
+      .collect()
+  } else {
+    (end-1..=begin)
+      .step_by(step as usize)
+      .filter_map(|i| arr.get(i as usize).cloned())
+      .collect()
+  };
+  Ok(Value::new_array(arr))
 }
 
 fn dict_getitem(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
