@@ -214,6 +214,44 @@ impl Value {
       }
     }
   }
+
+  pub fn shallow_copy(&self) -> Value {
+    match self {
+      Value::Null | Value::Bool(_) | Value::Int(_) | Value::Float(_) | Value::String(_) |
+        Value::ClassRef(_) | Value::BoundMethod(_) | Value::Lambda(_) | Value::EnumType(_) => self.clone(),
+      Value::ObjectRef(_) => {
+        eprintln!("WARNING: Shallow copy of object has no effect");
+        self.clone()
+      }
+      Value::ArrayRef(arr) => {
+        Value::new_array(arr.borrow().clone())
+      }
+      Value::DictRef(d) => {
+        Value::new_dict(d.borrow().clone())
+      }
+    }
+  }
+
+  /// Deep-copy recursively on arrays and dictionaries.
+  pub fn deep_copy(&self) -> Value {
+    match self {
+      Value::Null | Value::Bool(_) | Value::Int(_) | Value::Float(_) | Value::String(_) |
+        Value::ClassRef(_) | Value::BoundMethod(_) | Value::Lambda(_) | Value::EnumType(_) |
+        Value::ObjectRef(_) => self.clone(),
+      Value::ArrayRef(arr) => {
+        let new_arr = arr.borrow().iter().map(|v| v.deep_copy()).collect();
+        Value::new_array(new_arr)
+      }
+      Value::DictRef(d) => {
+        let new_dict = d.borrow().iter().map(|(k, v)| {
+          let k = Value::from(k.clone()).deep_copy().try_into().expect("Duplicating a hash key should produce a hash key");
+          let v = v.deep_copy();
+          (k, v)
+        }).collect();
+        Value::new_dict(new_dict)
+      }
+    }
+  }
 }
 
 impl BoundMethod {
@@ -251,6 +289,12 @@ impl<T> Clone for EqPtrMut<T> {
     EqPtrMut {
       value: Arc::clone(&self.value),
     }
+  }
+}
+
+impl Default for &Value {
+  fn default() -> Self {
+    &Value::Null
   }
 }
 

@@ -4,7 +4,7 @@ use super::eval::EvaluatorState;
 use super::value::{Value, HashKey};
 use super::error::{EvalError, ControlFlow};
 use super::method::{MethodArgs, Method};
-use super::operator::expect_int;
+use super::operator::{expect_int, expect_bool};
 use crate::ast::identifier::Identifier;
 
 use std::sync::Arc;
@@ -96,6 +96,7 @@ fn array_class() -> Class {
   methods.insert(Identifier::from("__getitem__"), Method::rust_method("__getitem__", array_getitem));
   methods.insert(Identifier::from("push_back"), Method::rust_method("push_back", array_push_back));
   methods.insert(Identifier::from("append"), Method::rust_method("append", array_push_back)); // alias of push_back
+  methods.insert(Identifier::from("duplicate"), Method::rust_method("duplicate", duplicate_method));
   Class {
     name: Some(String::from("Array")),
     parent: None,
@@ -110,6 +111,7 @@ fn dictionary_class() -> Class {
   let mut methods = HashMap::new();
   methods.insert(Identifier::from("__getitem__"), Method::rust_method("__getitem__", dict_getitem));
   methods.insert(Identifier::from("get"), Method::rust_method("get", dict_get));
+  methods.insert(Identifier::from("duplicate"), Method::rust_method("duplicate", duplicate_method));
   Class {
     name: Some(String::from("Dictionary")),
     parent: None,
@@ -207,4 +209,16 @@ fn dict_get(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalE
   let default_value = args.0.get(1).unwrap_or(&Value::Null);
   let key = HashKey::try_from(key)?;
   Ok(self_inst.get(&key).cloned().unwrap_or_else(|| default_value.clone()))
+}
+
+fn duplicate_method(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
+  let self_inst = state.self_instance().unwrap_or_default();
+  args.expect_arity_within(0, 1)?;
+  let arg = args.0.get(0).unwrap_or(&Value::Bool(false));
+  let deep = expect_bool(arg)?;
+  if deep {
+    Ok(self_inst.deep_copy())
+  } else {
+    Ok(self_inst.shallow_copy())
+  }
 }

@@ -92,6 +92,13 @@ pub fn expect_int(value: &Value) -> Result<i64, EvalError> {
   }
 }
 
+pub fn expect_bool(value: &Value) -> Result<bool, EvalError> {
+  match value {
+    Value::Bool(b) => Ok(*b),
+    value => Err(EvalError::type_error("Boolean", value.to_owned())),
+  }
+}
+
 pub fn expect_array(value: &Value) -> Result<&RefCell<Vec<Value>>, EvalError> {
   match value {
     Value::ArrayRef(arr) => Ok(arr),
