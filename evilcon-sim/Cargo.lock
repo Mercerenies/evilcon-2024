@@ -72,6 +72,7 @@ dependencies = [
  "ordered-float",
  "petgraph",
  "rand",
+ "regex",
  "strum",
  "strum_macros",
  "thiserror",

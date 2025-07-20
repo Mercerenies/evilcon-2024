@@ -1,6 +1,8 @@
 
 //! String-handling functions at the AST level.
 
+pub mod formatter;
+
 use crate::util;
 
 use strum_macros::{Display, VariantArray};
