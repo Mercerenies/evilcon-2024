@@ -56,8 +56,10 @@ pub fn bind_mocked_methods(superglobals: &mut SuperglobalState) {
   // range
   superglobals.define_func(Identifier::new("range"), Method::rust_method("range", range_method));
 
-  // print
+  // print, push_error, push_warning
   superglobals.define_func(Identifier::new("print"), Method::rust_method("print", print_method));
+  superglobals.define_func(Identifier::new("push_error"), Method::rust_method("push_error", push_error_method));
+  superglobals.define_func(Identifier::new("push_warning"), Method::rust_method("push_warning", push_warning_method));
 }
 
 fn node_class(object: Arc<Class>) -> Class {
@@ -147,5 +149,15 @@ fn range_method(_state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, 
 
 fn print_method(_state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
   println!("{}", args.0.into_iter().join(""));
+  Ok(Value::Null)
+}
+
+fn push_error_method(_state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
+  eprintln!("ERROR: {}", args.0.into_iter().join(""));
+  Ok(Value::Null)
+}
+
+fn push_warning_method(_state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
+  eprintln!("WARNING: {}", args.0.into_iter().join(""));
   Ok(Value::Null)
 }
