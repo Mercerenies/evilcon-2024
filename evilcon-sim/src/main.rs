@@ -3,6 +3,7 @@
 use evilcon_sim::loader;
 use evilcon_sim::interpreter::eval;
 use evilcon_sim::interpreter::method::MethodArgs;
+use evilcon_sim::interpreter::value::Value;
 
 use std::sync::Arc;
 
@@ -24,7 +25,7 @@ fn test_driver() -> anyhow::Result<()> {
   let test_method = test_class.get_func("test")?;
   let result = interpreter.call_function(Some(Arc::clone(&test_class.constants)),
                                          test_method,
-                                         None,
+                                         Box::new(Value::ClassRef(Arc::clone(&test_class))),
                                          MethodArgs::EMPTY)?;
   eprintln!("Debug code: {:?}", result);
   Ok(())

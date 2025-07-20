@@ -60,12 +60,12 @@ impl Method {
 
   pub fn constructor_method() -> Method {
     fn body(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
-      let Some(Value::ClassRef(class)) = state.self_instance() else {
-        return Err(EvalError::type_error("class", state.self_instance().cloned().unwrap_or_default()));
+      let Value::ClassRef(class) = state.self_instance() else {
+        return Err(EvalError::type_error("class", state.self_instance().clone()));
       };
       let new_inst = Value::new_object(Arc::clone(class));
       if let Ok(init_method) = class.get_func("_init") {
-        state.call_function(Some(Arc::clone(&class.constants)), init_method, Some(Box::new(new_inst.clone())), args)?;
+        state.call_function(Some(Arc::clone(&class.constants)), init_method, Box::new(new_inst.clone()), args)?;
       }
       Ok(new_inst)
     }

@@ -20,7 +20,7 @@ use std::borrow::Borrow;
 
 #[derive(Debug, Clone)]
 pub struct EvaluatorState {
-  self_instance: Option<Box<Value>>,
+  self_instance: Box<Value>,
   locals: HashMap<Identifier, Value>,
   globals: Arc<HashMap<Identifier, LazyConst>>,
   superglobal_state: Arc<SuperglobalState>,
@@ -37,7 +37,7 @@ pub struct SuperglobalState {
 impl EvaluatorState {
   pub fn new(superglobal_state: Arc<SuperglobalState>) -> Self {
     EvaluatorState {
-      self_instance: None,
+      self_instance: Box::new(Value::default()),
       locals: HashMap::new(),
       globals: Arc::new(HashMap::new()),
       superglobal_state,
@@ -57,17 +57,13 @@ impl EvaluatorState {
     self
   }
 
-  pub fn with_self(mut self, self_instance: Option<Box<Value>>) -> Self {
+  pub fn with_self(mut self, self_instance: Box<Value>) -> Self {
     self.self_instance = self_instance;
     self
   }
 
-  pub fn self_instance(&self) -> Option<&Value> {
-    self.self_instance.as_ref().map(|i| i.as_ref())
-  }
-
-  pub fn self_instance_or_null(&self) -> &Value {
-    self.self_instance().unwrap_or_default()
+  pub fn self_instance(&self) -> &Value {
+    &self.self_instance
   }
 
   pub fn has_local_var(&mut self, ident: &Identifier) -> bool {
@@ -96,10 +92,8 @@ impl EvaluatorState {
   }
 
   pub fn get_func(&self, ident: &Identifier) -> Option<Method> {
-    if let Some(self_instance) = &self.self_instance {
-      if let Ok(func) = self_instance.get_func(ident.as_ref(), self.superglobal_state.bootstrapped_classes()) {
-        return Some(func);
-      }
+    if let Ok(func) = self.self_instance.get_func(ident.as_ref(), self.superglobal_state.bootstrapped_classes()) {
+      return Some(func);
     }
     self.get_superglobal_func(ident).cloned()
   }
@@ -129,7 +123,7 @@ impl EvaluatorState {
       }
       Expr::Name(name) => {
         if name == "self" {
-          return Ok(self.self_instance().cloned().unwrap_or(Value::Null));
+          return Ok(self.self_instance().clone());
         }
         if name == "super" {
           // If we encounter `super` anywhere *other* than an
@@ -141,7 +135,7 @@ impl EvaluatorState {
           return Ok(value.clone());
         }
         // Try to look up on `self`.
-        if let Some(obj) = self.self_instance() && let Ok(value) = obj.get_value(name.as_ref(), &self.superglobal_state) {
+        if let Ok(value) = self.self_instance.get_value(name.as_ref(), &self.superglobal_state) {
           return Ok(value.clone());
         }
         Err(EvalError::UndefinedVariable(name.clone().into()))
@@ -160,14 +154,14 @@ impl EvaluatorState {
           func => { return Err(EvalError::CannotCall(func.clone())); }
         };
         let args = MethodArgs(args.iter().map(|arg| self.eval_expr(arg)).collect::<Result<Vec<_>, _>>()?);
-        self.call_function(Some(self.globals.clone()), &func, self.self_instance.as_ref().map(Box::clone), args)
+        self.call_function(Some(self.globals.clone()), &func, self.self_instance.clone(), args)
       }
       Expr::Subscript(left, right) => {
         let left = self.eval_expr(left)?;
         let func = left.get_func("__getitem__", self.superglobal_state.bootstrapped_classes())?; // Just do it the Python way, even though Godot doesn't :)
         let args = MethodArgs(vec![self.eval_expr(right)?]);
         let globals = left.get_class(self.superglobal_state.bootstrapped_classes()).map(|class| Arc::clone(&class.constants));
-        self.call_function(globals, &func, Some(Box::new(left)), args)
+        self.call_function(globals, &func, Box::new(left), args)
       }
       Expr::Attr(left, name) => {
         let left = self.eval_expr(left)?;
@@ -178,7 +172,7 @@ impl EvaluatorState {
         let func;
         if let Expr::Name(left_name) = left.as_ref() && left_name == "super" {
           // super call
-          left_value = self.self_instance().ok_or(EvalError::BadSuper)?.clone();
+          left_value = self.self_instance().clone();
           let left_class = left_value.get_class(self.superglobal_state.bootstrapped_classes()).ok_or(EvalError::BadSuper)?;
           let Some(left_parent) = &left_class.parent else { return Err(EvalError::BadSuper); };
           func = left_parent.get_func(name.as_ref())?.clone();
@@ -188,7 +182,7 @@ impl EvaluatorState {
         }
         let args = MethodArgs(args.iter().map(|arg| self.eval_expr(arg)).collect::<Result<Vec<_>, _>>()?);
         let globals = left_value.get_class(self.superglobal_state.bootstrapped_classes()).map(|class| Arc::clone(&class.constants));
-        self.call_function(globals, &func, Some(Box::new(left_value)), args)
+        self.call_function(globals, &func, Box::new(left_value), args)
       }
       Expr::BinaryOp(left, op, right) => {
         let left = self.eval_expr(left)?;
@@ -270,7 +264,7 @@ impl EvaluatorState {
         let func = left.get_func("__getitem__", self.superglobal_state.bootstrapped_classes())?; // Just do it the Python way, even though Godot doesn't :)
         let args = MethodArgs(vec![right.clone()]);
         let globals = left.get_class(self.superglobal_state.bootstrapped_classes()).map(|class| Arc::clone(&class.constants));
-        self.call_function(globals, &func, Some(Box::new(left.clone())), args)
+        self.call_function(globals, &func, Box::new(left.clone()), args)
       }
       AssignmentLeftHand::Attr(left, name) => {
         Ok(left.get_value(name.as_ref(), &self.superglobal_state)?)
@@ -392,7 +386,7 @@ impl EvaluatorState {
   pub fn call_function(&self,
                        globals: Option<Arc<HashMap<Identifier, LazyConst>>>,
                        method: &Method,
-                       self_instance: Option<Box<Value>>,
+                       self_instance: Box<Value>,
                        args: MethodArgs) -> Result<Value, EvalError> {
     let mut method_scope = EvaluatorState::new(Arc::clone(&self.superglobal_state)).with_self(self_instance);
     if let Some(globals) = globals {
@@ -400,9 +394,6 @@ impl EvaluatorState {
     }
     match method {
       Method::GdMethod(method) => {
-        if method.is_static {
-          method_scope = method_scope.with_self(None);
-        }
         method_scope.bind_arguments(args.0, method.params.clone())?;
         let result = method_scope.eval_body(&method.body);
         ControlFlow::expect_return_or_null(result)

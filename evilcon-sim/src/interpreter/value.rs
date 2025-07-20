@@ -263,7 +263,7 @@ impl Value {
   pub fn to_rust_function(&self, superglobals: Arc<SuperglobalState>) -> impl Fn(MethodArgs) -> Result<Value, EvalError> {
     move |args| {
       let superglobals = Arc::clone(&superglobals);
-      let mut state = EvaluatorState::new(superglobals).with_self(Some(Box::new(self.clone())));
+      let mut state = EvaluatorState::new(superglobals).with_self(Box::new(self.clone()));
       bootstrapping::call_func(&mut state, args)
     }
   }

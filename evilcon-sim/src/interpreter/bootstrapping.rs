@@ -163,31 +163,30 @@ fn string_class() -> Class {
 
 pub fn call_func(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
   match state.self_instance() {
-    Some(Value::BoundMethod(method)) => {
+    Value::BoundMethod(method) => {
       let globals = method.self_instance.get_class(state.bootstrapped_classes())
         .map(|class| Arc::clone(&class.constants));
       state.call_function(
         globals,
         &method.method,
-        Some(Box::new(method.self_instance.clone())),
+        Box::new(method.self_instance.clone()),
         args,
       )
     }
-    Some(Value::Lambda(lambda)) => {
+    Value::Lambda(lambda) => {
       let mut lambda_scope = lambda.outer_scope.clone();
       lambda_scope.bind_arguments(args.0, lambda.contents.params.clone())?;
       let result = lambda_scope.eval_body(&lambda.contents.body);
       ControlFlow::expect_return_or_null(result)
     }
     inst => {
-      let inst = inst.cloned().unwrap_or(Value::Null);
       Err(EvalError::CannotCallValue(inst.to_string()))
     }
   }
 }
 
 fn array_getitem(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
-  let self_inst = expect_array(state.self_instance_or_null())?.borrow();
+  let self_inst = expect_array(state.self_instance())?.borrow();
   let index = expect_int(&args.expect_one_arg()?)?;
   if !((0..(self_inst.len() as i64)).contains(&index)) {
     return Err(EvalError::IndexOutOfBounds(index));
@@ -196,28 +195,28 @@ fn array_getitem(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, 
 }
 
 fn array_push_back(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
-  let mut self_inst = expect_array(state.self_instance_or_null())?.borrow_mut();
+  let mut self_inst = expect_array(state.self_instance())?.borrow_mut();
   let new_value = args.expect_one_arg()?;
   self_inst.push(new_value);
   Ok(Value::Null)
 }
 
 fn array_resize(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
-  let mut self_inst = expect_array(state.self_instance_or_null())?.borrow_mut();
+  let mut self_inst = expect_array(state.self_instance())?.borrow_mut();
   let size = expect_int(&args.expect_one_arg()?)?;
   self_inst.resize(size as usize, Value::Null);
   Ok(Value::GLOBAL_OK)
 }
 
 fn array_fill(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
-  let mut self_inst = expect_array(state.self_instance_or_null())?.borrow_mut();
+  let mut self_inst = expect_array(state.self_instance())?.borrow_mut();
   let value = &args.expect_one_arg()?;
   self_inst.fill(value.clone());
   Ok(Value::GLOBAL_OK)
 }
 
 fn array_map(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
-  let mut arr = expect_array(state.self_instance_or_null())?.borrow().clone();
+  let mut arr = expect_array(state.self_instance())?.borrow().clone();
   let callable = args.expect_one_arg()?;
   let callable = callable.to_rust_function(Arc::clone(state.superglobals()));
   for elem in &mut arr {
@@ -227,7 +226,7 @@ fn array_map(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, Eval
 }
 
 fn array_filter(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
-  let mut arr = expect_array(state.self_instance_or_null())?.borrow().clone();
+  let mut arr = expect_array(state.self_instance())?.borrow().clone();
   let callable = args.expect_one_arg()?;
   let callable = callable.to_rust_function(Arc::clone(state.superglobals()));
   arr.retain(|elem| callable(MethodArgs(vec![elem.clone()])).unwrap().as_bool());
@@ -235,7 +234,7 @@ fn array_filter(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, E
 }
 
 fn array_reduce(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
-  let arr = expect_array(state.self_instance_or_null())?.borrow().clone();
+  let arr = expect_array(state.self_instance())?.borrow().clone();
   args.expect_arity_within(1, 2)?;
   let callable = &args.0[0];
   let callable = callable.to_rust_function(Arc::clone(state.superglobals()));
@@ -251,7 +250,7 @@ fn array_reduce(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, E
 }
 
 fn array_slice(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
-  let arr = expect_array(state.self_instance_or_null())?.borrow().clone();
+  let arr = expect_array(state.self_instance())?.borrow().clone();
   // Note: I'm explicitly not supporting the `deep` argument. I never
   // use it and it's weird.
   args.expect_arity_within(1, 3)?;
@@ -269,12 +268,12 @@ fn array_slice(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, Ev
   }
 
   let arr = if step < 0 {
-    (begin..end).rev()
-      .step_by(step as usize)
+    (end+1..=begin).rev()
+      .step_by((-step) as usize)
       .filter_map(|i| arr.get(i as usize).cloned())
       .collect()
   } else {
-    (end-1..=begin)
+    (begin..end)
       .step_by(step as usize)
       .filter_map(|i| arr.get(i as usize).cloned())
       .collect()
@@ -283,13 +282,13 @@ fn array_slice(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, Ev
 }
 
 fn dict_getitem(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
-  let self_inst = expect_dict(state.self_instance_or_null())?.borrow();
+  let self_inst = expect_dict(state.self_instance())?.borrow();
   let key = HashKey::try_from(&args.expect_one_arg()?)?;
   Ok(self_inst.get(&key).cloned().unwrap_or_default())
 }
 
 fn dict_get(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
-  let self_inst = expect_dict(state.self_instance_or_null())?.borrow();
+  let self_inst = expect_dict(state.self_instance())?.borrow();
   args.expect_arity_within(1, 2)?;
   let key = HashKey::try_from(&args.0[0])?;
   let default_value = args.0.get(1).unwrap_or(&Value::Null);
@@ -297,7 +296,7 @@ fn dict_get(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalE
 }
 
 fn duplicate_method(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
-  let self_inst = state.self_instance().unwrap_or_default();
+  let self_inst = state.self_instance();
   args.expect_arity_within(0, 1)?;
   let arg = args.0.get(0).unwrap_or(&Value::Bool(false));
   let deep = expect_bool(arg)?;
@@ -309,7 +308,7 @@ fn duplicate_method(state: &mut EvaluatorState, args: MethodArgs) -> Result<Valu
 }
 
 fn string_substr(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
-  let self_inst = expect_string(state.self_instance_or_null())?;
+  let self_inst = expect_string(state.self_instance())?;
   args.expect_arity_within(1, 2)?;
   let from = expect_int(&args.0[0])?;
   let to = expect_int(args.0.get(1).unwrap_or(&Value::Int(-1)))?;
