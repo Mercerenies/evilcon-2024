@@ -3,4 +3,4 @@
 
 static func test():
     var a = { 0: 3 }
-    return [a[0], a[1]]
+    return a.get(1, "A")

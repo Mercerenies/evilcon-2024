@@ -336,18 +336,26 @@ impl From<HashKey> for Value {
   }
 }
 
+impl TryFrom<&Value> for HashKey {
+  type Error = InvalidHashKey;
+
+  fn try_from(v: &Value) -> Result<Self, Self::Error> {
+    Ok(match v {
+      Value::Null => HashKey::Null,
+      Value::Bool(b) => HashKey::Bool(*b),
+      Value::Int(i) => HashKey::Int(*i),
+      Value::Float(f) => HashKey::Float(*f),
+      Value::String(s) => HashKey::String(s.to_owned()),
+      _ => return Err(InvalidHashKey(v.to_string())),
+    })
+  }
+}
+
 impl TryFrom<Value> for HashKey {
   type Error = InvalidHashKey;
 
   fn try_from(v: Value) -> Result<Self, Self::Error> {
-    Ok(match v {
-      Value::Null => HashKey::Null,
-      Value::Bool(b) => HashKey::Bool(b),
-      Value::Int(i) => HashKey::Int(i),
-      Value::Float(f) => HashKey::Float(f),
-      Value::String(s) => HashKey::String(s),
-      _ => return Err(InvalidHashKey(v.to_string())),
-    })
+    Self::try_from(&v)
   }
 }
 

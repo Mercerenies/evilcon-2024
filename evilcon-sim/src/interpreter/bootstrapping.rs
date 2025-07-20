@@ -93,7 +93,7 @@ fn refcounted_class(object: Arc<Class>) -> Class {
 fn array_class() -> Class {
   let constants = HashMap::new();
   let mut methods = HashMap::new();
-  methods.insert(Identifier::from("__getitem__"), Method::rust_method("get", array_getitem));
+  methods.insert(Identifier::from("__getitem__"), Method::rust_method("__getitem__", array_getitem));
   Class {
     name: Some(String::from("Array")),
     parent: None,
@@ -106,7 +106,8 @@ fn array_class() -> Class {
 fn dictionary_class() -> Class {
   let constants = HashMap::new();
   let mut methods = HashMap::new();
-  methods.insert(Identifier::from("__getitem__"), Method::rust_method("get", dict_getitem));
+  methods.insert(Identifier::from("__getitem__"), Method::rust_method("__getitem__", dict_getitem));
+  methods.insert(Identifier::from("get"), Method::rust_method("get", dict_get));
   Class {
     name: Some(String::from("Dictionary")),
     parent: None,
@@ -179,4 +180,17 @@ fn dict_getitem(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, E
   let [key] = args.0.try_into().unwrap();
   let key = HashKey::try_from(key)?;
   Ok(self_inst.get(&key).cloned().unwrap_or_default())
+}
+
+fn dict_get(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
+  let Some(Value::DictRef(self_inst)) = state.self_instance() else {
+    let self_inst = state.self_instance().cloned().unwrap_or_default();
+    return Err(EvalError::type_error("dictionary", self_inst));
+  };
+  let self_inst = self_inst.borrow_mut();
+  args.expect_arity_within(1, 2)?;
+  let key = &args.0[0];
+  let default_value = args.0.get(1).unwrap_or(&Value::Null);
+  let key = HashKey::try_from(key)?;
+  Ok(self_inst.get(&key).cloned().unwrap_or_else(|| default_value.clone()))
 }

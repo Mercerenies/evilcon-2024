@@ -99,6 +99,15 @@ impl MethodArgs {
       Ok(())
     }
   }
+
+
+  pub fn expect_arity_within(&self, min_arity: usize, max_arity: usize) -> Result<(), EvalError> {
+    if (min_arity..=max_arity).contains(&self.0.len()) {
+      Ok(())
+    } else {
+      Err(EvalError::WrongArity { expected: max_arity, actual: self.0.len() })
+    }
+  }
 }
 
 impl Debug for RustMethod {
