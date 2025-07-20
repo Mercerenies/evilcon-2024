@@ -55,7 +55,7 @@ pub enum EvalError {
   #[error("Type error: Expected {expected_type}, got {value:?}")]
   TypeError { expected_type: String, value: ValueString },
   #[error("Index {0} out of bounds")]
-  IndexOutOfBounds(usize),
+  IndexOutOfBounds(i64),
   #[error("Invalid enum constant {0:?}")]
   InvalidEnumConstant(Expr),
   #[error("'super' name is not allowed in this context")]

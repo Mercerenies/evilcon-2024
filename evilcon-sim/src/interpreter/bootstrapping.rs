@@ -1,9 +1,10 @@
 
 use super::class::Class;
 use super::eval::EvaluatorState;
-use super::value::Value;
+use super::value::{Value, HashKey};
 use super::error::{EvalError, ControlFlow};
 use super::method::{MethodArgs, Method};
+use super::operator::expect_int;
 use crate::ast::identifier::Identifier;
 
 use std::sync::Arc;
@@ -91,7 +92,8 @@ fn refcounted_class(object: Arc<Class>) -> Class {
 
 fn array_class() -> Class {
   let constants = HashMap::new();
-  let methods = HashMap::new();
+  let mut methods = HashMap::new();
+  methods.insert(Identifier::from("get"), Method::rust_method("get", array_getitem));
   Class {
     name: Some(String::from("Array")),
     parent: None,
@@ -103,7 +105,8 @@ fn array_class() -> Class {
 
 fn dictionary_class() -> Class {
   let constants = HashMap::new();
-  let methods = HashMap::new();
+  let mut methods = HashMap::new();
+  methods.insert(Identifier::from("get"), Method::rust_method("get", dict_getitem));
   Class {
     name: Some(String::from("Dictionary")),
     parent: None,
@@ -149,4 +152,31 @@ fn call_func(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, Eval
       Err(EvalError::CannotCallValue(inst.to_string()))
     }
   }
+}
+
+fn array_getitem(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
+  let Some(Value::ArrayRef(self_inst)) = state.self_instance() else {
+    let self_inst = state.self_instance().cloned().unwrap_or_default();
+    return Err(EvalError::type_error("array", self_inst));
+  };
+  let self_inst = self_inst.borrow_mut();
+  args.expect_arity(1)?;
+  let [index] = args.0.try_into().unwrap();
+  let index = expect_int(&index)?;
+  if !((0..(self_inst.len() as i64)).contains(&index)) {
+    return Err(EvalError::IndexOutOfBounds(index));
+  }
+  Ok(self_inst[index as usize].clone())
+}
+
+fn dict_getitem(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
+  let Some(Value::DictRef(self_inst)) = state.self_instance() else {
+    let self_inst = state.self_instance().cloned().unwrap_or_default();
+    return Err(EvalError::type_error("dictionary", self_inst));
+  };
+  let self_inst = self_inst.borrow_mut();
+  args.expect_arity(1)?;
+  let [key] = args.0.try_into().unwrap();
+  let key = HashKey::try_from(key)?;
+  Ok(self_inst.get(&key).cloned().unwrap_or_default())
 }

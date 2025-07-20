@@ -161,7 +161,7 @@ impl Value {
             arr[index as usize] = value;
             Ok(())
           } else {
-            Err(EvalError::IndexOutOfBounds(index as usize))
+            Err(EvalError::IndexOutOfBounds(index))
           }
         } else {
           Err(EvalError::type_error("integer", value))
