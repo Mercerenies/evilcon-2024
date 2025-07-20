@@ -1,12 +1,13 @@
 
 use crate::ast::expr::operator::{BinaryOp, UnaryOp};
 use crate::ast::string::formatter::format_percent;
-use super::value::Value;
+use super::value::{Value, HashKey};
 use super::error::EvalError;
 use super::bootstrapping::BootstrappedTypes;
 
 use ordered_float::OrderedFloat;
 
+use std::collections::HashMap;
 use std::cmp::Ordering;
 use std::sync::Arc;
 use std::cell::RefCell;
@@ -120,6 +121,13 @@ pub fn expect_array(value: &Value) -> Result<&RefCell<Vec<Value>>, EvalError> {
   match value {
     Value::ArrayRef(arr) => Ok(arr),
     value => Err(EvalError::type_error("array", value.to_owned())),
+  }
+}
+
+pub fn expect_dict(value: &Value) -> Result<&RefCell<HashMap<HashKey, Value>>, EvalError> {
+  match value {
+    Value::DictRef(d) => Ok(d),
+    value => Err(EvalError::type_error("dictionary", value.to_owned())),
   }
 }
 

@@ -62,6 +62,10 @@ impl EvaluatorState {
     self.self_instance.as_ref().map(|i| i.as_ref())
   }
 
+  pub fn self_instance_or_null(&self) -> &Value {
+    self.self_instance().unwrap_or_default()
+  }
+
   pub fn has_local_var(&mut self, ident: &Identifier) -> bool {
     self.locals.contains_key(ident)
   }

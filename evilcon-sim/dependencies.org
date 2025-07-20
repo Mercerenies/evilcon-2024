@@ -12,6 +12,8 @@
    + [ ] ~card_game/playing_field/player_agent/lookahead_ai_agent/lookahead_priorities.gd~
    + [X] ~card_game/playing_field/card_player.gd~
    + [ ] ~util.gd~
+     - Note: ~free_all_children~ and ~queue_free_all_children~ are
+       just unsupported. I'm not even going to try.
    + [ ] ~card_game/playing_card/card_type/*.gd~
    + [ ] ~card_game/playing_card/cards/*.gd~
    + [ ] ~card_game/playing_card/playing_card_lists.gd~

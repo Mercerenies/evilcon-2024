@@ -4,7 +4,7 @@ use super::eval::EvaluatorState;
 use super::value::{Value, HashKey};
 use super::error::{EvalError, ControlFlow};
 use super::method::{MethodArgs, Method};
-use super::operator::{expect_int, expect_bool};
+use super::operator::{expect_int, expect_bool, expect_array, expect_dict};
 use crate::ast::identifier::Identifier;
 
 use std::sync::Arc;
@@ -160,14 +160,8 @@ fn call_func(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, Eval
 }
 
 fn array_getitem(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
-  let Some(Value::ArrayRef(self_inst)) = state.self_instance() else {
-    let self_inst = state.self_instance().cloned().unwrap_or_default();
-    return Err(EvalError::type_error("array", self_inst));
-  };
-  let self_inst = self_inst.borrow();
-  args.expect_arity(1)?;
-  let [index] = args.0.try_into().unwrap();
-  let index = expect_int(&index)?;
+  let self_inst = expect_array(state.self_instance_or_null())?.borrow();
+  let index = expect_int(&args.expect_one_arg()?)?;
   if !((0..(self_inst.len() as i64)).contains(&index)) {
     return Err(EvalError::IndexOutOfBounds(index));
   }
@@ -175,39 +169,23 @@ fn array_getitem(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, 
 }
 
 fn array_push_back(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
-  let Some(Value::ArrayRef(self_inst)) = state.self_instance() else {
-    let self_inst = state.self_instance().cloned().unwrap_or_default();
-    return Err(EvalError::type_error("array", self_inst));
-  };
-  let mut self_inst = self_inst.borrow_mut();
-  args.expect_arity(1)?;
-  let [new_value] = args.0.try_into().unwrap();
+  let mut self_inst = expect_array(state.self_instance_or_null())?.borrow_mut();
+  let new_value = args.expect_one_arg()?;
   self_inst.push(new_value);
   Ok(Value::Null)
 }
 
 fn dict_getitem(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
-  let Some(Value::DictRef(self_inst)) = state.self_instance() else {
-    let self_inst = state.self_instance().cloned().unwrap_or_default();
-    return Err(EvalError::type_error("dictionary", self_inst));
-  };
-  let self_inst = self_inst.borrow();
-  args.expect_arity(1)?;
-  let [key] = args.0.try_into().unwrap();
-  let key = HashKey::try_from(key)?;
+  let self_inst = expect_dict(state.self_instance_or_null())?.borrow();
+  let key = HashKey::try_from(&args.expect_one_arg()?)?;
   Ok(self_inst.get(&key).cloned().unwrap_or_default())
 }
 
 fn dict_get(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
-  let Some(Value::DictRef(self_inst)) = state.self_instance() else {
-    let self_inst = state.self_instance().cloned().unwrap_or_default();
-    return Err(EvalError::type_error("dictionary", self_inst));
-  };
-  let self_inst = self_inst.borrow();
+  let self_inst = expect_dict(state.self_instance_or_null())?.borrow();
   args.expect_arity_within(1, 2)?;
-  let key = &args.0[0];
+  let key = HashKey::try_from(&args.0[0])?;
   let default_value = args.0.get(1).unwrap_or(&Value::Null);
-  let key = HashKey::try_from(key)?;
   Ok(self_inst.get(&key).cloned().unwrap_or_else(|| default_value.clone()))
 }
 

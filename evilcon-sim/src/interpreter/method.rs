@@ -98,6 +98,12 @@ impl MethodArgs {
     self.0.len()
   }
 
+  pub fn expect_one_arg(self) -> Result<Value, EvalError> {
+    self.expect_arity(1)?;
+    let [arg] = self.try_into().unwrap();
+    Ok(arg)
+  }
+
   pub fn expect_arity(&self, arity: usize) -> Result<(), EvalError> {
     if self.0.len() != arity {
       Err(EvalError::WrongArity { expected: arity, actual: self.0.len() })
@@ -105,7 +111,6 @@ impl MethodArgs {
       Ok(())
     }
   }
-
 
   pub fn expect_arity_within(&self, min_arity: usize, max_arity: usize) -> Result<(), EvalError> {
     if (min_arity..=max_arity).contains(&self.0.len()) {
