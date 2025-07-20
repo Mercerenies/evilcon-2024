@@ -94,6 +94,8 @@ fn array_class() -> Class {
   let constants = HashMap::new();
   let mut methods = HashMap::new();
   methods.insert(Identifier::from("__getitem__"), Method::rust_method("__getitem__", array_getitem));
+  methods.insert(Identifier::from("push_back"), Method::rust_method("push_back", array_push_back));
+  methods.insert(Identifier::from("append"), Method::rust_method("append", array_push_back)); // alias of push_back
   Class {
     name: Some(String::from("Array")),
     parent: None,
@@ -160,7 +162,7 @@ fn array_getitem(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, 
     let self_inst = state.self_instance().cloned().unwrap_or_default();
     return Err(EvalError::type_error("array", self_inst));
   };
-  let self_inst = self_inst.borrow_mut();
+  let self_inst = self_inst.borrow();
   args.expect_arity(1)?;
   let [index] = args.0.try_into().unwrap();
   let index = expect_int(&index)?;
@@ -170,12 +172,24 @@ fn array_getitem(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, 
   Ok(self_inst[index as usize].clone())
 }
 
+fn array_push_back(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
+  let Some(Value::ArrayRef(self_inst)) = state.self_instance() else {
+    let self_inst = state.self_instance().cloned().unwrap_or_default();
+    return Err(EvalError::type_error("array", self_inst));
+  };
+  let mut self_inst = self_inst.borrow_mut();
+  args.expect_arity(1)?;
+  let [new_value] = args.0.try_into().unwrap();
+  self_inst.push(new_value);
+  Ok(Value::Null)
+}
+
 fn dict_getitem(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
   let Some(Value::DictRef(self_inst)) = state.self_instance() else {
     let self_inst = state.self_instance().cloned().unwrap_or_default();
     return Err(EvalError::type_error("dictionary", self_inst));
   };
-  let self_inst = self_inst.borrow_mut();
+  let self_inst = self_inst.borrow();
   args.expect_arity(1)?;
   let [key] = args.0.try_into().unwrap();
   let key = HashKey::try_from(key)?;
@@ -187,7 +201,7 @@ fn dict_get(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalE
     let self_inst = state.self_instance().cloned().unwrap_or_default();
     return Err(EvalError::type_error("dictionary", self_inst));
   };
-  let self_inst = self_inst.borrow_mut();
+  let self_inst = self_inst.borrow();
   args.expect_arity_within(1, 2)?;
   let key = &args.0[0];
   let default_value = args.0.get(1).unwrap_or(&Value::Null);
