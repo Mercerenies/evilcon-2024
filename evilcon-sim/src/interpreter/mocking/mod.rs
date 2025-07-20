@@ -15,6 +15,8 @@ use super::error::EvalError;
 use super::operator::{expect_string, expect_int};
 use crate::ast::identifier::{Identifier, ResourcePath};
 
+use itertools::Itertools;
+
 use std::sync::Arc;
 use std::collections::HashMap;
 
@@ -53,6 +55,9 @@ pub fn bind_mocked_methods(superglobals: &mut SuperglobalState) {
 
   // range
   superglobals.define_func(Identifier::new("range"), Method::rust_method("range", range_method));
+
+  // print
+  superglobals.define_func(Identifier::new("print"), Method::rust_method("print", print_method));
 }
 
 fn node_class(object: Arc<Class>) -> Class {
@@ -138,4 +143,9 @@ fn range_method(_state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, 
     (end+1..=begin).rev().step_by((-step) as usize).map(Value::from).collect()
   };
   Ok(Value::new_array(arr))
+}
+
+fn print_method(_state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
+  println!("{}", args.0.into_iter().join(""));
+  Ok(Value::Null)
 }

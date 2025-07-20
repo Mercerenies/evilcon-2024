@@ -25,18 +25,16 @@ static func www():
 static func from_godot_docs():
     var letters = ["A", "B", "C", "D", "E", "F"]
 
-    var a = (letters.slice(0, 2))  # Prints ["A", "B"]
-    var b = (letters.slice(2, -2)) # Prints ["C", "D"]
-    var c = (letters.slice(-2, 6)) # Prints ["E", "F"]
+    print(letters.slice(0, 2))  # Prints ["A", "B"]
+    print(letters.slice(2, -2)) # Prints ["C", "D"]
+    print(letters.slice(-2, 6)) # Prints ["E", "F"]
 
-    var d = (letters.slice(0, 6, 2))  # Prints ["A", "C", "E"]
-    var e = (letters.slice(4, 1, -1)) # Prints ["E", "D", "C"]
-    return [a, b, c, d, e]
+    print(letters.slice(0, 6, 2))  # Prints ["A", "C", "E"]
+    print(letters.slice(4, 1, -1)) # Prints ["E", "D", "C"]
 
 
 static func from_godot_docs1():
-    var x1 = (range(4))        # Prints [0, 1, 2, 3]
-    var x2 = (range(2, 5))     # Prints [2, 3, 4]
-    var x3 = (range(0, 6, 2))  # Prints [0, 2, 4]
-    var x4 = (range(4, 1, -1)) # Prints [4, 3, 2]
-    return [x1, x2, x3, x4]
+    print(range(4))        # Prints [0, 1, 2, 3]
+    print(range(2, 5))     # Prints [2, 3, 4]
+    print(range(0, 6, 2))  # Prints [0, 2, 4]
+    print(range(4, 1, -1)) # Prints [4, 3, 2]

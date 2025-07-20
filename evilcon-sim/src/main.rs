@@ -27,6 +27,7 @@ fn test_driver() -> anyhow::Result<()> {
                                          test_method,
                                          Box::new(Value::ClassRef(Arc::clone(&test_class))),
                                          MethodArgs::EMPTY)?;
+  eprintln!("Output: {}", result);
   eprintln!("Debug code: {:?}", result);
   Ok(())
 }
