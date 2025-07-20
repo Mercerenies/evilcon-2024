@@ -5,4 +5,4 @@ static func test():
     var a = [0]
     a.push_back(1)
     a.append(2)
-    return a
+    return load("res://evilcon-sim/tmp.gd")

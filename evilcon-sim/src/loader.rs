@@ -117,6 +117,7 @@ impl GdScriptLoader {
   pub fn build(mut self) -> Result<SuperglobalState, BuildError> {
     let mut superglobals = SuperglobalState::new();
     mocking::bind_mocked_classes(&mut superglobals);
+    mocking::bind_mocked_methods(&mut superglobals);
 
     let dependency_graph = self.build_dependency_graph(&superglobals)?;
     let top_sort = algo::toposort(&dependency_graph, None)

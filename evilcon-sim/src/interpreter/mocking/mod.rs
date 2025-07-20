@@ -9,7 +9,10 @@ mod playing_field;
 use super::class::Class;
 use super::class::constant::LazyConst;
 use super::value::Value;
-use super::eval::SuperglobalState;
+use super::eval::{SuperglobalState, EvaluatorState};
+use super::method::{MethodArgs, Method};
+use super::error::EvalError;
+use super::operator::expect_string;
 use crate::ast::identifier::{Identifier, ResourcePath};
 
 use std::sync::Arc;
@@ -38,6 +41,12 @@ pub fn bind_mocked_classes(superglobals: &mut SuperglobalState) {
   // Randomness
   let randomness = playing_field::randomness_class(Arc::clone(&superglobals.bootstrapped_classes().refcounted()));
   superglobals.add_file(ResourcePath::new("res://card_game/playing_field/randomness.gd"), Arc::new(randomness));
+}
+
+pub fn bind_mocked_methods(superglobals: &mut SuperglobalState) {
+  // load and preload (aliases)
+  superglobals.define_func(Identifier::new("load"), Method::rust_method("load", preload_method));
+  superglobals.define_func(Identifier::new("preload"), Method::rust_method("preload", preload_method));
 }
 
 fn node_class(object: Arc<Class>) -> Class {
@@ -79,4 +88,13 @@ fn dummy_class() -> Class {
     instance_vars: vec![],
     methods: HashMap::new(),
   }
+}
+
+fn preload_method(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
+  args.expect_arity(1)?;
+  let [arg] = args.0.try_into().unwrap();
+  let arg = expect_string(&arg)?;
+  let class = state.get_file(arg)
+    .ok_or_else(|| EvalError::UndefinedClass(arg.to_owned()))?;
+  Ok(Value::ClassRef(class))
 }

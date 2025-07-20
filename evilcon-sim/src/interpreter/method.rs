@@ -5,6 +5,8 @@ use super::eval::EvaluatorState;
 use super::error::EvalError;
 use super::value::Value;
 
+use thiserror::Error;
+
 use std::sync::Arc;
 use std::fmt::{Formatter, Debug};
 
@@ -25,6 +27,10 @@ pub struct RustMethod {
 
 #[derive(Debug, Clone)]
 pub struct MethodArgs(pub Vec<Value>);
+
+#[derive(Debug, Clone, Error)]
+#[error("Wrong arity")]
+pub struct TryFromMethodArgsError;
 
 impl Method {
   pub fn name(&self) -> &Identifier {
@@ -107,6 +113,14 @@ impl MethodArgs {
     } else {
       Err(EvalError::WrongArity { expected: max_arity, actual: self.0.len() })
     }
+  }
+}
+
+impl<const N: usize> TryFrom<MethodArgs> for [Value; N] {
+  type Error = TryFromMethodArgsError;
+
+  fn try_from(args: MethodArgs) -> Result<Self, Self::Error> {
+    args.0.try_into().map_err(|_| TryFromMethodArgsError)
   }
 }
 

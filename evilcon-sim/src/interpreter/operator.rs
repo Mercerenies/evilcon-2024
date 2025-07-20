@@ -95,7 +95,14 @@ pub fn expect_int(value: &Value) -> Result<i64, EvalError> {
 pub fn expect_array(value: &Value) -> Result<&RefCell<Vec<Value>>, EvalError> {
   match value {
     Value::ArrayRef(arr) => Ok(arr),
-    value => Err(EvalError::type_error("number", value.to_owned())),
+    value => Err(EvalError::type_error("array", value.to_owned())),
+  }
+}
+
+pub fn expect_string(value: &Value) -> Result<&str, EvalError> {
+  match value {
+    Value::String(s) => Ok(&s),
+    value => Err(EvalError::type_error("string", value.to_owned())),
   }
 }
 

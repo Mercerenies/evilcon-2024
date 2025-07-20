@@ -38,6 +38,8 @@ pub enum EvalError {
   UndefinedVariable(String),
   #[error("Unknown function {0}")]
   UndefinedFunc(String),
+  #[error("Unknown class {0}")]
+  UndefinedClass(String),
   #[error("Unexpected GetNode {0}")]
   UnexpectedGetNode(String),
   #[error("Wrong number of arguments, got {actual} but expected {expected}")]
