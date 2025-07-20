@@ -344,7 +344,11 @@ impl EvaluatorState {
         for elem in iterable {
           let mut inner_scope = self.clone();
           inner_scope.set_local_var(for_stmt.variable.clone(), elem);
-          self.eval_body(&for_stmt.body)?;
+          if let Some(cf) = ControlFlow::extract_loop_control(inner_scope.eval_body(&for_stmt.body))? {
+            if cf == LoopControlFlow::Break {
+              break;
+            }
+          }
         }
       }
       Stmt::AssignOp(left, op, right) => {

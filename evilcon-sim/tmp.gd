@@ -2,6 +2,12 @@
 # NOTE: This file is not used for anything other than testing. Delete me someday plz :)
 
 static func test():
+    var xxx = []
+    for aa in [1, 2, 3, 4, 5]:
+        xxx.push_back(aa)
+        if aa > 3:
+            break
+
     var z = RefCounted.new()
     var a = [1, 2, 3, 4, 5]
     var a1 = a.reduce(func(a, b): return a + b)
@@ -9,7 +15,7 @@ static func test():
 
     var b = a.filter(func (z): return z % 2 == 0)
 
-    return www()
+    return xxx
 
 
 static func www():
