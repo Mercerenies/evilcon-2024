@@ -14,6 +14,8 @@
    + [ ] ~util.gd~
      - Note: ~free_all_children~ and ~queue_free_all_children~ are
        just unsupported. I'm not even going to try.
+     - Note: ~replace_all_by_function~ is only used in graphical stuff
+       (BBCodeFormatter, specifically). Not going to support it.
    + [ ] ~card_game/playing_card/card_type/*.gd~
    + [ ] ~card_game/playing_card/cards/*.gd~
    + [ ] ~card_game/playing_card/playing_card_lists.gd~

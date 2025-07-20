@@ -47,6 +47,9 @@ pub fn bind_mocked_methods(superglobals: &mut SuperglobalState) {
   // load and preload (aliases)
   superglobals.define_func(Identifier::new("load"), Method::rust_method("load", preload_method));
   superglobals.define_func(Identifier::new("preload"), Method::rust_method("preload", preload_method));
+
+  // len
+  superglobals.define_func(Identifier::new("len"), Method::rust_method("len", len_method));
 }
 
 fn node_class(object: Arc<Class>) -> Class {
@@ -97,4 +100,14 @@ fn preload_method(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value,
   let class = state.get_file(arg)
     .ok_or_else(|| EvalError::UndefinedClass(arg.to_owned()))?;
   Ok(Value::ClassRef(class))
+}
+
+fn len_method(_state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
+  let arg = args.expect_one_arg()?;
+  match arg {
+    Value::ArrayRef(arr) => Ok(Value::Int(arr.borrow().len() as i64)),
+    Value::DictRef(arr) => Ok(Value::Int(arr.borrow().len() as i64)),
+    Value::String(s) => Ok(Value::Int(s.len() as i64)),
+    _ => Err(EvalError::type_error("array, string, or dict", arg)),
+  }
 }
