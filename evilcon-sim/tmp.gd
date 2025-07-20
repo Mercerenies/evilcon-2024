@@ -3,8 +3,7 @@
 
 static func test():
     var z = RefCounted.new()
-    var a = []
-    a.resize(10)
-    a.fill(9)
+    var a = [0, 1, 2]
+    var b = a.map(func(x): return x + 10)
 
-    return ["ABC".substr(1), "ABC".substr(1, 2)]
+    return [a, b]

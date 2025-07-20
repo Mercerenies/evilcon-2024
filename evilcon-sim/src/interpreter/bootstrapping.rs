@@ -107,6 +107,7 @@ fn array_class() -> Class {
   methods.insert(Identifier::from("duplicate"), Method::rust_method("duplicate", duplicate_method));
   methods.insert(Identifier::from("resize"), Method::rust_method("resize", array_resize));
   methods.insert(Identifier::from("fill"), Method::rust_method("fill", array_fill));
+  methods.insert(Identifier::from("map"), Method::rust_method("map", array_map));
   Class {
     name: Some(String::from("Array")),
     parent: None,
@@ -157,7 +158,7 @@ fn string_class() -> Class {
   }
 }
 
-fn call_func(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
+pub fn call_func(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
   match state.self_instance() {
     Some(Value::BoundMethod(method)) => {
       let globals = method.self_instance.get_class(state.bootstrapped_classes())
@@ -210,6 +211,16 @@ fn array_fill(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, Eva
   let value = &args.expect_one_arg()?;
   self_inst.fill(value.clone());
   Ok(Value::GLOBAL_OK)
+}
+
+fn array_map(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
+  let mut arr = expect_array(state.self_instance_or_null())?.borrow().clone();
+  let callable = args.expect_one_arg()?;
+  let callable = callable.to_rust_function(Arc::clone(state.superglobals()));
+  for elem in &mut arr {
+    *elem = callable(MethodArgs(vec![elem.clone()]))?;
+  }
+  Ok(Value::new_array(arr))
 }
 
 fn dict_getitem(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {

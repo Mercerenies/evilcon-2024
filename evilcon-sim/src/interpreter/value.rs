@@ -2,9 +2,9 @@
 use crate::ast::expr::{Literal, Lambda};
 use crate::ast::identifier::Identifier;
 use super::class::Class;
-use super::method::Method;
+use super::method::{Method, MethodArgs};
 use super::error::EvalError;
-use super::bootstrapping::BootstrappedTypes;
+use super::bootstrapping::{self, BootstrappedTypes};
 use super::eval::{EvaluatorState, SuperglobalState};
 
 use ordered_float::OrderedFloat;
@@ -253,6 +253,14 @@ impl Value {
         }).collect();
         Value::new_dict(new_dict)
       }
+    }
+  }
+
+  pub fn to_rust_function(&self, superglobals: Arc<SuperglobalState>) -> impl Fn(MethodArgs) -> Result<Value, EvalError> {
+    move |args| {
+      let superglobals = Arc::clone(&superglobals);
+      let mut state = EvaluatorState::new(superglobals).with_self(Some(Box::new(self.clone())));
+      bootstrapping::call_func(&mut state, args)
     }
   }
 }

@@ -48,6 +48,10 @@ impl EvaluatorState {
     &self.superglobal_state.bootstrapped_classes
   }
 
+  pub fn superglobals(&self) -> &Arc<SuperglobalState> {
+    &self.superglobal_state
+  }
+
   pub fn with_globals(mut self, globals: Arc<HashMap<Identifier, LazyConst>>) -> Self {
     self.globals = globals;
     self
