@@ -15,6 +15,7 @@
    + [X] ~card_game/playing_field/player_agent/lookahead_ai_agent/lookahead_priorities.gd~
    + [X] ~card_game/playing_field/card_player.gd~
    + [ ] ~card_game/playing_card/card.gd~
+     - Note: ~get_overlay_icons~ won't work but we don't need that.
    + [X] ~operator.gd~
    + [X] ~util.gd~
      - Note: ~free_all_children~ and ~queue_free_all_children~ are
@@ -33,16 +34,17 @@
    + [ ] ~card_game/playing_field/card_container/card_container.tscn~
      - Dummy file
    + [ ] ~card_game/playing_card/playing_card_codex.gd~
-     - tree-sitter chokes /and/ we can't parse ~match~ clauses right
-       now.
+     - tree-sitter chokes +and we can't parse ~match~ clauses right
+       now.+
    + [ ] ~card_game/playing_field/util/card_game_api.gd~
      - This one parses, but most of the logic is going to need to be
        rewritten anyway
    + [ ] ~card_game/playing_field/util/stats.gd~
      - Same logic as CardGameAPI
-   + Need to exist but are never used:
+   + [-] Need to exist but are never used:
      - [X] ~card_game/playing_field/animation/card_moving/card_moving_animation.tscn~
-   + Need to exist + minimal mocking maybe:
+     - [ ] ~card_game/playing_card/playing_card/playing_card_display/card_icon/card_icon.gd~
+   + [X] Need to exist + minimal mocking maybe:
      - [X] ~card_game/playing_field/util/popup_text.gd~
    + [X] Promise.gd
      - Needs to exist but hopefully will not ever be /actually/ used.
