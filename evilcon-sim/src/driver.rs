@@ -17,6 +17,7 @@ pub const GDSCRIPT_FILES: &[&str] = &[
   "../util.gd",
   "../operator.gd",
   "../card_game/playing_card/playing_card_lists.gd",
+  "../card_game/playing_card/card.gd",
 ];
 
 pub const GDSCRIPT_GLOBS: &[&str] = &[
