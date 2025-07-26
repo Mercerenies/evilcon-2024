@@ -17,6 +17,8 @@ pub(super) fn card_strip_class(node: Arc<Class>) -> Class {
 
   let mut instance_vars = Vec::new();
   instance_vars.push(InstanceVar::new("__evilconsim_cards", Some(cards_initial_value)));
+  instance_vars.push(InstanceVar::new("card_added", Some(Expr::NewSignal)));
+  instance_vars.push(InstanceVar::new("cards_modified", Some(Expr::NewSignal)));
 
   let mut methods = HashMap::new();
   methods.insert(Identifier::new("get_card_node"), Method::unimplemented_stub("get_card_node unimplemented"));
