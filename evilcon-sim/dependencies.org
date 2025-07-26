@@ -26,9 +26,9 @@
    + [ ] ~card_game/playing_card/card_type/*.gd~
    + [-] ~card_game/playing_card/cards/*.gd~
      - [X] ~card_type.gd~
-     - [ ] ~effect_card_type.gd~
+     - [X] ~effect_card_type.gd~
      - [ ] ~minion_card_type.gd~
-     - [ ] ~timed_card_type.gd~
+     - [X] ~timed_card_type.gd~
    + [X] ~card_game/playing_card/playing_card_lists.gd~
    + [X] ~card_game/playing_card/archetype.gd~
 ** FILES MOCKED IN RUST
