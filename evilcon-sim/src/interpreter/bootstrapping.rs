@@ -119,6 +119,7 @@ fn array_class() -> Class {
   methods.insert(Identifier::from("__getitem__"), Method::rust_method("__getitem__", array_getitem));
   methods.insert(Identifier::from("push_back"), Method::rust_method("push_back", array_push_back));
   methods.insert(Identifier::from("append"), Method::rust_method("append", array_push_back)); // alias of push_back
+  methods.insert(Identifier::from("append_array"), Method::rust_method("append_array", array_append_array));
   methods.insert(Identifier::from("duplicate"), Method::rust_method("duplicate", duplicate_method));
   methods.insert(Identifier::from("resize"), Method::rust_method("resize", array_resize));
   methods.insert(Identifier::from("fill"), Method::rust_method("fill", array_fill));
@@ -232,6 +233,15 @@ fn array_push_back(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value
   let mut self_inst = expect_array(state.self_instance())?.borrow_mut();
   let new_value = args.expect_one_arg()?;
   self_inst.push(new_value);
+  Ok(Value::Null)
+}
+
+// Panics if the two arrays are literally the same array.
+fn array_append_array(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
+  let mut self_inst = expect_array(state.self_instance())?.borrow_mut();
+  let new_values = args.expect_one_arg()?;
+  let new_values = expect_array(&new_values)?.borrow();
+  self_inst.extend(new_values.iter().cloned());
   Ok(Value::Null)
 }
 
