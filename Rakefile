@@ -6,6 +6,7 @@ require_relative './ruby/lists/card_list'
 
 CODICES = [
   Codex::Task.new('./card_game/playing_card/cards/*.gd', './card_game/playing_card/playing_card_codex.gd'),
+  Codex::Task.new('./card_game/playing_card/cards/*.gd', './codex_metadata.yaml'),
 ].freeze
 
 LISTS_FILE = Lists::PlayingCardListsTask.new('./card_game/playing_card/playing_card_lists.gd')
