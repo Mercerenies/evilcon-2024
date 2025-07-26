@@ -1,6 +1,7 @@
 
 use crate::ast::expr::{Literal, Lambda};
 use crate::ast::identifier::Identifier;
+use crate::ast::pattern::Pattern;
 use super::class::Class;
 use super::method::{Method, MethodArgs};
 use super::error::EvalError;
@@ -123,6 +124,19 @@ impl Value {
 
   pub fn new_object(class: Arc<Class>) -> Self {
     Value::ObjectRef(EqPtrMut::new(ObjectInst { class, dict: HashMap::new() }))
+  }
+
+  pub fn matches(&self, pattern: &Pattern) -> bool {
+    match pattern {
+      Pattern::Underscore => {
+        // Wildcard; always matches
+        true
+      }
+      Pattern::Literal(lit) => {
+        let pattern_value = Value::from(lit.clone());
+        pattern_value == *self
+      }
+    }
   }
 
   pub fn as_bool(&self) -> bool {

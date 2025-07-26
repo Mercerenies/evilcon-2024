@@ -360,6 +360,16 @@ impl EvaluatorState {
           }
         }
       }
+      Stmt::Match(match_stmt) => {
+        let value = self.eval_expr(&match_stmt.value)?;
+        for clause in &match_stmt.clauses {
+          if value.matches(&clause.pattern) {
+            let mut inner_scope = self.clone();
+            inner_scope.eval_body(&clause.body)?;
+            break;
+          }
+        }
+      }
       Stmt::AssignOp(left, op, right) => {
         let left_hand = self.eval_expr_for_assignment(left)?;
         if *op == AssignOp::Eq {

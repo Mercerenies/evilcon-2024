@@ -5,6 +5,7 @@
 mod base;
 mod decl;
 mod expr;
+mod pattern;
 mod stmt;
 
 pub mod error;

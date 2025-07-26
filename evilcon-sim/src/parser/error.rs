@@ -33,6 +33,8 @@ pub enum ParseError {
   UnknownStmt(String),
   #[error("Unknown clause type {0}")]
   UnknownClause(String),
+  #[error("Unknown pattern type {0}")]
+  UnknownPattern(String),
   #[error("Malformed lambda")]
   MalformedLambda,
   #[error("Invalid default parameter {0:?}")]

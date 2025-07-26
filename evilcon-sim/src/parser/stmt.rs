@@ -1,10 +1,11 @@
 
-use crate::ast::stmt::{Stmt, VarStmt, IfStmt, WhileStmt, ForStmt, ElifClause};
+use crate::ast::stmt::{Stmt, VarStmt, IfStmt, WhileStmt, ForStmt, ElifClause, MatchStmt, MatchClause};
 use crate::ast::expr::operator::AssignOp;
 use super::sitter::{validate_kind, nth_child, nth_named_child, named_child};
 use super::error::ParseError;
 use super::base::GdscriptParser;
 use super::expr::parse_expr;
+use super::pattern::parse_pattern;
 
 use tree_sitter::Node;
 
@@ -74,6 +75,10 @@ pub(super) fn parse_stmt(
     "for_statement" => {
       let for_stmt = parse_for_stmt(parser, node)?;
       Ok(Stmt::For(for_stmt))
+    }
+    "match_statement" => {
+      let match_stmt = parse_match_stmt(parser, node)?;
+      Ok(Stmt::Match(match_stmt))
     }
     "pass_statement" => {
       Ok(Stmt::Pass)
@@ -174,4 +179,37 @@ pub(super) fn parse_for_stmt(
     iterable: Box::new(iterable),
     body,
   })
+}
+
+pub(super) fn parse_match_stmt(
+  parser: &GdscriptParser,
+  node: Node,
+) -> Result<MatchStmt, ParseError> {
+  assert_eq!(node.kind(), "match_statement");
+
+  let value = parse_expr(parser, named_child(node, "value")?)?;
+  let clauses = parse_match_body(parser, named_child(node, "body")?)?;
+
+  Ok(MatchStmt {
+    value: Box::new(value),
+    clauses,
+  })
+}
+
+fn parse_match_body(
+  parser: &GdscriptParser,
+  node: Node,
+) -> Result<Vec<MatchClause>, ParseError> {
+  validate_kind(node, "match_body")?;
+
+  node.named_children(&mut node.walk())
+    .map(|ptn_node| {
+      let pattern = parse_pattern(parser, nth_named_child(ptn_node, 0)?)?;
+      let body = parse_body(parser, named_child(ptn_node, "body")?)?;
+      Ok(MatchClause {
+        pattern: Box::new(pattern),
+        body,
+      })
+    })
+    .collect::<Result<Vec<_>, _>>()
 }
