@@ -9,6 +9,7 @@ pub const GDSCRIPT_FILES: &[&str] = &[
   "../card_game/playing_field/util/card_game_turn_transitions.gd",
   "../card_game/playing_field/util/query.gd",
   "../card_game/playing_field/util/stats_calculator.gd",
+  "../card_game/playing_field/card_container/card_container.gd",
   "../card_game/playing_field/player_agent/player_agent.gd",
   "../card_game/playing_field/player_agent/lookahead_ai_agent/lookahead_ai_agent.gd",
   "../card_game/playing_field/player_agent/lookahead_ai_agent/lookahead_priorities.gd",
