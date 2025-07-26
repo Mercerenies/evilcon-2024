@@ -17,30 +17,10 @@ pub(super) fn parse_expr(
   parser: &GdscriptParser,
   node: Node,
 ) -> Result<Expr, ParseError> {
+  if let Some(literal) = try_parse_literal(parser, node)? {
+    return Ok(Expr::from(literal));
+  }
   match node.kind() {
-    "string" | "string_name" => {
-      let string_lit = parser.string_lit(node)?;
-      Ok(Literal::String(string_lit).into())
-    }
-    "integer" => {
-      let raw = parser.utf8_text(node)?;
-      let int_lit: i64 = raw.parse().map_err(|_| ParseError::InvalidInt(raw.to_owned()))?;
-      Ok(Expr::from(int_lit))
-    }
-    "float" => {
-      let raw = parser.utf8_text(node)?;
-      let float_lit: f64 = raw.parse().map_err(|_| ParseError::InvalidFloat(raw.to_owned()))?;
-      Ok(Expr::from(float_lit))
-    }
-    "null" => {
-      Ok(Expr::from(Literal::Null))
-    }
-    "true" => {
-      Ok(Expr::from(true))
-    }
-    "false" => {
-      Ok(Expr::from(false))
-    }
     "get_node" => {
       let mut text = parser.utf8_text(node)?.to_owned();
       text.remove(0); // Drop the leading dollar-sign
@@ -193,6 +173,8 @@ fn parse_lambda(
   parser: &GdscriptParser,
   node: Node,
 ) -> Result<Lambda, ParseError> {
+  // Note: This doesn't handle the case of "unnamed lambda w/ return
+  // type".
   match node.named_child_count() {
     2 => {
       // Unnamed lambda
@@ -218,6 +200,33 @@ fn parse_lambda(
       Err(ParseError::MalformedLambda)
     }
   }
-  // Note: This doesn't handle the case of "unnamed lambda w/ return
-  // type".
+}
+
+pub(super) fn try_parse_literal(parser: &GdscriptParser, node: Node) -> Result<Option<Literal>, ParseError> {
+  match node.kind() {
+    "string" | "string_name" => {
+      let string_lit = parser.string_lit(node)?;
+      Ok(Some(Literal::String(string_lit)))
+    }
+    "integer" => {
+      let raw = parser.utf8_text(node)?;
+      let int_lit: i64 = raw.parse().map_err(|_| ParseError::InvalidInt(raw.to_owned()))?;
+      Ok(Some(Literal::from(int_lit)))
+    }
+    "float" => {
+      let raw = parser.utf8_text(node)?;
+      let float_lit: f64 = raw.parse().map_err(|_| ParseError::InvalidFloat(raw.to_owned()))?;
+      Ok(Some(Literal::from(float_lit)))
+    }
+    "null" => {
+      Ok(Some(Literal::Null))
+    }
+    "true" => {
+      Ok(Some(Literal::from(true)))
+    }
+    "false" => {
+      Ok(Some(Literal::from(false)))
+    }
+    _ => Ok(None),
+  }
 }
