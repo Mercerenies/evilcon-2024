@@ -53,6 +53,14 @@ pub fn bind_mocked_classes(superglobals: &mut SuperglobalState) {
   let card_strip_tscn = card_strip::card_strip_tscn_class();
   superglobals.add_file(ResourcePath::new("res://card_game/playing_field/card_strip/card_strip.tscn"), Arc::new(card_strip_tscn));
 
+  // CardIcon
+  let card_icon_gd = dummy_class();
+  superglobals.add_file(ResourcePath::new("res://card_game/playing_card/playing_card_display/card_icon/card_icon.gd"), Arc::new(card_icon_gd));
+
+  // CardContainer (.tscn only; we parse the real CardContainer.gd)
+  let card_container_tscn = dummy_class();
+  superglobals.add_file(ResourcePath::new("res://card_game/playing_field/card_container/card_container.tscn"), Arc::new(card_container_tscn));
+
   // Randomness
   let randomness = playing_field::randomness_class(Arc::clone(&superglobals.bootstrapped_classes().refcounted()));
   superglobals.add_file(ResourcePath::new("res://card_game/playing_field/randomness.gd"), Arc::new(randomness));
