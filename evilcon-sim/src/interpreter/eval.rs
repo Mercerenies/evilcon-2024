@@ -392,9 +392,10 @@ impl EvaluatorState {
     match left_hand {
       AssignmentLeftHand::Name(id) => {
         if !self.has_local_var(&id) {
-          return Err(EvalError::UndefinedVariable(id.into()));
+          self.set_local_var(id, value);
+        } else {
+          self.self_instance().set_value(id.as_ref(), value)?;
         }
-        self.set_local_var(id, value);
       }
       AssignmentLeftHand::Subscript(left, index) => {
         left.set_index(index, value)?;

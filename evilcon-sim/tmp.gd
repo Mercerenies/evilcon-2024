@@ -2,6 +2,10 @@
 # NOTE: This file is not used for anything other than testing. Delete me someday plz :)
 
 static func test():
+    var tt = Object.new()
+    tt.e = 99
+    print(tt.e + 2)
+
     print("CONTAINS:")
     print(3 in [1, 2, 3])
     print(3 in [1, 2, 4])
