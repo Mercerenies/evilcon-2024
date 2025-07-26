@@ -14,7 +14,8 @@
    + [X] ~card_game/playing_field/player_agent/lookahead_ai_agent/lookahead_ai_agent.gd~
    + [X] ~card_game/playing_field/player_agent/lookahead_ai_agent/lookahead_priorities.gd~
    + [X] ~card_game/playing_field/card_player.gd~
-   + [ ] ~card_game/playing_card/card.gd~
+   + [X] ~card_game/playing_card/card_meta.gd~
+   + [X] ~card_game/playing_card/card.gd~
      - Note: ~get_overlay_icons~ won't work but we don't need that.
    + [X] ~operator.gd~
    + [X] ~util.gd~
