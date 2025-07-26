@@ -26,6 +26,7 @@
    + [ ] ~card_game/playing_card/card_type/*.gd~
    + [ ] ~card_game/playing_card/cards/*.gd~
    + [X] ~card_game/playing_card/playing_card_lists.gd~
+   + [X] ~card_game/playing_card/archetype.gd~
 ** FILES MOCKED IN RUST
    + [ ] ~card_game/playing_field/playing_field.gd~
    + [X] ~card_game/playing_field/randomness.gd~
