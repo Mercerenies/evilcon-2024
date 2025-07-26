@@ -2,6 +2,13 @@
 # NOTE: This file is not used for anything other than testing. Delete me someday plz :)
 
 static func test():
+    var z = 1
+    match z:
+        "A":
+            print(1)
+        "B":
+            print("Z")
+
     var xxx = []
     for aa in [1, 2, 3, 4, 5]:
         xxx.push_back(aa)
