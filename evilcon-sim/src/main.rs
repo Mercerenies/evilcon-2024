@@ -1,5 +1,5 @@
 
-//use evilcon_sim::driver;
+use evilcon_sim::driver;
 use evilcon_sim::loader;
 use evilcon_sim::interpreter::eval;
 use evilcon_sim::interpreter::method::MethodArgs;
@@ -8,9 +8,9 @@ use evilcon_sim::interpreter::value::Value;
 use std::sync::Arc;
 
 fn main() -> anyhow::Result<()> {
-  //driver::load_all_files()?;
+  driver::load_all_files()?;
 
-  test_driver()?;
+  //test_driver()?;
 
   Ok(())
 }

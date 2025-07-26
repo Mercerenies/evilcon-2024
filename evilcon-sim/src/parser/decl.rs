@@ -51,6 +51,10 @@ pub(super) fn parse_decl(
       let body = parse_decl_seq(parser, body.named_children(&mut body.walk()))?;
       Ok(Decl::InnerClass(name, body))
     }
+    "signal_statement" => {
+      let name = parser.identifier(nth_named_child(node, 0)?)?;
+      Ok(Decl::Signal(name))
+    }
     kind => {
       Err(ParseError::UnknownDecl(kind.to_owned()))
     }

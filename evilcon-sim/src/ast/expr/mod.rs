@@ -31,7 +31,10 @@ pub enum Expr {
     if_true: Box<Expr>,
     cond: Box<Expr>,
     if_false: Box<Expr>,
-  }
+  },
+  /// No expression in GDScript compiles to this, but signal
+  /// declarations use this expression as the initializer.
+  NewSignal,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]

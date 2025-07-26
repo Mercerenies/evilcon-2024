@@ -32,6 +32,9 @@ pub enum Value {
   BoundMethod(EqPtr<BoundMethod>),
   Lambda(EqPtr<LambdaValue>),
   EnumType(OrderMap<Identifier, i64>),
+  /// Stub for signal values. We do the absolute minimum amount of
+  /// mocking necessary to make this exist in the system.
+  SignalStub,
 }
 
 #[derive(Debug, Clone)]
@@ -202,6 +205,7 @@ impl Value {
       Value::ArrayRef(_) => Some(Arc::clone(bootstrapping.array())),
       Value::DictRef(_) => Some(Arc::clone(bootstrapping.dictionary())),
       Value::BoundMethod(_) | Value::Lambda(_) => Some(Arc::clone(bootstrapping.callable())),
+      Value::SignalStub => Some(Arc::clone(bootstrapping.signal())),
       _ => None,
     }
   }
@@ -226,7 +230,8 @@ impl Value {
   pub fn shallow_copy(&self) -> Value {
     match self {
       Value::Null | Value::Bool(_) | Value::Int(_) | Value::Float(_) | Value::String(_) |
-        Value::ClassRef(_) | Value::BoundMethod(_) | Value::Lambda(_) | Value::EnumType(_) => self.clone(),
+        Value::ClassRef(_) | Value::BoundMethod(_) | Value::Lambda(_) | Value::EnumType(_) |
+        Value::SignalStub => self.clone(),
       Value::ObjectRef(_) => {
         eprintln!("WARNING: Shallow copy of object has no effect");
         self.clone()
@@ -245,7 +250,7 @@ impl Value {
     match self {
       Value::Null | Value::Bool(_) | Value::Int(_) | Value::Float(_) | Value::String(_) |
         Value::ClassRef(_) | Value::BoundMethod(_) | Value::Lambda(_) | Value::EnumType(_) |
-        Value::ObjectRef(_) => self.clone(),
+        Value::ObjectRef(_) | Value::SignalStub => self.clone(),
       Value::ArrayRef(arr) => {
         let new_arr = arr.borrow().iter().map(|v| v.deep_copy()).collect();
         Value::new_array(new_arr)
@@ -440,6 +445,7 @@ impl Display for Value {
       Value::BoundMethod(_) => write!(f, "<method>"),
       Value::Lambda(_) => write!(f, "<lambda>"),
       Value::EnumType(_) => write!(f, "<enum>"),
+      Value::SignalStub => write!(f, "<signal>"),
     }
   }
 }

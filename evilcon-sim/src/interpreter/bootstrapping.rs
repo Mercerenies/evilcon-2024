@@ -21,6 +21,7 @@ pub struct BootstrappedTypes {
   dictionary: Arc<Class>,
   callable: Arc<Class>,
   string: Arc<Class>,
+  signal: Arc<Class>,
 }
 
 impl BootstrappedTypes {
@@ -31,6 +32,7 @@ impl BootstrappedTypes {
     let dictionary = Arc::new(dictionary_class());
     let callable = Arc::new(callable_class());
     let string = Arc::new(string_class());
+    let signal = Arc::new(signal_class());
     Self {
       object,
       refcounted,
@@ -38,6 +40,7 @@ impl BootstrappedTypes {
       dictionary,
       callable,
       string,
+      signal,
     }
   }
 
@@ -53,6 +56,7 @@ impl BootstrappedTypes {
       ("Callable".into(), self.callable.clone()),
       ("String".into(), self.string.clone()),
       ("StringName".into(), self.string.clone()),
+      ("Signal".into(), self.signal.clone()),
     ]
   }
 
@@ -78,6 +82,10 @@ impl BootstrappedTypes {
 
   pub fn string(&self) -> &Arc<Class> {
     &self.string
+  }
+
+  pub fn signal(&self) -> &Arc<Class> {
+    &self.signal
   }
 }
 
@@ -166,6 +174,20 @@ fn string_class() -> Class {
   methods.insert(Identifier::from("substr"), Method::rust_method("substr", string_substr));
   Class {
     name: Some(String::from("String")),
+    parent: None,
+    constants: Arc::new(constants),
+    instance_vars: vec![],
+    methods,
+  }
+}
+
+fn signal_class() -> Class {
+  let constants = HashMap::new();
+  let mut methods = HashMap::new();
+  methods.insert(Identifier::from("emit"), Method::noop());
+  methods.insert(Identifier::from("connect"), Method::noop());
+  Class {
+    name: Some(String::from("Signal")),
     parent: None,
     constants: Arc::new(constants),
     instance_vars: vec![],

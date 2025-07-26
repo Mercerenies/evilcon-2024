@@ -14,6 +14,10 @@ pub enum Decl {
   /// scope, and nested classes ALWAYS inherit directly from
   /// RefCounted for now.
   InnerClass(Identifier, Vec<Decl>),
+  /// Signals compile to instances of the `Signal` class, which is a
+  /// minimal mocking class that contains no-op methods `emit` and
+  /// `connect`.
+  Signal(Identifier),
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]

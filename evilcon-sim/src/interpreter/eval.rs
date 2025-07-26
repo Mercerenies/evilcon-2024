@@ -238,6 +238,9 @@ impl EvaluatorState {
           self.eval_expr(if_false)
         }
       }
+      Expr::NewSignal => {
+        Ok(Value::SignalStub)
+      }
     }
   }
 

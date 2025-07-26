@@ -101,6 +101,12 @@ impl Class {
           let inner_class = Self::load_from_file(superglobals, file)?;
           constants.insert(name, LazyConst::resolved(Value::ClassRef(Arc::new(inner_class))));
         }
+        Decl::Signal(name) => {
+          instance_vars.push(InstanceVar {
+            name,
+            initial_value: Expr::NewSignal,
+          });
+        }
       };
     }
     Ok(Class {
