@@ -409,6 +409,12 @@ impl<'a> From<&'a str> for Value {
   }
 }
 
+impl From<bool> for Value {
+  fn from(b: bool) -> Self {
+    Value::Bool(b)
+  }
+}
+
 impl From<HashKey> for Value {
   fn from(hk: HashKey) -> Self {
     match hk {

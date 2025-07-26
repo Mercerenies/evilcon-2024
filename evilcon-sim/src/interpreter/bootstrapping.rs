@@ -9,6 +9,8 @@ use super::operator::{expect_int, expect_string, expect_bool,
 use crate::ast::identifier::Identifier;
 use crate::util::try_sort_by;
 
+use rand::seq::SliceRandom;
+
 use std::sync::Arc;
 use std::collections::HashMap;
 use std::cmp::Ordering;
@@ -117,6 +119,10 @@ fn array_class() -> Class {
   let constants = HashMap::new();
   let mut methods = HashMap::new();
   methods.insert(Identifier::from("__getitem__"), Method::rust_method("__getitem__", array_getitem));
+  methods.insert(Identifier::from("clear"), Method::rust_method("clear", array_clear));
+  methods.insert(Identifier::from("shuffle"), Method::rust_method("shuffle", array_shuffle));
+  methods.insert(Identifier::from("is_empty"), Method::rust_method("is_empty", array_is_empty));
+  methods.insert(Identifier::from("remove_at"), Method::rust_method("remove_at", array_remove_at));
   methods.insert(Identifier::from("push_back"), Method::rust_method("push_back", array_push_back));
   methods.insert(Identifier::from("append"), Method::rust_method("append", array_push_back)); // alias of push_back
   methods.insert(Identifier::from("append_array"), Method::rust_method("append_array", array_append_array));
@@ -222,11 +228,47 @@ pub fn call_func(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, 
 
 fn array_getitem(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
   let self_inst = expect_array(state.self_instance())?.borrow();
-  let index = expect_int(&args.expect_one_arg()?)?;
+  let mut index = expect_int(&args.expect_one_arg()?)?;
+  if index < 0 {
+    index += self_inst.len() as i64;
+  }
   if !((0..(self_inst.len() as i64)).contains(&index)) {
     return Err(EvalError::IndexOutOfBounds(index));
   }
   Ok(self_inst[index as usize].clone())
+}
+
+fn array_remove_at(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
+  let mut self_inst = expect_array(state.self_instance())?.borrow_mut();
+  let mut index = expect_int(&args.expect_one_arg()?)?;
+  if index < 0 {
+    index += self_inst.len() as i64;
+  }
+  if !((0..(self_inst.len() as i64)).contains(&index)) {
+    return Err(EvalError::IndexOutOfBounds(index));
+  }
+  self_inst.remove(index as usize);
+  Ok(Value::Null)
+}
+
+fn array_clear(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
+  let mut self_inst = expect_array(state.self_instance())?.borrow_mut();
+  args.expect_arity(0)?;
+  self_inst.clear();
+  Ok(Value::Null)
+}
+
+fn array_is_empty(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
+  let self_inst = expect_array(state.self_instance())?.borrow();
+  args.expect_arity(0)?;
+  Ok(Value::from(self_inst.is_empty()))
+}
+
+fn array_shuffle(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
+  let mut self_inst = expect_array(state.self_instance())?.borrow_mut();
+  args.expect_arity(0)?;
+  self_inst.shuffle(&mut rand::rng());
+  Ok(Value::Null)
 }
 
 fn array_push_back(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {

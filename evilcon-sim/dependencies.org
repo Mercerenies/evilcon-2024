@@ -9,7 +9,7 @@
        (they do nontrivial shenanigans with promises)
    + [ ] ~card_game/playing_field/util/query.gd~
    + [X] ~card_game/playing_field/util/stats_calculator.gd~
-   + [ ] ~card_game/playing_field/card_container/card_container.gd~
+   + [X] ~card_game/playing_field/card_container/card_container.gd~
    + [X] ~card_game/playing_field/player_agent/player_agent.gd~
    + [X] ~card_game/playing_field/player_agent/lookahead_ai_agent/lookahead_ai_agent.gd~
    + [X] ~card_game/playing_field/player_agent/lookahead_ai_agent/lookahead_priorities.gd~
