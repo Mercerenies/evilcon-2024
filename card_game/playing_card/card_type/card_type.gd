@@ -1,8 +1,6 @@
 class_name CardType
 extends RefCounted
 
-const EffectTextFont = preload("res://fonts/Raleway-Regular.ttf")
-const FlavorTextFont = preload("res://fonts/Raleway-Italic.ttf")
 const CardIcon = preload("res://card_game/playing_card/playing_card_display/card_icon/card_icon.gd")
 
 
