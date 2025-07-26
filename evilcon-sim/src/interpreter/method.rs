@@ -73,6 +73,13 @@ impl Method {
     Self::rust_method("new", body)
   }
 
+  pub fn is_static(&self) -> bool {
+    match self {
+      Method::GdMethod(m) => m.is_static,
+      Method::RustMethod(m) => m.is_static,
+    }
+  }
+
   pub fn noop() -> Method {
     fn body(_: &mut EvaluatorState, _: MethodArgs) -> Result<Value, EvalError> {
       Ok(Value::Null)
@@ -80,11 +87,12 @@ impl Method {
     Self::rust_method("noop", body)
   }
 
-  pub fn is_static(&self) -> bool {
-    match self {
-      Method::GdMethod(m) => m.is_static,
-      Method::RustMethod(m) => m.is_static,
-    }
+  pub fn unimplemented_stub(error_msg: &str) -> Method {
+    let error_msg = error_msg.to_owned();
+    let body = move |_: &mut EvaluatorState, _: MethodArgs| {
+      Err(EvalError::UnimplementedMethod(error_msg.clone()))
+    };
+    Self::rust_method("unimplemented_stub", body)
   }
 }
 

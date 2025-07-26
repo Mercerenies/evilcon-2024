@@ -13,6 +13,7 @@
    + [X] ~card_game/playing_field/player_agent/lookahead_ai_agent/lookahead_ai_agent.gd~
    + [X] ~card_game/playing_field/player_agent/lookahead_ai_agent/lookahead_priorities.gd~
    + [X] ~card_game/playing_field/card_player.gd~
+   + [ ] ~card_game/playing_field/card_container/card_container.gd~
    + [X] ~operator.gd~
    + [X] ~util.gd~
      - Note: ~free_all_children~ and ~queue_free_all_children~ are
@@ -26,7 +27,8 @@
    + [ ] ~card_game/playing_field/playing_field.gd~
    + [X] ~card_game/playing_field/randomness.gd~
    + [ ] ~card_game/playing_field/game_stats_panel/game_stats_panel.gd~ and ~.tscn~
-   + [ ] ~card_game/playing_field/card_strip/card_strip.gd~ and ~.tscn~
+   + [X] ~card_game/playing_field/card_strip/card_strip.gd~ and ~.tscn~
+   + [ ] ~card_game/playing_field/card_container/card_container.tscn~
    + [ ] ~card_game/playing_card/card.gd~
    + [ ] ~card_game/playing_card/playing_card_codex.gd~
      - tree-sitter chokes /and/ we can't parse ~match~ clauses right

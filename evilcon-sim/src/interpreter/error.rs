@@ -69,6 +69,8 @@ pub enum EvalError {
   FormatterError(#[from] FormatterError),
   #[error("Numerical parse error on {0}")]
   NumberParseError(String),
+  #[error("Method intentionally unimplemented: {0}")]
+  UnimplementedMethod(String),
 }
 
 impl EvalError {

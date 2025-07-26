@@ -68,6 +68,10 @@ impl EvaluatorState {
     &self.self_instance
   }
 
+  pub fn superglobal_state(&self) -> &Arc<SuperglobalState> {
+    &self.superglobal_state
+  }
+
   pub fn has_local_var(&mut self, ident: &Identifier) -> bool {
     self.locals.contains_key(ident)
   }
