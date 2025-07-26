@@ -100,7 +100,12 @@ fn do_type_check(bootstrapping: &BootstrappedTypes, lhs: Value, rhs: Value) -> R
 }
 
 fn do_elem_check(lhs: Value, rhs: Value) -> Result<bool, EvalError> {
-  Ok(rhs.try_iter()?.any(|elem| elem == lhs))
+  if let Value::String(rhs) = &rhs {
+    let lhs = expect_string(&lhs)?;
+    Ok(rhs.contains(&lhs))
+  } else {
+    Ok(rhs.try_iter()?.any(|elem| elem == lhs))
+  }
 }
 
 pub fn expect_int(value: &Value) -> Result<i64, EvalError> {

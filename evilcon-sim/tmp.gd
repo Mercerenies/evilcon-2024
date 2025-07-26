@@ -2,6 +2,11 @@
 # NOTE: This file is not used for anything other than testing. Delete me someday plz :)
 
 static func test():
+    print("CONTAINS:")
+    print(3 in [1, 2, 3])
+    print(3 in [1, 2, 4])
+    print("ab" in "dabc")
+
     var z = 1
     match z:
         "A":
