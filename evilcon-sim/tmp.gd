@@ -2,8 +2,11 @@
 # NOTE: This file is not used for anything other than testing. Delete me someday plz :)
 
 static func test():
-    print(7 is int)
-    print(7.0 is int)
+    var w = [1, 2, 3, 4]
+    print(w.any(func(p): return p == 3))
+    print(w.any(func(p): return p == 9))
+    print(w.all(func(p): return p > 0))
+    print(w.all(func(p): return p <= 3))
 
     var tt = Object.new()
     tt.e = 99

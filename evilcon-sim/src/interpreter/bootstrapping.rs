@@ -138,6 +138,8 @@ fn array_class() -> Class {
   methods.insert(Identifier::from("resize"), Method::rust_method("resize", array_resize));
   methods.insert(Identifier::from("fill"), Method::rust_method("fill", array_fill));
   methods.insert(Identifier::from("map"), Method::rust_method("map", array_map));
+  methods.insert(Identifier::from("any"), Method::rust_method("any", array_any));
+  methods.insert(Identifier::from("all"), Method::rust_method("all", array_all));
   methods.insert(Identifier::from("filter"), Method::rust_method("map", array_filter));
   methods.insert(Identifier::from("reduce"), Method::rust_method("reduce", array_reduce));
   methods.insert(Identifier::from("slice"), Method::rust_method("slice", array_slice));
@@ -329,6 +331,30 @@ fn array_map(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, Eval
     *elem = callable(MethodArgs(vec![elem.clone()]))?;
   }
   Ok(Value::new_array(arr))
+}
+
+fn array_any(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
+  let mut arr = expect_array(state.self_instance())?.borrow().clone();
+  let callable = args.expect_one_arg()?;
+  let callable = callable.to_rust_function(Arc::clone(state.superglobals()));
+  for elem in &mut arr {
+    if callable(MethodArgs(vec![elem.clone()])).unwrap().as_bool() {
+      return Ok(Value::Bool(true));
+    }
+  }
+  Ok(Value::Bool(false))
+}
+
+fn array_all(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
+  let mut arr = expect_array(state.self_instance())?.borrow().clone();
+  let callable = args.expect_one_arg()?;
+  let callable = callable.to_rust_function(Arc::clone(state.superglobals()));
+  for elem in &mut arr {
+    if !callable(MethodArgs(vec![elem.clone()])).unwrap().as_bool() {
+      return Ok(Value::Bool(false));
+    }
+  }
+  Ok(Value::Bool(true))
 }
 
 fn array_filter(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
