@@ -8,6 +8,8 @@ use super::dummy_class;
 use std::sync::Arc;
 use std::collections::HashMap;
 
+pub(super) const CARD_STRIP_RES_PATH: &str = "res://card_game/playing_field/card_strip/card_strip.gd";
+
 pub(super) fn card_strip_class(node: Arc<Class>) -> Class {
   let constants = HashMap::new();
 

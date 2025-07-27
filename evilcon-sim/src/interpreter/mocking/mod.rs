@@ -6,6 +6,7 @@
 
 mod card_strip;
 mod playing_field;
+mod randomness;
 
 pub mod codex;
 
@@ -51,7 +52,7 @@ pub fn bind_mocked_classes(superglobals: &mut SuperglobalState) {
 
   // CardStrip
   let card_strip_class = card_strip::card_strip_class(Arc::clone(&node));
-  superglobals.add_file(ResourcePath::new("res://card_game/playing_field/card_strip/card_strip.gd"), Arc::new(card_strip_class));
+  superglobals.add_file(ResourcePath::new(card_strip::CARD_STRIP_RES_PATH), Arc::new(card_strip_class));
   let card_strip_tscn = card_strip::card_strip_tscn_class();
   superglobals.add_file(ResourcePath::new("res://card_game/playing_field/card_strip/card_strip.tscn"), Arc::new(card_strip_tscn));
 
@@ -64,7 +65,7 @@ pub fn bind_mocked_classes(superglobals: &mut SuperglobalState) {
   superglobals.add_file(ResourcePath::new("res://card_game/playing_field/card_container/card_container.tscn"), Arc::new(card_container_tscn));
 
   // Randomness
-  let randomness = playing_field::randomness_class(Arc::clone(&superglobals.bootstrapped_classes().refcounted()));
+  let randomness = randomness::randomness_class(Arc::clone(&superglobals.bootstrapped_classes().refcounted()));
   superglobals.add_file(ResourcePath::new("res://card_game/playing_field/randomness.gd"), Arc::new(randomness));
 }
 

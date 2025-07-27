@@ -2,18 +2,25 @@
 use crate::interpreter::class::{Class, InstanceVar};
 use crate::interpreter::class::constant::LazyConst;
 use crate::interpreter::value::Value;
-use crate::interpreter::method::Method;
-use crate::interpreter::error::EvalError;
-use crate::interpreter::operator::{expect_int, expect_array};
+use crate::interpreter::eval::EvaluatorState;
+use crate::interpreter::method::{Method, MethodArgs};
+use crate::interpreter::operator::expect_string;
 use crate::ast::expr::Expr;
 use crate::ast::identifier::Identifier;
-
-use rand::{Rng, rng};
-use rand::seq::IndexedRandom;
+use super::card_strip::CARD_STRIP_RES_PATH;
 
 use std::sync::Arc;
 use std::collections::HashMap;
 
+// Intentionally omitted:
+// * _ready (all AI setup and node setup that we do by hand)
+// * replace_player_agent (will be done by hand)
+// * animate_card_moving (animation stuff, only called by CardGameAPI)
+// * hand_cards_are_hidden (visual stuff, only called by CardGameAPI)
+// * popup_display_card (visual stuff)
+// * player_agent (only used in turn transitions)
+// * Like twenty signal response methods that do nothing but animations and input
+// * Several private internal helpers
 pub(super) fn playing_field_class(node: Arc<Class>) -> Class {
   let mut constants = HashMap::new();
   constants.insert(Identifier::new("SECOND_PLAYER_FORT_ADVANTAGE"), LazyConst::resolved(Value::from(2)));
@@ -31,9 +38,28 @@ pub(super) fn playing_field_class(node: Arc<Class>) -> Class {
   instance_vars.push(InstanceVar::new("top_cards_are_hidden", Some(Expr::from(true))));
   instance_vars.push(InstanceVar::new("top_cards_are_hidden", Some(Expr::from(false))));
   instance_vars.push(InstanceVar::new("plays_animations", Some(Expr::from(false))));
+  instance_vars.push(InstanceVar::new("__evilconsim_deck_bottom", Some(instantiate_card_strip())));
+  instance_vars.push(InstanceVar::new("__evilconsim_deck_top", Some(instantiate_card_strip())));
+  instance_vars.push(InstanceVar::new("__evilconsim_discardpile_bottom", Some(instantiate_card_strip())));
+  instance_vars.push(InstanceVar::new("__evilconsim_discardpile_top", Some(instantiate_card_strip())));
+  instance_vars.push(InstanceVar::new("__evilconsim_hand_bottom", Some(instantiate_card_strip())));
+  instance_vars.push(InstanceVar::new("__evilconsim_hand_top", Some(instantiate_card_strip())));
+  instance_vars.push(InstanceVar::new("__evilconsim_minionstrip_bottom", Some(instantiate_card_strip())));
+  instance_vars.push(InstanceVar::new("__evilconsim_minionstrip_top", Some(instantiate_card_strip())));
+  instance_vars.push(InstanceVar::new("__evilconsim_effectstrip_bottom", Some(instantiate_card_strip())));
+  instance_vars.push(InstanceVar::new("__evilconsim_effectstrip_top", Some(instantiate_card_strip())));
 
   let mut methods = HashMap::new();
   methods.insert(Identifier::new("with_animation"), Method::noop());
+  methods.insert(Identifier::new("emit_cards_moved"), Method::noop());
+  methods.insert(Identifier::new("get_deck"), selector_function("__evilconsim_deck_bottom", "__evilconsim_deck_top"));
+  methods.insert(Identifier::new("get_discard_pile"), selector_function("__evilconsim_discardpile_bottom", "__evilconsim_discardpile_top"));
+  methods.insert(Identifier::new("get_hand"), selector_function("__evilconsim_hand_bottom", "__evilconsim_hand_top"));
+  methods.insert(Identifier::new("get_minion_strip"), selector_function("__evilconsim_minionstrip_bottom", "__evilconsim_minionstrip_top"));
+  methods.insert(Identifier::new("get_effect_strip"), selector_function("__evilconsim_effectstrip_bottom", "__evilconsim_effectstrip_top"));
+
+  // TODO get_stats
+  // TODO end_game (think about how we want to signal this)
 
   // TODO More
 
@@ -46,38 +72,26 @@ pub(super) fn playing_field_class(node: Arc<Class>) -> Class {
   }
 }
 
-pub(super) fn randomness_class(refcounted: Arc<Class>) -> Class {
-  let mut methods = HashMap::new();
-  methods.insert(Identifier::new("randi"), Method::rust_method("randi", |_, args| {
-    args.expect_arity(0)?;
-    let mut rng = rng();
-    // Match Godot semantics precisely: Godot produces an i32 here.
-    Ok(Value::from(rng.random::<i32>() as i64))
-  }));
+fn instantiate_card_strip() -> Expr {
+  Expr::call("load", vec![Expr::string(CARD_STRIP_RES_PATH)])
+    .attr_call("new", vec![])
+}
 
-  methods.insert(Identifier::new("randi_range"), Method::rust_method("randi_range", |_, args| {
-    args.expect_arity(2)?;
-    let [from, to] = args.0.try_into().expect("Expected 2 args");
-    let from = expect_int(&from)?;
-    let to = expect_int(&to)?;
-    let mut rng = rng();
-    Ok(Value::from(rng.random_range(from..=to)))
-  }));
-
-  methods.insert(Identifier::new("choose"), Method::rust_method("choose", |_, args| {
-    args.expect_arity(1)?;
-    let [arr] = args.0.try_into().expect("Expected 1 arg");
-    let arr = expect_array(&arr)?.borrow();
-    let value = arr.choose(&mut rng())
-      .ok_or_else(|| EvalError::domain_error("Can't choose from empty array"))?;
-    Ok(value.clone())
-  }));
-
-  Class {
-    name: Some(String::from("Randomness")),
-    parent: Some(refcounted),
-    constants: Arc::new(HashMap::new()),
-    instance_vars: vec![],
-    methods,
-  }
+/// A Godot-side method that selects between two instance variables on
+/// `self`.
+fn selector_function(bottom_var: &str, top_var: &str) -> Method {
+  let bottom_var = bottom_var.to_owned();
+  let top_var = top_var.to_owned();
+  let method_body = move |evaluator: &mut EvaluatorState, args: MethodArgs| {
+    let arg = args.expect_one_arg()?;
+    match expect_string(&arg)? {
+      "BOTTOM" => evaluator.self_instance().get_value(&bottom_var, evaluator.superglobal_state()),
+      "TOP" => evaluator.self_instance().get_value(&top_var, evaluator.superglobal_state()),
+      _ => {
+        eprintln!("Bad card player {}", arg);
+        Ok(Value::Null)
+      }
+    }
+  };
+  Method::rust_method("getter", method_body)
 }
