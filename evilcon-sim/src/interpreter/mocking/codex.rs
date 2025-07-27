@@ -15,7 +15,12 @@
 //! bound separately.
 
 use crate::interpreter::class::Class;
-use crate::interpreter::eval::SuperglobalState;
+use crate::interpreter::class::constant::LazyConst;
+use crate::interpreter::eval::{SuperglobalState, EvaluatorState};
+use crate::interpreter::method::MethodArgs;
+use crate::interpreter::value::Value;
+use crate::interpreter::error::EvalError;
+use crate::interpreter::operator::expect_int_loosely;
 use crate::ast::identifier::{Identifier, ResourcePath};
 
 use serde::{Deserialize, Serialize};
@@ -66,6 +71,7 @@ impl CodexDataFile {
 
   pub fn to_gd_class(&self) -> Class {
     let mut constants = HashMap::new();
+    constants.insert(Identifier::new("ID"), LazyConst::resolved(self.id_enum()));
 
     let mut methods = HashMap::new();
 
@@ -84,5 +90,18 @@ impl CodexDataFile {
     let cls = Arc::new(self.to_gd_class());
     superglobals.add_file(ResourcePath(CODEX_GD_FILE_PATH.to_owned()), Arc::clone(&cls));
     superglobals.bind_class(Identifier::new("PlayingCardCodex"), cls);
+  }
+
+  fn id_enum(&self) -> Value {
+    let value_map = self.cards.iter()
+      .map(|card| (Identifier::new(&card.name), card.id))
+      .collect();
+    Value::EnumType(value_map)
+  }
+
+  fn get_entity_script(&self, evaluator: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
+    let id = expect_int_loosely(&args.expect_one_arg()?)?;
+    let id = usize::try_from(id).map_err(|_| EvalError::domain_error("Card ID out of range"))?;
+    todo!() /////
   }
 }
