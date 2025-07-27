@@ -36,7 +36,9 @@ pub fn load_all_files() -> anyhow::Result<SuperglobalState> {
     loader.load_all_files(glob)?;
   }
   eprintln!("Loaded all files.");
+
   let superglobals = loader.build()?;
   eprintln!("Created interpreter environment.");
+
   Ok(superglobals)
 }

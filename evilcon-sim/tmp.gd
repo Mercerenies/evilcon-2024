@@ -1,7 +1,17 @@
 
 # NOTE: This file is not used for anything other than testing. Delete me someday plz :)
 
+class ZZZ:
+    static func a1():
+        print("ZZZ.a1() called")
+
+    static func a():
+        print("ZZZ.a() called")
+        #ZZZ.a1()
+
 static func test():
+    ZZZ.a()
+
     var w = [1, 2, 3, 4]
     print(w.any(func(p): return p == 3))
     print(w.any(func(p): return p == 9))
