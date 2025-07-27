@@ -9,6 +9,7 @@ use crate::interpreter::eval::SuperglobalState;
 use crate::interpreter::value::Value;
 use crate::interpreter::error::EvalError;
 use crate::interpreter::mocking;
+use crate::interpreter::mocking::codex::{CodexDataFile, CodexLoadError};
 
 use thiserror::Error;
 use glob::glob;
@@ -51,7 +52,7 @@ pub enum DependencyError {
   NoSuchClassByPath(ResourcePath),
 }
 
-#[derive(Clone, Debug, Error)]
+#[derive(Debug, Error)]
 pub enum BuildError {
   #[error("{0}")]
   DependencyError(#[from] DependencyError),
@@ -59,6 +60,8 @@ pub enum BuildError {
   EvalError(#[from] EvalError),
   #[error("Cycle in dependency graph")]
   DependencyCycle,
+  #[error("{0}")]
+  CodexLoadError(#[from] CodexLoadError),
 }
 
 /// Result of [`GdScriptLoader::resolve_extends_clause`].
@@ -119,6 +122,9 @@ impl GdScriptLoader {
     mocking::bind_mocked_classes(&mut superglobals);
     mocking::bind_mocked_constants(&mut superglobals);
     mocking::bind_mocked_methods(&mut superglobals);
+
+    let codex_gd = CodexDataFile::read_from_default_file()?;
+    codex_gd.bind_gd_class(&mut superglobals);
 
     let dependency_graph = self.build_dependency_graph(&superglobals)?;
     let top_sort = algo::toposort(&dependency_graph, None)

@@ -6,6 +6,8 @@ static func test():
     tt.e = 99
     print(tt.e + 2)
 
+    print(PlayingCardCodex)
+
     print("CONTAINS:")
     print(3 in [1, 2, 3])
     print(3 in [1, 2, 4])

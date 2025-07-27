@@ -7,6 +7,8 @@
 mod card_strip;
 mod playing_field;
 
+pub mod codex;
+
 use super::class::Class;
 use super::class::constant::LazyConst;
 use super::value::Value;
