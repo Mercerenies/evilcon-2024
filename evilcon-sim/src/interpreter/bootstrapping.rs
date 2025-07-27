@@ -135,6 +135,7 @@ fn array_class() -> Class {
   methods.insert(Identifier::from("append"), Method::rust_method("append", array_push_back)); // alias of push_back
   methods.insert(Identifier::from("append_array"), Method::rust_method("append_array", array_append_array));
   methods.insert(Identifier::from("duplicate"), Method::rust_method("duplicate", duplicate_method));
+  methods.insert(Identifier::from("reverse"), Method::rust_method("reverse", array_reverse));
   methods.insert(Identifier::from("resize"), Method::rust_method("resize", array_resize));
   methods.insert(Identifier::from("fill"), Method::rust_method("fill", array_fill));
   methods.insert(Identifier::from("map"), Method::rust_method("map", array_map));
@@ -313,6 +314,13 @@ fn array_resize(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, E
   let mut self_inst = expect_array(state.self_instance())?.borrow_mut();
   let size = expect_int(&args.expect_one_arg()?)?;
   self_inst.resize(size as usize, Value::Null);
+  Ok(Value::GLOBAL_OK)
+}
+
+fn array_reverse(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
+  let mut self_inst = expect_array(state.self_instance())?.borrow_mut();
+  args.expect_arity(0)?;
+  self_inst.reverse();
   Ok(Value::GLOBAL_OK)
 }
 
