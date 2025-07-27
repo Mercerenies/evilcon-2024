@@ -2,7 +2,7 @@
 * FILES REQUIRED TO RUN THE SIMULATION
 ** FILES LOADED FROM GODOT
    + [X] ~card_game/playing_field/event_logger.gd~
-   + [ ] ~card_game/playing_field/util/card_effects.gd~
+   + [X] ~card_game/playing_field/util/card_effects.gd~
    + [X] ~card_game/playing_field/util/card_game_phases.gd~
    + [ ] ~card_game/playing_field/util/query.gd~
    + [X] ~card_game/playing_field/util/stats_calculator.gd~
