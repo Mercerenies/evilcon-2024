@@ -43,7 +43,7 @@ impl LazyConst {
 
   /// A [`LazyConst`] that preloads a class.
   pub fn preload(class_path: impl Into<String>) -> Self {
-    let expr = Expr::call("preoad", vec![Expr::string(class_path)]);
+    let expr = Expr::call("preload", vec![Expr::string(class_path)]);
     Self::evaluator(expr)
   }
 
