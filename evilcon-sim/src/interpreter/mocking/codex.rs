@@ -17,7 +17,7 @@
 use crate::interpreter::class::Class;
 use crate::interpreter::class::constant::LazyConst;
 use crate::interpreter::eval::{SuperglobalState, EvaluatorState};
-use crate::interpreter::method::MethodArgs;
+use crate::interpreter::method::{Method, MethodArgs};
 use crate::interpreter::value::Value;
 use crate::interpreter::error::EvalError;
 use crate::interpreter::operator::expect_int_loosely;
@@ -69,13 +69,30 @@ impl CodexDataFile {
     Ok(Self::read_from_file(file)?)
   }
 
-  pub fn to_gd_class(&self) -> Class {
+  pub fn into_gd_class(self: Arc<Self>) -> Class {
     let mut constants = HashMap::new();
     constants.insert(Identifier::new("ID"), LazyConst::resolved(self.id_enum()));
 
     let mut methods = HashMap::new();
-
-    /////
+    methods.insert(Identifier::new("get_entity_script"), Method::rust_static_method("get_entity_script", {
+      let this = Arc::clone(&self);
+      move |evaluator, args| {
+        this.get_entity_script(evaluator, args)
+      }
+    }));
+    methods.insert(Identifier::new("get_entity"), Method::rust_static_method("get_entity", {
+      let this = Arc::clone(&self);
+      move |evaluator, args| {
+        this.get_entity(evaluator, args)
+      }
+    }));
+    methods.insert(Identifier::new("get_all_ids"), Method::rust_static_method("get_all_ids", {
+      let max_id = self.max_id;
+      move |_, _| {
+        let ids = (0..=max_id).map(Value::from).collect();
+        Ok(Value::new_array(ids))
+      }
+    }));
 
     Class {
       name: Some(String::from("PlayingCardCodex")),
@@ -86,12 +103,13 @@ impl CodexDataFile {
     }
   }
 
-  pub fn bind_gd_class(&self, superglobals: &mut SuperglobalState) {
-    let cls = Arc::new(self.to_gd_class());
+  pub fn bind_gd_class(self, superglobals: &mut SuperglobalState) {
+    let cls = Arc::new(Arc::new(self).into_gd_class());
     superglobals.add_file(ResourcePath(CODEX_GD_FILE_PATH.to_owned()), Arc::clone(&cls));
     superglobals.bind_class(Identifier::new("PlayingCardCodex"), cls);
   }
 
+  /// The `ID` enum constant in the top-level of the codex file.
   fn id_enum(&self) -> Value {
     let value_map = self.cards.iter()
       .map(|card| (Identifier::new(&card.name), card.id))
@@ -99,9 +117,25 @@ impl CodexDataFile {
     Value::EnumType(value_map)
   }
 
+  /// Rust-side implementation of the GDScript method
+  /// `get_entity_script`.
   fn get_entity_script(&self, evaluator: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
     let id = expect_int_loosely(&args.expect_one_arg()?)?;
     let id = usize::try_from(id).map_err(|_| EvalError::domain_error("Card ID out of range"))?;
-    todo!() /////
+    let Some(card_entry) = self.cards.get(id) else {
+      eprintln!("Invalid ID value: {}", id);
+      return Ok(Value::Null);
+    };
+    let card_class = evaluator.get_file(&card_entry.path)
+      .ok_or_else(|| EvalError::domain_error("Card not found in codex"))?;
+    Ok(Value::ClassRef(card_class))
+  }
+
+  /// Rust-side implementation of the GDScript method
+  /// `get_entity`.
+  fn get_entity(&self, evaluator: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
+    let card_class = self.get_entity_script(evaluator, args)?;
+    let ctor_func = card_class.get_func("new", evaluator.bootstrapped_classes())?;
+    evaluator.call_function(None, &ctor_func, Box::new(card_class), MethodArgs::EMPTY)
   }
 }

@@ -7,6 +7,8 @@ static func test():
     print(tt.e + 2)
 
     print(PlayingCardCodex)
+    print(PlayingCardCodex.ID.CHRIS_COGSWORTH)
+    print(PlayingCardCodex.get_all_ids())
 
     print("CONTAINS:")
     print(3 in [1, 2, 3])

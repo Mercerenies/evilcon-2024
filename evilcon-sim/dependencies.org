@@ -39,7 +39,7 @@
    + [X] ~card_game/playing_field/card_strip/card_strip.gd~ and ~.tscn~
    + [X] ~card_game/playing_field/card_container/card_container.tscn~
      - Dummy file
-   + [ ] ~card_game/playing_card/playing_card_codex.gd~
+   + [X] ~card_game/playing_card/playing_card_codex.gd~
      - tree-sitter chokes +and we can't parse ~match~ clauses right
        now.+
    + [ ] ~card_game/playing_field/util/card_game_api.gd~
