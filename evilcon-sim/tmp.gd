@@ -2,6 +2,9 @@
 # NOTE: This file is not used for anything other than testing. Delete me someday plz :)
 
 static func test():
+    print(7 is int)
+    print(7.0 is int)
+
     var tt = Object.new()
     tt.e = 99
     print(tt.e + 2)

@@ -22,6 +22,7 @@ pub struct BootstrappedTypes {
   array: Arc<Class>,
   dictionary: Arc<Class>,
   callable: Arc<Class>,
+  int: Arc<Class>,
   string: Arc<Class>,
   signal: Arc<Class>,
 }
@@ -33,6 +34,7 @@ impl BootstrappedTypes {
     let array = Arc::new(array_class());
     let dictionary = Arc::new(dictionary_class());
     let callable = Arc::new(callable_class());
+    let int = Arc::new(int_class());
     let string = Arc::new(string_class());
     let signal = Arc::new(signal_class());
     Self {
@@ -41,6 +43,7 @@ impl BootstrappedTypes {
       array,
       dictionary,
       callable,
+      int,
       string,
       signal,
     }
@@ -56,6 +59,7 @@ impl BootstrappedTypes {
       ("Array".into(), self.array.clone()),
       ("Dictionary".into(), self.dictionary.clone()),
       ("Callable".into(), self.callable.clone()),
+      ("int".into(), self.int.clone()),
       ("String".into(), self.string.clone()),
       ("StringName".into(), self.string.clone()),
       ("Signal".into(), self.signal.clone()),
@@ -80,6 +84,10 @@ impl BootstrappedTypes {
 
   pub fn callable(&self) -> &Arc<Class> {
     &self.callable
+  }
+
+  pub fn int(&self) -> &Arc<Class> {
+    &self.int
   }
 
   pub fn string(&self) -> &Arc<Class> {
@@ -168,6 +176,18 @@ fn callable_class() -> Class {
   methods.insert(Identifier::from("call"), Method::rust_method("call", call_func));
   Class {
     name: Some(String::from("Callable")),
+    parent: None,
+    constants: Arc::new(constants),
+    instance_vars: vec![],
+    methods,
+  }
+}
+
+fn int_class() -> Class {
+  let constants = HashMap::new();
+  let methods = HashMap::new();
+  Class {
+    name: Some(String::from("int")),
     parent: None,
     constants: Arc::new(constants),
     instance_vars: vec![],

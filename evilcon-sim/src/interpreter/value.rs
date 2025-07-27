@@ -214,6 +214,7 @@ impl Value {
 
   pub fn get_class(&self, bootstrapping: &BootstrappedTypes) -> Option<Arc<Class>> {
     match self {
+      Value::Int(_) => Some(Arc::clone(bootstrapping.int())),
       Value::ObjectRef(obj) => Some(obj.borrow().class.clone()),
       Value::String(_) => Some(Arc::clone(bootstrapping.string())),
       Value::ArrayRef(_) => Some(Arc::clone(bootstrapping.array())),
