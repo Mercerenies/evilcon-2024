@@ -98,7 +98,8 @@ impl Class {
             class_name: None,
             decls: class_body,
           };
-          let inner_class = Self::load_from_file(superglobals, file)?;
+          let mut inner_class = Self::load_from_file(superglobals, file)?;
+          inner_class.name = Some(name.0.clone());
           constants.insert(name, LazyConst::resolved(Value::ClassRef(Arc::new(inner_class))));
         }
         Decl::Signal(name) => {

@@ -80,14 +80,30 @@ impl EvaluatorState {
     self.locals.insert(ident, value);
   }
 
-  pub fn get_var(&self, ident: &Identifier) -> Result<Option<&Value>, EvalError> {
+  /// If the Godot variable `self` is a class, returns `self`.
+  /// Otherwise, returns the class of `self`. If `self` is a non-class
+  /// and does not have a Godot-side class, returns None.
+  pub fn get_self_class(&self) -> Option<Arc<Class>> {
+    if let Value::ClassRef(class) = self.self_instance() {
+      Some(Arc::clone(class))
+    } else if let Some(class) = self.self_instance().get_class(self.bootstrapped_classes()) {
+      Some(class)
+    } else {
+      None
+    }
+  }
+
+  pub fn get_var(&self, ident: &Identifier) -> Result<Option<Value>, EvalError> {
     if let Some(local) = self.locals.get(ident) {
-      return Ok(Some(local));
+      return Ok(Some(local.clone()));
+    }
+    if let Some(class) = self.get_self_class() && Some(&ident.0) == class.name.as_ref() {
+      return Ok(Some(Value::ClassRef(class)));
     }
     if let Some(glob) = self.get_global(ident)? {
-      return Ok(Some(glob));
+      return Ok(Some(glob.clone()));
     }
-    Ok(self.superglobal_state.get_var(ident))
+    Ok(self.superglobal_state.get_var(ident).cloned())
   }
 
   fn get_global(&self, ident: &Identifier) -> Result<Option<&Value>, EvalError> {

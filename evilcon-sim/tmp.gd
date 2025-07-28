@@ -7,9 +7,18 @@ class ZZZ:
 
     static func a():
         print("ZZZ.a() called")
-        #ZZZ.a1()
+        ZZZ.a1()
+
+    func b1():
+        print("ZZZ.b1() called")
+
+    func b():
+        print("ZZZ.b() called")
+        self.b1()
+        ZZZ.a1()
 
 static func test():
+    ZZZ.new().b()
     ZZZ.a()
 
     var w = [1, 2, 3, 4]
