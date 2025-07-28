@@ -5,7 +5,6 @@
    + [X] ~card_game/playing_field/util/card_effects.gd~
    + [X] ~card_game/playing_field/util/card_game_phases.gd~
    + [ ] ~card_game/playing_field/util/query.gd~
-     - Need to make sure ~Query.Q~ has access to its own name somehow (/////)
    + [X] ~card_game/playing_field/util/stats_calculator.gd~
    + [X] ~card_game/playing_field/card_container/card_container.gd~
    + [X] ~card_game/playing_field/player_agent/player_agent.gd~

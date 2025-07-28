@@ -53,6 +53,16 @@ where F: FnMut(&T, &T) -> Result<Ordering, E> {
   quicksort_impl(arr, &mut cmp)
 }
 
+/// `try_reduce` from nightly, but in stable.
+pub fn try_reduce<I, E, F>(iter: &mut I, f: F) -> Result<Option<I::Item>, E>
+where I: Iterator,
+      F: FnMut(I::Item, I::Item) -> Result<I::Item, E> {
+  let Some(first) = iter.next() else {
+    return Ok(None);
+  };
+  iter.try_fold(first, f).map(Some)
+}
+
 #[cfg(test)]
 mod tests {
   use super::*;

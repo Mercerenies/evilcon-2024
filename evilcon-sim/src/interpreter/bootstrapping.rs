@@ -4,10 +4,10 @@ use super::eval::EvaluatorState;
 use super::value::{Value, HashKey};
 use super::error::{EvalError, ControlFlow};
 use super::method::{MethodArgs, Method};
-use super::operator::{expect_int, expect_string, expect_bool,
+use super::operator::{expect_int, expect_float_loosely, expect_string, expect_bool,
                       expect_array, expect_dict, do_comparison_op};
 use crate::ast::identifier::Identifier;
-use crate::util::try_sort_by;
+use crate::util::{try_sort_by, try_reduce};
 
 use rand::seq::SliceRandom;
 
@@ -141,7 +141,9 @@ fn array_class() -> Class {
   methods.insert(Identifier::from("map"), Method::rust_method("map", array_map));
   methods.insert(Identifier::from("any"), Method::rust_method("any", array_any));
   methods.insert(Identifier::from("all"), Method::rust_method("all", array_all));
-  methods.insert(Identifier::from("filter"), Method::rust_method("map", array_filter));
+  methods.insert(Identifier::from("filter"), Method::rust_method("filter", array_filter));
+  methods.insert(Identifier::from("max"), Method::rust_method("max", array_max));
+  methods.insert(Identifier::from("min"), Method::rust_method("min", array_min));
   methods.insert(Identifier::from("reduce"), Method::rust_method("reduce", array_reduce));
   methods.insert(Identifier::from("slice"), Method::rust_method("slice", array_slice));
   methods.insert(Identifier::from("sort"), Method::rust_method("sort", array_sort));
@@ -371,6 +373,34 @@ fn array_filter(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, E
   let callable = callable.to_rust_function(Arc::clone(state.superglobals()));
   arr.retain(|elem| callable(MethodArgs(vec![elem.clone()])).unwrap().as_bool());
   Ok(Value::new_array(arr))
+}
+
+// Just works on numbers for now.
+fn array_max(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
+  fn max(a: Value, b: Value) -> Result<Value, EvalError> {
+    let a = expect_float_loosely(&a)?;
+    let b = expect_float_loosely(&b)?;
+    Ok(Value::from(f64::max(a, b)))
+  }
+
+  let arr = expect_array(state.self_instance())?.borrow();
+  args.expect_arity(0)?;
+  try_reduce(&mut arr.iter().cloned(), max)
+    .map(|val| val.unwrap_or_default())
+}
+
+// Just works on numbers for now.
+fn array_min(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
+  fn min(a: Value, b: Value) -> Result<Value, EvalError> {
+    let a = expect_float_loosely(&a)?;
+    let b = expect_float_loosely(&b)?;
+    Ok(Value::from(f64::min(a, b)))
+  }
+
+  let arr = expect_array(state.self_instance())?.borrow();
+  args.expect_arity(0)?;
+  try_reduce(&mut arr.iter().cloned(), min)
+    .map(|val| val.unwrap_or_default())
 }
 
 fn array_reduce(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {

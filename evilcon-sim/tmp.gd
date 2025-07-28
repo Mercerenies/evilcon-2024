@@ -18,6 +18,11 @@ class ZZZ:
         ZZZ.a1()
 
 static func test():
+    print([1, 2, 1].min())
+    print([1, 2, 1].max())
+    print([].max())
+    print([].min())
+
     ZZZ.new().b()
     ZZZ.a()
 
