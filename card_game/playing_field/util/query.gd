@@ -226,8 +226,9 @@ static func by_id(id):
 # a CardEffects.do_hypothetical_influence_check.
 #
 # Cards not in play can always be influenced, since they don't undergo
-# influence checks normally (For instance, Skunkman can force you to
-# discard cards, regardless of how many ninja protections you have).
+# influence checks normally (For instance, Skunkman can always force
+# you to discard cards, regardless of how many ninja protections you
+# have).
 static func influenced_by(activating_card_type, player: StringName):
     return func filter_by_influence_check(playing_field, target_card):
         if target_card is CardType:
