@@ -65,6 +65,12 @@ impl Method {
         return Err(EvalError::type_error("class", state.self_instance().clone()));
       };
       let new_inst = Value::new_object(Arc::clone(class));
+      for var in &class.instance_vars {
+        // Note: The scope of this evaluation is absolutely and
+        // completely wrong. I hope I only use this for constants and
+        // things for which scope doesn't matter.
+        new_inst.set_value(&var.name.0, state.eval_expr(&var.initial_value)?)?;
+      }
       if let Ok(init_method) = class.get_func("_init") {
         state.call_function(Some(Arc::clone(&class.constants)), init_method, Box::new(new_inst.clone()), args)?;
       }

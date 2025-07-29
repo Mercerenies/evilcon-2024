@@ -2,11 +2,14 @@
 # NOTE: This file is not used for anything other than testing. Delete me someday plz :)
 
 class ZZZ:
+    var x = 7
+
     static func a1():
         print("ZZZ.a1() called")
 
     static func a():
         print("ZZZ.a() called")
+        a1()
         ZZZ.a1()
 
     func b1():
@@ -14,10 +17,20 @@ class ZZZ:
 
     func b():
         print("ZZZ.b() called")
+        b1()
+        a1()
         self.b1()
         ZZZ.a1()
 
+    func www():
+        return func():
+            return x
+
 static func test():
+    var tmp1 = ZZZ.new().www()
+    print(tmp1.call())
+
+    print(ZZZ.a1)
     print([1, 2, 1].min())
     print([1, 2, 1].max())
     print([].max())
