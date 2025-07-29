@@ -1,6 +1,11 @@
 
 use crate::loader::GdScriptLoader;
+use crate::ast::identifier::Identifier;
 use crate::interpreter::eval::SuperglobalState;
+use crate::interpreter::value::Value;
+use crate::interpreter::class::Class;
+
+use std::sync::Arc;
 
 pub const GDSCRIPT_FILES: &[&str] = &[
   "../card_game/playing_field/event_logger.gd",
@@ -37,8 +42,39 @@ pub fn load_all_files() -> anyhow::Result<SuperglobalState> {
   }
   eprintln!("Loaded all files.");
 
-  let superglobals = loader.build()?;
+  let mut superglobals = loader.build()?;
   eprintln!("Created interpreter environment.");
 
+  eprintln!("Performing surgery ...");
+  do_surgery(&mut superglobals)?;
+  eprintln!("Surgery complete.");
+
   Ok(superglobals)
+}
+
+/// Some precise manipulation of a few specific classes.
+fn do_surgery(superglobals: &mut SuperglobalState) -> anyhow::Result<()> {
+  fn get_inner_class(cls: &Class, name: &str) -> anyhow::Result<Arc<Class>> {
+    let inner_value = cls.constants.get(name)
+      .ok_or_else(|| anyhow::anyhow!("Could not find name '{name}' in class"))?
+      .get_if_initialized()
+      .map_err(|_poisoned_err| anyhow::anyhow!("Somehow, a class constant is poisoned"))?
+      .ok_or_else(|| anyhow::anyhow!("Class '{name}' is a nontrivial lazy const"))?;
+    if let Value::ClassRef(inner_class) = inner_value {
+      Ok(Arc::clone(inner_class))
+    } else {
+      anyhow::bail!("Class '{name}' is not a class reference");
+    }
+  }
+
+  // Place Query.Q and Query.QueryManager at the top-level global
+  // scope.
+  let Some(Value::ClassRef(query_class)) = superglobals.get_var("Query") else {
+    anyhow::bail!("Could not find Query class");
+  };
+  let q_class = get_inner_class(query_class, "Q")?;
+  let query_manager_class = get_inner_class(query_class, "QueryManager")?;
+  superglobals.bind_class(Identifier::new("Query"), q_class);
+  superglobals.bind_class(Identifier::new("QueryManager"), query_manager_class);
+  Ok(())
 }

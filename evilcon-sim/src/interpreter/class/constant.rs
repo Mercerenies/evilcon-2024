@@ -29,9 +29,14 @@ impl LazyConst {
     }
   }
 
-  /// A [`LazyConst`] guaranteed to resolve to a given constant value.
+  /// A [`LazyConst`] which is already resolved to the given value.
   pub fn resolved(value: Value) -> Self {
-    Self::new(|_| Ok(value))
+    let cell = OnceCell::new();
+    cell.set(Ok(value)).unwrap();
+    Self {
+      value: cell,
+      initializer: Cell::new(None),
+    }
   }
 
   /// A [`LazyConst`] that evaluates an expression.
@@ -65,6 +70,15 @@ impl LazyConst {
     } else {
       value.map_err(|_| EvalError::PoisonedConstant)
     }
+  }
+
+  pub fn get_if_initialized(&self) -> Result<Option<&Value>, EvalError> {
+    let Some(value) = self.value.get() else {
+      return Ok(None);
+    };
+    value.as_ref()
+      .map(Some)
+      .map_err(|_| EvalError::PoisonedConstant)
   }
 }
 
