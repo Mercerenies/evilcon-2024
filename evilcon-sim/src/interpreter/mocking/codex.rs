@@ -56,12 +56,12 @@ pub enum CodexLoadError {
   #[error("{0}")]
   IoError(#[from] io::Error),
   #[error("{0}")]
-  YmlError(#[from] serde_yml::Error),
+  YmlError(#[from] serde_yaml::Error),
 }
 
 impl CodexDataFile {
-  pub fn read_from_file<R: Read>(reader: R) -> serde_yml::Result<Self> {
-    serde_yml::from_reader(reader)
+  pub fn read_from_file<R: Read>(reader: R) -> serde_yaml::Result<Self> {
+    serde_yaml::from_reader(reader)
   }
 
   pub fn read_from_default_file() -> Result<Self, CodexLoadError> {
