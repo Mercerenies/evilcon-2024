@@ -194,7 +194,7 @@ pub fn call_func(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, 
   match state.self_instance() {
     Value::BoundMethod(method) => {
       let globals = method.self_instance.get_class(state.bootstrapped_classes())
-        .map(|class| Arc::clone(&class.constants));
+        .map(|class| class.get_constants_table());
       state.call_function(
         globals,
         &method.method,

@@ -152,9 +152,9 @@ impl Value {
   pub fn get_value(&self, name: &str, superglobals: &Arc<SuperglobalState>) -> Result<Value, EvalError> {
     if let Value::EnumType(dict) = self {
       dict.get(name).map(|i| Value::from(*i)).ok_or(NoSuchVar(name.to_owned()).into())
-    } else if let Value::ClassRef(cls) = self && let Some(constant) = cls.constants.get(name) {
+    } else if let Value::ClassRef(cls) = self && let Some(constant) = cls.get_constant(name) {
       let const_context = EvaluatorState::new(Arc::clone(superglobals))
-        .with_globals(Arc::clone(&cls.constants));
+        .with_globals(cls.get_constants_table());
       constant.get(&const_context).cloned()
     } else if let Value::ObjectRef(obj) = self {
       let obj = obj.borrow();

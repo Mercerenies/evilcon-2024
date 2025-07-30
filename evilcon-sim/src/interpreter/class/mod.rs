@@ -29,9 +29,9 @@ pub struct Class {
   #[builder(setter(strip_option))]
   parent: Option<Arc<Class>>,
   #[builder(setter(into))]
-  pub constants: Arc<HashMap<Identifier, LazyConst>>,
-  pub instance_vars: Vec<InstanceVar>,
-  pub methods: HashMap<Identifier, Method>,
+  constants: Arc<HashMap<Identifier, LazyConst>>,
+  instance_vars: Vec<InstanceVar>,
+  methods: HashMap<Identifier, Method>,
 }
 
 #[derive(Debug, Clone)]
@@ -52,6 +52,10 @@ impl Class {
 
   pub fn parent(&self) -> Option<Arc<Class>> {
     self.parent.clone()
+  }
+
+  pub fn instance_vars(&self) -> &[InstanceVar] {
+    &self.instance_vars
   }
 
   pub fn load_from_file(superglobals: &mut SuperglobalState, file: SourceFile) -> Result<Self, EvalError> {
@@ -131,6 +135,15 @@ impl Class {
       instance_vars,
       methods,
     })
+  }
+
+  pub fn get_constants_table(&self) -> Arc<HashMap<Identifier, LazyConst>> {
+    Arc::clone(&self.constants)
+  }
+
+  pub fn get_constant(&self, name: &str) -> Option<&LazyConst> {
+    self.constants.get(name)
+      .or_else(|| self.parent.as_deref().and_then(|parent| parent.get_constant(name)))
   }
 
   pub fn get_func(&self, name: &str) -> Result<&Method, NoSuchFunc> {

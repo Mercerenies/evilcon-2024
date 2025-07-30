@@ -182,7 +182,7 @@ impl EvaluatorState {
         let left = self.eval_expr(left)?;
         let func = left.get_func("__getitem__", self.superglobal_state.bootstrapped_classes())?; // Just do it the Python way, even though Godot doesn't :)
         let args = MethodArgs(vec![self.eval_expr(right)?]);
-        let globals = left.get_class(self.superglobal_state.bootstrapped_classes()).map(|class| Arc::clone(&class.constants));
+        let globals = left.get_class(self.superglobal_state.bootstrapped_classes()).map(|class| class.get_constants_table());
         self.call_function(globals, &func, Box::new(left), args)
       }
       Expr::Attr(left, name) => {
@@ -203,7 +203,7 @@ impl EvaluatorState {
           func = left_value.get_func(name.as_ref(), self.superglobal_state.bootstrapped_classes())?;
         }
         let args = MethodArgs(args.iter().map(|arg| self.eval_expr(arg)).collect::<Result<Vec<_>, _>>()?);
-        let globals = left_value.get_class(self.superglobal_state.bootstrapped_classes()).map(|class| Arc::clone(&class.constants));
+        let globals = left_value.get_class(self.superglobal_state.bootstrapped_classes()).map(|class| class.get_constants_table());
         self.call_function(globals, &func, Box::new(left_value), args)
       }
       Expr::BinaryOp(left, op, right) => {
@@ -288,7 +288,7 @@ impl EvaluatorState {
       AssignmentLeftHand::Subscript(left, right) => {
         let func = left.get_func("__getitem__", self.superglobal_state.bootstrapped_classes())?; // Just do it the Python way, even though Godot doesn't :)
         let args = MethodArgs(vec![right.clone()]);
-        let globals = left.get_class(self.superglobal_state.bootstrapped_classes()).map(|class| Arc::clone(&class.constants));
+        let globals = left.get_class(self.superglobal_state.bootstrapped_classes()).map(|class| class.get_constants_table());
         self.call_function(globals, &func, Box::new(left.clone()), args)
       }
       AssignmentLeftHand::Attr(left, name) => {

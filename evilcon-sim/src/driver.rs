@@ -55,7 +55,7 @@ pub fn load_all_files() -> anyhow::Result<SuperglobalState> {
 /// Some precise manipulation of a few specific classes.
 fn do_surgery(superglobals: &mut SuperglobalState) -> anyhow::Result<()> {
   fn get_inner_class(cls: &Class, name: &str) -> anyhow::Result<Arc<Class>> {
-    let inner_value = cls.constants.get(name)
+    let inner_value = cls.get_constant(name)
       .ok_or_else(|| anyhow::anyhow!("Could not find name '{name}' in class"))?
       .get_if_initialized()
       .map_err(|_poisoned_err| anyhow::anyhow!("Somehow, a class constant is poisoned"))?
