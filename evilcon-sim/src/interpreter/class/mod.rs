@@ -1,5 +1,6 @@
 
 pub mod constant;
+pub mod proxy;
 
 use crate::ast::identifier::Identifier;
 use crate::ast::file::{SourceFile, ExtendsClause};

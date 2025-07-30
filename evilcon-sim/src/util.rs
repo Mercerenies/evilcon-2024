@@ -63,6 +63,10 @@ where I: Iterator,
   iter.try_fold(first, f).map(Some)
 }
 
+pub fn clamp<T: Ord>(val: T, min: T, max: T) -> T {
+  if val < min { min } else if val > max { max } else { val }
+}
+
 #[cfg(test)]
 mod tests {
   use super::*;
