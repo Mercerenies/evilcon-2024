@@ -69,7 +69,7 @@ impl Method {
         // Note: The scope of this evaluation is absolutely and
         // completely wrong. I hope I only use this for constants and
         // things for which scope doesn't matter.
-        new_inst.set_value(&var.name.0, state.eval_expr(&var.initial_value)?)?;
+        new_inst.set_value(&var.name.0, state.eval_expr(&var.initial_value)?, state.superglobal_state())?;
       }
       if let Ok(init_method) = class.get_func("_init") {
         state.call_function(Some(class.get_constants_table()), init_method, Box::new(new_inst.clone()), args)?;

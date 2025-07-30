@@ -3,38 +3,49 @@
 
 use crate::interpreter::value::Value;
 use crate::interpreter::error::EvalError;
-use crate::interpreter::eval::EvaluatorState;
+use crate::interpreter::eval::SuperglobalState;
 use crate::interpreter::operator::expect_int;
 use crate::util::clamp;
+
+use std::sync::Arc;
 
 /// A proxy field is a pseudo-field on a class which calls a Rust
 /// method when it is accessed or assigned to. These are not available
 /// in the pure GDScript interpreter portion of this engine and are
 /// only used for mocking.
 pub trait ProxyField {
-  fn get_field(&self, state: &mut EvaluatorState) -> Result<Value, EvalError>;
-  fn set_field(&mut self, state: &mut EvaluatorState, value: Value) -> Result<(), EvalError>;
+  fn get_field(
+    &self,
+    superglobals: &Arc<SuperglobalState>,
+    object: &Value,
+  ) -> Result<Value, EvalError>;
+  fn set_field(
+    &self,
+    superglobals: &Arc<SuperglobalState>,
+    object: &Value,
+    value: Value,
+  ) -> Result<(), EvalError>;
 }
 
 /// A proxy field which is backed by a real variable. The getter
 /// simply returns the variable's value, and the setter assigns a
 /// (possibly-modified) version of the value.
-pub struct BackedField {
-  field_value: Value,
-  value_adjustment: Box<dyn FnMut(Value) -> Result<Value, EvalError>>,
+pub struct BackedField<'a> {
+  inner_field_name: &'a str,
+  value_adjustment: Box<dyn Fn(Value) -> Result<Value, EvalError>>,
 }
 
-impl BackedField {
-  pub fn new(initial_value: Value) -> Self {
+impl<'a> BackedField<'a> {
+  pub fn new(inner_field_name: &'a str) -> Self {
     Self {
-      field_value: initial_value,
+      inner_field_name,
       value_adjustment: Box::new(Ok),
     }
   }
 
   pub fn with_adjustment(
     mut self,
-    value_adjustment: impl FnMut(Value) -> Result<Value, EvalError> + 'static,
+    value_adjustment: impl Fn(Value) -> Result<Value, EvalError> + 'static,
   ) -> Self {
     self.value_adjustment = Box::new(value_adjustment);
     self
@@ -50,13 +61,14 @@ impl BackedField {
   }
 }
 
-impl ProxyField for BackedField {
-  fn get_field(&self, _: &mut EvaluatorState) -> Result<Value, EvalError> {
-    Ok(self.field_value.clone())
+impl<'a> ProxyField for BackedField<'a> {
+  fn get_field(&self, superglobals: &Arc<SuperglobalState>, object: &Value) -> Result<Value, EvalError> {
+    object.get_value_raw(&self.inner_field_name, superglobals)
   }
 
-  fn set_field(&mut self, _: &mut EvaluatorState, value: Value) -> Result<(), EvalError> {
-    self.field_value = (self.value_adjustment)(value)?;
+  fn set_field(&self, _: &Arc<SuperglobalState>, object: &Value, value: Value) -> Result<(), EvalError> {
+    let new_value = (self.value_adjustment)(value)?;
+    object.set_value_raw(&self.inner_field_name, new_value)?;
     Ok(())
   }
 }

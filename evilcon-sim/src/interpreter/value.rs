@@ -150,6 +150,14 @@ impl Value {
   }
 
   pub fn get_value(&self, name: &str, superglobals: &Arc<SuperglobalState>) -> Result<Value, EvalError> {
+    if let Some(class) = self.get_class(superglobals.bootstrapped_classes()) &&
+      let Some(proxy_var) = class.get_proxy_var(name) {
+        return proxy_var.get_field(superglobals, self);
+    }
+    self.get_value_raw(name, superglobals)
+  }
+
+  pub fn get_value_raw(&self, name: &str, superglobals: &Arc<SuperglobalState>) -> Result<Value, EvalError> {
     if let Value::EnumType(dict) = self {
       dict.get(name).map(|i| Value::from(*i)).ok_or(NoSuchVar(name.to_owned()).into())
     } else if let Value::ClassRef(cls) = self && let Some(constant) = cls.get_constant(name) {
@@ -166,7 +174,15 @@ impl Value {
     }
   }
 
-  pub fn set_value(&self, name: &str, value: Value) -> Result<(), EvalError> {
+  pub fn set_value(&self, name: &str, value: Value, superglobals: &Arc<SuperglobalState>) -> Result<(), EvalError> {
+    if let Some(class) = self.get_class(superglobals.bootstrapped_classes()) &&
+      let Some(proxy_var) = class.get_proxy_var(name) {
+        return proxy_var.set_field(superglobals, self, value);
+    }
+    self.set_value_raw(name, value)
+  }
+
+  pub fn set_value_raw(&self, name: &str, value: Value) -> Result<(), EvalError> {
     if let Value::ObjectRef(obj) = self {
       let mut obj = obj.borrow_mut();
       obj.dict.insert(name.to_owned(), value);

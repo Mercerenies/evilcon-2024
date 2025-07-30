@@ -12,6 +12,7 @@ use super::error::EvalError;
 use super::eval::SuperglobalState;
 use super::value::{Value, NoSuchFunc};
 use constant::LazyConst;
+use proxy::ProxyField;
 
 use ordermap::OrderMap;
 use derive_builder::Builder;
@@ -19,10 +20,12 @@ use derive_builder::Builder;
 use std::hash::{Hash, Hasher};
 use std::sync::Arc;
 use std::collections::HashMap;
+use std::ops::Deref;
+use std::fmt::{self, Debug, Formatter};
 
 /// A class written in Godot or mocked Rust-side.
-#[derive(Debug, Clone, Builder, Default)]
-#[builder(default, build_fn(private, name = "build_impl"))]
+#[derive(Debug, Builder, Default)]
+#[builder(default, pattern = "owned", build_fn(private, name = "build_impl"))]
 pub struct Class {
   #[builder(setter(strip_option, into))]
   name: Option<String>,
@@ -31,6 +34,7 @@ pub struct Class {
   #[builder(setter(into))]
   constants: Arc<HashMap<Identifier, LazyConst>>,
   instance_vars: Vec<InstanceVar>,
+  proxy_vars: HashMap<Identifier, ProxyVar>,
   methods: HashMap<Identifier, Method>,
 }
 
@@ -38,6 +42,10 @@ pub struct Class {
 pub struct InstanceVar {
   pub name: Identifier,
   pub initial_value: Expr,
+}
+
+pub struct ProxyVar {
+  field: Box<dyn ProxyField>,
 }
 
 #[derive(Debug, Clone)]
@@ -133,6 +141,7 @@ impl Class {
       parent: Some(parent),
       constants: Arc::new(constants),
       instance_vars,
+      proxy_vars: HashMap::new(),
       methods,
     })
   }
@@ -144,6 +153,11 @@ impl Class {
   pub fn get_constant(&self, name: &str) -> Option<&LazyConst> {
     self.constants.get(name)
       .or_else(|| self.parent.as_deref().and_then(|parent| parent.get_constant(name)))
+  }
+
+  pub fn get_proxy_var(&self, name: &str) -> Option<&ProxyVar> {
+    self.proxy_vars.get(name)
+      .or_else(|| self.parent.as_deref().and_then(|parent| parent.get_proxy_var(name)))
   }
 
   pub fn get_func(&self, name: &str) -> Result<&Method, NoSuchFunc> {
@@ -163,7 +177,7 @@ impl Class {
 }
 
 impl ClassBuilder {
-  pub fn build(&mut self) -> Class {
+  pub fn build(self) -> Class {
     self.build_impl()
       .expect("All fields are optional, ClassBuilder::build should never fail")
   }
@@ -211,6 +225,22 @@ impl From<VarStmt> for InstanceVar {
       name: stmt.name,
       initial_value: *stmt.initial_value.unwrap_or_else(|| Box::new(Expr::from(Literal::Null))),
     }
+  }
+}
+
+impl Debug for ProxyVar {
+  fn fmt(&self, f: &mut Formatter) -> fmt::Result {
+    f.debug_struct("ProxyVar")
+      .field("inner", &"<...>")
+      .finish()
+  }
+}
+
+impl Deref for ProxyVar {
+  type Target = dyn ProxyField;
+
+  fn deref(&self) -> &Self::Target {
+    &*self.field
   }
 }
 

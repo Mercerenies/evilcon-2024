@@ -410,14 +410,14 @@ impl EvaluatorState {
         if !self.has_local_var(&id) {
           self.set_local_var(id, value);
         } else {
-          self.self_instance().set_value(id.as_ref(), value)?;
+          self.self_instance().set_value(id.as_ref(), value, self.superglobal_state())?;
         }
       }
       AssignmentLeftHand::Subscript(left, index) => {
         left.set_index(index, value)?;
       }
       AssignmentLeftHand::Attr(left, name) => {
-        left.set_value(name.as_ref(), value)?;
+        left.set_value(name.as_ref(), value, self.superglobal_state())?;
       }
     }
     Ok(())
