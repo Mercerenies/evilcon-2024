@@ -1,5 +1,5 @@
 
-use super::class::Class;
+use super::class::{Class, ClassBuilder};
 use super::eval::EvaluatorState;
 use super::value::{Value, HashKey};
 use super::error::{EvalError, ControlFlow};
@@ -100,31 +100,19 @@ impl BootstrappedTypes {
 }
 
 fn object_class() -> Class {
-  let constants = HashMap::new();
-  let methods = HashMap::new();
-  Class {
-    name: Some(String::from("Object")),
-    parent: None,
-    constants: Arc::new(constants),
-    instance_vars: vec![],
-    methods,
-  }
+  ClassBuilder::default()
+    .name("Object")
+    .build()
 }
 
 fn refcounted_class(object: Arc<Class>) -> Class {
-  let constants = HashMap::new();
-  let methods = HashMap::new();
-  Class {
-    name: Some(String::from("RefCounted")),
-    parent: Some(object),
-    constants: Arc::new(constants),
-    instance_vars: vec![],
-    methods,
-  }
+  ClassBuilder::default()
+    .name("RefCounted")
+    .parent(object)
+    .build()
 }
 
 fn array_class() -> Class {
-  let constants = HashMap::new();
   let mut methods = HashMap::new();
   methods.insert(Identifier::from("__getitem__"), Method::rust_method("__getitem__", array_getitem));
   methods.insert(Identifier::from("clear"), Method::rust_method("clear", array_clear));
@@ -148,17 +136,13 @@ fn array_class() -> Class {
   methods.insert(Identifier::from("slice"), Method::rust_method("slice", array_slice));
   methods.insert(Identifier::from("sort"), Method::rust_method("sort", array_sort));
   methods.insert(Identifier::from("sort_custom"), Method::rust_method("sort_custom", array_sort_custom));
-  Class {
-    name: Some(String::from("Array")),
-    parent: None,
-    constants: Arc::new(constants),
-    instance_vars: vec![],
-    methods,
-  }
+  ClassBuilder::default()
+    .name("Array")
+    .methods(methods)
+    .build()
 }
 
 fn dictionary_class() -> Class {
-  let constants = HashMap::new();
   let mut methods = HashMap::new();
   methods.insert(Identifier::from("__getitem__"), Method::rust_method("__getitem__", dict_getitem));
   methods.insert(Identifier::from("get"), Method::rust_method("get", dict_get));
@@ -166,65 +150,44 @@ fn dictionary_class() -> Class {
   methods.insert(Identifier::from("keys"), Method::rust_method("keys", dict_keys));
   methods.insert(Identifier::from("values"), Method::rust_method("values", dict_values));
   methods.insert(Identifier::from("merge"), Method::rust_method("merge", dict_merge));
-  Class {
-    name: Some(String::from("Dictionary")),
-    parent: None,
-    constants: Arc::new(constants),
-    instance_vars: vec![],
-    methods,
-  }
+  ClassBuilder::default()
+    .name("Dictionary")
+    .methods(methods)
+    .build()
 }
 
 fn callable_class() -> Class {
-  let constants = HashMap::new();
   let mut methods = HashMap::new();
   methods.insert(Identifier::from("call"), Method::rust_method("call", call_func));
-  Class {
-    name: Some(String::from("Callable")),
-    parent: None,
-    constants: Arc::new(constants),
-    instance_vars: vec![],
-    methods,
-  }
+  ClassBuilder::default()
+    .name("Callable")
+    .methods(methods)
+    .build()
 }
 
 fn int_class() -> Class {
-  let constants = HashMap::new();
-  let methods = HashMap::new();
-  Class {
-    name: Some(String::from("int")),
-    parent: None,
-    constants: Arc::new(constants),
-    instance_vars: vec![],
-    methods,
-  }
+  ClassBuilder::default()
+    .name("int")
+    .build()
 }
 
 fn string_class() -> Class {
-  let constants = HashMap::new();
   let mut methods = HashMap::new();
   methods.insert(Identifier::from("substr"), Method::rust_method("substr", string_substr));
-  Class {
-    name: Some(String::from("String")),
-    parent: None,
-    constants: Arc::new(constants),
-    instance_vars: vec![],
-    methods,
-  }
+  ClassBuilder::default()
+    .name("String")
+    .methods(methods)
+    .build()
 }
 
 fn signal_class() -> Class {
-  let constants = HashMap::new();
   let mut methods = HashMap::new();
   methods.insert(Identifier::from("emit"), Method::noop());
   methods.insert(Identifier::from("connect"), Method::noop());
-  Class {
-    name: Some(String::from("Signal")),
-    parent: None,
-    constants: Arc::new(constants),
-    instance_vars: vec![],
-    methods,
-  }
+  ClassBuilder::default()
+    .name("Signal")
+    .methods(methods)
+    .build()
 }
 
 pub fn call_func(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {

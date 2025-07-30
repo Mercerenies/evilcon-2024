@@ -97,7 +97,7 @@ impl EvaluatorState {
     if let Some(local) = self.locals.get(ident) {
       return Ok(Some(local.clone()));
     }
-    if let Some(class) = self.get_self_class() && Some(&ident.0) == class.name.as_ref() {
+    if let Some(class) = self.get_self_class() && Some(&*ident.0) == class.name() {
       return Ok(Some(Value::ClassRef(class)));
     }
     if let Some(glob) = self.get_global(ident)? {
@@ -196,7 +196,7 @@ impl EvaluatorState {
           // super call
           left_value = self.self_instance().clone();
           let left_class = left_value.get_class(self.superglobal_state.bootstrapped_classes()).ok_or(EvalError::BadSuper)?;
-          let Some(left_parent) = &left_class.parent else { return Err(EvalError::BadSuper); };
+          let Some(left_parent) = left_class.parent() else { return Err(EvalError::BadSuper); };
           func = left_parent.get_func(name.as_ref())?.clone();
         } else {
           left_value = self.eval_expr(left)?;
@@ -507,8 +507,8 @@ impl SuperglobalState {
     let class = Class::load_from_file(self, source_file)?;
     let class = Arc::new(class);
     self.loaded_files.insert(path, Arc::clone(&class));
-    if let Some(class_name) = &class.name {
-      self.bind_var(class_name.clone().into(), Value::ClassRef(class));
+    if let Some(class_name) = class.name() {
+      self.bind_var(class_name.to_owned().into(), Value::ClassRef(class));
     }
     Ok(())
   }

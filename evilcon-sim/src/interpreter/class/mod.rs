@@ -14,16 +14,21 @@ use super::value::{Value, NoSuchFunc};
 use constant::LazyConst;
 
 use ordermap::OrderMap;
+use derive_builder::Builder;
 
 use std::hash::{Hash, Hasher};
 use std::sync::Arc;
 use std::collections::HashMap;
 
 /// A class written in Godot or mocked Rust-side.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Builder, Default)]
+#[builder(default, build_fn(private, name = "build_impl"))]
 pub struct Class {
-  pub name: Option<String>,
-  pub parent: Option<Arc<Class>>,
+  #[builder(setter(strip_option, into))]
+  name: Option<String>,
+  #[builder(setter(strip_option))]
+  parent: Option<Arc<Class>>,
+  #[builder(setter(into))]
   pub constants: Arc<HashMap<Identifier, LazyConst>>,
   pub instance_vars: Vec<InstanceVar>,
   pub methods: HashMap<Identifier, Method>,
@@ -41,6 +46,14 @@ pub struct ClassSupertypesIter {
 }
 
 impl Class {
+  pub fn name(&self) -> Option<&str> {
+    self.name.as_deref()
+  }
+
+  pub fn parent(&self) -> Option<Arc<Class>> {
+    self.parent.clone()
+  }
+
   pub fn load_from_file(superglobals: &mut SuperglobalState, file: SourceFile) -> Result<Self, EvalError> {
     let name = file.class_name;
     let parent = match file.extends_clause.unwrap_or_default() {
@@ -136,6 +149,13 @@ impl Class {
   }
 }
 
+impl ClassBuilder {
+  pub fn build(&mut self) -> Class {
+    self.build_impl()
+      .expect("All fields are optional, ClassBuilder::build should never fail")
+  }
+}
+
 impl InstanceVar {
   pub fn new(name: impl Into<String>, initial_value: Option<Expr>) -> Self {
     Self {
@@ -178,5 +198,17 @@ impl From<VarStmt> for InstanceVar {
       name: stmt.name,
       initial_value: *stmt.initial_value.unwrap_or_else(|| Box::new(Expr::from(Literal::Null))),
     }
+  }
+}
+
+#[cfg(test)]
+mod tests {
+  use super::*;
+
+  // Verify that all fields in ClassBuilder are in fact optional.
+  #[test]
+  fn verify_all_class_builder_fields_optional() {
+    // Panics if I'm wrong.
+    ClassBuilder::default().build();
   }
 }

@@ -14,7 +14,7 @@
 //! [`bind_mocked_classes`](super::bind_mocked_classes) and must be
 //! bound separately.
 
-use crate::interpreter::class::Class;
+use crate::interpreter::class::{Class, ClassBuilder};
 use crate::interpreter::class::constant::LazyConst;
 use crate::interpreter::eval::{SuperglobalState, EvaluatorState};
 use crate::interpreter::method::{Method, MethodArgs};
@@ -94,13 +94,11 @@ impl CodexDataFile {
       }
     }));
 
-    Class {
-      name: Some(String::from("PlayingCardCodex")),
-      parent: None,
-      constants: Arc::new(constants),
-      instance_vars: Vec::new(),
-      methods,
-    }
+    ClassBuilder::default()
+      .name("PlayingCardCodex")
+      .constants(constants)
+      .methods(methods)
+      .build()
   }
 
   pub fn bind_gd_class(self, superglobals: &mut SuperglobalState) {

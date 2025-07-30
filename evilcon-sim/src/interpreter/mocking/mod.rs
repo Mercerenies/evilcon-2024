@@ -10,7 +10,7 @@ mod randomness;
 
 pub mod codex;
 
-use super::class::Class;
+use super::class::{Class, ClassBuilder};
 use super::class::constant::LazyConst;
 use super::value::Value;
 use super::eval::{SuperglobalState, EvaluatorState};
@@ -104,15 +104,10 @@ pub fn bind_mocked_methods(superglobals: &mut SuperglobalState) {
 }
 
 fn node_class(object: Arc<Class>) -> Class {
-  let constants = HashMap::new();
-  let methods = HashMap::new();
-  Class {
-    name: Some(String::from("Node")),
-    parent: Some(object),
-    constants: Arc::new(constants),
-    instance_vars: vec![],
-    methods,
-  }
+  ClassBuilder::default()
+    .name("Node")
+    .parent(object)
+    .build()
 }
 
 fn popup_text_class(node: Arc<Class>) -> Class {
@@ -121,27 +116,18 @@ fn popup_text_class(node: Arc<Class>) -> Class {
   for const_name in CONST_NAMES {
     constants.insert(Identifier::new(const_name), LazyConst::resolved(Value::from("UNUSED CONSTANT")));
   }
-  let methods = HashMap::new();
-  Class {
-    name: Some(String::from("PopupText")),
-    parent: Some(node),
-    constants: Arc::new(constants),
-    instance_vars: vec![],
-    methods,
-  }
+  ClassBuilder::default()
+    .name("PopupText")
+    .parent(node)
+    .constants(Arc::new(constants))
+    .build()
 }
 
 /// A dummy class that is intended to go completely unused. The
 /// properties of this class are not specified, other than the fact
 /// that it exists.
 fn dummy_class() -> Class {
-  Class {
-    name: None,
-    parent: None,
-    constants: Arc::new(HashMap::new()),
-    instance_vars: vec![],
-    methods: HashMap::new(),
-  }
+  Class::default()
 }
 
 fn preload_method(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {

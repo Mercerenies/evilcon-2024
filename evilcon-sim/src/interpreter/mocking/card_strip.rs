@@ -1,5 +1,5 @@
 
-use crate::interpreter::class::{Class, InstanceVar};
+use crate::interpreter::class::{Class, ClassBuilder, InstanceVar};
 use crate::interpreter::method::Method;
 use crate::ast::expr::Expr;
 use crate::ast::identifier::Identifier;
@@ -11,8 +11,6 @@ use std::collections::HashMap;
 pub(super) const CARD_STRIP_RES_PATH: &str = "res://card_game/playing_field/card_strip/card_strip.gd";
 
 pub(super) fn card_strip_class(node: Arc<Class>) -> Class {
-  let constants = HashMap::new();
-
   let cards_initial_value =
     Expr::call("load", vec![Expr::string("res://card_game/playing_field/card_container/card_container.gd")])
     .attr_call("new", Vec::new());
@@ -30,13 +28,11 @@ pub(super) fn card_strip_class(node: Arc<Class>) -> Class {
     state.self_instance().get_value("__evilconsim_cards", state.superglobal_state())
   }));
 
-  Class {
-    name: None,
-    parent: Some(node),
-    constants: Arc::new(constants),
-    instance_vars,
-    methods,
-  }
+  ClassBuilder::default()
+    .parent(node)
+    .instance_vars(instance_vars)
+    .methods(methods)
+    .build()
 }
 
 pub(super) fn card_strip_tscn_class() -> Class {

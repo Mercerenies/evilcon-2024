@@ -1,5 +1,5 @@
 
-use crate::interpreter::class::{Class, InstanceVar};
+use crate::interpreter::class::{Class, ClassBuilder, InstanceVar};
 use crate::interpreter::class::constant::LazyConst;
 use crate::interpreter::value::Value;
 use crate::interpreter::eval::EvaluatorState;
@@ -63,13 +63,12 @@ pub(super) fn playing_field_class(node: Arc<Class>) -> Class {
 
   // TODO More
 
-  Class {
-    name: None,
-    parent: Some(node),
-    constants: Arc::new(constants),
-    instance_vars,
-    methods,
-  }
+  ClassBuilder::default()
+    .parent(node)
+    .constants(constants)
+    .instance_vars(instance_vars)
+    .methods(methods)
+    .build()
 }
 
 fn instantiate_card_strip() -> Expr {

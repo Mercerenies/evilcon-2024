@@ -1,5 +1,5 @@
 
-use crate::interpreter::class::Class;
+use crate::interpreter::class::{Class, ClassBuilder};
 use crate::interpreter::value::Value;
 use crate::interpreter::method::Method;
 use crate::interpreter::error::EvalError;
@@ -39,11 +39,9 @@ pub(super) fn randomness_class(refcounted: Arc<Class>) -> Class {
     Ok(value.clone())
   }));
 
-  Class {
-    name: Some(String::from("Randomness")),
-    parent: Some(refcounted),
-    constants: Arc::new(HashMap::new()),
-    instance_vars: vec![],
-    methods,
-  }
+  ClassBuilder::default()
+    .name("Randomness")
+    .parent(refcounted)
+    .methods(methods)
+    .build()
 }
