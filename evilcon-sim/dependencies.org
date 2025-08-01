@@ -32,7 +32,7 @@
    + [ ] ~card_game/playing_field/playing_field.gd~
    + [X] ~card_game/playing_field/randomness.gd~
    + [ ] ~card_game/playing_field/util/card_game_turn_transitions.gd~
-   + [ ] ~card_game/playing_field/game_stats_panel/game_stats_panel.gd~ and ~.tscn~
+   + [X] ~card_game/playing_field/game_stats_panel/game_stats_panel.gd~ and ~.tscn~
      - setget syntax
    + [X] ~card_game/playing_field/card_strip/card_strip.gd~ and ~.tscn~
    + [X] ~card_game/playing_field/card_container/card_container.tscn~
