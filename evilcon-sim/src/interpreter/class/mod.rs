@@ -192,6 +192,14 @@ impl InstanceVar {
   }
 }
 
+impl ProxyVar {
+  pub fn new(field: impl ProxyField + 'static) -> Self {
+    Self {
+      field: Box::new(field),
+    }
+  }
+}
+
 impl Iterator for ClassSupertypesIter {
   type Item = Arc<Class>;
 

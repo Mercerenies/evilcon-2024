@@ -59,6 +59,24 @@ impl<'a> BackedField<'a> {
       Ok(Value::from(clamp(value, min, max)))
     })
   }
+
+  /// Adjustment which clamps integer values below the given value.
+  /// Non-integers produce a type error.
+  pub fn clamped_below(self, upper_bound: i64) -> Self {
+    self.with_adjustment(move |value| {
+      let value = expect_int(&value)?;
+      Ok(Value::from(i64::min(upper_bound, value)))
+    })
+  }
+
+  /// Adjustment which clamps integer values above the given value.
+  /// Non-integers produce a type error.
+  pub fn clamped_above(self, lower_bound: i64) -> Self {
+    self.with_adjustment(move |value| {
+      let value = expect_int(&value)?;
+      Ok(Value::from(i64::max(lower_bound, value)))
+    })
+  }
 }
 
 impl<'a> ProxyField for BackedField<'a> {
