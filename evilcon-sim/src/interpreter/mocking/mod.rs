@@ -9,6 +9,7 @@ mod playing_field;
 mod randomness;
 mod stats;
 mod stats_panel;
+mod turn_transitions;
 
 pub mod codex;
 
@@ -81,6 +82,12 @@ pub fn bind_mocked_classes(superglobals: &mut SuperglobalState) {
   let stats_gd = Arc::new(stats_gd);
   superglobals.add_file(ResourcePath::new("res://card_game/playing_field/util/stats.gd"), stats_gd.clone());
   superglobals.bind_class(Identifier::new("Stats"), stats_gd.clone());
+
+  // CardGameTurnTransitions
+  let turn_transitions = turn_transitions::turn_transitions_class(Arc::clone(&node));
+  let turn_transitions = Arc::new(turn_transitions);
+  superglobals.add_file(ResourcePath::new(turn_transitions::TURN_TRANSITIONS_RES_PATH), Arc::clone(&turn_transitions));
+  superglobals.bind_class(Identifier::new("CardGameTurnTransitions"), turn_transitions);
 }
 
 pub fn bind_mocked_constants(superglobals: &mut SuperglobalState) {
