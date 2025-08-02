@@ -8,6 +8,7 @@ use crate::interpreter::operator::expect_string;
 use crate::ast::expr::Expr;
 use crate::ast::identifier::Identifier;
 use super::card_strip::CARD_STRIP_RES_PATH;
+use super::stats_panel::STATS_PANEL_RES_PATH;
 
 use std::sync::Arc;
 use std::collections::HashMap;
@@ -48,6 +49,8 @@ pub(super) fn playing_field_class(node: Arc<Class>) -> Class {
   instance_vars.push(InstanceVar::new("__evilconsim_minionstrip_top", Some(instantiate_card_strip())));
   instance_vars.push(InstanceVar::new("__evilconsim_effectstrip_bottom", Some(instantiate_card_strip())));
   instance_vars.push(InstanceVar::new("__evilconsim_effectstrip_top", Some(instantiate_card_strip())));
+  instance_vars.push(InstanceVar::new("__evilconsim_statspanel_top", Some(instantiate_stats_panel())));
+  instance_vars.push(InstanceVar::new("__evilconsim_statspanel_bottom", Some(instantiate_stats_panel())));
 
   let mut methods = HashMap::new();
   methods.insert(Identifier::new("with_animation"), Method::noop());
@@ -57,8 +60,8 @@ pub(super) fn playing_field_class(node: Arc<Class>) -> Class {
   methods.insert(Identifier::new("get_hand"), selector_function("__evilconsim_hand_bottom", "__evilconsim_hand_top"));
   methods.insert(Identifier::new("get_minion_strip"), selector_function("__evilconsim_minionstrip_bottom", "__evilconsim_minionstrip_top"));
   methods.insert(Identifier::new("get_effect_strip"), selector_function("__evilconsim_effectstrip_bottom", "__evilconsim_effectstrip_top"));
+  methods.insert(Identifier::new("get_stats"), selector_function("__evilconsim_statspanel_bottom", "__evilconsim_statspanel_top"));
 
-  // TODO get_stats
   // TODO end_game (think about how we want to signal this)
 
   // TODO More
@@ -73,6 +76,11 @@ pub(super) fn playing_field_class(node: Arc<Class>) -> Class {
 
 fn instantiate_card_strip() -> Expr {
   Expr::call("load", vec![Expr::string(CARD_STRIP_RES_PATH)])
+    .attr_call("new", vec![])
+}
+
+fn instantiate_stats_panel() -> Expr {
+  Expr::call("load", vec![Expr::string(STATS_PANEL_RES_PATH)])
     .attr_call("new", vec![])
 }
 

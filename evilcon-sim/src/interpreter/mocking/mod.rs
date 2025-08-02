@@ -72,7 +72,7 @@ pub fn bind_mocked_classes(superglobals: &mut SuperglobalState) {
 
   // GameStatsPanel
   let game_stats_panel_gd = stats_panel::game_stats_panel_class(Arc::clone(&node));
-  superglobals.add_file(ResourcePath::new("res://card_game/playing_field/game_stats_panel/game_stats_panel.gd"), Arc::new(game_stats_panel_gd));
+  superglobals.add_file(ResourcePath::new(stats_panel::STATS_PANEL_RES_PATH), Arc::new(game_stats_panel_gd));
   let game_stats_panel_tscn = dummy_class();
   superglobals.add_file(ResourcePath::new("res://card_game/playing_field/game_stats_panel/game_stats_panel.tscn"), Arc::new(game_stats_panel_tscn));
 

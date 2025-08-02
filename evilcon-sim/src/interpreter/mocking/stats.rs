@@ -12,8 +12,8 @@ use super::stats_panel::DESTINY_SONG_LIMIT;
 use std::sync::Arc;
 use std::collections::HashMap;
 
-pub const CARD_META_LEVEL: &str = "LEVEL";
-pub const CARD_META_MORALE: &str = "MORALE";
+pub(super) const CARD_META_LEVEL: &str = "LEVEL";
+pub(super) const CARD_META_MORALE: &str = "MORALE";
 
 #[derive(Debug, Clone)]
 struct BasicStatResult {
