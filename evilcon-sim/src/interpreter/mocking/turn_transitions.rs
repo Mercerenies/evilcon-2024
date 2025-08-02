@@ -11,7 +11,8 @@ use super::playing_field::ENDGAME_VARIABLE;
 use std::sync::Arc;
 use std::collections::HashMap;
 
-pub(super) const TURN_TRANSITIONS_RES_PATH: &str = "res://card_game/playing_field/util/card_game_turn_transitions.gd";
+pub const TURN_TRANSITIONS_RES_PATH: &str = "res://card_game/playing_field/util/card_game_turn_transitions.gd";
+pub const PLAY_FULL_GAME_METHOD: &str = "play_full_game";
 
 const STATS_CALCULATOR: &str = "StatsCalculator";
 const CARD_GAME_API: &str = "CardGameApi";
@@ -21,7 +22,7 @@ const CARD_PLAYER_TOP: &str = "TOP";
 
 pub(super) fn turn_transitions_class(node: Arc<Class>) -> Class {
   let mut methods = HashMap::new();
-  methods.insert(Identifier::new("play_full_game"), Method::rust_static_method("play_full_game", play_full_game));
+  methods.insert(Identifier::new(PLAY_FULL_GAME_METHOD), Method::rust_static_method(PLAY_FULL_GAME_METHOD, play_full_game));
 
   ClassBuilder::default()
     .name("CardGameTurnTransitions")

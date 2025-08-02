@@ -34,6 +34,9 @@ use std::collections::HashMap;
 pub const DEFAULT_YAML_PATH: &str =
   concat!(env!("CARGO_MANIFEST_DIR"), "/../codex_metadata.yaml");
 
+pub const CODEX_GD_NAME: &str =
+  "PlayingCardCodex";
+
 pub const CODEX_GD_FILE_PATH: &str =
   "res://card_game/playing_card/playing_card_codex.gd";
 
@@ -95,7 +98,7 @@ impl CodexDataFile {
     }));
 
     ClassBuilder::default()
-      .name("PlayingCardCodex")
+      .name(CODEX_GD_NAME)
       .constants(constants)
       .methods(methods)
       .build()
@@ -104,7 +107,7 @@ impl CodexDataFile {
   pub fn bind_gd_class(self, superglobals: &mut SuperglobalState) {
     let cls = Arc::new(Arc::new(self).into_gd_class());
     superglobals.add_file(ResourcePath(CODEX_GD_FILE_PATH.to_owned()), Arc::clone(&cls));
-    superglobals.bind_class(Identifier::new("PlayingCardCodex"), cls);
+    superglobals.bind_class(Identifier::new(CODEX_GD_NAME), cls);
   }
 
   /// The `ID` enum constant in the top-level of the codex file.

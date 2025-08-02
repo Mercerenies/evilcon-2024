@@ -13,6 +13,11 @@ mod turn_transitions;
 
 pub mod codex;
 
+pub use playing_field::ENDGAME_VARIABLE;
+pub use turn_transitions::{PLAY_FULL_GAME_METHOD, TURN_TRANSITIONS_RES_PATH};
+
+pub const PLAYING_FIELD_RES_PATH: &str = "res://card_game/playing_field/playing_field.gd";
+
 use super::class::{Class, ClassBuilder};
 use super::class::constant::LazyConst;
 use super::value::{Value, SimpleValue};
@@ -51,7 +56,7 @@ pub fn bind_mocked_classes(superglobals: &mut SuperglobalState) {
 
   // PlayingField
   let playing_field = playing_field::playing_field_class(Arc::clone(&node));
-  superglobals.add_file(ResourcePath::new("res://card_game/playing_field/playing_field.gd"), Arc::new(playing_field));
+  superglobals.add_file(ResourcePath::new(PLAYING_FIELD_RES_PATH), Arc::new(playing_field));
 
   // CardStrip
   let card_strip_class = card_strip::card_strip_class(Arc::clone(&node));

@@ -14,7 +14,7 @@ use super::stats_panel::STATS_PANEL_RES_PATH;
 use std::sync::Arc;
 use std::collections::HashMap;
 
-pub(super) const ENDGAME_VARIABLE: &str = "__evilconsim_endgame";
+pub const ENDGAME_VARIABLE: &str = "__evilconsim_endgame";
 
 // Intentionally omitted:
 // * _ready (all AI setup and node setup that we do by hand)
