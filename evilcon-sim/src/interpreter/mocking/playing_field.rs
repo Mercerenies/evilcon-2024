@@ -116,7 +116,7 @@ fn end_game_method(evaluator: &mut EvaluatorState, args: MethodArgs) -> Result<V
   Ok(Value::Null)
 }
 
-fn get_viewport_rect(evaluator: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
+fn get_viewport_rect(evaluator: &mut EvaluatorState, _: MethodArgs) -> Result<Value, EvalError> {
   // This is a hack specifically for Mystery Box. Mystery Box treats
   // the playing field as a Godot node and gets the viewport rect. I
   // don't actually care what this value is, just that it exists and
