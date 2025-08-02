@@ -106,6 +106,11 @@ fn selector_function(bottom_var: &str, top_var: &str) -> Method {
 
 fn end_game_method(evaluator: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
   let winner = args.expect_one_arg()?;
-  evaluator.self_instance().set_value(ENDGAME_VARIABLE, winner, evaluator.superglobal_state())?;
+  // If the game calls this method twice, only the first call should
+  // have any effect.
+  let old_value = evaluator.self_instance().get_value(ENDGAME_VARIABLE, evaluator.superglobal_state())?;
+  if old_value == Value::Null {
+    evaluator.self_instance().set_value(ENDGAME_VARIABLE, winner, evaluator.superglobal_state())?;
+  }
   Ok(Value::Null)
 }
