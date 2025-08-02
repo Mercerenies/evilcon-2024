@@ -287,7 +287,7 @@ fn array_is_empty(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value,
 fn array_shuffle(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
   let mut self_inst = expect_array(state.self_instance())?.borrow_mut();
   args.expect_arity(0)?;
-  self_inst.shuffle(&mut rand::rng());
+  state.do_random(|rng| self_inst.shuffle(rng));
   Ok(Value::Null)
 }
 

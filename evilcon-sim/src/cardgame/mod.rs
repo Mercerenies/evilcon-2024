@@ -116,7 +116,7 @@ fn create_deck_of_cards(state: &EvaluatorState, cards: &[CardId]) -> Result<Valu
   let mut cards = cards.iter()
     .map(|c| state.call_function_on_class(&codex, "get_entity", vec![Value::from(c.0)]))
     .collect::<Result<Vec<_>, _>>()?;
-  cards.shuffle(&mut rand::rng());
+  state.do_random(|rng| cards.shuffle(rng));
   Ok(Value::new_array(cards))
 }
 

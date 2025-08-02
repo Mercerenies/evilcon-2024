@@ -496,6 +496,11 @@ impl EvaluatorState {
     }
     Ok(())
   }
+
+  pub fn do_random<F, R>(&self, func: F) -> R
+  where F: FnOnce(&mut dyn RngCore) -> R {
+    func(&mut self.random_generator.borrow_mut())
+  }
 }
 
 impl SuperglobalState {
