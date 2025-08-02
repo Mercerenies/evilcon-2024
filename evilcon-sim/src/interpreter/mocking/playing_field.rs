@@ -66,6 +66,7 @@ pub(super) fn playing_field_class(node: Arc<Class>) -> Class {
   methods.insert(Identifier::new("get_effect_strip"), selector_function("__evilconsim_effectstrip_bottom", "__evilconsim_effectstrip_top"));
   methods.insert(Identifier::new("get_stats"), selector_function("__evilconsim_statspanel_bottom", "__evilconsim_statspanel_top"));
   methods.insert(Identifier::new("end_game"), Method::rust_method("end_game", end_game_method));
+  methods.insert(Identifier::new("get_viewport_rect"), Method::rust_method("get_viewport_rect", get_viewport_rect));
 
   ClassBuilder::default()
     .parent(node)
@@ -113,4 +114,15 @@ fn end_game_method(evaluator: &mut EvaluatorState, args: MethodArgs) -> Result<V
     evaluator.self_instance().set_value(ENDGAME_VARIABLE, winner, evaluator.superglobal_state())?;
   }
   Ok(Value::Null)
+}
+
+fn get_viewport_rect(evaluator: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
+  // This is a hack specifically for Mystery Box. Mystery Box treats
+  // the playing field as a Godot node and gets the viewport rect. I
+  // don't actually care what this value is, just that it exists and
+  // is duck-typed to look like what I need in MysteryBox._get_origin.
+  let object_class = evaluator.bootstrapped_classes().object();
+  let black_hole_object = Value::new_object(Arc::clone(object_class));
+  black_hole_object.set_value("size", Value::from(0), evaluator.superglobal_state())?;
+  Ok(black_hole_object)
 }
