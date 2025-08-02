@@ -1,18 +1,19 @@
 
-use crate::interpreter::class::{Class, ClassBuilder, InstanceVar, ProxyVar};
+use crate::interpreter::class::{Class, ClassBuilder};
 use crate::interpreter::class::constant::LazyConst;
 use crate::interpreter::method::{Method, MethodArgs};
 use crate::interpreter::value::Value;
-use crate::interpreter::eval::{SuperglobalState, EvaluatorState};
+use crate::interpreter::eval::EvaluatorState;
 use crate::interpreter::error::EvalError;
 use crate::interpreter::operator::{expect_int, expect_string};
-use crate::ast::expr::Expr;
 use crate::ast::identifier::Identifier;
-use crate::util::clamp;
 use super::stats_panel::DESTINY_SONG_LIMIT;
 
 use std::sync::Arc;
 use std::collections::HashMap;
+
+pub const CARD_META_LEVEL: &str = "LEVEL";
+pub const CARD_META_MORALE: &str = "MORALE";
 
 #[derive(Debug, Clone)]
 struct BasicStatResult {
@@ -78,8 +79,10 @@ pub(super) fn stats_static_class(node: Arc<Class>) -> Class {
     }
     Ok(Value::Null)
   }));
-
-  // TODO level, morale, etc
+  methods.insert(Identifier::new("set_level"), Method::rust_static_method("set_level", set_card_level));
+  methods.insert(Identifier::new("add_level"), Method::rust_static_method("add_level", add_card_level));
+  methods.insert(Identifier::new("set_morale"), Method::rust_static_method("set_morale", set_card_morale));
+  methods.insert(Identifier::new("add_morale"), Method::rust_static_method("add_morale", add_card_morale));
 
   ClassBuilder::default()
     .name("Stats")
@@ -111,6 +114,69 @@ fn basic_add_stat(stat_name: &str, state: &mut EvaluatorState, args: MethodArgs)
     playing_field,
     player,
   })
+}
+
+fn set_card_level(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
+  args.expect_arity(4)?;
+  let [_, card, new_value, _] = args.try_into().unwrap();
+  let new_value = i64::max(0, expect_int(&new_value)?);
+  let metadata = card.get_value("metadata", state.superglobal_state())?;
+  metadata.set_index(Value::from(CARD_META_LEVEL), Value::from(new_value))?;
+  Ok(Value::Null)
+}
+
+fn add_card_level(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
+  args.expect_arity(4)?;
+  let [_, card, delta_value, _] = args.try_into().unwrap();
+  let delta_value = i64::max(0, expect_int(&delta_value)?);
+  let metadata = card.get_value("metadata", state.superglobal_state())?;
+  let old_value = expect_int(&metadata.get_index(Value::from(CARD_META_LEVEL), state)?)?;
+  let new_value = i64::max(0, old_value + delta_value);
+  metadata.set_index(Value::from(CARD_META_LEVEL), Value::from(new_value))?;
+  Ok(Value::Null)
+}
+
+fn set_card_morale(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
+  args.expect_arity(4)?;
+  let [playing_field, card, new_value, _] = args.try_into().unwrap();
+  let new_value = i64::max(0, expect_int(&new_value)?);
+  let metadata = card.get_value("metadata", state.superglobal_state())?;
+  metadata.set_index(Value::from(CARD_META_MORALE), Value::from(new_value))?;
+  do_morale_check(state, playing_field, card)?;
+  Ok(Value::Null)
+}
+
+fn add_card_morale(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
+  args.expect_arity(4)?;
+  let [playing_field, card, delta_value, _] = args.try_into().unwrap();
+  let delta_value = i64::max(0, expect_int(&delta_value)?);
+  let metadata = card.get_value("metadata", state.superglobal_state())?;
+  let old_value = expect_int(&metadata.get_index(Value::from(CARD_META_LEVEL), state)?)?;
+  let new_value = i64::max(0, old_value + delta_value);
+  metadata.set_index(Value::from(CARD_META_MORALE), Value::from(new_value))?;
+  do_morale_check(state, playing_field, card)?;
+  Ok(Value::Null)
+}
+
+fn do_morale_check(state: &EvaluatorState, playing_field: Value, card: Value) -> Result<(), EvalError> {
+  let metadata = card.get_value("metadata", state.superglobal_state())?;
+  let curr_morale = expect_int(&metadata.get_index(Value::from(CARD_META_MORALE), state)?)?;
+  if curr_morale <= 0 {
+    let card_type = card.get_value("card_type", state.superglobal_state())?;
+    state.call_function_on(&card_type, "on_pre_expire", vec![playing_field.clone(), card.clone()])?;
+    let curr_morale = expect_int(&metadata.get_index(Value::from(CARD_META_MORALE), state)?)?;
+    if curr_morale <= 0 {
+      state.call_function_on(&card_type, "on_expire", vec![playing_field.clone(), card.clone()])?;
+      let card_game_api = get_card_game_api(state)?;
+      state.call_function_on(&card_game_api, "destroy_card", vec![playing_field, card])?;
+    }
+  }
+  Ok(())
+}
+
+fn get_card_game_api(state: &EvaluatorState) -> Result<Value, EvalError> {
+  state.superglobal_state().get_var("CardGameApi").cloned()
+    .ok_or_else(|| EvalError::UndefinedVariable(String::from("CardGameApi")))
 }
 
 fn send_endgame_signal(state: &EvaluatorState, playing_field: Value, winning_player: Value) -> Result<(), EvalError> {

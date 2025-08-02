@@ -6,7 +6,7 @@ use super::class::Class;
 use super::method::{Method, MethodArgs};
 use super::error::EvalError;
 use super::bootstrapping::{self, BootstrappedTypes};
-use super::eval::{EvaluatorState, SuperglobalState};
+use super::eval::{EvaluatorState, SuperglobalState, GETITEM_METHOD_NAME};
 
 use ordered_float::OrderedFloat;
 use thiserror::Error;
@@ -190,6 +190,10 @@ impl Value {
     } else {
       Err(EvalError::type_error("object", self.clone()))
     }
+  }
+
+  pub fn get_index(&self, index: Value, state: &EvaluatorState) -> Result<Value, EvalError> {
+    state.call_function_on(self, GETITEM_METHOD_NAME, vec![index])
   }
 
   pub fn set_index(&self, index: Value, value: Value) -> Result<(), EvalError> {
