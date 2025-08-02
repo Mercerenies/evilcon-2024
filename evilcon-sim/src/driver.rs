@@ -4,6 +4,7 @@ use crate::ast::identifier::Identifier;
 use crate::interpreter::eval::SuperglobalState;
 use crate::interpreter::value::Value;
 use crate::interpreter::class::Class;
+use crate::cardgame::GameEngine;
 
 use std::sync::Arc;
 
@@ -34,7 +35,7 @@ pub const GDSCRIPT_GLOBS: &[&str] = &[
   "../card_game/playing_card/cards/*.gd",
 ];
 
-pub fn load_all_files() -> anyhow::Result<SuperglobalState> {
+pub fn load_all_files() -> anyhow::Result<GameEngine> {
   let mut loader = GdScriptLoader::new();
   for file in GDSCRIPT_FILES {
     let file = format!("{}/{}", env!("CARGO_MANIFEST_DIR"), file);
@@ -53,7 +54,7 @@ pub fn load_all_files() -> anyhow::Result<SuperglobalState> {
   do_surgery(&mut superglobals)?;
   eprintln!("Surgery complete.");
 
-  Ok(superglobals)
+  Ok(GameEngine(superglobals))
 }
 
 /// Some precise manipulation of a few specific classes.
