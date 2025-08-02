@@ -6,6 +6,7 @@ use crate::interpreter::error::EvalError;
 use crate::interpreter::value::{SimpleValue, Value};
 
 use thiserror::Error;
+use rand::RngCore;
 use rand::seq::SliceRandom;
 use strum_macros::Display;
 
@@ -54,11 +55,15 @@ impl GameEngine {
     Self(Arc::new(state))
   }
 
-  pub fn play_game(&self, env: &CardGameEnv) -> Result<GameWinner, GameEngineError> {
+  pub fn play_game(
+    &self,
+    env: &CardGameEnv,
+    random: impl RngCore + 'static,
+  ) -> Result<GameWinner, GameEngineError> {
     if env.bottom_deck.len() != DECK_SIZE || env.top_deck.len() != DECK_SIZE {
       return Err(GameEngineError::BadDeckSize);
     }
-    let (state, playing_field) = self.initialize_game(env)?;
+    let (state, playing_field) = self.initialize_game(env, random)?;
     let Some(turn_transitions) = self.0.get_file(TURN_TRANSITIONS_RES_PATH) else {
       return Err(EvalError::UndefinedClass(String::from(TURN_TRANSITIONS_RES_PATH)).into());
     };
@@ -74,8 +79,12 @@ impl GameEngine {
     }
   }
 
-  fn initialize_game(&self, env: &CardGameEnv) -> Result<(EvaluatorState, Value), EvalError> {
-    let state = EvaluatorState::new(Arc::clone(&self.0));
+  fn initialize_game(
+    &self,
+    env: &CardGameEnv,
+    random: impl RngCore + 'static,
+  ) -> Result<(EvaluatorState, Value), EvalError> {
+    let state = EvaluatorState::new(Arc::clone(&self.0), random);
     let playing_field_class = state.superglobal_state().get_file(PLAYING_FIELD_RES_PATH)
       .ok_or_else(|| EvalError::UndefinedClass(String::from(PLAYING_FIELD_RES_PATH)))?;
     let playing_field = state.call_function_on_class(&playing_field_class, "new", Vec::new())?;

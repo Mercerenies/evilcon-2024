@@ -11,12 +11,13 @@ use super::eval::{EvaluatorState, SuperglobalState, GETITEM_METHOD_NAME};
 use ordered_float::OrderedFloat;
 use thiserror::Error;
 use ordermap::OrderMap;
+use rand::RngCore;
 
 use std::collections::HashMap;
 use std::sync::Arc;
 use std::cell::RefCell;
 use std::ops::Deref;
-use std::fmt::{Display, Formatter};
+use std::fmt::{self, Display, Debug, Formatter};
 
 #[derive(Debug, Clone, Default, PartialEq, Eq)]
 pub enum Value {
@@ -46,7 +47,7 @@ pub enum AssignmentLeftHand {
   Attr(Value, Identifier),
 }
 
-#[derive(Debug, Clone)]
+#[derive(Clone)]
 pub struct LambdaValue {
   pub contents: Arc<Lambda>,
   pub outer_scope: EvaluatorState,
@@ -183,10 +184,25 @@ impl Value {
   }
 
   pub fn get_value_raw(&self, name: &str, superglobals: &Arc<SuperglobalState>) -> Result<Value, EvalError> {
+    struct ShouldNotUseRandom;
+    impl RngCore for ShouldNotUseRandom {
+      fn next_u32(&mut self) -> u32 {
+        panic!("RNG should not be used in const context")
+      }
+      fn next_u64(&mut self) -> u64 {
+        panic!("RNG should not be used in const context")
+      }
+      fn fill_bytes(&mut self, _dest: &mut [u8]) {
+        panic!("RNG should not be used in const context")
+      }
+    }
+
     if let Value::EnumType(dict) = self {
       dict.get(name).map(|i| Value::from(*i)).ok_or(NoSuchVar(name.to_owned()).into())
     } else if let Value::ClassRef(cls) = self && let Some(constant) = cls.get_constant(name) {
-      let const_context = EvaluatorState::new(Arc::clone(superglobals))
+      // Hoping the constants are *really* simple and never use RNG.
+      // If I'm wrong, I want to know.
+      let const_context = EvaluatorState::new(Arc::clone(superglobals), ShouldNotUseRandom)
         .with_enclosing_class(Some(cls.clone()));
       constant.get(&const_context).cloned()
     } else if let Value::ObjectRef(obj) = self {
@@ -337,10 +353,9 @@ impl Value {
     }
   }
 
-  pub fn to_rust_function(&self, superglobals: Arc<SuperglobalState>) -> impl Fn(MethodArgs) -> Result<Value, EvalError> {
+  pub fn to_rust_function(&self, state: &EvaluatorState) -> impl Fn(MethodArgs) -> Result<Value, EvalError> {
     move |args| {
-      let superglobals = Arc::clone(&superglobals);
-      let mut state = EvaluatorState::new(superglobals).with_self(Box::new(self.clone()));
+      let mut state = state.clone().with_self(Box::new(self.clone()));
       bootstrapping::call_func(&mut state, args)
     }
   }
@@ -543,7 +558,7 @@ impl From<f64> for SimpleValue {
 }
 
 impl Display for Value {
-  fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+  fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
     match self {
       Value::Null => write!(f, "null"),
       Value::Bool(b) => write!(f, "{}", b),
@@ -572,5 +587,14 @@ impl Display for HashKey {
       HashKey::Float(d) => write!(f, "{}", d),
       HashKey::String(s) => write!(f, "\"{}\"", s),
     }
+  }
+}
+
+impl Debug for LambdaValue {
+  fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+    f.debug_struct("LambdaValue")
+      .field("contents", &self.contents)
+      .field("outer_scope", &"<state>")
+      .finish()
   }
 }

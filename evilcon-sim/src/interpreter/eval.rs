@@ -13,20 +13,25 @@ use crate::ast::decl::Parameter;
 use crate::ast::stmt::Stmt;
 
 use ordermap::OrderMap;
+use rand::RngCore;
 
 use std::hash::Hash;
 use std::collections::HashMap;
 use std::sync::Arc;
 use std::borrow::Borrow;
+use std::cell::RefCell;
 
 pub const GETITEM_METHOD_NAME: &str = "__getitem__";
 
-#[derive(Debug, Clone)]
+#[derive(Clone)]
 pub struct EvaluatorState {
   self_instance: Box<Value>,
   locals: HashMap<Identifier, Value>,
   enclosing_class: Option<Arc<Class>>,
   superglobal_state: Arc<SuperglobalState>,
+  // I am going straight to hell for writing this in a ref cell. Oh
+  // well, the consequences of my design choices.
+  random_generator: Arc<RefCell<dyn RngCore>>,
 }
 
 #[derive(Debug, Clone)]
@@ -38,12 +43,13 @@ pub struct SuperglobalState {
 }
 
 impl EvaluatorState {
-  pub fn new(superglobal_state: Arc<SuperglobalState>) -> Self {
+  pub fn new(superglobal_state: Arc<SuperglobalState>, random_generator: impl RngCore + 'static) -> Self {
     EvaluatorState {
       self_instance: Box::new(Value::default()),
       locals: HashMap::new(),
       enclosing_class: None,
       superglobal_state,
+      random_generator: Arc::new(RefCell::new(random_generator)),
     }
   }
 
@@ -448,7 +454,7 @@ impl EvaluatorState {
                 method: &Method,
                 self_instance: Box<Value>,
                 args: MethodArgs) -> Result<Value, EvalError> {
-      let mut method_scope = EvaluatorState::new(Arc::clone(&state.superglobal_state)).with_self(self_instance);
+      let mut method_scope = state.clone().with_self(self_instance);
       if let Some(globals) = globals {
         method_scope = method_scope.with_enclosing_class(Some(globals));
       }

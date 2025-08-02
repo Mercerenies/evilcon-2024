@@ -140,6 +140,7 @@ dependencies = [
  "ordermap",
  "petgraph",
  "rand",
+ "rand_chacha",
  "regex",
  "serde",
  "serde_yaml",

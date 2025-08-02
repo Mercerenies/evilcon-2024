@@ -331,7 +331,7 @@ fn array_fill(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, Eva
 fn array_map(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
   let mut arr = expect_array(state.self_instance())?.borrow().clone();
   let callable = args.expect_one_arg()?;
-  let callable = callable.to_rust_function(Arc::clone(state.superglobals()));
+  let callable = callable.to_rust_function(&state);
   for elem in &mut arr {
     *elem = callable(MethodArgs(vec![elem.clone()]))?;
   }
@@ -341,7 +341,7 @@ fn array_map(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, Eval
 fn array_any(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
   let mut arr = expect_array(state.self_instance())?.borrow().clone();
   let callable = args.expect_one_arg()?;
-  let callable = callable.to_rust_function(Arc::clone(state.superglobals()));
+  let callable = callable.to_rust_function(&state);
   for elem in &mut arr {
     if callable(MethodArgs(vec![elem.clone()])).unwrap().as_bool() {
       return Ok(Value::Bool(true));
@@ -353,7 +353,7 @@ fn array_any(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, Eval
 fn array_all(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
   let mut arr = expect_array(state.self_instance())?.borrow().clone();
   let callable = args.expect_one_arg()?;
-  let callable = callable.to_rust_function(Arc::clone(state.superglobals()));
+  let callable = callable.to_rust_function(&state);
   for elem in &mut arr {
     if !callable(MethodArgs(vec![elem.clone()])).unwrap().as_bool() {
       return Ok(Value::Bool(false));
@@ -365,7 +365,7 @@ fn array_all(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, Eval
 fn array_filter(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
   let mut arr = expect_array(state.self_instance())?.borrow().clone();
   let callable = args.expect_one_arg()?;
-  let callable = callable.to_rust_function(Arc::clone(state.superglobals()));
+  let callable = callable.to_rust_function(&state);
   arr.retain(|elem| callable(MethodArgs(vec![elem.clone()])).unwrap().as_bool());
   Ok(Value::new_array(arr))
 }
@@ -402,7 +402,7 @@ fn array_reduce(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, E
   let arr = expect_array(state.self_instance())?.borrow().clone();
   args.expect_arity_within(1, 2)?;
   let callable = &args.0[0];
-  let callable = callable.to_rust_function(Arc::clone(state.superglobals()));
+  let callable = callable.to_rust_function(&state);
   let mut accum = args.0.get(1).unwrap_or_default().clone();
   let mut iter = arr.into_iter();
   if accum.is_null() {
@@ -456,7 +456,7 @@ fn array_sort(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, Eva
 fn array_sort_custom(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
   let mut arr = expect_array(state.self_instance())?.borrow_mut();
   let callable = args.expect_one_arg()?;
-  let callable = callable.to_rust_function(Arc::clone(state.superglobals()));
+  let callable = callable.to_rust_function(&state);
   // NOTE CAREFULLY: This is one of the few places in this codebase
   // where we execute arbitrary user code inside of a
   // RefCell::borrow_mut. A badly written sort comparator function
