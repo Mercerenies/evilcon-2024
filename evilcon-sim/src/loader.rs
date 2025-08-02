@@ -6,7 +6,7 @@ use crate::ast::file::{SourceFile, ExtendsClause};
 use crate::parser::read_from_string;
 use crate::parser::error::ParseError;
 use crate::interpreter::eval::SuperglobalState;
-use crate::interpreter::value::Value;
+use crate::interpreter::value::SimpleValue;
 use crate::interpreter::error::EvalError;
 use crate::interpreter::mocking;
 use crate::interpreter::mocking::codex::{CodexDataFile, CodexLoadError};
@@ -191,7 +191,7 @@ fn resolve_extends_clause_in_superglobals(superglobals: &SuperglobalState, claus
   match clause {
     ExtendsClause::Id(class_name) => {
       let var = superglobals.get_var(class_name)?;
-      if matches!(var, Value::ClassRef(_)) {
+      if matches!(var, SimpleValue::ClassRef(_)) {
         Some(ExtendedClass::ExistingFile)
       } else {
         None

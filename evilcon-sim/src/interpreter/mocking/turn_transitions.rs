@@ -82,6 +82,6 @@ fn check_for_endgame(state: &EvaluatorState, playing_field: &Value) -> Result<bo
 
 fn get_global(state: &EvaluatorState, name: &str) -> Result<Value, EvalError> {
   state.superglobal_state().get_var(name)
-    .cloned()
+    .map(|x| x.clone().into())
     .ok_or_else(|| EvalError::UndefinedVariable(name.to_string()))
 }

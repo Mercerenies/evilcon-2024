@@ -10,7 +10,7 @@ use crate::ast::decl::{Decl, FunctionDecl};
 use super::method::Method;
 use super::error::EvalError;
 use super::eval::SuperglobalState;
-use super::value::{Value, NoSuchFunc};
+use super::value::{Value, SimpleValue, NoSuchFunc};
 use constant::LazyConst;
 use proxy::ProxyField;
 
@@ -71,7 +71,7 @@ impl Class {
     let parent = match file.extends_clause.unwrap_or_default() {
       ExtendsClause::Id(identifier) => {
         let value = superglobals.get_var(&identifier).ok_or_else(|| EvalError::UnknownClass(identifier.clone().into()))?;
-        let Value::ClassRef(cls) = value else {
+        let SimpleValue::ClassRef(cls) = value else {
           return Err(EvalError::UnknownClass(identifier.into()));
         };
         cls.clone()

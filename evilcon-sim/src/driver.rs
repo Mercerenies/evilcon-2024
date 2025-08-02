@@ -2,7 +2,7 @@
 use crate::loader::GdScriptLoader;
 use crate::ast::identifier::Identifier;
 use crate::interpreter::eval::SuperglobalState;
-use crate::interpreter::value::Value;
+use crate::interpreter::value::{Value, SimpleValue};
 use crate::interpreter::class::Class;
 use crate::cardgame::GameEngine;
 
@@ -74,7 +74,7 @@ fn do_surgery(superglobals: &mut SuperglobalState) -> anyhow::Result<()> {
 
   // Place Query.Q and Query.QueryManager at the top-level global
   // scope.
-  let Some(Value::ClassRef(query_class)) = superglobals.get_var("Query") else {
+  let Some(SimpleValue::ClassRef(query_class)) = superglobals.get_var("Query") else {
     anyhow::bail!("Could not find Query class");
   };
   let q_class = get_inner_class(query_class, "Q")?;

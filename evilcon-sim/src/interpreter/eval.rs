@@ -1,7 +1,7 @@
 
 use super::class::Class;
 use super::class::constant::LazyConst;
-use super::value::{Value, AssignmentLeftHand, EqPtr, LambdaValue};
+use super::value::{Value, AssignmentLeftHand, EqPtr, LambdaValue, SimpleValue};
 use super::method::{Method, MethodArgs};
 use super::error::{EvalError, EvalErrorOrControlFlow, ControlFlow, LoopControlFlow};
 use super::operator::{eval_unary_op, eval_binary_op};
@@ -32,7 +32,7 @@ pub struct EvaluatorState {
 
 #[derive(Debug, Clone)]
 pub struct SuperglobalState {
-  vars: HashMap<Identifier, Value>,
+  vars: HashMap<Identifier, SimpleValue>,
   functions: HashMap<Identifier, Method>,
   loaded_files: HashMap<ResourcePath, Arc<Class>>,
   bootstrapped_classes: BootstrappedTypes,
@@ -99,7 +99,7 @@ impl EvaluatorState {
     if let Some(glob) = self.get_global(ident)? {
       return Ok(Some(glob.clone()));
     }
-    Ok(self.superglobal_state.get_var(ident).cloned())
+    Ok(self.superglobal_state.get_var(ident).map(|x| x.clone().into()))
   }
 
   fn get_global(&self, ident: &Identifier) -> Result<Option<&Value>, EvalError> {
@@ -489,7 +489,7 @@ impl SuperglobalState {
       bootstrapped_classes: BootstrappedTypes::bootstrap(),
     };
     for (name, cls) in result.bootstrapped_classes.all_global_names() {
-      result.vars.insert(Identifier::new(name), Value::ClassRef(cls));
+      result.vars.insert(Identifier::new(name), SimpleValue::ClassRef(cls));
     }
     result
   }
@@ -498,12 +498,12 @@ impl SuperglobalState {
     &self.bootstrapped_classes
   }
 
-  pub fn bind_var(&mut self, ident: Identifier, value: Value) {
+  pub fn bind_var(&mut self, ident: Identifier, value: SimpleValue) {
     self.vars.insert(ident, value);
   }
 
   pub fn bind_class(&mut self, ident: Identifier, class: Arc<Class>) {
-    self.bind_var(ident, Value::ClassRef(class));
+    self.bind_var(ident, SimpleValue::ClassRef(class));
   }
 
   pub fn define_func(&mut self, ident: Identifier, func: Method) {
@@ -519,12 +519,12 @@ impl SuperglobalState {
     let class = Arc::new(class);
     self.loaded_files.insert(path, Arc::clone(&class));
     if let Some(class_name) = class.name() {
-      self.bind_var(class_name.to_owned().into(), Value::ClassRef(class));
+      self.bind_var(class_name.to_owned().into(), SimpleValue::ClassRef(class));
     }
     Ok(())
   }
 
-  pub fn get_var<Q>(&self, ident: &Q) -> Option<&Value>
+  pub fn get_var<Q>(&self, ident: &Q) -> Option<&SimpleValue>
   where Identifier: Borrow<Q>,
         Q: Hash + Eq + ?Sized {
     self.vars.get(ident)

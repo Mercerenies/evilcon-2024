@@ -15,7 +15,7 @@ pub mod codex;
 
 use super::class::{Class, ClassBuilder};
 use super::class::constant::LazyConst;
-use super::value::Value;
+use super::value::{Value, SimpleValue};
 use super::eval::{SuperglobalState, EvaluatorState};
 use super::method::{MethodArgs, Method};
 use super::error::EvalError;
@@ -99,7 +99,7 @@ pub fn bind_mocked_classes(superglobals: &mut SuperglobalState) {
 
 pub fn bind_mocked_constants(superglobals: &mut SuperglobalState) {
   // PI
-  superglobals.bind_var(Identifier::new("PI"), Value::from(PI));
+  superglobals.bind_var(Identifier::new("PI"), SimpleValue::from(PI));
 }
 
 pub fn bind_mocked_methods(superglobals: &mut SuperglobalState) {

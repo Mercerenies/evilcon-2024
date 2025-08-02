@@ -71,6 +71,20 @@ pub enum HashKey {
   String(String),
 }
 
+/// A simple value that can safely be shared across threads. This is a
+/// subset of the [`Value`] struct which is guaranteed to be
+/// immutable.
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
+pub enum SimpleValue {
+  #[default]
+  Null,
+  Bool(bool),
+  Int(i64),
+  Float(OrderedFloat<f64>),
+  String(String),
+  ClassRef(Arc<Class>),
+}
+
 #[derive(Debug)]
 pub struct EqPtrMut<T> {
   pub value: Arc<RefCell<T>>,
@@ -101,6 +115,10 @@ pub struct ValueIter {
 #[derive(Debug, Clone, Error)]
 #[error("Invalid hash key {0:?}")]
 pub struct InvalidHashKey(pub String);
+
+#[derive(Debug, Clone, Error)]
+#[error("Not a simple value {0:?}")]
+pub struct InvalidSimpleValue(pub String);
 
 #[derive(Debug, Clone, Error)]
 #[error("No such variable {0}")]
@@ -486,6 +504,41 @@ impl TryFrom<Value> for HashKey {
 
   fn try_from(v: Value) -> Result<Self, Self::Error> {
     Self::try_from(&v)
+  }
+}
+
+impl From<SimpleValue> for Value {
+  fn from(s: SimpleValue) -> Self {
+    match s {
+      SimpleValue::Null => Value::Null,
+      SimpleValue::Bool(b) => Value::Bool(b),
+      SimpleValue::Int(i) => Value::Int(i),
+      SimpleValue::Float(f) => Value::Float(f),
+      SimpleValue::String(s) => Value::String(s),
+      SimpleValue::ClassRef(c) => Value::ClassRef(c),
+    }
+  }
+}
+
+impl TryFrom<Value> for SimpleValue {
+  type Error = InvalidSimpleValue;
+
+  fn try_from(v: Value) -> Result<Self, Self::Error> {
+    Ok(match v {
+      Value::Null => SimpleValue::Null,
+      Value::Bool(b) => SimpleValue::Bool(b),
+      Value::Int(i) => SimpleValue::Int(i),
+      Value::Float(f) => SimpleValue::Float(f),
+      Value::String(s) => SimpleValue::String(s),
+      Value::ClassRef(c) => SimpleValue::ClassRef(c),
+      _ => return Err(InvalidSimpleValue(v.to_string())),
+    })
+  }
+}
+
+impl From<f64> for SimpleValue {
+  fn from(f: f64) -> Self {
+    SimpleValue::Float(OrderedFloat(f))
   }
 }
 

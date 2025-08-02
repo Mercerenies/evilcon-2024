@@ -175,7 +175,8 @@ fn do_morale_check(state: &EvaluatorState, playing_field: Value, card: Value) ->
 }
 
 fn get_card_game_api(state: &EvaluatorState) -> Result<Value, EvalError> {
-  state.superglobal_state().get_var("CardGameApi").cloned()
+  state.superglobal_state().get_var("CardGameApi")
+    .map(|x| x.clone().into())
     .ok_or_else(|| EvalError::UndefinedVariable(String::from("CardGameApi")))
 }
 
