@@ -142,3 +142,15 @@ impl From<bool> for Expr {
     Expr::Literal(Literal::Bool(b))
   }
 }
+
+impl From<String> for Expr {
+  fn from(s: String) -> Self {
+    Expr::Literal(Literal::String(GdString::simple(s)))
+  }
+}
+
+impl From<&str> for Expr {
+  fn from(s: &str) -> Self {
+    Expr::Literal(Literal::String(GdString::simple(s.to_string())))
+  }
+}
