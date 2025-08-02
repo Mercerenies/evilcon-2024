@@ -7,6 +7,7 @@
 mod card_strip;
 mod playing_field;
 mod randomness;
+mod stats;
 mod stats_panel;
 
 pub mod codex;
@@ -74,6 +75,12 @@ pub fn bind_mocked_classes(superglobals: &mut SuperglobalState) {
   superglobals.add_file(ResourcePath::new("res://card_game/playing_field/game_stats_panel/game_stats_panel.gd"), Arc::new(game_stats_panel_gd));
   let game_stats_panel_tscn = dummy_class();
   superglobals.add_file(ResourcePath::new("res://card_game/playing_field/game_stats_panel/game_stats_panel.tscn"), Arc::new(game_stats_panel_tscn));
+
+  // Stats
+  let stats_gd = stats::stats_static_class(Arc::clone(&node));
+  let stats_gd = Arc::new(stats_gd);
+  superglobals.add_file(ResourcePath::new("res://card_game/playing_field/util/stats.gd"), stats_gd.clone());
+  superglobals.bind_class(Identifier::new("Stats"), stats_gd.clone());
 }
 
 pub fn bind_mocked_constants(superglobals: &mut SuperglobalState) {
