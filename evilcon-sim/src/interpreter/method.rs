@@ -2,7 +2,7 @@
 use crate::ast::decl::FunctionDecl;
 use crate::ast::identifier::Identifier;
 use super::eval::EvaluatorState;
-use super::error::EvalError;
+use super::error::{EvalError, ExpectedArity};
 use super::value::Value;
 
 use thiserror::Error;
@@ -140,7 +140,7 @@ impl MethodArgs {
 
   pub fn expect_arity(&self, arity: usize) -> Result<(), EvalError> {
     if self.0.len() != arity {
-      Err(EvalError::WrongArity { expected: arity, actual: self.0.len() })
+      Err(EvalError::WrongArity { expected: ExpectedArity::Exactly(arity), actual: self.0.len() })
     } else {
       Ok(())
     }
@@ -150,7 +150,7 @@ impl MethodArgs {
     if (min_arity..=max_arity).contains(&self.0.len()) {
       Ok(())
     } else {
-      Err(EvalError::WrongArity { expected: max_arity, actual: self.0.len() })
+      Err(EvalError::WrongArity { expected: ExpectedArity::between(min_arity, max_arity), actual: self.0.len() })
     }
   }
 }

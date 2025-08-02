@@ -2,7 +2,7 @@
 use super::class::Class;
 use super::value::{Value, AssignmentLeftHand, EqPtr, LambdaValue, SimpleValue};
 use super::method::{Method, MethodArgs};
-use super::error::{EvalError, EvalErrorOrControlFlow, ControlFlow, LoopControlFlow};
+use super::error::{EvalError, EvalErrorOrControlFlow, ControlFlow, LoopControlFlow, ExpectedArity};
 use super::operator::{eval_unary_op, eval_binary_op};
 use super::bootstrapping::BootstrappedTypes;
 use crate::ast::identifier::{Identifier, ResourcePath};
@@ -478,6 +478,7 @@ impl EvaluatorState {
   pub fn bind_arguments(&mut self, args: Vec<Value>, params: Vec<Parameter>) -> Result<(), EvalError> {
     let args_len = args.len();
     let params_len = params.len();
+    let required_params_len = params.iter().filter(|param| param.default_value.is_none()).count();
     let mut bindings = Vec::with_capacity(params_len);
     let mut args = args.into_iter();
     for param in params {
@@ -487,7 +488,8 @@ impl EvaluatorState {
       } else if let Some(expr) = &param.default_value {
         next_arg = self.eval_expr(expr)?;
       } else {
-        return Err(EvalError::WrongArity { expected: params_len, actual: args_len });
+        let expected_arity = ExpectedArity::between(required_params_len, params_len);
+        return Err(EvalError::WrongArity { expected: expected_arity, actual: args_len });
       }
       bindings.push((param.name, next_arg));
     }

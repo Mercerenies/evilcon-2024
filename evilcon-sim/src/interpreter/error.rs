@@ -5,6 +5,8 @@ use crate::ast::string::formatter::FormatterError;
 
 use thiserror::Error;
 
+use std::fmt::{self, Display, Formatter};
+
 /// A string representation of a [`Value`].
 pub type ValueString = String;
 
@@ -46,7 +48,7 @@ pub enum EvalError {
   #[error("Unexpected GetNode {0}")]
   UnexpectedGetNode(String),
   #[error("Wrong number of arguments, got {actual} but expected {expected}")]
-  WrongArity { actual: usize, expected: usize },
+  WrongArity { actual: usize, expected: ExpectedArity },
   #[error("Unexpected control flow {0}")]
   UnexpectedControlFlow(String),
   #[error("Cannot call {0:?}")]
@@ -75,6 +77,16 @@ pub enum EvalError {
   UnimplementedMethod(String),
 }
 
+#[derive(Debug, Clone)]
+pub enum ExpectedArity {
+  Exactly(usize),
+  /// Note: Callers should consider using [`ExpectedArity::between`]
+  /// instead, which gracefully degrades to `Exactly` in degenerate
+  /// cases.
+  Between(usize, usize),
+  AtLeast(usize),
+}
+
 impl EvalError {
   pub fn type_error(expected: impl Into<String>, value: Value) -> Self {
     Self::TypeError {
@@ -95,6 +107,16 @@ impl EvalError {
     Self::ErrorInFunction {
       function: function.into(),
       inner: Box::new(self),
+    }
+  }
+}
+
+impl ExpectedArity {
+  pub fn between(min: usize, max: usize) -> Self {
+    if min == max {
+      Self::Exactly(min)
+    } else {
+      Self::Between(min, max)
     }
   }
 }
@@ -152,5 +174,15 @@ impl From<EvalError> for EvalErrorOrControlFlow {
 impl From<ControlFlow> for EvalErrorOrControlFlow {
   fn from(e: ControlFlow) -> Self {
     EvalErrorOrControlFlow::ControlFlow(e)
+  }
+}
+
+impl Display for ExpectedArity {
+  fn fmt(&self, f: &mut Formatter) -> fmt::Result {
+    match self {
+      ExpectedArity::Exactly(n) => write!(f, "exactly {n}"),
+      ExpectedArity::Between(n, m) => write!(f, "between {n} and {m}"),
+      ExpectedArity::AtLeast(n) => write!(f, "at least {n}"),
+    }
   }
 }

@@ -2,7 +2,7 @@
 use super::class::{Class, ClassBuilder};
 use super::eval::{EvaluatorState, GETITEM_METHOD_NAME};
 use super::value::{Value, HashKey, CallableWithBindings, EqPtr};
-use super::error::{EvalError, ControlFlow};
+use super::error::{EvalError, ControlFlow, ExpectedArity};
 use super::method::{MethodArgs, Method};
 use super::operator::{expect_int, expect_float_loosely, expect_string, expect_bool,
                       expect_array, expect_dict, do_comparison_op};
@@ -536,7 +536,7 @@ fn string_substr(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, 
 
 fn call_method_on_obj(state: &mut EvaluatorState, mut args: MethodArgs) -> Result<Value, EvalError> {
   if args.len() < 1 {
-    return Err(EvalError::WrongArity { actual: args.len(), expected: 1 });
+    return Err(EvalError::WrongArity { actual: args.len(), expected: ExpectedArity::AtLeast(1) });
   }
   let method_name = expect_string(&args.0[0])?.to_owned();
   args.0.remove(0);
