@@ -13,8 +13,8 @@ use crate::util::clamp;
 use std::sync::Arc;
 use std::collections::HashMap;
 
-const DESTINY_SONG_LIMIT: i64 = 3;
-const DEFAULT_FORT_DEFENSE: i64 = 60;
+pub const DESTINY_SONG_LIMIT: i64 = 3;
+pub const DEFAULT_FORT_DEFENSE: i64 = 60;
 
 pub(super) fn game_stats_panel_class(node: Arc<Class>) -> Class {
   let mut vars = Vec::new();

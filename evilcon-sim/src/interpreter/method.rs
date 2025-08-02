@@ -132,6 +132,12 @@ impl MethodArgs {
     Ok((a, b))
   }
 
+  pub fn expect_three_args(self) -> Result<(Value, Value, Value), EvalError> {
+    self.expect_arity(3)?;
+    let [a, b, c] = self.try_into().unwrap();
+    Ok((a, b, c))
+  }
+
   pub fn expect_arity(&self, arity: usize) -> Result<(), EvalError> {
     if self.0.len() != arity {
       Err(EvalError::WrongArity { expected: arity, actual: self.0.len() })
