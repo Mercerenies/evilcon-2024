@@ -29,7 +29,7 @@
    + [X] ~card_game/playing_card/playing_card_lists.gd~
    + [X] ~card_game/playing_card/archetype.gd~
 ** FILES MOCKED IN RUST
-   + [ ] ~card_game/playing_field/playing_field.gd~
+   + [X] ~card_game/playing_field/playing_field.gd~
    + [X] ~card_game/playing_field/randomness.gd~
    + [ ] ~card_game/playing_field/util/card_game_turn_transitions.gd~
    + [X] ~card_game/playing_field/game_stats_panel/game_stats_panel.gd~ and ~.tscn~
