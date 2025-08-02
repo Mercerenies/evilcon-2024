@@ -177,6 +177,7 @@ impl EvaluatorState {
       Expr::Subscript(left, right) => {
         let left = self.eval_expr(left)?;
         let args = vec![self.eval_expr(right)?];
+        // Just do it the Python way, even though Godot doesn't :)
         self.call_function_on(&left, GETITEM_METHOD_NAME, args)
       }
       Expr::Attr(left, name) => {
@@ -279,10 +280,8 @@ impl EvaluatorState {
         self.eval_expr(&Expr::Name(name.clone().into()))
       }
       AssignmentLeftHand::Subscript(left, right) => {
-        let func = left.get_func(GETITEM_METHOD_NAME, self.superglobal_state.bootstrapped_classes())?; // Just do it the Python way, even though Godot doesn't :)
-        let args = MethodArgs(vec![right.clone()]);
-        let globals = left.get_class(self.superglobal_state.bootstrapped_classes()).map(|class| class.get_constants_table());
-        self.call_function(globals, &func, Box::new(left.clone()), args)
+        // Just do it the Python way, even though Godot doesn't :)
+        self.call_function_on(left, GETITEM_METHOD_NAME, vec![right.clone()])
       }
       AssignmentLeftHand::Attr(left, name) => {
         Ok(left.get_value(name.as_ref(), &self.superglobal_state)?)

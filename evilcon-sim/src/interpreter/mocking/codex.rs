@@ -133,7 +133,6 @@ impl CodexDataFile {
   /// `get_entity`.
   fn get_entity(&self, evaluator: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
     let card_class = self.get_entity_script(evaluator, args)?;
-    let ctor_func = card_class.get_func("new", evaluator.bootstrapped_classes())?;
-    evaluator.call_function(None, &ctor_func, Box::new(card_class), MethodArgs::EMPTY)
+    evaluator.call_function_on(&card_class, "new", Vec::new())
   }
 }
