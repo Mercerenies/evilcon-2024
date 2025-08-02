@@ -192,7 +192,7 @@ impl EvaluatorState {
           let Some(left_parent) = left_class.parent() else { return Err(EvalError::BadSuper); };
           let func = left_parent.get_func(name.as_ref())?.clone();
           let args = args.iter().map(|arg| self.eval_expr(arg)).collect::<Result<Vec<_>, _>>()?;
-          let globals = left_class.get_constants_table();
+          let globals = left_parent.get_constants_table();
           self.call_function_prim(Some(globals), &func, Box::new(left_value), MethodArgs(args))
         } else {
           let left_value = self.eval_expr(left)?;
