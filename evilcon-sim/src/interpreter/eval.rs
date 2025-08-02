@@ -176,31 +176,28 @@ impl EvaluatorState {
       }
       Expr::Subscript(left, right) => {
         let left = self.eval_expr(left)?;
-        let func = left.get_func("__getitem__", self.superglobal_state.bootstrapped_classes())?; // Just do it the Python way, even though Godot doesn't :)
-        let args = MethodArgs(vec![self.eval_expr(right)?]);
-        let globals = left.get_class(self.superglobal_state.bootstrapped_classes()).map(|class| class.get_constants_table());
-        self.call_function(globals, &func, Box::new(left), args)
+        let args = vec![self.eval_expr(right)?];
+        self.call_function_on(&left, GETITEM_METHOD_NAME, args)
       }
       Expr::Attr(left, name) => {
         let left = self.eval_expr(left)?;
         Ok(left.get_value(name.as_ref(), &self.superglobal_state)?)
       }
       Expr::AttrCall(left, name, args) => {
-        let left_value;
-        let func;
         if let Expr::Name(left_name) = left.as_ref() && left_name == "super" {
           // super call
-          left_value = self.self_instance().clone();
+          let left_value = self.self_instance().clone();
           let left_class = left_value.get_class(self.superglobal_state.bootstrapped_classes()).ok_or(EvalError::BadSuper)?;
           let Some(left_parent) = left_class.parent() else { return Err(EvalError::BadSuper); };
-          func = left_parent.get_func(name.as_ref())?.clone();
+          let func = left_parent.get_func(name.as_ref())?.clone();
+          let args = args.iter().map(|arg| self.eval_expr(arg)).collect::<Result<Vec<_>, _>>()?;
+          let globals = left_class.get_constants_table();
+          self.call_function(Some(globals), &func, Box::new(left_value), MethodArgs(args))
         } else {
-          left_value = self.eval_expr(left)?;
-          func = left_value.get_func(name.as_ref(), self.superglobal_state.bootstrapped_classes())?;
+          let left_value = self.eval_expr(left)?;
+          let args = args.iter().map(|arg| self.eval_expr(arg)).collect::<Result<Vec<_>, _>>()?;
+          self.call_function_on(&left_value, name.as_ref(), args)
         }
-        let args = MethodArgs(args.iter().map(|arg| self.eval_expr(arg)).collect::<Result<Vec<_>, _>>()?);
-        let globals = left_value.get_class(self.superglobal_state.bootstrapped_classes()).map(|class| class.get_constants_table());
-        self.call_function(globals, &func, Box::new(left_value), args)
       }
       Expr::BinaryOp(left, op, right) => {
         let left = self.eval_expr(left)?;
@@ -282,7 +279,7 @@ impl EvaluatorState {
         self.eval_expr(&Expr::Name(name.clone().into()))
       }
       AssignmentLeftHand::Subscript(left, right) => {
-        let func = left.get_func("__getitem__", self.superglobal_state.bootstrapped_classes())?; // Just do it the Python way, even though Godot doesn't :)
+        let func = left.get_func(GETITEM_METHOD_NAME, self.superglobal_state.bootstrapped_classes())?; // Just do it the Python way, even though Godot doesn't :)
         let args = MethodArgs(vec![right.clone()]);
         let globals = left.get_class(self.superglobal_state.bootstrapped_classes()).map(|class| class.get_constants_table());
         self.call_function(globals, &func, Box::new(left.clone()), args)
@@ -417,6 +414,24 @@ impl EvaluatorState {
       }
     }
     Ok(())
+  }
+
+  pub fn call_function_on(&self,
+                          receiver: &Value,
+                          method_name: &str,
+                          args: Vec<Value>) -> Result<Value, EvalError> {
+    let method = receiver.get_func(method_name, self.bootstrapped_classes())?;
+    let globals = receiver.get_call_target(self.bootstrapped_classes()).map(|class| class.get_constants_table());
+    self.call_function(globals, &method, Box::new(receiver.clone()), MethodArgs(args))
+  }
+
+  pub fn call_function_on_class(&self,
+                                receiver: &Class,
+                                method_name: &str,
+                                args: Vec<Value>) -> Result<Value, EvalError> {
+    let method = receiver.get_func(method_name)?;
+    let globals = receiver.get_constants_table();
+    self.call_function(Some(globals), &method, Box::default(), MethodArgs(args))
   }
 
   pub fn call_function(&self,
