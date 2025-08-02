@@ -49,6 +49,7 @@ pub(super) fn game_stats_panel_class(node: Arc<Class>) -> Class {
   ClassBuilder::default()
     .parent(node)
     .instance_vars(vars)
+    .methods(methods)
     .proxy_vars(proxies)
     .build()
 }
