@@ -20,7 +20,6 @@ pub const ENDGAME_VARIABLE: &str = "__evilconsim_endgame";
 // * _ready (all AI setup and node setup that we do by hand)
 // * replace_player_agent (will be done by hand)
 // * popup_display_card (visual stuff)
-// * player_agent (only used in turn transitions)
 // * Like twenty signal response methods that do nothing but animations and input
 // * Several private internal helpers
 pub(super) fn playing_field_class(node: Arc<Class>) -> Class {
@@ -31,6 +30,7 @@ pub(super) fn playing_field_class(node: Arc<Class>) -> Class {
 
   let mut instance_vars = Vec::new();
   instance_vars.push(InstanceVar::new("turn_number", Some(Expr::from(-1))));
+  instance_vars.push(InstanceVar::new("turn_player", Some(Expr::from("BOTTOM"))));
   instance_vars.push(InstanceVar::new("randomness", Some(
     Expr::name("Randomness").attr_call("new", vec![]),
   )));
@@ -67,6 +67,7 @@ pub(super) fn playing_field_class(node: Arc<Class>) -> Class {
   methods.insert(Identifier::new("get_viewport_rect"), Method::rust_method("get_viewport_rect", get_viewport_rect));
   methods.insert(Identifier::new("animate_card_moving"), Method::noop());
   methods.insert(Identifier::new("hand_cards_are_hidden"), Method::rust_method("hand_cards_are_hidden", hand_cards_are_hidden));
+  methods.insert(Identifier::new("player_agent"), Method::rust_method("player_agent", player_agent));
 
   ClassBuilder::default()
     .parent(node)
@@ -129,4 +130,14 @@ fn get_viewport_rect(evaluator: &mut EvaluatorState, _: MethodArgs) -> Result<Va
 
 fn hand_cards_are_hidden(_: &mut EvaluatorState, _: MethodArgs) -> Result<Value, EvalError> {
   Ok(Value::from(false))
+}
+
+fn player_agent(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
+  let player = args.expect_one_arg()?;
+  let player = expect_string(&player)?;
+  match player {
+    "BOTTOM" => state.self_instance().get_value("_bottom_agent", state.superglobal_state()),
+    "TOP" => state.self_instance().get_value("_top_agent", state.superglobal_state()),
+    _ => Err(EvalError::domain_error("Bad player agent")),
+  }
 }
