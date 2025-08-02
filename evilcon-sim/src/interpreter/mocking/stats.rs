@@ -9,6 +9,7 @@ use crate::interpreter::operator::{expect_int, expect_string};
 use crate::ast::expr::Expr;
 use crate::ast::identifier::Identifier;
 use crate::util::clamp;
+use super::stats_panel::DESTINY_SONG_LIMIT;
 
 use std::sync::Arc;
 use std::collections::HashMap;
@@ -60,6 +61,20 @@ pub(super) fn stats_static_class(node: Arc<Class>) -> Class {
     let res = basic_add_stat("fort_defense", state, args)?;
     if res.new_value <= 0 {
       send_endgame_signal(state, res.playing_field, other_player(res.player)?)?;
+    }
+    Ok(Value::Null)
+  }));
+  methods.insert(Identifier::new("set_destiny_song"), Method::rust_static_method("set_destiny_song", |state, args| {
+    let res = basic_set_stat("destiny_song", state, args)?;
+    if res.new_value >= DESTINY_SONG_LIMIT {
+      send_endgame_signal(state, res.playing_field, res.player)?;
+    }
+    Ok(Value::Null)
+  }));
+  methods.insert(Identifier::new("add_destiny_song"), Method::rust_static_method("add_destiny_song", |state, args| {
+    let res = basic_add_stat("destiny_song", state, args)?;
+    if res.new_value >= DESTINY_SONG_LIMIT {
+      send_endgame_signal(state, res.playing_field, res.player)?;
     }
     Ok(Value::Null)
   }));
