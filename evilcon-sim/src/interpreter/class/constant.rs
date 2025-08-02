@@ -39,6 +39,11 @@ impl LazyConst {
     }
   }
 
+  /// A [`LazyConst`] whose value is already resolved to null.
+  pub fn null() -> Self {
+    Self::resolved(Value::Null)
+  }
+
   /// A [`LazyConst`] that evaluates an expression.
   pub fn evaluator(expr: Expr) -> Self {
     Self::new(move |state| {

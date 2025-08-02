@@ -93,6 +93,13 @@ impl Method {
     Self::rust_method("noop", body)
   }
 
+  pub fn static_noop() -> Method {
+    fn body(_: &mut EvaluatorState, _: MethodArgs) -> Result<Value, EvalError> {
+      Ok(Value::Null)
+    }
+    Self::rust_static_method("noop", body)
+  }
+
   pub fn unimplemented_stub(error_msg: &str) -> Method {
     let error_msg = error_msg.to_owned();
     let body = move |_: &mut EvaluatorState, _: MethodArgs| {
