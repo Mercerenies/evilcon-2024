@@ -165,6 +165,7 @@ fn dictionary_class() -> Class {
 fn callable_class() -> Class {
   let mut methods = HashMap::new();
   methods.insert(Identifier::from("call"), Method::rust_method("call", call_func));
+  methods.insert(Identifier::from("bind"), Method::rust_method("bind", bind_func));
   methods.insert(Identifier::from("bindv"), Method::rust_method("bindv", bindv_func));
 
   ClassBuilder::default()
@@ -236,6 +237,13 @@ fn bindv_func(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, Eva
   Ok(Value::CallableWithBindings(EqPtr::new(CallableWithBindings {
     inner_callable: state.self_instance().clone(),
     bound_params: args,
+  })))
+}
+
+fn bind_func(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
+  Ok(Value::CallableWithBindings(EqPtr::new(CallableWithBindings {
+    inner_callable: state.self_instance().clone(),
+    bound_params: args.0,
   })))
 }
 
