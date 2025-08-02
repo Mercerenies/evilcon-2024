@@ -172,7 +172,7 @@ impl EvaluatorState {
           func => { return Err(EvalError::CannotCall(func.clone())); }
         };
         let args = MethodArgs(args.iter().map(|arg| self.eval_expr(arg)).collect::<Result<Vec<_>, _>>()?);
-        self.call_function(Some(self.globals.clone()), &func, self.self_instance.clone(), args)
+        self.call_function_prim(Some(self.globals.clone()), &func, self.self_instance.clone(), args)
       }
       Expr::Subscript(left, right) => {
         let left = self.eval_expr(left)?;
@@ -193,7 +193,7 @@ impl EvaluatorState {
           let func = left_parent.get_func(name.as_ref())?.clone();
           let args = args.iter().map(|arg| self.eval_expr(arg)).collect::<Result<Vec<_>, _>>()?;
           let globals = left_class.get_constants_table();
-          self.call_function(Some(globals), &func, Box::new(left_value), MethodArgs(args))
+          self.call_function_prim(Some(globals), &func, Box::new(left_value), MethodArgs(args))
         } else {
           let left_value = self.eval_expr(left)?;
           let args = args.iter().map(|arg| self.eval_expr(arg)).collect::<Result<Vec<_>, _>>()?;
@@ -421,7 +421,7 @@ impl EvaluatorState {
                           args: Vec<Value>) -> Result<Value, EvalError> {
     let method = receiver.get_func(method_name, self.bootstrapped_classes())?;
     let globals = receiver.get_call_target(self.bootstrapped_classes()).map(|class| class.get_constants_table());
-    self.call_function(globals, &method, Box::new(receiver.clone()), MethodArgs(args))
+    self.call_function_prim(globals, &method, Box::new(receiver.clone()), MethodArgs(args))
   }
 
   pub fn call_function_on_class(&self,
@@ -430,14 +430,15 @@ impl EvaluatorState {
                                 args: Vec<Value>) -> Result<Value, EvalError> {
     let method = receiver.get_func(method_name)?;
     let globals = receiver.get_constants_table();
-    self.call_function(Some(globals), &method, Box::default(), MethodArgs(args))
+    self.call_function_prim(Some(globals), &method, Box::default(), MethodArgs(args))
   }
 
-  pub fn call_function(&self,
-                       globals: Option<Arc<HashMap<Identifier, LazyConst>>>,
-                       method: &Method,
-                       self_instance: Box<Value>,
-                       args: MethodArgs) -> Result<Value, EvalError> {
+  /// Primitive, low-level function call method.
+  pub fn call_function_prim(&self,
+                            globals: Option<Arc<HashMap<Identifier, LazyConst>>>,
+                            method: &Method,
+                            self_instance: Box<Value>,
+                            args: MethodArgs) -> Result<Value, EvalError> {
     let mut method_scope = EvaluatorState::new(Arc::clone(&self.superglobal_state)).with_self(self_instance);
     if let Some(globals) = globals {
       method_scope = method_scope.with_globals(globals);
