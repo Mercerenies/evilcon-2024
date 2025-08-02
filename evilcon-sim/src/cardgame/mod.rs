@@ -7,12 +7,13 @@ use crate::interpreter::value::{SimpleValue, Value};
 
 use thiserror::Error;
 use rand::seq::SliceRandom;
+use strum_macros::Display;
 
 use std::sync::Arc;
 
 pub const DECK_SIZE: usize = 20;
 
-pub const LOOKAHEAD_AI_AGENT_PATH: &str = "res://card_game/playing_field/player_agent/lookahead_ai_agent/lookahead_ai_agent.tscn";
+pub const LOOKAHEAD_AI_AGENT_PATH: &str = "res://card_game/playing_field/player_agent/lookahead_ai_agent/lookahead_ai_agent.gd";
 
 /// Newtype wrapper around a superglobal state, indicating that it has
 /// loaded the requisite files in order to play the card game. This
@@ -31,7 +32,7 @@ pub struct CardGameEnv {
   pub top_deck: Vec<CardId>,
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Display)]
 pub enum GameWinner {
   Bottom,
   Top,
@@ -88,11 +89,11 @@ impl GameEngine {
     }
     {
       let bottom_agent = create_ai_agent(&state)?;
-      state.call_function_on(&playing_field, "replace_player_agent", vec![Value::from("BOTTOM"), bottom_agent])?;
+      install_player_agent(&state, &playing_field, "BOTTOM", bottom_agent)?;
     }
     {
       let top_agent = create_ai_agent(&state)?;
-      state.call_function_on(&playing_field, "replace_player_agent", vec![Value::from("TOP"), top_agent])?;
+      install_player_agent(&state, &playing_field, "TOP", top_agent)?;
     }
     Ok((state, playing_field))
   }
@@ -122,4 +123,17 @@ fn create_ai_agent(state: &EvaluatorState) -> Result<Value, EvalError> {
     return Err(EvalError::UndefinedClass(LOOKAHEAD_AI_AGENT_PATH.to_string()));
   };
   state.call_function_on_class(&class, "new", Vec::new())
+}
+
+fn install_player_agent(state: &EvaluatorState, playing_field: &Value, player: &str, agent: Value) -> Result<(), EvalError> {
+  // NOTE: Doesn't bother to call added_to_playing_field, since the
+  // lookahead agent doesn't use it.
+  let var_name = match player {
+    "BOTTOM" => "_bottom_agent",
+    "TOP" => "_top_agent",
+    _ => { return Err(EvalError::domain_error("Expected TOP or BOTTOM")); }
+  };
+  agent.set_value("controlled_player", Value::from(player), state.superglobal_state())?;
+  playing_field.set_value(var_name, agent, state.superglobal_state())?;
+  Ok(())
 }

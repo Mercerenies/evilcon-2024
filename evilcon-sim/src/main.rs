@@ -1,26 +1,24 @@
 
 use evilcon_sim::driver;
+use evilcon_sim::cardgame::{GameEngine, CardId, CardGameEnv};
 
 fn main() -> anyhow::Result<()> {
-  driver::load_all_files()?;
-
-  //test_driver()?;
-
+  let superglobals = driver::load_all_files()?;
+  let engine = GameEngine::new(superglobals);
+  let env = CardGameEnv {
+    bottom_deck: sample_deck(),
+    top_deck: sample_deck(),
+  };
+  let outcome = engine.play_game(&env)?;
+  println!("Winner: {}", outcome);
   Ok(())
 }
 
-/*
-fn test_driver() -> anyhow::Result<()> {
-  let mut loader = loader::GdScriptLoader::new();
-  loader.load_file(concat!(env!("CARGO_MANIFEST_DIR"), "/tmp.gd"))?;
-  eprintln!("Loaded test file");
-  let superglobals = Arc::new(loader.build()?);
-  let interpreter = eval::EvaluatorState::new(superglobals);
-  let test_class = interpreter.get_file("res://evilcon-sim/tmp.gd")
-    .ok_or_else(|| anyhow::anyhow!("Could not find tmp.gd"))?;
-  let result = interpreter.call_function_on_class(&test_class, "test", Vec::new())?;
-  eprintln!("Output: {}", result);
-  eprintln!("Debug code: {:?}", result);
-  Ok(())
+fn sample_deck() -> Vec<CardId> {
+  vec![
+    CardId(10), CardId(17), CardId(99), CardId(101), CardId(4),
+    CardId(1), CardId(1), CardId(1), CardId(81), CardId(82),
+    CardId(83), CardId(91), CardId(140), CardId(141), CardId(17),
+    CardId(83), CardId(91), CardId(140), CardId(141), CardId(17),
+  ]
 }
-*/

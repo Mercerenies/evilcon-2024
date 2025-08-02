@@ -11,7 +11,6 @@ pub const GDSCRIPT_FILES: &[&str] = &[
   "../card_game/playing_field/event_logger.gd",
   "../card_game/playing_field/util/card_effects.gd",
   "../card_game/playing_field/util/card_game_phases.gd",
-  "../card_game/playing_field/util/card_game_turn_transitions.gd",
   "../card_game/playing_field/util/query.gd",
   "../card_game/playing_field/util/stats_calculator.gd",
   "../card_game/playing_field/util/card_game_api.gd",

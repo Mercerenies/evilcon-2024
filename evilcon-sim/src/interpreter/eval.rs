@@ -425,12 +425,16 @@ impl EvaluatorState {
   }
 
   pub fn call_function_on_class(&self,
-                                receiver: &Class,
+                                receiver: &Arc<Class>,
                                 method_name: &str,
                                 args: Vec<Value>) -> Result<Value, EvalError> {
-    let method = receiver.get_func(method_name)?;
+    let method = if method_name == "new" {
+      Method::constructor_method()
+    } else {
+      receiver.get_func(method_name)?.clone()
+    };
     let globals = receiver.get_constants_table();
-    self.call_function_prim(Some(globals), &method, Box::default(), MethodArgs(args))
+    self.call_function_prim(Some(globals), &method, Box::new(Value::ClassRef(Arc::clone(receiver))), MethodArgs(args))
   }
 
   /// Primitive, low-level function call method.
