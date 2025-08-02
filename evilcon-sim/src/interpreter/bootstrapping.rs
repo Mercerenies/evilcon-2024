@@ -103,6 +103,7 @@ fn object_class() -> Class {
   let mut methods = HashMap::new();
   methods.insert(Identifier::new("call"), Method::rust_method("call", call_method_on_obj));
   methods.insert(Identifier::new("callv"), Method::rust_method("callv", callv_method_on_obj));
+  methods.insert(Identifier::new("free"), Method::noop());
 
   ClassBuilder::default()
     .name("Object")
