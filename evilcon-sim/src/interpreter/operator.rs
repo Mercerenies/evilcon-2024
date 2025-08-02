@@ -32,7 +32,13 @@ pub fn eval_unary_op(op: UnaryOp, value: Value) -> Result<Value, EvalError> {
 
 pub fn eval_binary_op(bootstrapping: &BootstrappedTypes, lhs: Value, op: BinaryOp, rhs: Value) -> Result<Value, EvalError> {
   match op {
-    BinaryOp::Add => promote_binary_nums(lhs, rhs, |lhs, rhs| Ok(lhs + rhs), |lhs, rhs| Ok(lhs + rhs)),
+    BinaryOp::Add => {
+      if matches!(lhs, Value::ArrayRef(_)) {
+        do_array_concat(lhs, rhs)
+      } else {
+        promote_binary_nums(lhs, rhs, |lhs, rhs| Ok(lhs + rhs), |lhs, rhs| Ok(lhs + rhs))
+      }
+    }
     BinaryOp::Sub => promote_binary_nums(lhs, rhs, |lhs, rhs| Ok(lhs - rhs), |lhs, rhs| Ok(lhs - rhs)),
     BinaryOp::Mul => promote_binary_nums(lhs, rhs, |lhs, rhs| Ok(lhs * rhs), |lhs, rhs| Ok(lhs * rhs)),
     BinaryOp::Div => promote_binary_nums(lhs, rhs, |lhs, rhs| Ok(lhs / rhs), |lhs, rhs| Ok(lhs / rhs)), // Note: Integer division on ints
@@ -187,4 +193,12 @@ pub fn do_comparison_op(lhs: &Value, rhs: &Value) -> Result<Ordering, EvalError>
     }
     (lhs, rhs) => Err(EvalError::type_error("comparable values", Value::new_array(vec![lhs.to_owned(), rhs.to_owned()]))),
   }
+}
+
+fn do_array_concat(lhs: Value, rhs: Value) -> Result<Value, EvalError> {
+  let lhs = expect_array(&lhs)?;
+  let rhs = expect_array(&rhs)?;
+  let mut out = lhs.borrow().clone();
+  out.extend(rhs.borrow().clone());
+  Ok(Value::new_array(out))
 }

@@ -30,6 +30,7 @@ class ZZZ:
         print(a, b, c)
 
 static func test():
+    print([1, 2] + [3, 4])
     print("---")
     print(ZZZ.new().call("seven", 7, 8, 9))
     print(ZZZ.new().callv("seven", [7, 8, 9]))
