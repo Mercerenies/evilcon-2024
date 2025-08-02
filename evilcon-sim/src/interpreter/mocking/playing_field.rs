@@ -19,8 +19,6 @@ pub(super) const ENDGAME_VARIABLE: &str = "__evilconsim_endgame";
 // Intentionally omitted:
 // * _ready (all AI setup and node setup that we do by hand)
 // * replace_player_agent (will be done by hand)
-// * animate_card_moving (animation stuff, only called by CardGameAPI)
-// * hand_cards_are_hidden (visual stuff, only called by CardGameAPI)
 // * popup_display_card (visual stuff)
 // * player_agent (only used in turn transitions)
 // * Like twenty signal response methods that do nothing but animations and input
@@ -67,6 +65,8 @@ pub(super) fn playing_field_class(node: Arc<Class>) -> Class {
   methods.insert(Identifier::new("get_stats"), selector_function("__evilconsim_statspanel_bottom", "__evilconsim_statspanel_top"));
   methods.insert(Identifier::new("end_game"), Method::rust_method("end_game", end_game_method));
   methods.insert(Identifier::new("get_viewport_rect"), Method::rust_method("get_viewport_rect", get_viewport_rect));
+  methods.insert(Identifier::new("animate_card_moving"), Method::noop());
+  methods.insert(Identifier::new("hand_cards_are_hidden"), Method::rust_method("hand_cards_are_hidden", hand_cards_are_hidden));
 
   ClassBuilder::default()
     .parent(node)
@@ -125,4 +125,8 @@ fn get_viewport_rect(evaluator: &mut EvaluatorState, args: MethodArgs) -> Result
   let black_hole_object = Value::new_object(Arc::clone(object_class));
   black_hole_object.set_value("size", Value::from(0), evaluator.superglobal_state())?;
   Ok(black_hole_object)
+}
+
+fn hand_cards_are_hidden(_: &mut EvaluatorState, _: MethodArgs) -> Result<Value, EvalError> {
+  Ok(Value::from(false))
 }
