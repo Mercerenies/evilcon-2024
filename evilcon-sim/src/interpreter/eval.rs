@@ -399,7 +399,7 @@ impl EvaluatorState {
                        value: Value) -> Result<(), EvalError> {
     match left_hand {
       AssignmentLeftHand::Name(id) => {
-        if !self.has_local_var(&id) {
+        if self.has_local_var(&id) {
           self.set_local_var(id, value);
         } else {
           self.self_instance().set_value(id.as_ref(), value, self.superglobal_state())?;
