@@ -35,10 +35,12 @@ pub const GDSCRIPT_GLOBS: &[&str] = &[
 pub fn load_all_files() -> anyhow::Result<SuperglobalState> {
   let mut loader = GdScriptLoader::new();
   for file in GDSCRIPT_FILES {
-    loader.load_file(file)?;
+    let file = format!("{}/{}", env!("CARGO_MANIFEST_DIR"), file);
+    loader.load_file(&file)?;
   }
   for glob in GDSCRIPT_GLOBS {
-    loader.load_all_files(glob)?;
+    let glob = format!("{}/{}", env!("CARGO_MANIFEST_DIR"), glob);
+    loader.load_all_files(&glob)?;
   }
   eprintln!("Loaded all files.");
 
