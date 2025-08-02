@@ -79,6 +79,8 @@ pub(super) fn stats_static_class(node: Arc<Class>) -> Class {
     Ok(Value::Null)
   }));
 
+  // TODO level, morale, etc
+
   ClassBuilder::default()
     .name("Stats")
     .parent(node)
