@@ -8,9 +8,9 @@ use evilcon_sim::interpreter::value::Value;
 use std::sync::Arc;
 
 fn main() -> anyhow::Result<()> {
-  driver::load_all_files()?;
+  //driver::load_all_files()?;
 
-  //test_driver()?;
+  test_driver()?;
 
   Ok(())
 }

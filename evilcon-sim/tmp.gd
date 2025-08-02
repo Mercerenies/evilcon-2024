@@ -26,7 +26,15 @@ class ZZZ:
         return func():
             return x
 
+    func seven(a, b, c):
+        print(a, b, c)
+
 static func test():
+    print("---")
+    print(ZZZ.new().call("seven", 7, 8, 9))
+    print(ZZZ.new().callv("seven", [7, 8, 9]))
+    print("---")
+
     var tmp1 = ZZZ.new().www()
     print(tmp1.call())
 

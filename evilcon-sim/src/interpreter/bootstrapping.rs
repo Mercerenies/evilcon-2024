@@ -100,8 +100,13 @@ impl BootstrappedTypes {
 }
 
 fn object_class() -> Class {
+  let mut methods = HashMap::new();
+  methods.insert(Identifier::new("call"), Method::rust_method("call", call_method_on_obj));
+  methods.insert(Identifier::new("callv"), Method::rust_method("callv", callv_method_on_obj));
+
   ClassBuilder::default()
     .name("Object")
+    .methods(methods)
     .build()
 }
 
@@ -500,4 +505,20 @@ fn string_substr(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, 
     &self_inst[from as usize..(to as usize)]
   };
   Ok(Value::String(substr.to_string()))
+}
+
+fn call_method_on_obj(state: &mut EvaluatorState, mut args: MethodArgs) -> Result<Value, EvalError> {
+  if args.len() < 1 {
+    return Err(EvalError::WrongArity { actual: args.len(), expected: 1 });
+  }
+  let method_name = expect_string(&args.0[0])?.to_owned();
+  args.0.remove(0);
+  state.call_function_on(state.self_instance(), &method_name, args.0)
+}
+
+fn callv_method_on_obj(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
+  let (method_name, args) = args.expect_two_args()?;
+  let method_name = expect_string(&method_name)?;
+  let args = expect_array(&args)?.borrow().clone();
+  state.call_function_on(state.self_instance(), &method_name, args)
 }
