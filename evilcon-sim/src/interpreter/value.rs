@@ -32,6 +32,7 @@ pub enum Value {
   ObjectRef(EqPtrMut<ObjectInst>),
   BoundMethod(EqPtr<BoundMethod>),
   Lambda(EqPtr<LambdaValue>),
+  CallableWithBindings(EqPtr<CallableWithBindings>),
   EnumType(OrderMap<Identifier, i64>),
   /// Stub for signal values. We do the absolute minimum amount of
   /// mocking necessary to make this exist in the system.
@@ -49,6 +50,12 @@ pub enum AssignmentLeftHand {
 pub struct LambdaValue {
   pub contents: Arc<Lambda>,
   pub outer_scope: EvaluatorState,
+}
+
+#[derive(Debug, Clone)]
+pub struct CallableWithBindings {
+  pub inner_callable: Value,
+  pub bound_params: Vec<Value>,
 }
 
 /// Technically, Godot allows *any* language value to be a dictionary
@@ -249,7 +256,8 @@ impl Value {
       Value::String(_) => Some(Arc::clone(bootstrapping.string())),
       Value::ArrayRef(_) => Some(Arc::clone(bootstrapping.array())),
       Value::DictRef(_) => Some(Arc::clone(bootstrapping.dictionary())),
-      Value::BoundMethod(_) | Value::Lambda(_) => Some(Arc::clone(bootstrapping.callable())),
+      Value::BoundMethod(_) | Value::Lambda(_) | Value::CallableWithBindings(_) =>
+        Some(Arc::clone(bootstrapping.callable())),
       Value::SignalStub => Some(Arc::clone(bootstrapping.signal())),
       _ => None,
     }
@@ -276,7 +284,7 @@ impl Value {
     match self {
       Value::Null | Value::Bool(_) | Value::Int(_) | Value::Float(_) | Value::String(_) |
         Value::ClassRef(_) | Value::BoundMethod(_) | Value::Lambda(_) | Value::EnumType(_) |
-        Value::SignalStub => self.clone(),
+        Value::SignalStub | Value::CallableWithBindings(_) => self.clone(),
       Value::ObjectRef(_) => {
         eprintln!("WARNING: Shallow copy of object has no effect");
         self.clone()
@@ -295,7 +303,7 @@ impl Value {
     match self {
       Value::Null | Value::Bool(_) | Value::Int(_) | Value::Float(_) | Value::String(_) |
         Value::ClassRef(_) | Value::BoundMethod(_) | Value::Lambda(_) | Value::EnumType(_) |
-        Value::ObjectRef(_) | Value::SignalStub => self.clone(),
+        Value::ObjectRef(_) | Value::SignalStub | Value::CallableWithBindings(_) => self.clone(),
       Value::ArrayRef(arr) => {
         let new_arr = arr.borrow().iter().map(|v| v.deep_copy()).collect();
         Value::new_array(new_arr)
@@ -495,6 +503,7 @@ impl Display for Value {
       Value::ObjectRef(_) => write!(f, "<object>"),
       Value::BoundMethod(_) => write!(f, "<method>"),
       Value::Lambda(_) => write!(f, "<lambda>"),
+      Value::CallableWithBindings(_) => write!(f, "<callable>"),
       Value::EnumType(_) => write!(f, "<enum>"),
       Value::SignalStub => write!(f, "<signal>"),
     }

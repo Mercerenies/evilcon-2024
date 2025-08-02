@@ -1,7 +1,7 @@
 
 use super::class::{Class, ClassBuilder};
 use super::eval::{EvaluatorState, GETITEM_METHOD_NAME};
-use super::value::{Value, HashKey};
+use super::value::{Value, HashKey, CallableWithBindings, EqPtr};
 use super::error::{EvalError, ControlFlow};
 use super::method::{MethodArgs, Method};
 use super::operator::{expect_int, expect_float_loosely, expect_string, expect_bool,
@@ -164,6 +164,8 @@ fn dictionary_class() -> Class {
 fn callable_class() -> Class {
   let mut methods = HashMap::new();
   methods.insert(Identifier::from("call"), Method::rust_method("call", call_func));
+  methods.insert(Identifier::from("bindv"), Method::rust_method("bindv", bindv_func));
+
   ClassBuilder::default()
     .name("Callable")
     .methods(methods)
@@ -213,10 +215,27 @@ pub fn call_func(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, 
       let result = lambda_scope.eval_body(&lambda.contents.body);
       ControlFlow::expect_return_or_null(result)
     }
+    Value::CallableWithBindings(inner) => {
+      let inner_method = &inner.inner_callable;
+      let mut all_args = Vec::new();
+      all_args.extend(args.0);
+      all_args.extend(inner.bound_params.clone());
+      let mut new_state = state.clone().with_self(Box::new(inner_method.clone()));
+      call_func(&mut new_state, MethodArgs(all_args))
+    }
     inst => {
       Err(EvalError::CannotCallValue(inst.to_string()))
     }
   }
+}
+
+fn bindv_func(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
+  let args = args.expect_one_arg()?;
+  let args = expect_array(&args)?.borrow().clone();
+  Ok(Value::CallableWithBindings(EqPtr::new(CallableWithBindings {
+    inner_callable: state.self_instance().clone(),
+    bound_params: args,
+  })))
 }
 
 fn array_getitem(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
