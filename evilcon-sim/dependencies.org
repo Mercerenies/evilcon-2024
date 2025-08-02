@@ -31,7 +31,7 @@
 ** FILES MOCKED IN RUST
    + [X] ~card_game/playing_field/playing_field.gd~
    + [X] ~card_game/playing_field/randomness.gd~
-   + [ ] ~card_game/playing_field/util/card_game_turn_transitions.gd~
+   + [X] ~card_game/playing_field/util/card_game_turn_transitions.gd~
      - Currently, this file's only "real" public method is
        ~play_full_game~. It used to have more public API but nothing
        else is called externally now. The methods are still marked as
