@@ -443,20 +443,28 @@ impl EvaluatorState {
                             method: &Method,
                             self_instance: Box<Value>,
                             args: MethodArgs) -> Result<Value, EvalError> {
-    let mut method_scope = EvaluatorState::new(Arc::clone(&self.superglobal_state)).with_self(self_instance);
-    if let Some(globals) = globals {
-      method_scope = method_scope.with_enclosing_class(Some(globals));
-    }
-    match method {
-      Method::GdMethod(method) => {
-        method_scope.bind_arguments(args.0, method.params.clone())?;
-        let result = method_scope.eval_body(&method.body);
-        ControlFlow::expect_return_or_null(result)
+    fn run_body(state: &EvaluatorState,
+                globals: Option<Arc<Class>>,
+                method: &Method,
+                self_instance: Box<Value>,
+                args: MethodArgs) -> Result<Value, EvalError> {
+      let mut method_scope = EvaluatorState::new(Arc::clone(&state.superglobal_state)).with_self(self_instance);
+      if let Some(globals) = globals {
+        method_scope = method_scope.with_enclosing_class(Some(globals));
       }
-      Method::RustMethod(method) => {
-        (method.body)(&mut method_scope, args)
+      match method {
+        Method::GdMethod(method) => {
+          method_scope.bind_arguments(args.0, method.params.clone())?;
+          let result = method_scope.eval_body(&method.body);
+          ControlFlow::expect_return_or_null(result)
+        }
+        Method::RustMethod(method) => {
+          (method.body)(&mut method_scope, args)
+        }
       }
     }
+    run_body(self, globals, method, self_instance, args)
+      .map_err(|err| err.with_function_context(method.name().as_ref()))
   }
 
   /// Bind arguments for a function call. In case of error, `self` is

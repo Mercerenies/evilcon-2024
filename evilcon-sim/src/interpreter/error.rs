@@ -29,6 +29,8 @@ pub enum LoopControlFlow {
 
 #[derive(Debug, Clone, Error)]
 pub enum EvalError {
+  #[error("Error in function '{function}'")]
+  ErrorInFunction { function: String, #[source] inner: Box<EvalError> },
   #[error("{0}")]
   InvalidHashKey(#[from] InvalidHashKey),
   #[error("Unknown class {0}")]
@@ -87,6 +89,13 @@ impl EvalError {
 
   pub fn domain_error(error: impl Into<String>) -> Self {
     Self::DomainError(error.into())
+  }
+
+  pub fn with_function_context(self, function: impl Into<String>) -> Self {
+    Self::ErrorInFunction {
+      function: function.into(),
+      inner: Box::new(self),
+    }
   }
 }
 
