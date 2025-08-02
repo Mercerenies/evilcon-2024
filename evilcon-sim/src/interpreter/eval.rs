@@ -20,6 +20,8 @@ use std::collections::HashMap;
 use std::sync::Arc;
 use std::borrow::Borrow;
 
+pub const GETITEM_METHOD_NAME: &str = "__getitem__";
+
 #[derive(Debug, Clone)]
 pub struct EvaluatorState {
   self_instance: Box<Value>,

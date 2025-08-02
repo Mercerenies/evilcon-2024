@@ -1,6 +1,6 @@
 
 use super::class::{Class, ClassBuilder};
-use super::eval::EvaluatorState;
+use super::eval::{EvaluatorState, GETITEM_METHOD_NAME};
 use super::value::{Value, HashKey};
 use super::error::{EvalError, ControlFlow};
 use super::method::{MethodArgs, Method};
@@ -114,7 +114,7 @@ fn refcounted_class(object: Arc<Class>) -> Class {
 
 fn array_class() -> Class {
   let mut methods = HashMap::new();
-  methods.insert(Identifier::from("__getitem__"), Method::rust_method("__getitem__", array_getitem));
+  methods.insert(Identifier::from(GETITEM_METHOD_NAME), Method::rust_method(GETITEM_METHOD_NAME, array_getitem));
   methods.insert(Identifier::from("clear"), Method::rust_method("clear", array_clear));
   methods.insert(Identifier::from("shuffle"), Method::rust_method("shuffle", array_shuffle));
   methods.insert(Identifier::from("is_empty"), Method::rust_method("is_empty", array_is_empty));
@@ -144,7 +144,7 @@ fn array_class() -> Class {
 
 fn dictionary_class() -> Class {
   let mut methods = HashMap::new();
-  methods.insert(Identifier::from("__getitem__"), Method::rust_method("__getitem__", dict_getitem));
+  methods.insert(Identifier::from(GETITEM_METHOD_NAME), Method::rust_method(GETITEM_METHOD_NAME, dict_getitem));
   methods.insert(Identifier::from("get"), Method::rust_method("get", dict_get));
   methods.insert(Identifier::from("duplicate"), Method::rust_method("duplicate", duplicate_method));
   methods.insert(Identifier::from("keys"), Method::rust_method("keys", dict_keys));
