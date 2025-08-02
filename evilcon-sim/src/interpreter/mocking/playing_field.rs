@@ -5,13 +5,16 @@ use crate::interpreter::value::Value;
 use crate::interpreter::eval::EvaluatorState;
 use crate::interpreter::method::{Method, MethodArgs};
 use crate::interpreter::operator::expect_string;
-use crate::ast::expr::Expr;
+use crate::interpreter::error::EvalError;
+use crate::ast::expr::{Expr, Literal};
 use crate::ast::identifier::Identifier;
 use super::card_strip::CARD_STRIP_RES_PATH;
 use super::stats_panel::STATS_PANEL_RES_PATH;
 
 use std::sync::Arc;
 use std::collections::HashMap;
+
+pub(super) const ENDGAME_VARIABLE: &str = "__evilconsim_endgame";
 
 // Intentionally omitted:
 // * _ready (all AI setup and node setup that we do by hand)
@@ -51,6 +54,7 @@ pub(super) fn playing_field_class(node: Arc<Class>) -> Class {
   instance_vars.push(InstanceVar::new("__evilconsim_effectstrip_top", Some(instantiate_card_strip())));
   instance_vars.push(InstanceVar::new("__evilconsim_statspanel_top", Some(instantiate_stats_panel())));
   instance_vars.push(InstanceVar::new("__evilconsim_statspanel_bottom", Some(instantiate_stats_panel())));
+  instance_vars.push(InstanceVar::new(ENDGAME_VARIABLE, Some(Expr::Literal(Literal::Null))));
 
   let mut methods = HashMap::new();
   methods.insert(Identifier::new("with_animation"), Method::noop());
@@ -61,10 +65,7 @@ pub(super) fn playing_field_class(node: Arc<Class>) -> Class {
   methods.insert(Identifier::new("get_minion_strip"), selector_function("__evilconsim_minionstrip_bottom", "__evilconsim_minionstrip_top"));
   methods.insert(Identifier::new("get_effect_strip"), selector_function("__evilconsim_effectstrip_bottom", "__evilconsim_effectstrip_top"));
   methods.insert(Identifier::new("get_stats"), selector_function("__evilconsim_statspanel_bottom", "__evilconsim_statspanel_top"));
-
-  // TODO end_game (think about how we want to signal this)
-
-  // TODO More
+  methods.insert(Identifier::new("end_game"), Method::rust_method("end_game", end_game_method));
 
   ClassBuilder::default()
     .parent(node)
@@ -101,4 +102,10 @@ fn selector_function(bottom_var: &str, top_var: &str) -> Method {
     }
   };
   Method::rust_method("getter", method_body)
+}
+
+fn end_game_method(evaluator: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
+  let winner = args.expect_one_arg()?;
+  evaluator.self_instance().set_value(ENDGAME_VARIABLE, winner, evaluator.superglobal_state())?;
+  Ok(Value::Null)
 }
