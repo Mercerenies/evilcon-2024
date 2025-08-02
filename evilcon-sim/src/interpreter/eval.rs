@@ -84,13 +84,7 @@ impl EvaluatorState {
   /// Otherwise, returns the class of `self`. If `self` is a non-class
   /// and does not have a Godot-side class, returns None.
   pub fn get_self_class(&self) -> Option<Arc<Class>> {
-    if let Value::ClassRef(class) = self.self_instance() {
-      Some(Arc::clone(class))
-    } else if let Some(class) = self.self_instance().get_class(self.bootstrapped_classes()) {
-      Some(class)
-    } else {
-      None
-    }
+    self.self_instance().get_call_target(self.bootstrapped_classes())
   }
 
   pub fn get_var(&self, ident: &Identifier) -> Result<Option<Value>, EvalError> {

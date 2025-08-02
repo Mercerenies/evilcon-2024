@@ -228,6 +228,16 @@ impl Value {
     class.get_func(name).cloned()
   }
 
+  /// If `self` is a class, returns `self`. Otherwise, returns the
+  /// class of `self`, if it exists.
+  pub fn get_call_target(&self, bootstrapping: &BootstrappedTypes) -> Option<Arc<Class>> {
+    if let Value::ClassRef(class) = self {
+      Some(Arc::clone(class))
+    } else {
+      self.get_class(bootstrapping)
+    }
+  }
+
   pub fn get_class(&self, bootstrapping: &BootstrappedTypes) -> Option<Arc<Class>> {
     match self {
       Value::Int(_) => Some(Arc::clone(bootstrapping.int())),
