@@ -76,7 +76,7 @@ impl Method {
       }
       Ok(new_inst)
     }
-    Self::rust_method("new", body)
+    Self::rust_static_method("new", body)
   }
 
   pub fn is_static(&self) -> bool {
