@@ -202,8 +202,7 @@ fn signal_class() -> Class {
 pub fn call_func(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
   match state.self_instance() {
     Value::BoundMethod(method) => {
-      let globals = method.self_instance.get_class(state.bootstrapped_classes())
-        .map(|class| class.get_constants_table());
+      let globals = method.self_instance.get_class(state.bootstrapped_classes());
       state.call_function_prim(
         globals,
         &method.method,

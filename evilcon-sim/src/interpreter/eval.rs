@@ -1,6 +1,5 @@
 
 use super::class::Class;
-use super::class::constant::LazyConst;
 use super::value::{Value, AssignmentLeftHand, EqPtr, LambdaValue, SimpleValue};
 use super::method::{Method, MethodArgs};
 use super::error::{EvalError, EvalErrorOrControlFlow, ControlFlow, LoopControlFlow};
@@ -26,7 +25,7 @@ pub const GETITEM_METHOD_NAME: &str = "__getitem__";
 pub struct EvaluatorState {
   self_instance: Box<Value>,
   locals: HashMap<Identifier, Value>,
-  globals: Arc<HashMap<Identifier, LazyConst>>,
+  enclosing_class: Option<Arc<Class>>,
   superglobal_state: Arc<SuperglobalState>,
 }
 
@@ -43,7 +42,7 @@ impl EvaluatorState {
     EvaluatorState {
       self_instance: Box::new(Value::default()),
       locals: HashMap::new(),
-      globals: Arc::new(HashMap::new()),
+      enclosing_class: None,
       superglobal_state,
     }
   }
@@ -56,8 +55,8 @@ impl EvaluatorState {
     &self.superglobal_state
   }
 
-  pub fn with_globals(mut self, globals: Arc<HashMap<Identifier, LazyConst>>) -> Self {
-    self.globals = globals;
+  pub fn with_enclosing_class(mut self, enclosing_class: Option<Arc<Class>>) -> Self {
+    self.enclosing_class = enclosing_class;
     self
   }
 
@@ -103,7 +102,10 @@ impl EvaluatorState {
   }
 
   fn get_global(&self, ident: &Identifier) -> Result<Option<&Value>, EvalError> {
-    let Some(glob) = self.globals.get(ident) else {
+    let Some(enclosing_class) = &self.enclosing_class else {
+      return Ok(None);
+    };
+    let Some(glob) = enclosing_class.get_constant(ident.as_ref()) else {
       return Ok(None);
     };
     glob.get(self).map(Some)
@@ -172,7 +174,7 @@ impl EvaluatorState {
           func => { return Err(EvalError::CannotCall(func.clone())); }
         };
         let args = MethodArgs(args.iter().map(|arg| self.eval_expr(arg)).collect::<Result<Vec<_>, _>>()?);
-        self.call_function_prim(Some(self.globals.clone()), &func, self.self_instance.clone(), args)
+        self.call_function_prim(self.enclosing_class.clone(), &func, self.self_instance.clone(), args)
       }
       Expr::Subscript(left, right) => {
         let left = self.eval_expr(left)?;
@@ -188,12 +190,11 @@ impl EvaluatorState {
         if let Expr::Name(left_name) = left.as_ref() && left_name == "super" {
           // super call
           let left_value = self.self_instance().clone();
-          let left_class = left_value.get_class(self.superglobal_state.bootstrapped_classes()).ok_or(EvalError::BadSuper)?;
+          let Some(left_class) = &self.enclosing_class else { return Err(EvalError::BadSuper); };
           let Some(left_parent) = left_class.parent() else { return Err(EvalError::BadSuper); };
           let func = left_parent.get_func(name.as_ref())?.clone();
           let args = args.iter().map(|arg| self.eval_expr(arg)).collect::<Result<Vec<_>, _>>()?;
-          let globals = left_parent.get_constants_table();
-          self.call_function_prim(Some(globals), &func, Box::new(left_value), MethodArgs(args))
+          self.call_function_prim(Some(left_parent.clone()), &func, Box::new(left_value), MethodArgs(args))
         } else {
           let left_value = self.eval_expr(left)?;
           let args = args.iter().map(|arg| self.eval_expr(arg)).collect::<Result<Vec<_>, _>>()?;
@@ -420,7 +421,7 @@ impl EvaluatorState {
                           method_name: &str,
                           args: Vec<Value>) -> Result<Value, EvalError> {
     let method = receiver.get_func(method_name, self.bootstrapped_classes())?;
-    let globals = receiver.get_call_target(self.bootstrapped_classes()).map(|class| class.get_constants_table());
+    let globals = receiver.get_call_target(self.bootstrapped_classes());
     self.call_function_prim(globals, &method, Box::new(receiver.clone()), MethodArgs(args))
   }
 
@@ -433,19 +434,18 @@ impl EvaluatorState {
     } else {
       receiver.get_func(method_name)?.clone()
     };
-    let globals = receiver.get_constants_table();
-    self.call_function_prim(Some(globals), &method, Box::new(Value::ClassRef(Arc::clone(receiver))), MethodArgs(args))
+    self.call_function_prim(Some(receiver.clone()), &method, Box::new(Value::ClassRef(Arc::clone(receiver))), MethodArgs(args))
   }
 
   /// Primitive, low-level function call method.
   pub fn call_function_prim(&self,
-                            globals: Option<Arc<HashMap<Identifier, LazyConst>>>,
+                            globals: Option<Arc<Class>>,
                             method: &Method,
                             self_instance: Box<Value>,
                             args: MethodArgs) -> Result<Value, EvalError> {
     let mut method_scope = EvaluatorState::new(Arc::clone(&self.superglobal_state)).with_self(self_instance);
     if let Some(globals) = globals {
-      method_scope = method_scope.with_globals(globals);
+      method_scope = method_scope.with_enclosing_class(Some(globals));
     }
     match method {
       Method::GdMethod(method) => {

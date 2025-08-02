@@ -187,7 +187,7 @@ impl Value {
       dict.get(name).map(|i| Value::from(*i)).ok_or(NoSuchVar(name.to_owned()).into())
     } else if let Value::ClassRef(cls) = self && let Some(constant) = cls.get_constant(name) {
       let const_context = EvaluatorState::new(Arc::clone(superglobals))
-        .with_globals(cls.get_constants_table());
+        .with_enclosing_class(Some(cls.clone()));
       constant.get(&const_context).cloned()
     } else if let Value::ObjectRef(obj) = self {
       let obj = obj.borrow();

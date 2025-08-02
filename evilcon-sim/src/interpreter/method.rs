@@ -72,7 +72,7 @@ impl Method {
         new_inst.set_value(&var.name.0, state.eval_expr(&var.initial_value)?, state.superglobal_state())?;
       }
       if let Ok(init_method) = class.get_func("_init") {
-        state.call_function_prim(Some(class.get_constants_table()), init_method, Box::new(new_inst.clone()), args)?;
+        state.call_function_prim(Some(class.clone()), init_method, Box::new(new_inst.clone()), args)?;
       }
       Ok(new_inst)
     }
