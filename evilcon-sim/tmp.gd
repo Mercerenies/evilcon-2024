@@ -36,6 +36,7 @@ static func test():
     print(ZZZ.new().callv("seven", [7, 8, 9]))
     var f = func(a, b, c): print(a, b, c)
     print(f.bindv([8, 9]).call(7))
+    print(f.bind(8, 9).call(7))
     print("---")
 
     var tmp1 = ZZZ.new().www()
