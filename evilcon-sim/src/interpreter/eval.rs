@@ -460,7 +460,7 @@ impl EvaluatorState {
       }
       match method {
         Method::GdMethod(method) => {
-          method_scope.bind_arguments(args.0, method.params.clone())?;
+          method_scope.bind_arguments(method.name.as_ref(), args.0, method.params.clone())?;
           let result = method_scope.eval_body(&method.body);
           ControlFlow::expect_return_or_null(result)
         }
@@ -475,7 +475,7 @@ impl EvaluatorState {
 
   /// Bind arguments for a function call. In case of error, `self` is
   /// guaranteed to be unmodified.
-  pub fn bind_arguments(&mut self, args: Vec<Value>, params: Vec<Parameter>) -> Result<(), EvalError> {
+  pub fn bind_arguments(&mut self, func_name: &str, args: Vec<Value>, params: Vec<Parameter>) -> Result<(), EvalError> {
     let args_len = args.len();
     let params_len = params.len();
     let required_params_len = params.iter().filter(|param| param.default_value.is_none()).count();
@@ -489,7 +489,11 @@ impl EvaluatorState {
         next_arg = self.eval_expr(expr)?;
       } else {
         let expected_arity = ExpectedArity::between(required_params_len, params_len);
-        return Err(EvalError::WrongArity { expected: expected_arity, actual: args_len });
+        return Err(EvalError::WrongArity {
+          function: func_name.to_owned(),
+          expected: expected_arity,
+          actual: args_len,
+        });
       }
       bindings.push((param.name, next_arg));
     }

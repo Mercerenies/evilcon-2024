@@ -24,7 +24,7 @@ pub(super) fn card_strip_class(node: Arc<Class>) -> Class {
   methods.insert(Identifier::new("get_card_node"), Method::noop()); // Needed for CardGameApi
   methods.insert(Identifier::new("card_nodes"), Method::unimplemented_stub("card_nodes unimplemented"));
   methods.insert(Identifier::new("cards"), Method::rust_method("cards", |state, args| {
-    args.expect_arity(0)?;
+    args.expect_arity(0, "cards")?;
     state.self_instance().get_value("__evilconsim_cards", state.superglobal_state())
   }));
 

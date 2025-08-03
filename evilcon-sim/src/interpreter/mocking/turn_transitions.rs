@@ -32,7 +32,7 @@ pub(super) fn turn_transitions_class(node: Arc<Class>) -> Class {
 }
 
 fn play_full_game(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
-  let playing_field = args.expect_one_arg()?;
+  let playing_field = args.expect_one_arg("play_full_game")?;
   draw_initial_hand(state, &playing_field, CARD_PLAYER_BOTTOM)?;
   draw_initial_hand(state, &playing_field, CARD_PLAYER_TOP)?;
   let card_game_phases = get_global(state, CARD_GAME_PHASES)?;

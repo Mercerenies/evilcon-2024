@@ -15,14 +15,14 @@ use std::collections::HashMap;
 pub(super) fn randomness_class(refcounted: Arc<Class>) -> Class {
   let mut methods = HashMap::new();
   methods.insert(Identifier::new("randi"), Method::rust_method("randi", |state, args| {
-    args.expect_arity(0)?;
+    args.expect_arity(0, "randi")?;
     // Match Godot semantics precisely: Godot produces an i32 here.
     let result = state.do_random(|rng| rng.random::<i32>() as i64);
     Ok(Value::from(result))
   }));
 
   methods.insert(Identifier::new("randi_range"), Method::rust_method("randi_range", |state, args| {
-    args.expect_arity(2)?;
+    args.expect_arity(2, "randi_range")?;
     let [from, to] = args.0.try_into().expect("Expected 2 args");
     let from = expect_int(&from)?;
     let to = expect_int(&to)?;
@@ -31,7 +31,7 @@ pub(super) fn randomness_class(refcounted: Arc<Class>) -> Class {
   }));
 
   methods.insert(Identifier::new("choose"), Method::rust_method("choose", |state, args| {
-    args.expect_arity(1)?;
+    args.expect_arity(1, "choose")?;
     let [arr] = args.0.try_into().expect("Expected 1 arg");
     let arr = expect_array(&arr)?.borrow();
     let value = state.do_random(|rng| arr.choose(rng))

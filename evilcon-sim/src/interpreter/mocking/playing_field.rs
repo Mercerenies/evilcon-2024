@@ -57,12 +57,12 @@ pub(super) fn playing_field_class(node: Arc<Class>) -> Class {
   let mut methods = HashMap::new();
   methods.insert(Identifier::new("with_animation"), Method::noop());
   methods.insert(Identifier::new("emit_cards_moved"), Method::noop());
-  methods.insert(Identifier::new("get_deck"), selector_function("__evilconsim_deck_bottom", "__evilconsim_deck_top"));
-  methods.insert(Identifier::new("get_discard_pile"), selector_function("__evilconsim_discardpile_bottom", "__evilconsim_discardpile_top"));
-  methods.insert(Identifier::new("get_hand"), selector_function("__evilconsim_hand_bottom", "__evilconsim_hand_top"));
-  methods.insert(Identifier::new("get_minion_strip"), selector_function("__evilconsim_minionstrip_bottom", "__evilconsim_minionstrip_top"));
-  methods.insert(Identifier::new("get_effect_strip"), selector_function("__evilconsim_effectstrip_bottom", "__evilconsim_effectstrip_top"));
-  methods.insert(Identifier::new("get_stats"), selector_function("__evilconsim_statspanel_bottom", "__evilconsim_statspanel_top"));
+  methods.insert(Identifier::new("get_deck"), selector_function("get_deck", "__evilconsim_deck_bottom", "__evilconsim_deck_top"));
+  methods.insert(Identifier::new("get_discard_pile"), selector_function("get_discard_pile", "__evilconsim_discardpile_bottom", "__evilconsim_discardpile_top"));
+  methods.insert(Identifier::new("get_hand"), selector_function("get_hand", "__evilconsim_hand_bottom", "__evilconsim_hand_top"));
+  methods.insert(Identifier::new("get_minion_strip"), selector_function("get_minion_strip", "__evilconsim_minionstrip_bottom", "__evilconsim_minionstrip_top"));
+  methods.insert(Identifier::new("get_effect_strip"), selector_function("get_effect_strip", "__evilconsim_effectstrip_bottom", "__evilconsim_effectstrip_top"));
+  methods.insert(Identifier::new("get_stats"), selector_function("get_stats", "__evilconsim_statspanel_bottom", "__evilconsim_statspanel_top"));
   methods.insert(Identifier::new("end_game"), Method::rust_method("end_game", end_game_method));
   methods.insert(Identifier::new("get_viewport_rect"), Method::rust_method("get_viewport_rect", get_viewport_rect));
   methods.insert(Identifier::new("animate_card_moving"), Method::noop());
@@ -89,11 +89,12 @@ fn instantiate_stats_panel() -> Expr {
 
 /// A Godot-side method that selects between two instance variables on
 /// `self`.
-fn selector_function(bottom_var: &str, top_var: &str) -> Method {
+fn selector_function(func_name: &str, bottom_var: &str, top_var: &str) -> Method {
+  let func_name = func_name.to_owned();
   let bottom_var = bottom_var.to_owned();
   let top_var = top_var.to_owned();
   let method_body = move |evaluator: &mut EvaluatorState, args: MethodArgs| {
-    let arg = args.expect_one_arg()?;
+    let arg = args.expect_one_arg(&func_name)?;
     match expect_string(&arg)? {
       "BOTTOM" => evaluator.self_instance().get_value(&bottom_var, evaluator.superglobal_state()),
       "TOP" => evaluator.self_instance().get_value(&top_var, evaluator.superglobal_state()),
@@ -107,7 +108,7 @@ fn selector_function(bottom_var: &str, top_var: &str) -> Method {
 }
 
 fn end_game_method(evaluator: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
-  let winner = args.expect_one_arg()?;
+  let winner = args.expect_one_arg("end_game")?;
   // If the game calls this method twice, only the first call should
   // have any effect.
   let old_value = evaluator.self_instance().get_value(ENDGAME_VARIABLE, evaluator.superglobal_state())?;
@@ -133,7 +134,7 @@ fn hand_cards_are_hidden(_: &mut EvaluatorState, _: MethodArgs) -> Result<Value,
 }
 
 fn player_agent(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
-  let player = args.expect_one_arg()?;
+  let player = args.expect_one_arg("player_agent")?;
   let player = expect_string(&player)?;
   match player {
     "BOTTOM" => state.self_instance().get_value("_bottom_agent", state.superglobal_state()),

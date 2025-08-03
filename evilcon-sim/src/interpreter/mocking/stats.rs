@@ -44,36 +44,36 @@ pub(super) fn stats_static_class(node: Arc<Class>) -> Class {
   methods.insert(Identifier::new("play_animation_for_stat_change"), Method::static_noop());
   methods.insert(Identifier::new("show_text"), Method::static_noop());
   methods.insert(Identifier::new("set_evil_points"), Method::rust_static_method("set_evil_points", |state, args| {
-    basic_set_stat("evil_points", state, args)?;
+    basic_set_stat("set_evil_points", "evil_points", state, args)?;
     Ok(Value::Null)
   }));
   methods.insert(Identifier::new("add_evil_points"), Method::rust_static_method("add_evil_points", |state, args| {
-    basic_add_stat("evil_points", state, args)?;
+    basic_add_stat("add_evil_points", "evil_points", state, args)?;
     Ok(Value::Null)
   }));
   methods.insert(Identifier::new("set_fort_defense"), Method::rust_static_method("set_fort_defense", |state, args| {
-    let res = basic_set_stat("fort_defense", state, args)?;
+    let res = basic_set_stat("set_fort_defense", "fort_defense", state, args)?;
     if res.new_value <= 0 {
       send_endgame_signal(state, res.playing_field, other_player(res.player)?)?;
     }
     Ok(Value::Null)
   }));
   methods.insert(Identifier::new("add_fort_defense"), Method::rust_static_method("add_fort_defense", |state, args| {
-    let res = basic_add_stat("fort_defense", state, args)?;
+    let res = basic_add_stat("add_fort_defense", "fort_defense", state, args)?;
     if res.new_value <= 0 {
       send_endgame_signal(state, res.playing_field, other_player(res.player)?)?;
     }
     Ok(Value::Null)
   }));
   methods.insert(Identifier::new("set_destiny_song"), Method::rust_static_method("set_destiny_song", |state, args| {
-    let res = basic_set_stat("destiny_song", state, args)?;
+    let res = basic_set_stat("set_destiny_song", "destiny_song", state, args)?;
     if res.new_value >= DESTINY_SONG_LIMIT {
       send_endgame_signal(state, res.playing_field, res.player)?;
     }
     Ok(Value::Null)
   }));
   methods.insert(Identifier::new("add_destiny_song"), Method::rust_static_method("add_destiny_song", |state, args| {
-    let res = basic_add_stat("destiny_song", state, args)?;
+    let res = basic_add_stat("add_destiny_song", "destiny_song", state, args)?;
     if res.new_value >= DESTINY_SONG_LIMIT {
       send_endgame_signal(state, res.playing_field, res.player)?;
     }
@@ -92,8 +92,8 @@ pub(super) fn stats_static_class(node: Arc<Class>) -> Class {
     .build()
 }
 
-fn basic_set_stat(stat_name: &str, state: &mut EvaluatorState, args: MethodArgs) -> Result<BasicStatResult, EvalError> {
-  let (playing_field, player, new_value) = args.expect_three_args()?;
+fn basic_set_stat(func_name: &str, stat_name: &str, state: &mut EvaluatorState, args: MethodArgs) -> Result<BasicStatResult, EvalError> {
+  let (playing_field, player, new_value) = args.expect_three_args(func_name)?;
   let stats = state.call_function_on(&playing_field, "get_stats", vec![player.clone()])?;
   stats.set_value(stat_name, new_value.clone(), state.superglobal_state())?;
   Ok(BasicStatResult {
@@ -103,8 +103,8 @@ fn basic_set_stat(stat_name: &str, state: &mut EvaluatorState, args: MethodArgs)
   })
 }
 
-fn basic_add_stat(stat_name: &str, state: &mut EvaluatorState, args: MethodArgs) -> Result<BasicStatResult, EvalError> {
-  let (playing_field, player, delta_value) = args.expect_three_args()?;
+fn basic_add_stat(func_name: &str, stat_name: &str, state: &mut EvaluatorState, args: MethodArgs) -> Result<BasicStatResult, EvalError> {
+  let (playing_field, player, delta_value) = args.expect_three_args(func_name)?;
   let delta_value = expect_int(&delta_value)?;
   let stats = state.call_function_on(&playing_field, "get_stats", vec![player.clone()])?;
   let old_value = expect_int(&stats.get_value(stat_name, state.superglobal_state())?)?;
@@ -117,7 +117,7 @@ fn basic_add_stat(stat_name: &str, state: &mut EvaluatorState, args: MethodArgs)
 }
 
 fn set_card_level(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
-  args.expect_arity(4)?;
+  args.expect_arity(4, "set_card_level")?;
   let [_, card, new_value, _] = args.try_into().unwrap();
   let new_value = i64::max(0, expect_int(&new_value)?);
   let metadata = card.get_value("metadata", state.superglobal_state())?;
@@ -126,7 +126,7 @@ fn set_card_level(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value,
 }
 
 fn add_card_level(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
-  args.expect_arity(4)?;
+  args.expect_arity(4, "add_card_level")?;
   let [_, card, delta_value, _] = args.try_into().unwrap();
   let delta_value = i64::max(0, expect_int(&delta_value)?);
   let metadata = card.get_value("metadata", state.superglobal_state())?;
@@ -137,7 +137,7 @@ fn add_card_level(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value,
 }
 
 fn set_card_morale(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
-  args.expect_arity(4)?;
+  args.expect_arity(4, "set_card_morale")?;
   let [playing_field, card, new_value, _] = args.try_into().unwrap();
   let new_value = i64::max(0, expect_int(&new_value)?);
   let metadata = card.get_value("metadata", state.superglobal_state())?;
@@ -147,7 +147,7 @@ fn set_card_morale(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value
 }
 
 fn add_card_morale(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
-  args.expect_arity(4)?;
+  args.expect_arity(4, "add_card_morale")?;
   let [playing_field, card, delta_value, _] = args.try_into().unwrap();
   let delta_value = i64::max(0, expect_int(&delta_value)?);
   let metadata = card.get_value("metadata", state.superglobal_state())?;

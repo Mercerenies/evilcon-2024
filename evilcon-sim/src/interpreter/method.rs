@@ -120,37 +120,45 @@ impl MethodArgs {
     self.0.len()
   }
 
-  pub fn expect_one_arg(self) -> Result<Value, EvalError> {
-    self.expect_arity(1)?;
+  pub fn expect_one_arg(self, function_name: &str) -> Result<Value, EvalError> {
+    self.expect_arity(1, function_name)?;
     let [arg] = self.try_into().unwrap();
     Ok(arg)
   }
 
-  pub fn expect_two_args(self) -> Result<(Value, Value), EvalError> {
-    self.expect_arity(2)?;
+  pub fn expect_two_args(self, function_name: &str) -> Result<(Value, Value), EvalError> {
+    self.expect_arity(2, function_name)?;
     let [a, b] = self.try_into().unwrap();
     Ok((a, b))
   }
 
-  pub fn expect_three_args(self) -> Result<(Value, Value, Value), EvalError> {
-    self.expect_arity(3)?;
+  pub fn expect_three_args(self, function_name: &str) -> Result<(Value, Value, Value), EvalError> {
+    self.expect_arity(3, function_name)?;
     let [a, b, c] = self.try_into().unwrap();
     Ok((a, b, c))
   }
 
-  pub fn expect_arity(&self, arity: usize) -> Result<(), EvalError> {
+  pub fn expect_arity(&self, arity: usize, function_name: &str) -> Result<(), EvalError> {
     if self.0.len() != arity {
-      Err(EvalError::WrongArity { expected: ExpectedArity::Exactly(arity), actual: self.0.len() })
+      Err(EvalError::WrongArity {
+        function: function_name.to_owned(),
+        expected: ExpectedArity::Exactly(arity),
+        actual: self.0.len(),
+      })
     } else {
       Ok(())
     }
   }
 
-  pub fn expect_arity_within(&self, min_arity: usize, max_arity: usize) -> Result<(), EvalError> {
+  pub fn expect_arity_within(&self, min_arity: usize, max_arity: usize, function_name: &str) -> Result<(), EvalError> {
     if (min_arity..=max_arity).contains(&self.0.len()) {
       Ok(())
     } else {
-      Err(EvalError::WrongArity { expected: ExpectedArity::between(min_arity, max_arity), actual: self.0.len() })
+      Err(EvalError::WrongArity {
+        function: function_name.to_owned(),
+        expected: ExpectedArity::between(min_arity, max_arity),
+        actual: self.0.len(),
+      })
     }
   }
 }

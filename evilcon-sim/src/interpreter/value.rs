@@ -568,7 +568,10 @@ impl Display for Value {
       Value::ArrayRef(arr) => write!(f, "[{}]", arr.borrow().iter().map(|v| v.to_string()).collect::<Vec<_>>().join(", ")),
       Value::DictRef(d) => write!(f, "{{{}}}", d.borrow().iter().map(|(k, v)| format!("{}: {}", k, v)).collect::<Vec<_>>().join(", ")),
       Value::ClassRef(cls) => write!(f, "<class {}>", cls.name().unwrap_or("<anon>")),
-      Value::ObjectRef(_) => write!(f, "<object>"),
+      Value::ObjectRef(obj) => {
+        let cls = &obj.borrow().class;
+        write!(f, "<object {}>", cls.name().unwrap_or("<anon>"))
+      }
       Value::BoundMethod(_) => write!(f, "<method>"),
       Value::Lambda(_) => write!(f, "<lambda>"),
       Value::CallableWithBindings(_) => write!(f, "<callable>"),

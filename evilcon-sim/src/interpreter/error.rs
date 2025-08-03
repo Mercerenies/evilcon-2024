@@ -47,8 +47,8 @@ pub enum EvalError {
   UndefinedClass(String),
   #[error("Unexpected GetNode {0}")]
   UnexpectedGetNode(String),
-  #[error("Wrong number of arguments, got {actual} but expected {expected}")]
-  WrongArity { actual: usize, expected: ExpectedArity },
+  #[error("Wrong number of arguments to {function}, got {actual} but expected {expected}")]
+  WrongArity { function: String, actual: usize, expected: ExpectedArity },
   #[error("Unexpected control flow {0}")]
   UnexpectedControlFlow(String),
   #[error("Cannot call {0:?}")]

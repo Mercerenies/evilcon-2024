@@ -125,11 +125,11 @@ pub fn bind_mocked_methods(superglobals: &mut SuperglobalState) {
 
   // Misc math operators (Note: min, max, and company are vararg, but
   // we implement them as binary here)
-  superglobals.define_func(Identifier::new("fmod"), Method::rust_method("fmod", binary_float_function(f64::rem)));
-  superglobals.define_func(Identifier::new("min"), Method::rust_method("min", binary_float_function(f64::min)));
-  superglobals.define_func(Identifier::new("max"), Method::rust_method("max", binary_float_function(f64::max)));
-  superglobals.define_func(Identifier::new("mini"), Method::rust_method("mini", binary_int_function(i64::min)));
-  superglobals.define_func(Identifier::new("maxi"), Method::rust_method("maxi", binary_int_function(i64::max)));
+  superglobals.define_func(Identifier::new("fmod"), Method::rust_method("fmod", binary_float_function("fmod", f64::rem)));
+  superglobals.define_func(Identifier::new("min"), Method::rust_method("min", binary_float_function("min", f64::min)));
+  superglobals.define_func(Identifier::new("max"), Method::rust_method("max", binary_float_function("max", f64::max)));
+  superglobals.define_func(Identifier::new("mini"), Method::rust_method("mini", binary_int_function("mini", i64::min)));
+  superglobals.define_func(Identifier::new("maxi"), Method::rust_method("maxi", binary_int_function("maxi", i64::max)));
   superglobals.define_func(Identifier::new("clampi"), Method::rust_method("clampi", clampi_function));
 
   // float cast
@@ -164,7 +164,7 @@ fn dummy_class() -> Class {
 }
 
 fn preload_method(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
-  args.expect_arity(1)?;
+  args.expect_arity(1, "preload")?;
   let [arg] = args.0.try_into().unwrap();
   let arg = expect_string(&arg)?;
   let class = state.get_file(arg)
@@ -173,7 +173,7 @@ fn preload_method(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value,
 }
 
 fn len_method(_state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
-  let arg = args.expect_one_arg()?;
+  let arg = args.expect_one_arg("len")?;
   match arg {
     Value::ArrayRef(arr) => Ok(Value::Int(arr.borrow().len() as i64)),
     Value::DictRef(arr) => Ok(Value::Int(arr.borrow().len() as i64)),
@@ -183,7 +183,7 @@ fn len_method(_state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, Ev
 }
 
 fn range_method(_state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
-  args.expect_arity_within(1, 3)?;
+  args.expect_arity_within(1, 3, "range")?;
   let (begin, end, step) = match args.len() {
     1 => {
       (0, expect_int_loosely(&args[0])?, 1)
@@ -223,7 +223,7 @@ fn push_warning_method(_state: &mut EvaluatorState, args: MethodArgs) -> Result<
 }
 
 fn clampi_function(_: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
-  args.expect_arity(3)?;
+  args.expect_arity(3, "clampi")?;
   let [a, b, c] = args.try_into().unwrap();
   let a = expect_int_loosely(&a)?;
   let b = expect_int_loosely(&b)?;
@@ -232,26 +232,28 @@ fn clampi_function(_: &mut EvaluatorState, args: MethodArgs) -> Result<Value, Ev
   Ok(Value::Int(result_value))
 }
 
-fn binary_int_function<F, R>(func: F) -> impl Fn(&mut EvaluatorState, MethodArgs) -> Result<Value, EvalError> + 'static
+fn binary_int_function<F, R>(fn_name: &str, func: F) -> impl Fn(&mut EvaluatorState, MethodArgs) -> Result<Value, EvalError> + 'static
 where F: Fn(i64, i64) -> R + 'static,
       Value: From<R> {
+  let fn_name = fn_name.to_owned();
   move |_, args| {
-    let (a, b) = args.expect_two_args()?;
+    let (a, b) = args.expect_two_args(&fn_name)?;
     Ok(func(expect_int_loosely(&a)?, expect_int_loosely(&b)?).into())
   }
 }
 
-fn binary_float_function<F, R>(func: F) -> impl Fn(&mut EvaluatorState, MethodArgs) -> Result<Value, EvalError> + 'static
+fn binary_float_function<F, R>(fn_name: &str, func: F) -> impl Fn(&mut EvaluatorState, MethodArgs) -> Result<Value, EvalError> + 'static
 where F: Fn(f64, f64) -> R + 'static,
       Value: From<R> {
+  let fn_name = fn_name.to_owned();
   move |_, args| {
-    let (a, b) = args.expect_two_args()?;
+    let (a, b) = args.expect_two_args(&fn_name)?;
     Ok(func(expect_float_loosely(&a)?, expect_float_loosely(&b)?).into())
   }
 }
 
 fn float_cast_function(_state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
-  let arg = args.expect_one_arg()?;
+  let arg = args.expect_one_arg("float")?;
   match arg {
     Value::Float(f) => Ok(Value::from(*f)),
     Value::Int(i) => Ok(Value::from(i as f64)),
