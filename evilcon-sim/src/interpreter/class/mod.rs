@@ -43,7 +43,7 @@ pub struct Class {
   /// Naturally, since this is a "to string" function, it MUST NOT
   /// fail.
   #[builder(setter(strip_option, into))]
-  custom_to_string: Option<Arc<fn(&ObjectInst) -> String>>,
+  custom_to_string: Option<CustomToStringMethod>,
 }
 
 #[derive(Debug, Clone)]
@@ -54,6 +54,10 @@ pub struct InstanceVar {
 
 pub struct ProxyVar {
   field: Box<dyn ProxyField>,
+}
+
+pub struct CustomToStringMethod {
+  inner: Arc<dyn Fn(&ObjectInst) -> String + 'static>,
 }
 
 #[derive(Debug, Clone)]
@@ -199,7 +203,7 @@ impl Class {
 
   pub fn instance_to_string(&self, instance: &ObjectInst) -> String {
     if let Some(custom_to_string) = self.custom_to_string.as_ref() {
-      custom_to_string(instance)
+      (custom_to_string.inner)(instance)
     } else {
       format!("<object {}>", self.name().unwrap_or("<anon>"))
     }
@@ -266,11 +270,26 @@ impl From<VarStmt> for InstanceVar {
   }
 }
 
+impl<F> From<F> for CustomToStringMethod
+where F: Fn(&ObjectInst) -> String + 'static {
+  fn from(inner: F) -> Self {
+    Self {
+      inner: Arc::new(inner),
+    }
+  }
+}
+
 impl Debug for ProxyVar {
   fn fmt(&self, f: &mut Formatter) -> fmt::Result {
     f.debug_struct("ProxyVar")
       .field("inner", &"<...>")
       .finish()
+  }
+}
+
+impl Debug for CustomToStringMethod {
+  fn fmt(&self, f: &mut Formatter) -> fmt::Result {
+    write!(f, "<custom_to_string>")
   }
 }
 

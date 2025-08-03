@@ -5,6 +5,8 @@ use crate::interpreter::eval::SuperglobalState;
 use crate::interpreter::value::{Value, SimpleValue, ObjectInst};
 use crate::interpreter::class::{Class, ClassBuilder};
 
+use glob::glob;
+
 use std::sync::Arc;
 
 /// Files that are loaded according to the standard rules. Note that
@@ -33,7 +35,6 @@ const GDSCRIPT_FILES: &[&str] = &[
 
 const GDSCRIPT_GLOBS: &[&str] = &[
   "../card_game/playing_card/card_type/*.gd",
-  "../card_game/playing_card/cards/*.gd",
 ];
 
 pub fn load_all_files() -> anyhow::Result<SuperglobalState> {
@@ -42,16 +43,33 @@ pub fn load_all_files() -> anyhow::Result<SuperglobalState> {
     let file = format!("{}/{}", env!("CARGO_MANIFEST_DIR"), file);
     loader.load_file(&file)?;
   }
+
+  // card.gd loader and to_string
   {
     let file = format!("{}/../card_game/playing_card/card.gd", env!("CARGO_MANIFEST_DIR"));
     loader.load_file_augmented(&file, with_custom_to_string(|obj| {
       if let Some(card_type) = obj.dict_get("card_type") {
-        format!("<object Card type: {}", card_type)
+        format!("<object Card type: {}>", card_type)
       } else {
         String::from("<object Card>")
       }
     }))?;
   }
+
+  // Each individual card type loader and to_string
+  {
+    let glob_str = format!("{}/../card_game/playing_card/cards/*.gd", env!("CARGO_MANIFEST_DIR"));
+    for entry in glob(&glob_str).expect("Could not read glob pattern") {
+      match entry {
+        Ok(path) => {
+          let file_name = path.file_stem().unwrap().to_string_lossy().into_owned();
+          loader.load_file_augmented(&path, with_custom_to_string(move |_| file_name.to_owned()))?;
+        }
+        Err(e) => eprintln!("{:?}", e),
+      }
+    }
+  }
+
   for glob in GDSCRIPT_GLOBS {
     let glob = format!("{}/{}", env!("CARGO_MANIFEST_DIR"), glob);
     loader.load_all_files(&glob)?;
@@ -96,7 +114,7 @@ fn do_surgery(superglobals: &mut SuperglobalState) -> anyhow::Result<()> {
 }
 
 fn with_custom_to_string(
-  custom_to_string: fn(&ObjectInst) -> String,
+  custom_to_string: impl Fn(&ObjectInst) -> String + 'static,
 ) -> (impl FnOnce(ClassBuilder) -> ClassBuilder + 'static) {
   move |builder| {
     builder.custom_to_string(custom_to_string)
