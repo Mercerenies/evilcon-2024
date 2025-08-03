@@ -78,7 +78,7 @@ fn do_surgery(superglobals: &mut SuperglobalState) -> anyhow::Result<()> {
   };
   let q_class = get_inner_class(query_class, "Q")?;
   let query_manager_class = get_inner_class(query_class, "QueryManager")?;
-  superglobals.bind_class(Identifier::new("Query"), q_class);
+  superglobals.bind_class(Identifier::new("Q"), q_class);
   superglobals.bind_class(Identifier::new("QueryManager"), query_manager_class);
   Ok(())
 }
