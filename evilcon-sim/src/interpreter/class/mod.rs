@@ -21,7 +21,7 @@ use std::hash::{Hash, Hasher};
 use std::sync::Arc;
 use std::collections::HashMap;
 use std::ops::Deref;
-use std::fmt::{self, Debug, Formatter};
+use std::fmt::{self, Debug, Display, Formatter};
 
 /// A class written in Godot or mocked Rust-side.
 #[derive(Debug, Builder, Default)]
@@ -272,6 +272,18 @@ impl Eq for Class {}
 impl Hash for Class {
   fn hash<H: Hasher>(&self, state: &mut H) {
     self.name.hash(state)
+  }
+}
+
+impl Display for Class {
+  fn fmt(&self, f: &mut Formatter) -> fmt::Result {
+    if let Some(name) = self.name() {
+      write!(f, "<class {name}>")
+    } else if let Some(parent) = self.parent() {
+      write!(f, "<class anon parent={}>", parent)
+    } else {
+      write!(f, "<class anon parent=none>")
+    }
   }
 }
 

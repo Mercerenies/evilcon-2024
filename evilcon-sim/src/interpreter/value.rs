@@ -21,7 +21,7 @@ use std::fmt::{self, Display, Debug, Formatter};
 use std::hash::Hash;
 use std::borrow::Borrow;
 
-#[derive(Debug, Clone, Default, PartialEq, Eq)]
+#[derive(Clone, Default, PartialEq, Eq)]
 pub enum Value {
   #[default]
   Null,
@@ -88,17 +88,15 @@ pub enum SimpleValue {
   ClassRef(Arc<Class>),
 }
 
-#[derive(Debug)]
 pub struct EqPtrMut<T> {
   pub value: Arc<RefCell<T>>,
 }
 
-#[derive(Debug)]
 pub struct EqPtr<T> {
   pub value: Arc<T>,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Clone)]
 pub struct ObjectInst {
   class: Arc<Class>,
   dict: HashMap<String, Value>,
@@ -585,7 +583,7 @@ impl Display for Value {
       Value::String(s) => write!(f, "\"{}\"", s),
       Value::ArrayRef(arr) => write!(f, "[{}]", RefCell::borrow(arr).iter().map(|v| v.to_string()).collect::<Vec<_>>().join(", ")),
       Value::DictRef(d) => write!(f, "{{{}}}", RefCell::borrow(d).iter().map(|(k, v)| format!("{}: {}", k, v)).collect::<Vec<_>>().join(", ")),
-      Value::ClassRef(cls) => write!(f, "<class {}>", cls.name().unwrap_or("<anon>")),
+      Value::ClassRef(cls) => Display::fmt(cls, f),
       Value::ObjectRef(obj) => pretty_write_object(f, &RefCell::borrow(obj)),
       Value::BoundMethod(_) => write!(f, "<method>"),
       Value::Lambda(_) => write!(f, "<lambda>"),
@@ -613,6 +611,62 @@ impl Debug for LambdaValue {
     f.debug_struct("LambdaValue")
       .field("contents", &self.contents)
       .field("outer_scope", &"<state>")
+      .finish()
+  }
+}
+
+impl Debug for Value {
+  fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+    match self {
+      Value::ObjectRef(obj) => {
+        f.debug_tuple("Value::ObjectRef")
+          .field(obj)
+          .finish()
+      }
+      Value::BoundMethod(meth) => {
+        f.debug_tuple("Value::BoundMethod")
+          .field(meth)
+          .finish()
+      }
+      Value::Lambda(lam) => {
+        f.debug_tuple("Value::Lambda")
+          .field(lam)
+          .finish()
+      }
+      Value::CallableWithBindings(cb) => {
+        f.debug_tuple("Value::CallableWithBindings")
+          .field(cb)
+          .finish()
+      }
+      Value::EnumType(mapping) => {
+        f.debug_tuple("Value::EnumType")
+          .field(mapping)
+          .finish()
+      }
+      other => {
+        Display::fmt(other, f)
+      }
+    }
+  }
+}
+
+impl<T: Debug> Debug for EqPtr<T> {
+  fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+    <T as Debug>::fmt(&*self.value, f)
+  }
+}
+
+impl<T: Debug> Debug for EqPtrMut<T> {
+  fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+    <T as Debug>::fmt(&(*self.value).borrow(), f)
+  }
+}
+
+impl Debug for ObjectInst {
+  fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+    f.debug_struct("ObjectInst")
+      .field("class", &self.class.to_string())
+      .field("dict", &self.dict)
       .finish()
   }
 }
