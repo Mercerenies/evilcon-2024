@@ -116,18 +116,26 @@ fn basic_add_stat(func_name: &str, stat_name: &str, state: &mut EvaluatorState, 
   })
 }
 
-fn set_card_level(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
-  args.expect_arity(4, "set_card_level")?;
-  let [_, card, new_value, _] = args.try_into().unwrap();
+fn set_card_level(state: &mut EvaluatorState, mut args: MethodArgs) -> Result<Value, EvalError> {
+  args.expect_arity_within(3, 4, "set_level")?;
+  // Don't need the last arg, so ignore it if present.
+  if args.len() == 4 {
+    args.0.pop();
+  }
+  let [_, card, new_value] = args.try_into().unwrap();
   let new_value = i64::max(0, expect_int(&new_value)?);
   let metadata = card.get_value("metadata", state.superglobal_state())?;
   metadata.set_index(Value::from(CARD_META_LEVEL), Value::from(new_value))?;
   Ok(Value::Null)
 }
 
-fn add_card_level(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
-  args.expect_arity(4, "add_card_level")?;
-  let [_, card, delta_value, _] = args.try_into().unwrap();
+fn add_card_level(state: &mut EvaluatorState, mut args: MethodArgs) -> Result<Value, EvalError> {
+  args.expect_arity_within(3, 4, "add_level")?;
+  // Don't need the last arg, so ignore it if present.
+  if args.len() == 4 {
+    args.0.pop();
+  }
+  let [_, card, delta_value] = args.try_into().unwrap();
   let delta_value = i64::max(0, expect_int(&delta_value)?);
   let metadata = card.get_value("metadata", state.superglobal_state())?;
   let old_value = expect_int(&metadata.get_index(Value::from(CARD_META_LEVEL), state)?)?;
@@ -136,9 +144,13 @@ fn add_card_level(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value,
   Ok(Value::Null)
 }
 
-fn set_card_morale(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
-  args.expect_arity(4, "set_card_morale")?;
-  let [playing_field, card, new_value, _] = args.try_into().unwrap();
+fn set_card_morale(state: &mut EvaluatorState, mut args: MethodArgs) -> Result<Value, EvalError> {
+  args.expect_arity_within(3, 4, "set_morale")?;
+  // Don't need the last arg, so ignore it if present.
+  if args.len() == 4 {
+    args.0.pop();
+  }
+  let [playing_field, card, new_value] = args.try_into().unwrap();
   let new_value = i64::max(0, expect_int(&new_value)?);
   let metadata = card.get_value("metadata", state.superglobal_state())?;
   metadata.set_index(Value::from(CARD_META_MORALE), Value::from(new_value))?;
@@ -146,9 +158,13 @@ fn set_card_morale(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value
   Ok(Value::Null)
 }
 
-fn add_card_morale(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
-  args.expect_arity(4, "add_card_morale")?;
-  let [playing_field, card, delta_value, _] = args.try_into().unwrap();
+fn add_card_morale(state: &mut EvaluatorState, mut args: MethodArgs) -> Result<Value, EvalError> {
+  args.expect_arity_within(3, 4, "add_morale")?;
+  // Don't need the last arg, so ignore it if present.
+  if args.len() == 4 {
+    args.0.pop();
+  }
+  let [playing_field, card, delta_value] = args.try_into().unwrap();
   let delta_value = i64::max(0, expect_int(&delta_value)?);
   let metadata = card.get_value("metadata", state.superglobal_state())?;
   let old_value = expect_int(&metadata.get_index(Value::from(CARD_META_LEVEL), state)?)?;
