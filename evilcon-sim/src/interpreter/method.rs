@@ -2,6 +2,7 @@
 use crate::ast::decl::FunctionDecl;
 use crate::ast::identifier::Identifier;
 use super::eval::EvaluatorState;
+use super::class::Class;
 use super::error::{EvalError, ExpectedArity, ControlFlow};
 use super::value::Value;
 
@@ -17,6 +18,14 @@ pub enum Method {
   GdMethod(Arc<FunctionDecl>),
   /// Method written in Rust.
   RustMethod(RustMethod),
+}
+
+/// A method together with a reference to the class from which it
+/// came.
+#[derive(Debug, Clone)]
+pub struct ScopedMethod {
+  pub method: Method,
+  pub owning_class: Option<Arc<Class>>,
 }
 
 #[derive(Clone)]
@@ -72,7 +81,7 @@ impl Method {
         new_inst.set_value(&var.name.0, state.eval_expr(&var.initial_value)?, state.superglobal_state())?;
       }
       if let Ok(init_method) = class.get_func("_init") {
-        state.call_function_prim(Some(class.clone()), init_method, Box::new(new_inst.clone()), args)?;
+        state.call_function_prim(init_method.owning_class, &init_method.method, Box::new(new_inst.clone()), args)?;
       }
       Ok(new_inst)
     }
@@ -139,6 +148,13 @@ impl Method {
         self.call(state, args)
       }),
     })
+  }
+
+  pub fn scoped(self, owning_class: Option<Arc<Class>>) -> ScopedMethod {
+    ScopedMethod {
+      method: self,
+      owning_class,
+    }
   }
 }
 

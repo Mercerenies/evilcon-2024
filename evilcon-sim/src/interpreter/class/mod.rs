@@ -7,7 +7,7 @@ use crate::ast::file::{SourceFile, ExtendsClause};
 use crate::ast::expr::{Expr, Literal};
 use crate::ast::stmt::VarStmt;
 use crate::ast::decl::{Decl, FunctionDecl};
-use super::method::Method;
+use super::method::{Method, ScopedMethod};
 use super::error::EvalError;
 use super::eval::SuperglobalState;
 use super::value::{Value, SimpleValue, ObjectInst, NoSuchFunc};
@@ -186,13 +186,13 @@ impl Class {
       .or_else(|| self.parent.as_deref().and_then(|parent| parent.get_proxy_var(name)))
   }
 
-  pub fn get_func(&self, name: &str) -> Result<&Method, NoSuchFunc> {
+  pub fn get_func(self: &Arc<Class>, name: &str) -> Result<ScopedMethod, NoSuchFunc> {
     let mut curr = Some(self);
     while let Some(cls) = curr {
       if let Some(method) = cls.methods.get(name) {
-        return Ok(method);
+        return Ok(method.clone().scoped(Some(Arc::clone(cls))));
       }
-      curr = cls.parent.as_deref();
+      curr = cls.parent.as_ref();
     }
     Err(NoSuchFunc(name.into()))
   }

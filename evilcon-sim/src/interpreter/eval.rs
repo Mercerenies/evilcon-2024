@@ -1,7 +1,7 @@
 
 use super::class::{Class, ClassBuilder};
 use super::value::{Value, AssignmentLeftHand, EqPtr, LambdaValue, SimpleValue};
-use super::method::{Method, MethodArgs};
+use super::method::{Method, ScopedMethod, MethodArgs};
 use super::error::{EvalError, EvalErrorOrControlFlow, ControlFlow, LoopControlFlow, ExpectedArity};
 use super::operator::{eval_unary_op, eval_binary_op};
 use super::bootstrapping::BootstrappedTypes;
@@ -117,11 +117,11 @@ impl EvaluatorState {
     glob.get(self).map(Some)
   }
 
-  pub fn get_func(&self, ident: &Identifier) -> Option<Method> {
+  pub fn get_func(&self, ident: &Identifier) -> Option<ScopedMethod> {
     if let Ok(func) = self.self_instance.get_func(ident.as_ref(), self.superglobal_state.bootstrapped_classes()) {
       return Some(func);
     }
-    self.get_superglobal_func(ident).cloned()
+    self.get_superglobal_func(ident).map(|m| m.clone().scoped(None))
   }
 
   pub fn get_superglobal_func(&self, ident: &Identifier) -> Option<&Method> {
@@ -180,7 +180,7 @@ impl EvaluatorState {
           func => { return Err(EvalError::CannotCall(func.clone())); }
         };
         let args = MethodArgs(args.iter().map(|arg| self.eval_expr(arg)).collect::<Result<Vec<_>, _>>()?);
-        self.call_function_prim(self.enclosing_class.clone(), &func, self.self_instance.clone(), args)
+        self.call_function_prim(func.owning_class, &func.method, self.self_instance.clone(), args)
       }
       Expr::Subscript(left, right) => {
         let left = self.eval_expr(left)?;
@@ -200,7 +200,7 @@ impl EvaluatorState {
           let Some(left_parent) = left_class.parent() else { return Err(EvalError::BadSuper); };
           let func = left_parent.get_func(name.as_ref())?.clone();
           let args = args.iter().map(|arg| self.eval_expr(arg)).collect::<Result<Vec<_>, _>>()?;
-          self.call_function_prim(Some(left_parent.clone()), &func, Box::new(left_value), MethodArgs(args))
+          self.call_function_prim(func.owning_class, &func.method, Box::new(left_value), MethodArgs(args))
         } else {
           let left_value = self.eval_expr(left)?;
           let args = args.iter().map(|arg| self.eval_expr(arg)).collect::<Result<Vec<_>, _>>()?;
@@ -422,8 +422,7 @@ impl EvaluatorState {
                           method_name: &str,
                           args: Vec<Value>) -> Result<Value, EvalError> {
     let method = receiver.get_func(method_name, self.bootstrapped_classes())?;
-    let globals = receiver.get_call_target(self.bootstrapped_classes());
-    self.call_function_prim(globals, &method, Box::new(receiver.clone()), MethodArgs(args))
+    self.call_function_prim(method.owning_class, &method.method, Box::new(receiver.clone()), MethodArgs(args))
   }
 
   pub fn call_function_on_class(&self,
@@ -431,11 +430,11 @@ impl EvaluatorState {
                                 method_name: &str,
                                 args: Vec<Value>) -> Result<Value, EvalError> {
     let method = if method_name == "new" {
-      Method::constructor_method()
+      Method::constructor_method().scoped(None)
     } else {
       receiver.get_func(method_name)?.clone()
     };
-    self.call_function_prim(Some(receiver.clone()), &method, Box::new(Value::ClassRef(Arc::clone(receiver))), MethodArgs(args))
+    self.call_function_prim(method.owning_class, &method.method, Box::new(Value::ClassRef(Arc::clone(receiver))), MethodArgs(args))
   }
 
   /// Primitive, low-level function call method.

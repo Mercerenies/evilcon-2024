@@ -3,7 +3,7 @@ use crate::ast::expr::{Literal, Lambda};
 use crate::ast::identifier::Identifier;
 use crate::ast::pattern::Pattern;
 use super::class::Class;
-use super::method::{Method, MethodArgs};
+use super::method::{Method, ScopedMethod, MethodArgs};
 use super::error::EvalError;
 use super::bootstrapping::{self, BootstrappedTypes};
 use super::eval::{EvaluatorState, SuperglobalState, GETITEM_METHOD_NAME};
@@ -105,7 +105,7 @@ pub struct ObjectInst {
 #[derive(Debug, Clone)]
 pub struct BoundMethod {
   pub self_instance: Value,
-  pub method: Method,
+  pub method: ScopedMethod,
 }
 
 /// Thin wrapper around `Box<dyn Iterator>`, used for [`Value`].
@@ -265,15 +265,15 @@ impl Value {
     }
   }
 
-  pub fn get_func(&self, name: &str, bootstrapping: &BootstrappedTypes) -> Result<Method, NoSuchFunc> {
-    if let Value::ClassRef(cls) = self && let Ok(method) = cls.get_func(name) && method.is_static() {
+  pub fn get_func(&self, name: &str, bootstrapping: &BootstrappedTypes) -> Result<ScopedMethod, NoSuchFunc> {
+    if let Value::ClassRef(cls) = self && let Ok(method) = cls.get_func(name) && method.method.is_static() {
       return Ok(method.clone());
     }
-    if let Value::ClassRef(_) = self && name == "new" {
-      return Ok(Method::constructor_method());
+    if let Value::ClassRef(cls) = self && name == "new" {
+      return Ok(Method::constructor_method().scoped(Some(Arc::clone(cls))));
     }
     let class = self.get_class(bootstrapping).ok_or(NoSuchFunc(name.to_owned()))?;
-    class.get_func(name).cloned()
+    class.get_func(name)
   }
 
   /// If `self` is a class, returns `self`. Otherwise, returns the
@@ -373,7 +373,7 @@ impl ObjectInst {
 }
 
 impl BoundMethod {
-  pub fn new(self_instance: Value, method: Method) -> Self {
+  pub fn new(self_instance: Value, method: ScopedMethod) -> Self {
     BoundMethod { self_instance, method }
   }
 }
