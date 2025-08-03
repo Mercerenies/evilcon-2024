@@ -42,6 +42,7 @@ pub struct Class {
   ///
   /// Naturally, since this is a "to string" function, it MUST NOT
   /// fail.
+  #[builder(setter(strip_option, into))]
   custom_to_string: Option<Arc<fn(&ObjectInst) -> String>>,
 }
 

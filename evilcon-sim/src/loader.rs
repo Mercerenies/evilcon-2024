@@ -8,6 +8,7 @@ use crate::parser::error::ParseError;
 use crate::interpreter::eval::SuperglobalState;
 use crate::interpreter::value::SimpleValue;
 use crate::interpreter::error::EvalError;
+use crate::interpreter::class::ClassBuilder;
 use crate::interpreter::mocking;
 use crate::interpreter::mocking::codex::{CodexDataFile, CodexLoadError};
 
@@ -19,6 +20,7 @@ use petgraph::graph::DiGraph;
 use std::path::{Path, PathBuf};
 use std::sync::LazyLock;
 use std::fs::read_to_string;
+use std::fmt::{self, Formatter, Debug};
 use std::collections::HashMap;
 use std::io;
 
@@ -32,8 +34,13 @@ pub const GODOT_PROJECT_ROOT: LazyLock<PathBuf> = LazyLock::new(|| {
 
 #[derive(Debug)]
 pub struct GdScriptLoader {
-  files: HashMap<ResourcePath, SourceFile>,
+  files: HashMap<ResourcePath, LoadedFile>,
   class_names: HashMap<Identifier, ResourcePath>,
+}
+
+struct LoadedFile {
+  source_file: SourceFile,
+  augmentation: Option<Box<dyn FnOnce(ClassBuilder) -> ClassBuilder + 'static>>,
 }
 
 #[derive(Debug, Error)]
@@ -93,7 +100,31 @@ impl GdScriptLoader {
       self.class_names.insert(class_name.clone(), path.clone());
     }
 
-    self.files.insert(path, file);
+    self.files.insert(path, LoadedFile {
+      source_file: file,
+      augmentation: None,
+    });
+
+    Ok(())
+  }
+
+  pub fn load_file_augmented<F>(&mut self, path: impl AsRef<Path>, augmentation: F) -> Result<(), LoadError>
+  where F: FnOnce(ClassBuilder) -> ClassBuilder + 'static {
+    let path = path.as_ref();
+    eprintln!("Loading file {}...", path.display());
+
+    let file_contents = read_to_string(&path)?;
+    let file = read_from_string(&file_contents)?;
+    let path = normalize_path(&path)?;
+
+    if let Some(class_name) = &file.class_name {
+      self.class_names.insert(class_name.clone(), path.clone());
+    }
+
+    self.files.insert(path, LoadedFile {
+      source_file: file,
+      augmentation: Some(Box::new(augmentation)),
+    });
 
     Ok(())
   }
@@ -109,12 +140,12 @@ impl GdScriptLoader {
   }
 
   pub fn get(&self, path: &ResourcePath) -> Option<&SourceFile> {
-    self.files.get(path)
+    self.files.get(path).map(|file| &file.source_file)
   }
 
   pub fn get_by_class_name(&self, class_name: &Identifier) -> Option<&SourceFile> {
     let path = self.class_names.get(class_name)?;
-    Some(self.files.get(path).expect("Could not find class name in files"))
+    Some(self.get(path).expect("Could not find class name in files"))
   }
 
   pub fn build(mut self) -> Result<SuperglobalState, BuildError> {
@@ -132,7 +163,8 @@ impl GdScriptLoader {
     for res_path in top_sort.into_iter().rev() {
       let res_path = &dependency_graph[res_path];
       let file = self.files.remove(res_path).expect("Could not find file in files");
-      superglobals.load_file(res_path.to_owned(), file)?;
+      let augmentation = file.augmentation.unwrap_or_else(|| Box::new(|b| b));
+      superglobals.load_file_with(res_path.to_owned(), file.source_file, augmentation)?;
     }
     Ok(superglobals)
   }
@@ -145,7 +177,7 @@ impl GdScriptLoader {
       node_indices.insert(path, graph.add_node(path.to_owned()));
     }
     for (path, file) in self.files.iter() {
-      match self.resolve_extends_clause(superglobals, &file.extends_clause_or_default())? {
+      match self.resolve_extends_clause(superglobals, &file.source_file.extends_clause_or_default())? {
         ExtendedClass::ExistingFile => {
           // Dependency is already loaded; no need to represent it in
           // the graph.
@@ -176,6 +208,15 @@ impl GdScriptLoader {
           .map(|(k, _)| ExtendedClass::LoadedFile(k))
       }
     }
+  }
+}
+
+impl Debug for LoadedFile {
+  fn fmt(&self, f: &mut Formatter) -> fmt::Result {
+    f.debug_struct("LoadedFile")
+      .field("source_file", &self.source_file)
+      .field("augmentation", &self.augmentation.as_ref().map(|_| "<augmentation>"))
+      .finish()
   }
 }
 

@@ -18,6 +18,8 @@ use std::sync::Arc;
 use std::cell::RefCell;
 use std::ops::Deref;
 use std::fmt::{self, Display, Debug, Formatter};
+use std::hash::Hash;
+use std::borrow::Borrow;
 
 #[derive(Debug, Clone, Default, PartialEq, Eq)]
 pub enum Value {
@@ -206,7 +208,7 @@ impl Value {
         .with_enclosing_class(Some(cls.clone()));
       return constant.get(&const_context).cloned();
     } else if let Value::ObjectRef(obj) = self {
-      let obj = obj.borrow();
+      let obj = RefCell::borrow(&obj);
       if let Some(simple_name) = obj.dict.get(name).cloned() {
         return Ok(simple_name);
       }
@@ -289,7 +291,7 @@ impl Value {
   pub fn get_class(&self, bootstrapping: &BootstrappedTypes) -> Option<Arc<Class>> {
     match self {
       Value::Int(_) => Some(Arc::clone(bootstrapping.int())),
-      Value::ObjectRef(obj) => Some(obj.borrow().class.clone()),
+      Value::ObjectRef(obj) => Some(RefCell::borrow(&obj).class.clone()),
       Value::String(_) => Some(Arc::clone(bootstrapping.string())),
       Value::ArrayRef(_) => Some(Arc::clone(bootstrapping.array())),
       Value::DictRef(_) => Some(Arc::clone(bootstrapping.dictionary())),
@@ -304,11 +306,11 @@ impl Value {
     // Currently we only support arrays and dictionaries.
     match self {
       Value::ArrayRef(arr) => {
-        let elems = arr.borrow().clone();
+        let elems = RefCell::borrow(&arr).clone();
         Ok(ValueIter { inner: Box::new(elems.into_iter()) })
       }
       Value::DictRef(d) => {
-        let entries = d.borrow().clone();
+        let entries = RefCell::borrow(&d).clone();
         Ok(ValueIter { inner: Box::new(entries.into_keys().map(Value::from)) })
       }
       _ => {
@@ -327,10 +329,10 @@ impl Value {
         self.clone()
       }
       Value::ArrayRef(arr) => {
-        Value::new_array(arr.borrow().clone())
+        Value::new_array(RefCell::borrow(arr).clone())
       }
       Value::DictRef(d) => {
-        Value::new_dict(d.borrow().clone())
+        Value::new_dict(RefCell::borrow(d).clone())
       }
     }
   }
@@ -342,11 +344,11 @@ impl Value {
         Value::ClassRef(_) | Value::BoundMethod(_) | Value::Lambda(_) | Value::EnumType(_) |
         Value::ObjectRef(_) | Value::SignalStub | Value::CallableWithBindings(_) => self.clone(),
       Value::ArrayRef(arr) => {
-        let new_arr = arr.borrow().iter().map(|v| v.deep_copy()).collect();
+        let new_arr = RefCell::borrow(arr).iter().map(|v| v.deep_copy()).collect();
         Value::new_array(new_arr)
       }
       Value::DictRef(d) => {
-        let new_dict = d.borrow().iter().map(|(k, v)| {
+        let new_dict = RefCell::borrow(d).iter().map(|(k, v)| {
           let k = Value::from(k.clone()).deep_copy().try_into().expect("Duplicating a hash key should produce a hash key");
           let v = v.deep_copy();
           (k, v)
@@ -361,6 +363,14 @@ impl Value {
       let mut state = state.clone().with_self(Box::new(self.clone()));
       bootstrapping::call_func(&mut state, args)
     }
+  }
+}
+
+impl ObjectInst {
+  pub fn dict_get<K>(&self, key: &K) -> Option<&Value>
+  where K: Eq + Hash + ?Sized,
+        String: Borrow<K> {
+    self.dict.get(key)
   }
 }
 
@@ -573,10 +583,10 @@ impl Display for Value {
       Value::Int(i) => write!(f, "{}", i),
       Value::Float(d) => write!(f, "{}", d),
       Value::String(s) => write!(f, "\"{}\"", s),
-      Value::ArrayRef(arr) => write!(f, "[{}]", arr.borrow().iter().map(|v| v.to_string()).collect::<Vec<_>>().join(", ")),
-      Value::DictRef(d) => write!(f, "{{{}}}", d.borrow().iter().map(|(k, v)| format!("{}: {}", k, v)).collect::<Vec<_>>().join(", ")),
+      Value::ArrayRef(arr) => write!(f, "[{}]", RefCell::borrow(arr).iter().map(|v| v.to_string()).collect::<Vec<_>>().join(", ")),
+      Value::DictRef(d) => write!(f, "{{{}}}", RefCell::borrow(d).iter().map(|(k, v)| format!("{}: {}", k, v)).collect::<Vec<_>>().join(", ")),
       Value::ClassRef(cls) => write!(f, "<class {}>", cls.name().unwrap_or("<anon>")),
-      Value::ObjectRef(obj) => pretty_write_object(f, &obj.borrow()),
+      Value::ObjectRef(obj) => pretty_write_object(f, &RefCell::borrow(obj)),
       Value::BoundMethod(_) => write!(f, "<method>"),
       Value::Lambda(_) => write!(f, "<lambda>"),
       Value::CallableWithBindings(_) => write!(f, "<callable>"),
