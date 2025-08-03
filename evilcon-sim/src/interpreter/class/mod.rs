@@ -211,6 +211,20 @@ impl Class {
 }
 
 impl ClassBuilder {
+  pub fn modify_method<F>(mut self, method_name: &str, augmentation: F) -> Self
+  where F: FnOnce(Method) -> Method {
+    let Some(methods) = &mut self.methods else {
+      tracing::warn!("Attempt to modify method '{method_name}' but methods table is empty");
+      return self;
+    };
+    let Some(method) = methods.remove(method_name) else {
+      tracing::warn!("Attempt to modify method '{method_name}' but method not present in table");
+      return self;
+    };
+    methods.insert(Identifier::new(method_name), augmentation(method));
+    self
+  }
+
   pub fn build(self) -> Class {
     self.build_impl()
       .expect("All fields are optional, ClassBuilder::build should never fail")

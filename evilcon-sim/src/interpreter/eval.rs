@@ -453,16 +453,7 @@ impl EvaluatorState {
       if let Some(globals) = globals {
         method_scope = method_scope.with_enclosing_class(Some(globals));
       }
-      match method {
-        Method::GdMethod(method) => {
-          method_scope.bind_arguments(method.name.as_ref(), args.0, method.params.clone())?;
-          let result = method_scope.eval_body(&method.body);
-          ControlFlow::expect_return_or_null(result)
-        }
-        Method::RustMethod(method) => {
-          (method.body)(&mut method_scope, args)
-        }
-      }
+      method.call(&mut method_scope, args)
     }
     run_body(self, globals, method, self_instance, args)
       .map_err(|err| err.with_function_context(method.name().as_ref()))

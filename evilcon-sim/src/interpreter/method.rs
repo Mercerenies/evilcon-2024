@@ -2,7 +2,7 @@
 use crate::ast::decl::FunctionDecl;
 use crate::ast::identifier::Identifier;
 use super::eval::EvaluatorState;
-use super::error::{EvalError, ExpectedArity};
+use super::error::{EvalError, ExpectedArity, ControlFlow};
 use super::value::Value;
 
 use thiserror::Error;
@@ -106,6 +106,39 @@ impl Method {
       Err(EvalError::UnimplementedMethod(error_msg.clone()))
     };
     Self::rust_method("unimplemented_stub", body)
+  }
+
+  /// Calls this method in the given context. The context should
+  /// already be configured for the correct scope and will not be
+  /// augmented for the method.
+  ///
+  /// Generally, outside callers should prefer
+  /// [`EvaluatorState::call_function_on`] or a similar function,
+  /// which does the appropriate scoping setup and then delegates to
+  /// this method.
+  pub fn call(&self, call_context: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
+    match self {
+      Method::GdMethod(method) => {
+        call_context.bind_arguments(method.name.as_ref(), args.0, method.params.clone())?;
+        let result = call_context.eval_body(&method.body);
+        ControlFlow::expect_return_or_null(result)
+      }
+      Method::RustMethod(method) => {
+        (method.body)(call_context, args)
+      }
+    }
+  }
+
+  pub fn with_tracing<F>(self, tracing_function: F) -> Self
+  where F: Fn(&EvaluatorState, &MethodArgs) + 'static {
+    Method::RustMethod(RustMethod {
+      name: self.name().clone(),
+      is_static: self.is_static(),
+      body: Arc::new(move |state, args| {
+        tracing_function(state, &args);
+        self.call(state, args)
+      }),
+    })
   }
 }
 
