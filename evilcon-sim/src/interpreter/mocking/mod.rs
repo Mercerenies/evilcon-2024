@@ -208,18 +208,26 @@ fn range_method(_state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, 
 }
 
 fn print_method(_state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
-  println!("{}", args.0.into_iter().join(""));
+  println!("{}", args.0.into_iter().map(prettify).join(""));
   Ok(Value::Null)
 }
 
 fn push_error_method(_state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
-  eprintln!("ERROR: {}", args.0.into_iter().join(""));
+  eprintln!("ERROR: {}", args.0.into_iter().map(prettify).join(""));
   Ok(Value::Null)
 }
 
 fn push_warning_method(_state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
-  eprintln!("WARNING: {}", args.0.into_iter().join(""));
+  eprintln!("WARNING: {}", args.0.into_iter().map(prettify).join(""));
   Ok(Value::Null)
+}
+
+fn prettify(value: Value) -> String {
+  if let Value::String(s) = value {
+    s
+  } else {
+    value.to_string()
+  }
 }
 
 fn clampi_function(_: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
