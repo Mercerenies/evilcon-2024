@@ -325,7 +325,7 @@ impl Value {
         Value::ClassRef(_) | Value::BoundMethod(_) | Value::Lambda(_) | Value::EnumType(_) |
         Value::SignalStub | Value::CallableWithBindings(_) => self.clone(),
       Value::ObjectRef(_) => {
-        eprintln!("WARNING: Shallow copy of object has no effect");
+        tracing::warn!("Shallow copy of object has no effect");
         self.clone()
       }
       Value::ArrayRef(arr) => {

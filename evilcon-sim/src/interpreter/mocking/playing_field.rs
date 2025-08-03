@@ -118,7 +118,7 @@ fn selector_function(func_name: &str, bottom_var: &str, top_var: &str) -> Method
       "BOTTOM" => evaluator.self_instance().get_value(&bottom_var, evaluator.superglobal_state()),
       "TOP" => evaluator.self_instance().get_value(&top_var, evaluator.superglobal_state()),
       _ => {
-        eprintln!("Bad card player {}", arg);
+        tracing::error!("Bad card player {}", arg);
         Ok(Value::Null)
       }
     }

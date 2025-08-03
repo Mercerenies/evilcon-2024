@@ -124,7 +124,7 @@ impl CodexDataFile {
     let id = expect_int_loosely(&args.expect_one_arg("get_entity_script")?)?;
     let id = usize::try_from(id).map_err(|_| EvalError::domain_error("Card ID out of range"))?;
     let Some(card_entry) = self.cards.get(id) else {
-      eprintln!("Invalid ID value: {}", id);
+      tracing::error!("Invalid ID value: {}", id);
       return Ok(Value::Null);
     };
     let card_class = evaluator.get_file(&card_entry.path)

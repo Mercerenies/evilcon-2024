@@ -65,7 +65,7 @@ pub fn load_all_files() -> anyhow::Result<SuperglobalState> {
           let file_name = path.file_stem().unwrap().to_string_lossy().into_owned();
           loader.load_file_augmented(&path, with_custom_to_string(move |_| file_name.to_owned()))?;
         }
-        Err(e) => eprintln!("{:?}", e),
+        Err(e) => tracing::error!("Error during glob: {:?}", e),
       }
     }
   }
@@ -74,14 +74,14 @@ pub fn load_all_files() -> anyhow::Result<SuperglobalState> {
     let glob = format!("{}/{}", env!("CARGO_MANIFEST_DIR"), glob);
     loader.load_all_files(&glob)?;
   }
-  eprintln!("Loaded all files.");
+  tracing::info!("Loaded all files.");
 
   let mut superglobals = loader.build()?;
-  eprintln!("Created interpreter environment.");
+  tracing::info!("Created interpreter environment.");
 
-  eprintln!("Performing surgery ...");
+  tracing::info!("Performing surgery ...");
   do_surgery(&mut superglobals)?;
-  eprintln!("Surgery complete.");
+  tracing::info!("Surgery complete.");
 
   Ok(superglobals)
 }

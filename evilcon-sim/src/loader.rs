@@ -90,7 +90,7 @@ impl GdScriptLoader {
 
   pub fn load_file(&mut self, path: impl AsRef<Path>) -> Result<(), LoadError> {
     let path = path.as_ref();
-    eprintln!("Loading file {}...", path.display());
+    tracing::debug!("Loading file {}...", path.display());
 
     let file_contents = read_to_string(&path)?;
     let file = read_from_string(&file_contents)?;
@@ -111,7 +111,7 @@ impl GdScriptLoader {
   pub fn load_file_augmented<F>(&mut self, path: impl AsRef<Path>, augmentation: F) -> Result<(), LoadError>
   where F: FnOnce(ClassBuilder) -> ClassBuilder + 'static {
     let path = path.as_ref();
-    eprintln!("Loading file {}...", path.display());
+    tracing::debug!("Loading file {}...", path.display());
 
     let file_contents = read_to_string(&path)?;
     let file = read_from_string(&file_contents)?;
@@ -133,7 +133,7 @@ impl GdScriptLoader {
     for entry in glob(glob_str).expect("Could not read glob pattern") {
       match entry {
         Ok(path) => self.load_file(path)?,
-        Err(e) => eprintln!("{:?}", e),
+        Err(e) => tracing::error!("Error during glob operation: {:?}", e),
       }
     }
     Ok(())
