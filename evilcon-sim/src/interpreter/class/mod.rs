@@ -73,7 +73,12 @@ impl Class {
     &self.instance_vars
   }
 
-  pub fn load_from_file(superglobals: &mut SuperglobalState, file: SourceFile) -> Result<Self, EvalError> {
+  pub fn load_from_file_with<F>(
+    superglobals: &mut SuperglobalState,
+    file: SourceFile,
+    augmentation: F,
+  ) -> Result<Self, EvalError>
+  where F: FnOnce(ClassBuilder) -> ClassBuilder {
     let name = file.class_name;
     let parent = match file.extends_clause.unwrap_or_default() {
       ExtendsClause::Id(identifier) => {
@@ -152,9 +157,14 @@ impl Class {
       if let Some(name) = name {
         builder = builder.name(name);
       }
+      builder = augmentation(builder);
       builder.build()
     };
     Ok(class)
+  }
+
+  pub fn load_from_file(superglobals: &mut SuperglobalState, file: SourceFile) -> Result<Self, EvalError> {
+    Self::load_from_file_with(superglobals, file, |builder| builder)
   }
 
   pub fn get_constants_table(&self) -> Arc<HashMap<Identifier, LazyConst>> {

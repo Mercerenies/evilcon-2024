@@ -1,5 +1,5 @@
 
-use super::class::Class;
+use super::class::{Class, ClassBuilder};
 use super::value::{Value, AssignmentLeftHand, EqPtr, LambdaValue, SimpleValue};
 use super::method::{Method, MethodArgs};
 use super::error::{EvalError, EvalErrorOrControlFlow, ControlFlow, LoopControlFlow, ExpectedArity};
@@ -539,7 +539,12 @@ impl SuperglobalState {
   }
 
   pub fn load_file(&mut self, path: ResourcePath, source_file: SourceFile) -> Result<(), EvalError> {
-    let class = Class::load_from_file(self, source_file)?;
+    self.load_file_with(path, source_file, |builder| builder)
+  }
+
+  pub fn load_file_with<F>(&mut self, path: ResourcePath, source_file: SourceFile, augmentation: F) -> Result<(), EvalError>
+    where F: FnOnce(ClassBuilder) -> ClassBuilder {
+    let class = Class::load_from_file_with(self, source_file, augmentation)?;
     let class = Arc::new(class);
     self.loaded_files.insert(path, Arc::clone(&class));
     if let Some(class_name) = class.name() {
