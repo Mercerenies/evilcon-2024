@@ -55,3 +55,6 @@
      - [X] ~card_game/playing_field/util/popup_text.gd~
    + [X] Promise.gd
      - Needs to exist but hopefully will not ever be /actually/ used.
+* CURRENT PROGRESS
+  + Seed: ~cargo run -- 14831624418062340946~
+    - WARNING: Cannot destroy card <object Card> because it is not in play
