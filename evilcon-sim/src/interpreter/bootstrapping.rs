@@ -364,11 +364,16 @@ fn array_all(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, Eval
 }
 
 fn array_filter(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
-  let mut arr = expect_array(state.self_instance())?.borrow().clone();
+  let arr = expect_array(state.self_instance())?.borrow().clone();
   let callable = args.expect_one_arg("filter")?;
   let callable = callable.to_rust_function(&state);
-  arr.retain(|elem| callable(MethodArgs(vec![elem.clone()])).unwrap().as_bool());
-  Ok(Value::new_array(arr))
+  let mut result_arr = Vec::with_capacity(arr.len());
+  for elem in arr {
+    if callable(MethodArgs(vec![elem.clone()]))?.as_bool() {
+      result_arr.push(elem);
+    }
+  }
+  Ok(Value::new_array(result_arr))
 }
 
 // Just works on numbers for now.
