@@ -16,6 +16,25 @@ use std::collections::HashMap;
 
 pub const ENDGAME_VARIABLE: &str = "__evilconsim_endgame";
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum CardKind {
+  PlayedCard,
+  CardType,
+}
+
+impl CardKind {
+  fn as_str(self) -> &'static str {
+    match self {
+      CardKind::PlayedCard => "Card",
+      CardKind::CardType => "CardType",
+    }
+  }
+
+  fn into_expr(self) -> Expr {
+    Expr::from(self.as_str())
+  }
+}
+
 // Intentionally omitted:
 // * _ready (all AI setup and node setup that we do by hand)
 // * replace_player_agent (will be done by hand)
@@ -40,16 +59,16 @@ pub(super) fn playing_field_class(node: Arc<Class>) -> Class {
   instance_vars.push(InstanceVar::new("top_cards_are_hidden", Some(Expr::from(true))));
   instance_vars.push(InstanceVar::new("top_cards_are_hidden", Some(Expr::from(false))));
   instance_vars.push(InstanceVar::new("plays_animations", Some(Expr::from(false))));
-  instance_vars.push(InstanceVar::new("__evilconsim_deck_bottom", Some(instantiate_card_strip())));
-  instance_vars.push(InstanceVar::new("__evilconsim_deck_top", Some(instantiate_card_strip())));
-  instance_vars.push(InstanceVar::new("__evilconsim_discardpile_bottom", Some(instantiate_card_strip())));
-  instance_vars.push(InstanceVar::new("__evilconsim_discardpile_top", Some(instantiate_card_strip())));
-  instance_vars.push(InstanceVar::new("__evilconsim_hand_bottom", Some(instantiate_card_strip())));
-  instance_vars.push(InstanceVar::new("__evilconsim_hand_top", Some(instantiate_card_strip())));
-  instance_vars.push(InstanceVar::new("__evilconsim_minionstrip_bottom", Some(instantiate_card_strip())));
-  instance_vars.push(InstanceVar::new("__evilconsim_minionstrip_top", Some(instantiate_card_strip())));
-  instance_vars.push(InstanceVar::new("__evilconsim_effectstrip_bottom", Some(instantiate_card_strip())));
-  instance_vars.push(InstanceVar::new("__evilconsim_effectstrip_top", Some(instantiate_card_strip())));
+  instance_vars.push(InstanceVar::new("__evilconsim_deck_bottom", Some(instantiate_card_strip(CardKind::CardType))));
+  instance_vars.push(InstanceVar::new("__evilconsim_deck_top", Some(instantiate_card_strip(CardKind::CardType))));
+  instance_vars.push(InstanceVar::new("__evilconsim_discardpile_bottom", Some(instantiate_card_strip(CardKind::CardType))));
+  instance_vars.push(InstanceVar::new("__evilconsim_discardpile_top", Some(instantiate_card_strip(CardKind::CardType))));
+  instance_vars.push(InstanceVar::new("__evilconsim_hand_bottom", Some(instantiate_card_strip(CardKind::CardType))));
+  instance_vars.push(InstanceVar::new("__evilconsim_hand_top", Some(instantiate_card_strip(CardKind::CardType))));
+  instance_vars.push(InstanceVar::new("__evilconsim_minionstrip_bottom", Some(instantiate_card_strip(CardKind::PlayedCard))));
+  instance_vars.push(InstanceVar::new("__evilconsim_minionstrip_top", Some(instantiate_card_strip(CardKind::PlayedCard))));
+  instance_vars.push(InstanceVar::new("__evilconsim_effectstrip_bottom", Some(instantiate_card_strip(CardKind::PlayedCard))));
+  instance_vars.push(InstanceVar::new("__evilconsim_effectstrip_top", Some(instantiate_card_strip(CardKind::PlayedCard))));
   instance_vars.push(InstanceVar::new("__evilconsim_statspanel_top", Some(instantiate_stats_panel())));
   instance_vars.push(InstanceVar::new("__evilconsim_statspanel_bottom", Some(instantiate_stats_panel())));
   instance_vars.push(InstanceVar::new(ENDGAME_VARIABLE, Some(Expr::Literal(Literal::Null))));
@@ -77,9 +96,9 @@ pub(super) fn playing_field_class(node: Arc<Class>) -> Class {
     .build()
 }
 
-fn instantiate_card_strip() -> Expr {
+fn instantiate_card_strip(card_kind: CardKind) -> Expr {
   Expr::call("load", vec![Expr::string(CARD_STRIP_RES_PATH)])
-    .attr_call("new", vec![])
+    .attr_call("new", vec![card_kind.into_expr()])
 }
 
 fn instantiate_stats_panel() -> Expr {
