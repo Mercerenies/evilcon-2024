@@ -198,17 +198,20 @@ impl Value {
     }
 
     if let Value::EnumType(dict) = self {
-      dict.get(name).map(|i| Value::from(*i)).ok_or(NoSuchVar(name.to_owned()).into())
+      return dict.get(name).map(|i| Value::from(*i)).ok_or(NoSuchVar(name.to_owned()).into());
     } else if let Value::ClassRef(cls) = self && let Some(constant) = cls.get_constant(name) {
       // Hoping the constants are *really* simple and never use RNG.
       // If I'm wrong, I want to know.
       let const_context = EvaluatorState::new(Arc::clone(superglobals), ShouldNotUseRandom)
         .with_enclosing_class(Some(cls.clone()));
-      constant.get(&const_context).cloned()
+      return constant.get(&const_context).cloned();
     } else if let Value::ObjectRef(obj) = self {
       let obj = obj.borrow();
-      obj.dict.get(name).cloned().ok_or(NoSuchVar(name.to_owned()).into())
-    } else if let Ok(func) = self.get_func(name, superglobals.bootstrapped_classes()) {
+      if let Some(simple_name) = obj.dict.get(name).cloned() {
+        return Ok(simple_name);
+      }
+    }
+    if let Ok(func) = self.get_func(name, superglobals.bootstrapped_classes()) {
       Ok(Value::BoundMethod(EqPtr::new(BoundMethod::new(self.clone(), func))))
     } else {
       Err(NoSuchVar(name.to_owned()).into())
