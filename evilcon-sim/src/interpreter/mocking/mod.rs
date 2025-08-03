@@ -208,17 +208,17 @@ fn range_method(_state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, 
 }
 
 fn print_method(_state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
-  tracing::debug!("{}", args.0.into_iter().map(prettify).join(""));
+  tracing::debug!(gd_output = true, "{}", args.0.into_iter().map(prettify).join(""));
   Ok(Value::Null)
 }
 
 fn push_error_method(_state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
-  tracing::error!("(Error from GDScript) {}", args.0.into_iter().map(prettify).join(""));
+  tracing::error!(gd_output = true, "{}", args.0.into_iter().map(prettify).join(""));
   Ok(Value::Null)
 }
 
 fn push_warning_method(_state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
-  tracing::warn!("(Warning from GDScript) {}", args.0.into_iter().map(prettify).join(""));
+  tracing::warn!(gd_output = true, "{}", args.0.into_iter().map(prettify).join(""));
   Ok(Value::Null)
 }
 

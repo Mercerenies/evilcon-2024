@@ -14,12 +14,14 @@ fn main() -> anyhow::Result<()> {
 
   // Get a u64 random seed from cmd line args, or a random one if none
   // is provided.
-  let rand_seed = if let Some(seed) = env::args().nth(1) {
-    seed.parse::<u64>()?
+  let rand_seed;
+  if let Some(seed) = env::args().nth(1) {
+    rand_seed = seed.parse::<u64>()?;
+    info!("Running with user-provided seed: {}", rand_seed);
   } else {
-    rand::random::<u64>()
+    rand_seed = rand::random::<u64>();
+    info!("Running with random seed: {}", rand_seed);
   };
-  info!("Running with random seed: {}", rand_seed);
   let random_generator = ChaCha8Rng::seed_from_u64(rand_seed);
 
   let superglobals = driver::load_all_files()?;
