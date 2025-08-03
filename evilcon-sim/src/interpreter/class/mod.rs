@@ -10,7 +10,7 @@ use crate::ast::decl::{Decl, FunctionDecl};
 use super::method::Method;
 use super::error::EvalError;
 use super::eval::SuperglobalState;
-use super::value::{Value, SimpleValue, NoSuchFunc};
+use super::value::{Value, SimpleValue, ObjectInst, NoSuchFunc};
 use constant::LazyConst;
 use proxy::ProxyField;
 
@@ -36,6 +36,13 @@ pub struct Class {
   instance_vars: Vec<InstanceVar>,
   proxy_vars: HashMap<Identifier, ProxyVar>,
   methods: HashMap<Identifier, Method>,
+  /// To facilitate debugging, classes can have a custom Rust-side "to
+  /// string" method. This is NOT related to any Godot semantics and
+  /// is purely used for debug output.
+  ///
+  /// Naturally, since this is a "to string" function, it MUST NOT
+  /// fail.
+  custom_to_string: Option<Arc<fn(&ObjectInst) -> String>>,
 }
 
 #[derive(Debug, Clone)]
@@ -136,14 +143,18 @@ impl Class {
         }
       };
     }
-    Ok(Class {
-      name: name.map(|name| name.into()),
-      parent: Some(parent),
-      constants: Arc::new(constants),
-      instance_vars,
-      proxy_vars: HashMap::new(),
-      methods,
-    })
+    let class = {
+      let mut builder = ClassBuilder::default()
+        .parent(parent)
+        .constants(constants)
+        .instance_vars(instance_vars)
+        .methods(methods);
+      if let Some(name) = name {
+        builder = builder.name(name);
+      }
+      builder.build()
+    };
+    Ok(class)
   }
 
   pub fn get_constants_table(&self) -> Arc<HashMap<Identifier, LazyConst>> {
@@ -173,6 +184,14 @@ impl Class {
 
   pub fn supertypes(self: Arc<Class>) -> ClassSupertypesIter {
     ClassSupertypesIter { curr: Some(self) }
+  }
+
+  pub fn instance_to_string(&self, instance: &ObjectInst) -> String {
+    if let Some(custom_to_string) = self.custom_to_string.as_ref() {
+      custom_to_string(instance)
+    } else {
+      format!("<object {}>", self.name().unwrap_or("<anon>"))
+    }
   }
 }
 

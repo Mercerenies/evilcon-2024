@@ -562,6 +562,11 @@ impl From<f64> for SimpleValue {
 
 impl Display for Value {
   fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+    fn pretty_write_object(f: &mut Formatter, object: &ObjectInst) -> fmt::Result {
+      let cls = &object.class;
+      write!(f, "{}", cls.instance_to_string(object))
+    }
+
     match self {
       Value::Null => write!(f, "null"),
       Value::Bool(b) => write!(f, "{}", b),
@@ -571,10 +576,7 @@ impl Display for Value {
       Value::ArrayRef(arr) => write!(f, "[{}]", arr.borrow().iter().map(|v| v.to_string()).collect::<Vec<_>>().join(", ")),
       Value::DictRef(d) => write!(f, "{{{}}}", d.borrow().iter().map(|(k, v)| format!("{}: {}", k, v)).collect::<Vec<_>>().join(", ")),
       Value::ClassRef(cls) => write!(f, "<class {}>", cls.name().unwrap_or("<anon>")),
-      Value::ObjectRef(obj) => {
-        let cls = &obj.borrow().class;
-        write!(f, "<object {}>", cls.name().unwrap_or("<anon>"))
-      }
+      Value::ObjectRef(obj) => pretty_write_object(f, &obj.borrow()),
       Value::BoundMethod(_) => write!(f, "<method>"),
       Value::Lambda(_) => write!(f, "<lambda>"),
       Value::CallableWithBindings(_) => write!(f, "<callable>"),
