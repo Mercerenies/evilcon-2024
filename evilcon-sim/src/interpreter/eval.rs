@@ -335,14 +335,12 @@ impl EvaluatorState {
       }
       Stmt::If(if_stmt) => {
         if self.eval_expr(&if_stmt.condition)?.as_bool() {
-          let mut inner_scope = self.clone();
-          inner_scope.eval_body(&if_stmt.body)?;
+          self.eval_body(&if_stmt.body)?;
         } else {
           let mut matched = false;
           for elif_clause in &if_stmt.elif_clauses {
             if self.eval_expr(&elif_clause.condition)?.as_bool() {
-              let mut inner_scope = self.clone();
-              inner_scope.eval_body(&elif_clause.body)?;
+              self.eval_body(&elif_clause.body)?;
               matched = true;
               break;
             }
@@ -354,8 +352,7 @@ impl EvaluatorState {
       }
       Stmt::While(while_stmt) => {
         while self.eval_expr(&while_stmt.condition)?.as_bool() {
-          let mut inner_scope = self.clone();
-          let inner_res = inner_scope.eval_body(&while_stmt.body);
+          let inner_res = self.eval_body(&while_stmt.body);
           if let Some(cf) = ControlFlow::extract_loop_control(inner_res)? {
             if cf == LoopControlFlow::Break {
               break;
@@ -366,9 +363,8 @@ impl EvaluatorState {
       Stmt::For(for_stmt) => {
         let iterable = self.eval_expr(&for_stmt.iterable)?.try_iter()?;
         for elem in iterable {
-          let mut inner_scope = self.clone();
-          inner_scope.set_local_var(for_stmt.variable.clone(), elem);
-          if let Some(cf) = ControlFlow::extract_loop_control(inner_scope.eval_body(&for_stmt.body))? {
+          self.set_local_var(for_stmt.variable.clone(), elem);
+          if let Some(cf) = ControlFlow::extract_loop_control(self.eval_body(&for_stmt.body))? {
             if cf == LoopControlFlow::Break {
               break;
             }
@@ -379,8 +375,7 @@ impl EvaluatorState {
         let value = self.eval_expr(&match_stmt.value)?;
         for clause in &match_stmt.clauses {
           if value.matches(&clause.pattern) {
-            let mut inner_scope = self.clone();
-            inner_scope.eval_body(&clause.body)?;
+            self.eval_body(&clause.body)?;
             break;
           }
         }
