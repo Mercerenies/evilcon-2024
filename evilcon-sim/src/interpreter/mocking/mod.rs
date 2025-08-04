@@ -13,8 +13,9 @@ mod turn_transitions;
 
 pub mod codex;
 
-pub use playing_field::ENDGAME_VARIABLE;
+pub use playing_field::{ENDGAME_VARIABLE, SECOND_PLAYER_FORT_ADVANTAGE};
 pub use turn_transitions::{PLAY_FULL_GAME_METHOD, TURN_TRANSITIONS_RES_PATH};
+pub use stats_panel::DEFAULT_FORT_DEFENSE;
 
 pub const PLAYING_FIELD_RES_PATH: &str = "res://card_game/playing_field/playing_field.gd";
 

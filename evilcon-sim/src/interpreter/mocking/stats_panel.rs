@@ -14,7 +14,7 @@ use std::sync::Arc;
 use std::collections::HashMap;
 
 pub(super) const DESTINY_SONG_LIMIT: i64 = 3;
-pub(super) const DEFAULT_FORT_DEFENSE: i64 = 60;
+pub const DEFAULT_FORT_DEFENSE: i64 = 60;
 
 pub(super) const STATS_PANEL_RES_PATH: &str = "res://card_game/playing_field/game_stats_panel/game_stats_panel.gd";
 

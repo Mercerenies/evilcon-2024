@@ -15,6 +15,7 @@ use std::sync::Arc;
 use std::collections::HashMap;
 
 pub const ENDGAME_VARIABLE: &str = "__evilconsim_endgame";
+pub const SECOND_PLAYER_FORT_ADVANTAGE: i64 = 2;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 enum CardKind {
@@ -43,7 +44,7 @@ impl CardKind {
 // * Several private internal helpers
 pub(super) fn playing_field_class(node: Arc<Class>) -> Class {
   let mut constants = HashMap::new();
-  constants.insert(Identifier::new("SECOND_PLAYER_FORT_ADVANTAGE"), LazyConst::resolved(Value::from(2)));
+  constants.insert(Identifier::new("SECOND_PLAYER_FORT_ADVANTAGE"), LazyConst::resolved(Value::from(SECOND_PLAYER_FORT_ADVANTAGE)));
   constants.insert(Identifier::new("Randomness"), LazyConst::preload("res://card_game/playing_field/randomness.gd"));
   constants.insert(Identifier::new("EventLogger"), LazyConst::preload("res://card_game/playing_field/event_logger.gd"));
 

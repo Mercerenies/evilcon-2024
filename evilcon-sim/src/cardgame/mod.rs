@@ -1,6 +1,7 @@
 
 use crate::interpreter::eval::{SuperglobalState, EvaluatorState};
-use crate::interpreter::mocking::{PLAYING_FIELD_RES_PATH, ENDGAME_VARIABLE, TURN_TRANSITIONS_RES_PATH};
+use crate::interpreter::mocking::{PLAYING_FIELD_RES_PATH, ENDGAME_VARIABLE, TURN_TRANSITIONS_RES_PATH,
+                                  DEFAULT_FORT_DEFENSE, SECOND_PLAYER_FORT_ADVANTAGE};
 use crate::interpreter::mocking::codex::CODEX_GD_NAME;
 use crate::interpreter::error::EvalError;
 use crate::interpreter::value::{SimpleValue, Value};
@@ -113,6 +114,12 @@ impl GameEngine {
     {
       let top_agent = create_ai_agent(&state)?;
       install_player_agent(&state, &playing_field, "TOP", top_agent)?;
+    }
+    {
+      const SECOND_PLAYER_FORT_DEFENSE: Value = Value::Int(DEFAULT_FORT_DEFENSE + SECOND_PLAYER_FORT_ADVANTAGE);
+      let top_stats = playing_field.get_value("__evilconsim_statspanel_top", state.superglobal_state())?;
+      top_stats.set_value("max_fort_defense", SECOND_PLAYER_FORT_DEFENSE, state.superglobal_state())?;
+      top_stats.set_value("fort_defense", SECOND_PLAYER_FORT_DEFENSE, state.superglobal_state())?;
     }
     Ok((state, playing_field))
   }
