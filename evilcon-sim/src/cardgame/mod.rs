@@ -1,10 +1,13 @@
 
+pub mod code;
+
 use crate::interpreter::eval::{SuperglobalState, EvaluatorState};
 use crate::interpreter::mocking::{PLAYING_FIELD_RES_PATH, ENDGAME_VARIABLE, TURN_TRANSITIONS_RES_PATH,
                                   DEFAULT_FORT_DEFENSE, SECOND_PLAYER_FORT_ADVANTAGE};
 use crate::interpreter::mocking::codex::CODEX_GD_NAME;
 use crate::interpreter::error::EvalError;
 use crate::interpreter::value::{SimpleValue, Value};
+use code::serialize_game_code;
 
 use thiserror::Error;
 use rand_chacha::ChaCha8Rng;
@@ -62,6 +65,9 @@ impl GameEngine {
     env: &CardGameEnv,
     seed: u64,
   ) -> Result<GameWinner, GameEngineError> {
+    let game_code = serialize_game_code(seed, env)?;
+    tracing::info!("Running game with code: {game_code}");
+
     let random = ChaCha8Rng::seed_from_u64(seed);
     self.play_game(env, random)
   }
@@ -162,4 +168,12 @@ fn install_player_agent(state: &EvaluatorState, playing_field: &Value, player: &
   agent.set_value("controlled_player", Value::from(player), state.superglobal_state())?;
   playing_field.set_value(var_name, agent, state.superglobal_state())?;
   Ok(())
+}
+
+impl From<code::SerializeError> for GameEngineError {
+  fn from(e: code::SerializeError) -> Self {
+    match e {
+      code::SerializeError::BadDeckSize => GameEngineError::BadDeckSize,
+    }
+  }
 }
