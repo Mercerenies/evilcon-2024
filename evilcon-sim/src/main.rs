@@ -3,8 +3,6 @@ use evilcon_sim::driver;
 use evilcon_sim::logging;
 use evilcon_sim::cardgame::{GameEngine, CardId, CardGameEnv};
 
-use rand_chacha::ChaCha8Rng;
-use rand::SeedableRng;
 use tracing::info;
 
 use std::env;
@@ -22,7 +20,6 @@ fn main() -> anyhow::Result<()> {
     rand_seed = rand::random::<u64>();
     info!("Running with random seed: {}", rand_seed);
   };
-  let random_generator = ChaCha8Rng::seed_from_u64(rand_seed);
 
   let superglobals = driver::load_all_files()?;
   let engine = GameEngine::new(superglobals);
@@ -30,7 +27,7 @@ fn main() -> anyhow::Result<()> {
     bottom_deck: sample_deck(),
     top_deck: sample_deck(),
   };
-  let outcome = engine.play_game(&env, random_generator)?;
+  let outcome = engine.play_game_seeded(&env, rand_seed)?;
   info!("Winner: {}", outcome);
   Ok(())
 }

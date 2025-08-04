@@ -6,7 +6,8 @@ use crate::interpreter::error::EvalError;
 use crate::interpreter::value::{SimpleValue, Value};
 
 use thiserror::Error;
-use rand::RngCore;
+use rand_chacha::ChaCha8Rng;
+use rand::{RngCore, SeedableRng};
 use rand::seq::SliceRandom;
 use strum_macros::Display;
 
@@ -53,6 +54,15 @@ pub enum GameEngineError {
 impl GameEngine {
   pub fn new(state: SuperglobalState) -> Self {
     Self(Arc::new(state))
+  }
+
+  pub fn play_game_seeded(
+    &self,
+    env: &CardGameEnv,
+    seed: u64,
+  ) -> Result<GameWinner, GameEngineError> {
+    let random = ChaCha8Rng::seed_from_u64(seed);
+    self.play_game(env, random)
   }
 
   pub fn play_game(
