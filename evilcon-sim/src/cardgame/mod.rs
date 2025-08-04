@@ -25,11 +25,11 @@ pub const LOOKAHEAD_AI_AGENT_PATH: &str = "res://card_game/playing_field/player_
 pub struct GameEngine(pub Arc<SuperglobalState>);
 
 /// The ID of a playing card.
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct CardId(pub i64);
 
 /// The contents of the players' decks at the start of a card game.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct CardGameEnv {
   pub bottom_deck: Vec<CardId>,
   pub top_deck: Vec<CardId>,
