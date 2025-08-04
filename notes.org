@@ -239,6 +239,9 @@
        - Bristlegaze immediately recognizes Ravengirl despite her
          disguise, since it can read minds. However, it also doesn't
          care. Its motives for attending the convention are unknown.
+       - Bristlegaze might appear at some point before the final
+         gauntlet, as an optional threat (with a weaker deck, of
+         course).
      + ??? :: ??? (We might just make Ravenboy be the fourth one if we
        can't think of anyone else)
 **** RECURRING RIVALS
@@ -251,6 +254,9 @@
      + Farmer Blue :: From Marty the Mole. There's a farmer's
        convention next week. He got the week wrong and showed up this
        week instead.
+     + Ricky Riddle, Jr. :: An environmental extremist turned
+       supervillain. He endeavors to protect natural wildlife... at
+       all costs.
 **** OPTIONAL BONUS BOSSES
      + B'aroni :: Barry the Brainless Overlord's great grandson, a
        time traveller with futuristic technology. Crashed into the
@@ -276,7 +282,11 @@
     + Human
       - Maxwell Sterling
     + Nature
+      - Bristlegaze?
+      - Ricky Riddle
     + Turtle
+      - Bristlegaze?
+      - Ricky Riddle
     + Shape
       - Icosaking
     + Pasta
@@ -300,18 +310,20 @@
       - Farmer Blue
     + Demon
       - Devil
+      - Death
+    + Boss
     + (Milk)
       - Milkman Marauder
     + (Hero)
       - Dr. Badguy Doomcake
     + (Hostage)
+      - Bristlegaze
       - (Maybe Minionman's second appearance)
     + (Factory)
       - Berry
       - B'aroni
     + (Unplaced)
       - Minionman
-      - Bristlegaze
       - Chris Cogsworth
 ** WORLD MAP
    You first face a tutorial character (probably Minionman), who
@@ -579,7 +591,7 @@
       (e.g. Ninja Mask). Essentially, a card which is not on the field
       reverts back to its factory condition and only has the stats and
       abilities listed on the physical card.
-** ENEMY AI PLAN
+** DONE ENEMY AI PLAN
 *** SUMMARY
     (Written Oct 27, 2024)
 
@@ -688,11 +700,21 @@
    + [ ] Fungus support: Progressively increase in power the longer effects stay in play
    + [ ] Provide "collectors' editions" of certain cards, when there's
      original artwork from the source game that we can feature
+     - Cards that potentially have original artwork: Barry, Dr.
+       Meguruku, True Ninja Master, B'aroni, Ricky Riddle
+     - Cards that are from older games but have a very similar art
+       style (hence, would be hard to justify two drawings):
+       Icosaking, Maxwell Sterling, The Devil, Prisman, Squaredude and Circlegirl
+     - Maybe Giggles Galore? He's loosely based on Clownometry
+     - Farmer Blue is already done in vector style, but he's
+       chibi-ified in the OG game. So a variant with his chibi form
+       would make sense.
    + [ ] A card that prevents the opponent from winning (for any
      reason) while in play
      - If the opponent plays the third Destiny Song while this card is
        in play, they win as soon as the card goes out of play.
    + [ ] The "thug" character from Nail?
+     - He might run a "shady" shop that trades random items with you.
    + [ ] Ancient Demons are the salesmen who sell you cards at shops.
    + [ ] Representation (cameos?) from Growing Up?
      - [ ] "Ricky Riddle" in particular is just asking to be made into
