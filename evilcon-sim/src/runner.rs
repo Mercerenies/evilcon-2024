@@ -45,6 +45,9 @@ pub fn play_from_code(code_str: &str) -> anyhow::Result<()> {
   tracing::info!("Player BOTTOM deck = {}", env.bottom_deck);
   tracing::info!("Player TOP deck = {}", env.top_deck);
 
+  validate_deck("BOTTOM", env.bottom_deck.as_ref());
+  validate_deck("TOP", env.top_deck.as_ref());
+
   let superglobals = driver::load_all_files()?;
   let engine = GameEngine::new(superglobals);
   let outcome = engine.play_game_seeded(&env, seed)?;
@@ -55,6 +58,9 @@ pub fn play_from_code(code_str: &str) -> anyhow::Result<()> {
 pub fn play_sequential(env: &CardGameEnv, user_seed: Option<u64>, run_count: u32) -> anyhow::Result<()> {
   let superglobals = driver::load_all_files()?;
   let engine = GameEngine::new(superglobals);
+
+  validate_deck("BOTTOM", env.bottom_deck.as_ref());
+  validate_deck("TOP", env.top_deck.as_ref());
 
   let mut bottom_wins = 0;
   let mut top_wins = 0;
