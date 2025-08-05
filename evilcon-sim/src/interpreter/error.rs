@@ -77,6 +77,8 @@ pub enum EvalError {
   NumberParseError(String),
   #[error("Method intentionally unimplemented: {0}")]
   UnimplementedMethod(String),
+  #[error("Loop depth {limit} exceeded, breaking")]
+  LoopLimitExceeded { limit: usize },
 }
 
 #[derive(Debug, Clone)]

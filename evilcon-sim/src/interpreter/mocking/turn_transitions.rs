@@ -31,16 +31,45 @@ pub(super) fn turn_transitions_class(node: Arc<Class>) -> Class {
     .build()
 }
 
+
+// NOTE: Intentional divergence from GDScript. The GDScript method
+// takes one argument: playing_field. This method takes a second
+// argument, indicating the max turn count, so we can prevent infinite
+// loops.
 fn play_full_game(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
-  let playing_field = args.expect_one_arg("play_full_game")?;
+  args.expect_arity_within(1, 2, "play_full_game")?;
+  let playing_field;
+  let max_turns;
+  match args.len() {
+    1 => {
+      [playing_field] = args.try_into().unwrap();
+      max_turns = None;
+    }
+    2 => {
+      let max_turns_n;
+      [playing_field, max_turns_n] = args.try_into().unwrap();
+      let max_turns_n: usize = expect_int(&max_turns_n)?
+        .try_into()
+        .map_err(|_| EvalError::domain_error("Expected unsigned int"))?;
+      max_turns = Some(max_turns_n);
+    }
+    _ => {
+      unreachable!("Unreachable statement; just checked arity between 1 and 2");
+    }
+  };
   draw_initial_hand(state, &playing_field, CARD_PLAYER_BOTTOM)?;
   draw_initial_hand(state, &playing_field, CARD_PLAYER_TOP)?;
   let card_game_phases = get_global(state, CARD_GAME_PHASES)?;
+  let mut turn_iter = 0;
   while !check_for_endgame(state, &playing_field)? {
     state.call_function_on(&card_game_phases, "start_of_full_turn", vec![playing_field.clone()])?;
     run_turn_for(state, &playing_field, CARD_PLAYER_BOTTOM)?;
     run_turn_for(state, &playing_field, CARD_PLAYER_TOP)?;
     state.call_function_on(&card_game_phases, "end_of_full_turn", vec![playing_field.clone()])?;
+    turn_iter += 1;
+    if let Some(max_turns) = max_turns && turn_iter >= max_turns {
+      return Err(EvalError::LoopLimitExceeded { limit: max_turns });
+    }
   }
   // In Godot, this method never returns (it awaits a signal that will
   // never fire). We just return null here, since we don't use signals

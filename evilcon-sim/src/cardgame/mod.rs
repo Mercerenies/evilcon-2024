@@ -22,6 +22,9 @@ use std::sync::Arc;
 
 pub const LOOKAHEAD_AI_AGENT_PATH: &str = "res://card_game/playing_field/player_agent/lookahead_ai_agent/lookahead_ai_agent.gd";
 
+// TODO Might make this a CLI arg, if we need it
+pub const TURN_LIMIT: usize = 200;
+
 /// Newtype wrapper around a superglobal state, indicating that it has
 /// loaded the requisite files in order to play the card game. This
 /// condition is unchecked.
@@ -85,7 +88,7 @@ impl GameEngine {
     let Some(turn_transitions) = self.0.get_file(TURN_TRANSITIONS_RES_PATH) else {
       return Err(EvalError::UndefinedClass(String::from(TURN_TRANSITIONS_RES_PATH)).into());
     };
-    state.call_function_on_class(&turn_transitions, "play_full_game", vec![playing_field.clone()])?;
+    state.call_function_on_class(&turn_transitions, "play_full_game", vec![playing_field.clone(), Value::from(TURN_LIMIT as i64)])?;
     let outcome = playing_field.get_value_raw(ENDGAME_VARIABLE, &self.0)?;
     let Value::String(outcome) = outcome else {
       return Err(GameEngineError::UnknownResult(format!("{outcome:?}")));
