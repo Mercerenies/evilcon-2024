@@ -18,7 +18,7 @@ use crate::interpreter::class::{Class, ClassBuilder};
 use crate::interpreter::class::constant::LazyConst;
 use crate::interpreter::eval::{SuperglobalState, EvaluatorState};
 use crate::interpreter::method::{Method, MethodArgs};
-use crate::interpreter::value::Value;
+use crate::interpreter::value::{SimpleValue, Value};
 use crate::interpreter::error::EvalError;
 use crate::interpreter::operator::expect_int_loosely;
 use crate::ast::identifier::{Identifier, ResourcePath};
@@ -122,11 +122,11 @@ impl CodexDataFile {
   }
 
   /// The `ID` enum constant in the top-level of the codex file.
-  fn id_enum(&self) -> Value {
+  fn id_enum(&self) -> SimpleValue {
     let value_map = self.cards.iter()
       .map(|card| (Identifier::new(&card.name), card.id))
       .collect();
-    Value::EnumType(value_map)
+    SimpleValue::EnumType(value_map)
   }
 
   /// Rust-side implementation of the GDScript method

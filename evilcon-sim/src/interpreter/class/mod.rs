@@ -10,7 +10,7 @@ use crate::ast::decl::{Decl, FunctionDecl};
 use super::method::{Method, ScopedMethod};
 use super::error::EvalError;
 use super::eval::SuperglobalState;
-use super::value::{Value, SimpleValue, ObjectInst, NoSuchFunc};
+use super::value::{SimpleValue, ObjectInst, NoSuchFunc};
 use constant::LazyConst;
 use proxy::ProxyField;
 
@@ -132,7 +132,7 @@ impl Class {
             enum_values.insert(name, curr_value);
             prev = curr_value;
           }
-          let enum_type = Value::EnumType(enum_values);
+          let enum_type = SimpleValue::EnumType(enum_values);
           constants.insert(enum_decl.name, LazyConst::resolved(enum_type));
         }
         Decl::InnerClass(name, class_body) => {
@@ -143,7 +143,7 @@ impl Class {
           };
           let mut inner_class = Self::load_from_file(superglobals, file)?;
           inner_class.name = Some(name.0.clone());
-          constants.insert(name, LazyConst::resolved(Value::ClassRef(Arc::new(inner_class))));
+          constants.insert(name, LazyConst::resolved(SimpleValue::ClassRef(Arc::new(inner_class))));
         }
         Decl::Signal(name) => {
           instance_vars.push(InstanceVar {

@@ -83,7 +83,7 @@ fn do_surgery(superglobals: &mut SuperglobalState) -> anyhow::Result<()> {
       .get_if_initialized()
       .map_err(|_poisoned_err| anyhow::anyhow!("Somehow, a class constant is poisoned"))?
       .ok_or_else(|| anyhow::anyhow!("Class '{name}' is a nontrivial lazy const"))?;
-    if let Value::ClassRef(inner_class) = inner_value {
+    if let SimpleValue::ClassRef(inner_class) = inner_value {
       Ok(Arc::clone(inner_class))
     } else {
       anyhow::bail!("Class '{name}' is not a class reference");

@@ -117,12 +117,12 @@ impl EvaluatorState {
       return Ok(Some(Value::ClassRef(class)));
     }
     if let Some(glob) = self.get_global(ident)? {
-      return Ok(Some(glob.clone()));
+      return Ok(Some(glob.clone().into()));
     }
     Ok(self.superglobal_state.get_var(ident).map(|x| x.clone().into()))
   }
 
-  fn get_global(&self, ident: &Identifier) -> Result<Option<&Value>, EvalError> {
+  fn get_global(&self, ident: &Identifier) -> Result<Option<&SimpleValue>, EvalError> {
     let Some(enclosing_class) = &self.enclosing_class else {
       return Ok(None);
     };

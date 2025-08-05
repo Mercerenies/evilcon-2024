@@ -1,5 +1,5 @@
 
-use super::value::{Value, InvalidHashKey, NoSuchVar, NoSuchFunc};
+use super::value::{Value, InvalidHashKey, InvalidSimpleValue, NoSuchVar, NoSuchFunc};
 use crate::ast::expr::Expr;
 use crate::ast::string::formatter::FormatterError;
 
@@ -35,6 +35,8 @@ pub enum EvalError {
   ErrorInFunction { function: String, #[source] inner: Box<EvalError> },
   #[error("{0}")]
   InvalidHashKey(#[from] InvalidHashKey),
+  #[error("{0}")]
+  InvalidSimpleValue(#[from] InvalidSimpleValue),
   #[error("Unknown class {0}")]
   UnknownClass(String),
   #[error("Poisoned constant")]

@@ -1,6 +1,6 @@
 
 use crate::interpreter::eval::EvaluatorState;
-use crate::interpreter::value::Value;
+use crate::interpreter::value::SimpleValue;
 use crate::interpreter::error::EvalError;
 use crate::ast::expr::Expr;
 
@@ -14,15 +14,15 @@ use std::fmt::{Formatter, Debug};
 /// Note: `LazyCell` isn't good enough for what I need here, since the
 /// eventual value is parameterized by [`EvaluatorState`].
 pub struct LazyConst {
-  value: OnceCell<Result<Value, EvalError>>,
+  value: OnceCell<Result<SimpleValue, EvalError>>,
   // Invariant: initializer is always Some if the value is
   // uninitialized.
-  initializer: Cell<Option<Box<dyn FnOnce(&EvaluatorState) -> Result<Value, EvalError>>>>,
+  initializer: Cell<Option<Box<dyn FnOnce(&EvaluatorState) -> Result<SimpleValue, EvalError>>>>,
 }
 
 impl LazyConst {
   pub fn new<F>(initializer: F) -> Self
-  where F: FnOnce(&EvaluatorState) -> Result<Value, EvalError> + 'static {
+  where F: FnOnce(&EvaluatorState) -> Result<SimpleValue, EvalError> + 'static {
     Self {
       value: OnceCell::new(),
       initializer: Cell::new(Some(Box::new(initializer))),
@@ -30,7 +30,7 @@ impl LazyConst {
   }
 
   /// A [`LazyConst`] which is already resolved to the given value.
-  pub fn resolved(value: Value) -> Self {
+  pub fn resolved(value: SimpleValue) -> Self {
     let cell = OnceCell::new();
     cell.set(Ok(value)).unwrap();
     Self {
@@ -41,13 +41,15 @@ impl LazyConst {
 
   /// A [`LazyConst`] whose value is already resolved to null.
   pub fn null() -> Self {
-    Self::resolved(Value::Null)
+    Self::resolved(SimpleValue::Null)
   }
 
   /// A [`LazyConst`] that evaluates an expression.
   pub fn evaluator(expr: Expr) -> Self {
     Self::new(move |state| {
-      state.eval_expr(&expr)
+      let value = state.eval_expr(&expr)?
+        .try_into()?;
+      Ok(value)
     })
   }
 
@@ -62,7 +64,7 @@ impl LazyConst {
   /// the value has been successfully initialized, return that value.
   /// If the value errored while being initialized in the past, return
   /// [`EvalError::PoisonedConstant`].
-  pub fn get(&self, state: &EvaluatorState) -> Result<&Value, EvalError> {
+  pub fn get(&self, state: &EvaluatorState) -> Result<&SimpleValue, EvalError> {
     let mut first_init = false;
     let value = self.value.get_or_init(|| {
       let initializer = self.initializer.take().unwrap();
@@ -77,7 +79,7 @@ impl LazyConst {
     }
   }
 
-  pub fn get_if_initialized(&self) -> Result<Option<&Value>, EvalError> {
+  pub fn get_if_initialized(&self) -> Result<Option<&SimpleValue>, EvalError> {
     let Some(value) = self.value.get() else {
       return Ok(None);
     };

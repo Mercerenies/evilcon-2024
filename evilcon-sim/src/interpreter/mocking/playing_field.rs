@@ -1,7 +1,7 @@
 
 use crate::interpreter::class::{Class, ClassBuilder, InstanceVar};
 use crate::interpreter::class::constant::LazyConst;
-use crate::interpreter::value::Value;
+use crate::interpreter::value::{SimpleValue, Value};
 use crate::interpreter::eval::EvaluatorState;
 use crate::interpreter::method::{Method, MethodArgs};
 use crate::interpreter::operator::expect_string;
@@ -44,7 +44,7 @@ impl CardKind {
 // * Several private internal helpers
 pub(super) fn playing_field_class(node: Arc<Class>) -> Class {
   let mut constants = HashMap::new();
-  constants.insert(Identifier::new("SECOND_PLAYER_FORT_ADVANTAGE"), LazyConst::resolved(Value::from(SECOND_PLAYER_FORT_ADVANTAGE)));
+  constants.insert(Identifier::new("SECOND_PLAYER_FORT_ADVANTAGE"), LazyConst::resolved(SimpleValue::from(SECOND_PLAYER_FORT_ADVANTAGE)));
   constants.insert(Identifier::new("Randomness"), LazyConst::preload("res://card_game/playing_field/randomness.gd"));
   constants.insert(Identifier::new("EventLogger"), LazyConst::preload("res://card_game/playing_field/event_logger.gd"));
 

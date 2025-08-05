@@ -148,7 +148,7 @@ fn popup_text_class(node: Arc<Class>) -> Class {
   const CONST_NAMES: [&str; 6] = ["NO_TARGET", "BLOCKED", "CLOWNED", "DEMONED", "ROBOTED", "WILDED"];
   let mut constants = HashMap::new();
   for const_name in CONST_NAMES {
-    constants.insert(Identifier::new(const_name), LazyConst::resolved(Value::from("UNUSED CONSTANT")));
+    constants.insert(Identifier::new(const_name), LazyConst::resolved(SimpleValue::from("UNUSED CONSTANT")));
   }
   ClassBuilder::default()
     .name("PopupText")

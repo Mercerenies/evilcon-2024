@@ -86,6 +86,7 @@ pub enum SimpleValue {
   Float(OrderedFloat<f64>),
   String(String),
   ClassRef(Arc<Class>),
+  EnumType(OrderMap<Identifier, i64>),
 }
 
 pub struct EqPtrMut<T> {
@@ -204,7 +205,7 @@ impl Value {
       // If I'm wrong, I want to know.
       let const_context = EvaluatorState::new(Arc::clone(superglobals), ShouldNotUseRandom)
         .with_enclosing_class(Some(cls.clone()));
-      return constant.get(&const_context).cloned();
+      return constant.get(&const_context).map(|x| x.clone().into());
     } else if let Value::ObjectRef(obj) = self {
       let obj = RefCell::borrow(&obj);
       if let Some(simple_name) = obj.dict.get(name).cloned() {
@@ -542,6 +543,7 @@ impl From<SimpleValue> for Value {
       SimpleValue::Float(f) => Value::Float(f),
       SimpleValue::String(s) => Value::String(s),
       SimpleValue::ClassRef(c) => Value::ClassRef(c),
+      SimpleValue::EnumType(e) => Value::EnumType(e),
     }
   }
 }
@@ -557,6 +559,7 @@ impl TryFrom<Value> for SimpleValue {
       Value::Float(f) => SimpleValue::Float(f),
       Value::String(s) => SimpleValue::String(s),
       Value::ClassRef(c) => SimpleValue::ClassRef(c),
+      Value::EnumType(e) => SimpleValue::EnumType(e),
       _ => return Err(InvalidSimpleValue(v.to_string())),
     })
   }
@@ -565,6 +568,24 @@ impl TryFrom<Value> for SimpleValue {
 impl From<f64> for SimpleValue {
   fn from(f: f64) -> Self {
     SimpleValue::Float(OrderedFloat(f))
+  }
+}
+
+impl From<i64> for SimpleValue {
+  fn from(i: i64) -> Self {
+    SimpleValue::Int(i)
+  }
+}
+
+impl From<String> for SimpleValue {
+  fn from(s: String) -> Self {
+    SimpleValue::String(s)
+  }
+}
+
+impl From<&str> for SimpleValue {
+  fn from(s: &str) -> Self {
+    SimpleValue::String(s.into())
   }
 }
 

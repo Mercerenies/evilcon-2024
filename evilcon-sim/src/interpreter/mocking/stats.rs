@@ -2,7 +2,7 @@
 use crate::interpreter::class::{Class, ClassBuilder};
 use crate::interpreter::class::constant::LazyConst;
 use crate::interpreter::method::{Method, MethodArgs};
-use crate::interpreter::value::Value;
+use crate::interpreter::value::{SimpleValue, Value};
 use crate::interpreter::eval::EvaluatorState;
 use crate::interpreter::error::EvalError;
 use crate::interpreter::operator::{expect_int, expect_string};
@@ -36,7 +36,7 @@ pub(super) fn stats_static_class(node: Arc<Class>) -> Class {
   constants.insert(Identifier::new("GameStatsDict"), LazyConst::null());
   constants.insert(Identifier::new("CARD_MULTI_UI_OFFSET"), LazyConst::null());
   for (var_prefix, str_value) in TARGET_TEXT_VALUES {
-    constants.insert(Identifier::new(format!("{var_prefix}_TEXT")), LazyConst::resolved(Value::from(*str_value)));
+    constants.insert(Identifier::new(format!("{var_prefix}_TEXT")), LazyConst::resolved(SimpleValue::from(*str_value)));
     constants.insert(Identifier::new(format!("{var_prefix}_COLOR")), LazyConst::null());
   }
 
