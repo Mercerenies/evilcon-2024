@@ -14,9 +14,16 @@ pub struct DeckValidator {
 
 #[derive(Debug, Clone)]
 pub enum DeckValidityError {
-  MoreThanThreeCopies(CardId),
-  DuplicateLimited(CardId),
-  DuplicateUltraRare(CardId),
+  MoreThanThreeCopies(CardType),
+  DuplicateLimited(CardType),
+  DuplicateUltraRare(CardType),
+}
+
+/// A card ID tagged with its name.
+#[derive(Debug, Clone)]
+pub struct CardType {
+  pub id: CardId,
+  pub name: String,
 }
 
 impl DeckValidator {
@@ -46,14 +53,14 @@ impl DeckValidator {
       let hard_limit = if codex_entry.limited { 1 } else { 3 };
       if count > hard_limit {
         if codex_entry.limited {
-          errors.push(DeckValidityError::DuplicateLimited(card_id));
+          errors.push(DeckValidityError::DuplicateLimited(codex_entry.clone().into()));
         } else {
-          errors.push(DeckValidityError::MoreThanThreeCopies(card_id));
+          errors.push(DeckValidityError::MoreThanThreeCopies(codex_entry.clone().into()));
         }
       }
       // Additionally, as a separate check, look at Ultra Rares.
       if count > 1 && codex_entry.rarity == Rarity::UltraRare {
-        errors.push(DeckValidityError::DuplicateUltraRare(card_id));
+        errors.push(DeckValidityError::DuplicateUltraRare(codex_entry.clone().into()));
       }
     }
     errors
@@ -82,6 +89,21 @@ impl Display for DeckValidityError {
       DeckValidityError::DuplicateUltraRare(card_id) => {
         write!(f, "Card {card_id} is ultra rare and has more than one copy in the deck.")
       }
+    }
+  }
+}
+
+impl Display for CardType {
+  fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+    write!(f, "{} ({})", self.name, self.id)
+  }
+}
+
+impl From<CodexEntry> for CardType {
+  fn from(codex_entry: CodexEntry) -> CardType {
+    CardType {
+      id: CardId(codex_entry.id),
+      name: codex_entry.name,
     }
   }
 }

@@ -7,10 +7,36 @@ use crate::cardgame::{GameEngine, CardGameEnv, GameWinner, CardId};
 use crate::cardgame::deck::{DeckValidator, Deck};
 use crate::cardgame::code::deserialize_game_code;
 
+use std::process::ExitCode;
 use std::sync::LazyLock;
 
-pub fn validate_user_deck(deck: &Deck) {
-  validate_deck("USER", deck.as_ref());
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+pub enum ValidationResult {
+  Ok,
+  Warn,
+  CriticalError,
+}
+
+impl ValidationResult {
+  pub fn to_status_code(self) -> u8 {
+    match self {
+      ValidationResult::Ok => 0,
+      ValidationResult::Warn => 1,
+      ValidationResult::CriticalError => 2,
+    }
+  }
+
+  pub fn to_exit_code(self) -> ExitCode {
+    ExitCode::from(self.to_status_code())
+  }
+}
+
+pub fn validate_user_deck(deck: &Deck) -> ValidationResult {
+  let res = validate_deck("USER", deck.as_ref());
+  if res == ValidationResult::Ok {
+    tracing::info!("Deck USER is valid.");
+  }
+  res
 }
 
 pub fn play_from_code(code_str: &str) -> anyhow::Result<()> {
@@ -56,16 +82,21 @@ pub fn play_sequential(env: &CardGameEnv, user_seed: Option<u64>, run_count: u32
   Ok(())
 }
 
-fn validate_deck(deck_name: &str, deck: &[CardId]) {
+fn validate_deck(deck_name: &str, deck: &[CardId]) -> ValidationResult {
   static VALIDATOR: LazyLock<DeckValidator> = LazyLock::new(|| {
     DeckValidator::load_default()
       .expect("Could not load deck validator from codex YAML file")
   });
   let results = VALIDATOR.validate_deck(deck);
+  let validation_result;
   if results.iter().any(|err| err.is_critical()) {
     tracing::error!("Deck {deck_name} is not legal!");
+    validation_result = ValidationResult::CriticalError;
   } else if !results.is_empty() {
     tracing::warn!("Deck {deck_name} contains questionable design!");
+    validation_result = ValidationResult::Warn;
+  } else {
+    validation_result = ValidationResult::Ok;
   }
   for err in results {
     if err.is_critical() {
@@ -74,4 +105,5 @@ fn validate_deck(deck_name: &str, deck: &[CardId]) {
       tracing::warn!("{err}");
     }
   }
+  validation_result
 }
