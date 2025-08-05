@@ -3,6 +3,7 @@ use thiserror::Error;
 
 use std::str::FromStr;
 use std::num::ParseIntError;
+use std::fmt::{self, Display, Formatter};
 
 pub const DECK_SIZE: usize = 20;
 
@@ -55,6 +56,20 @@ impl FromStr for Deck {
       .map(|s| s.parse::<i64>().map(CardId))
       .collect::<Result<Vec<_>, _>>()?;
     Ok(Deck(cards))
+  }
+}
+
+impl Display for Deck {
+  fn fmt(&self, f: &mut Formatter) -> fmt::Result {
+    let mut first = true;
+    for card in &self.0 {
+      if !first {
+        write!(f, ", ")?;
+      }
+      write!(f, "{}", card.0)?;
+      first = false;
+    }
+    Ok(())
   }
 }
 
