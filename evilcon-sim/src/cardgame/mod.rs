@@ -39,6 +39,7 @@ pub struct CardGameEnv {
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Display)]
+#[strum(serialize_all = "UPPERCASE")]
 pub enum GameWinner {
   Bottom,
   Top,
