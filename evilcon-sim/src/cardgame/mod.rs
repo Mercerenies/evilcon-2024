@@ -1,5 +1,8 @@
 
 pub mod code;
+pub mod deck;
+
+pub use deck::{Deck, CardId, DECK_SIZE};
 
 use crate::interpreter::eval::{SuperglobalState, EvaluatorState};
 use crate::interpreter::mocking::{PLAYING_FIELD_RES_PATH, ENDGAME_VARIABLE, TURN_TRANSITIONS_RES_PATH,
@@ -17,8 +20,6 @@ use strum_macros::Display;
 
 use std::sync::Arc;
 
-pub const DECK_SIZE: usize = 20;
-
 pub const LOOKAHEAD_AI_AGENT_PATH: &str = "res://card_game/playing_field/player_agent/lookahead_ai_agent/lookahead_ai_agent.gd";
 
 /// Newtype wrapper around a superglobal state, indicating that it has
@@ -27,15 +28,11 @@ pub const LOOKAHEAD_AI_AGENT_PATH: &str = "res://card_game/playing_field/player_
 #[derive(Debug, Clone)]
 pub struct GameEngine(pub Arc<SuperglobalState>);
 
-/// The ID of a playing card.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub struct CardId(pub i64);
-
 /// The contents of the players' decks at the start of a card game.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct CardGameEnv {
-  pub bottom_deck: Vec<CardId>,
-  pub top_deck: Vec<CardId>,
+  pub bottom_deck: Deck,
+  pub top_deck: Deck,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Display)]
@@ -107,11 +104,11 @@ impl GameEngine {
       .ok_or_else(|| EvalError::UndefinedClass(String::from(PLAYING_FIELD_RES_PATH)))?;
     let playing_field = state.call_function_on_class(&playing_field_class, "new", Vec::new())?;
     {
-      let bottom_deck = create_deck_of_cards(&state, &env.bottom_deck)?;
+      let bottom_deck = create_deck_of_cards(&state, env.bottom_deck.as_ref())?;
       install_deck(&state, &playing_field, "BOTTOM", bottom_deck)?;
     }
     {
-      let top_deck = create_deck_of_cards(&state, &env.top_deck)?;
+      let top_deck = create_deck_of_cards(&state, env.top_deck.as_ref())?;
       install_deck(&state, &playing_field, "TOP", top_deck)?;
     }
     {

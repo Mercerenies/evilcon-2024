@@ -40,11 +40,11 @@ pub fn serialize_game_code(seed: u64, env: &CardGameEnv) -> Result<String, Seria
   let mut bytes = Vec::with_capacity(48);
   bytes.push(0u8); // Version code, always zero currently
   bytes.extend(seed.to_be_bytes());
-  for card_id in &env.bottom_deck {
+  for card_id in env.bottom_deck.as_ref() {
     assert!((0..=255).contains(&card_id.0), "Card ID {} is out of range", card_id.0);
     bytes.push(card_id.0 as u8);
   }
-  for card_id in &env.top_deck {
+  for card_id in env.top_deck.as_ref() {
     assert!((0..=255).contains(&card_id.0), "Card ID {} is out of range", card_id.0);
     bytes.push(card_id.0 as u8);
   }

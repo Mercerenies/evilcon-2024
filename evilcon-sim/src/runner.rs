@@ -3,7 +3,7 @@
 //! directly.
 
 use crate::driver;
-use crate::cardgame::{GameEngine, CardId};
+use crate::cardgame::{GameEngine, Deck};
 use crate::cardgame::code::deserialize_game_code;
 
 use itertools::Itertools;
@@ -21,8 +21,9 @@ pub fn play_from_code(code_str: &str) -> anyhow::Result<()> {
   Ok(())
 }
 
-fn show_deck(deck: &[CardId]) -> String {
-  deck.iter()
+fn show_deck(deck: &Deck) -> String {
+  deck.as_ref()
+    .iter()
     .map(|x| format!("{}", x.0))
     .join(", ")
 }
