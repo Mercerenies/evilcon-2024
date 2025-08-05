@@ -1,5 +1,5 @@
 
-use super::Value;
+use super::{Value, HashKey};
 use crate::ast::identifier::Identifier;
 use crate::interpreter::class::Class;
 
@@ -22,6 +22,15 @@ pub enum SimpleValue {
   String(String),
   ClassRef(Arc<Class>),
   EnumType(OrderMap<Identifier, i64>),
+  /// We allow top-level constants to be arrays. They behave in
+  /// copy-on-write style, so each access to the array using the
+  /// top-level index should be thought of as creating a distinct
+  /// copy.
+  SimpleArray(Vec<SimpleValue>),
+  /// We allow top-level constants to be dictionaries. They behave in
+  /// copy-on-write style, so each access to the dictionary using the
+  /// top-level name should be thought of as creating a distinct copy.
+  SimpleDict(OrderMap<HashKey, SimpleValue>),
 }
 
 #[derive(Debug, Clone, Error)]
@@ -38,6 +47,18 @@ impl From<SimpleValue> for Value {
       SimpleValue::String(s) => Value::String(s),
       SimpleValue::ClassRef(c) => Value::ClassRef(c),
       SimpleValue::EnumType(e) => Value::EnumType(e),
+      SimpleValue::SimpleArray(a) => {
+        let inner_array = a.into_iter()
+          .map(Value::from)
+          .collect::<Vec<_>>();
+        Value::new_array(inner_array)
+      }
+      SimpleValue::SimpleDict(d) => {
+        let inner_map = d.into_iter()
+          .map(|(k, v)| (k, Value::from(v)))
+          .collect::<OrderMap<_, _>>();
+        Value::new_dict(inner_map)
+      }
     }
   }
 }
@@ -54,6 +75,20 @@ impl TryFrom<Value> for SimpleValue {
       Value::String(s) => SimpleValue::String(s),
       Value::ClassRef(c) => SimpleValue::ClassRef(c),
       Value::EnumType(e) => SimpleValue::EnumType(e),
+      Value::ArrayRef(a) => {
+        let a = a.try_borrow().map_err(|_| InvalidSimpleValue("Recursive array is not simple".to_string()))?;
+        let new_vec = a.iter()
+          .map(|e| SimpleValue::try_from(e.clone()))
+          .collect::<Result<Vec<_>, InvalidSimpleValue>>()?;
+        SimpleValue::SimpleArray(new_vec)
+      }
+      Value::DictRef(d) => {
+        let d = d.try_borrow().map_err(|_| InvalidSimpleValue("Recursive dict is not simple".to_string()))?;
+        let new_map = d.iter()
+          .map(|(k, v)| Ok((k.clone(), SimpleValue::try_from(v.clone())?)))
+          .collect::<Result<OrderMap<_, _>, InvalidSimpleValue>>()?;
+        SimpleValue::SimpleDict(new_map)
+      }
       _ => return Err(InvalidSimpleValue(v.to_string())),
     })
   }
