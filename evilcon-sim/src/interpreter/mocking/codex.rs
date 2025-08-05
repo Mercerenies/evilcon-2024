@@ -14,6 +14,9 @@
 //! [`bind_mocked_classes`](super::bind_mocked_classes) and must be
 //! bound separately.
 
+// TODO This is a weird place for CodexDataFile to live, but it's fine
+// for now. :)
+
 use crate::interpreter::class::{Class, ClassBuilder};
 use crate::interpreter::class::constant::LazyConst;
 use crate::interpreter::eval::{SuperglobalState, EvaluatorState};

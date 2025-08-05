@@ -1,6 +1,7 @@
 
 pub mod code;
 pub mod deck;
+pub mod genetic;
 
 pub use deck::{Deck, CardId, DECK_SIZE};
 

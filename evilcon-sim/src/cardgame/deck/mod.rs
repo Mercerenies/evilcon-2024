@@ -8,6 +8,7 @@ use thiserror::Error;
 use std::str::FromStr;
 use std::num::ParseIntError;
 use std::fmt::{self, Display, Formatter};
+use std::ops::{Index, IndexMut};
 
 pub const DECK_SIZE: usize = 20;
 
@@ -60,6 +61,20 @@ impl FromStr for Deck {
       .map(|s| s.parse::<i64>().map(CardId))
       .collect::<Result<Vec<_>, _>>()?;
     Ok(Deck(cards))
+  }
+}
+
+impl Index<usize> for Deck {
+  type Output = CardId;
+
+  fn index(&self, index: usize) -> &Self::Output {
+    &self.0[index]
+  }
+}
+
+impl IndexMut<usize> for Deck {
+  fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+    &mut self.0[index]
   }
 }
 
