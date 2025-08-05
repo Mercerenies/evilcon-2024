@@ -26,7 +26,7 @@ pub fn play_sequential(env: &CardGameEnv, user_seed: Option<u64>, run_count: u32
   let mut bottom_wins = 0;
   let mut top_wins = 0;
   for i in 0..run_count {
-    tracing::info!("Run {i} of {run_count}");
+    tracing::info!("Run {} of {}", i + 1, run_count);
     let seed;
     if let Some(user_seed) = user_seed {
       seed = user_seed;
