@@ -4,8 +4,8 @@ use crate::interpreter::value::SimpleValue;
 use crate::interpreter::error::EvalError;
 use crate::ast::expr::Expr;
 
-use std::cell::{OnceCell, Cell};
 use std::fmt::{Formatter, Debug};
+use std::sync::{Mutex, OnceLock};
 
 /// Godot doesn't do this, but to make dependency management easier
 /// I'm lazy-evaluating all top-level constants. This is mainly for
@@ -14,28 +14,28 @@ use std::fmt::{Formatter, Debug};
 /// Note: `LazyCell` isn't good enough for what I need here, since the
 /// eventual value is parameterized by [`EvaluatorState`].
 pub struct LazyConst {
-  value: OnceCell<Result<SimpleValue, EvalError>>,
+  value: OnceLock<Result<SimpleValue, EvalError>>,
   // Invariant: initializer is always Some if the value is
   // uninitialized.
-  initializer: Cell<Option<Box<dyn FnOnce(&EvaluatorState) -> Result<SimpleValue, EvalError>>>>,
+  initializer: Mutex<Option<Box<dyn FnOnce(&EvaluatorState) -> Result<SimpleValue, EvalError>>>>,
 }
 
 impl LazyConst {
   pub fn new<F>(initializer: F) -> Self
   where F: FnOnce(&EvaluatorState) -> Result<SimpleValue, EvalError> + 'static {
     Self {
-      value: OnceCell::new(),
-      initializer: Cell::new(Some(Box::new(initializer))),
+      value: OnceLock::new(),
+      initializer: Mutex::new(Some(Box::new(initializer))),
     }
   }
 
   /// A [`LazyConst`] which is already resolved to the given value.
   pub fn resolved(value: SimpleValue) -> Self {
-    let cell = OnceCell::new();
+    let cell = OnceLock::new();
     cell.set(Ok(value)).unwrap();
     Self {
       value: cell,
-      initializer: Cell::new(None),
+      initializer: Mutex::new(None),
     }
   }
 
@@ -67,7 +67,8 @@ impl LazyConst {
   pub fn get(&self, state: &EvaluatorState) -> Result<&SimpleValue, EvalError> {
     let mut first_init = false;
     let value = self.value.get_or_init(|| {
-      let initializer = self.initializer.take().unwrap();
+      let mut initializer = self.initializer.lock().unwrap(); // Propagate panics
+      let initializer = initializer.take().unwrap(); // Struct invariant guarantees this is Some
       first_init = true;
       initializer(state)
     });
