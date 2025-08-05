@@ -71,6 +71,7 @@ pub fn play_sequential(env: &CardGameEnv, user_seed: Option<u64>, run_count: u32
   let mut bottom_wins = 0;
   let mut top_wins = 0;
   for i in 0..run_count {
+    let _span_guard = tracing::info_span!("run", index = i + 1).entered();
     tracing::info!("Run {} of {}", i + 1, run_count);
     let seed = resolve_seed(user_seed);
     tracing::debug!("Player BOTTOM deck = {}", env.bottom_deck);
@@ -107,6 +108,7 @@ pub fn play_parallel(env: CardGameEnv, user_seed: Option<u64>, run_count: u32, t
     let env = Arc::clone(&env);
     let engine = engine.clone();
     pool.execute(move || {
+      let _span_guard = tracing::info_span!("run", index = i + 1).entered();
       tracing::info!("Run {} of {}", i + 1, run_count);
       tracing::debug!("Player BOTTOM deck = {}", env.bottom_deck);
       tracing::debug!("Player TOP deck = {}", env.top_deck);
