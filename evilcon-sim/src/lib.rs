@@ -7,4 +7,5 @@ pub mod interpreter;
 pub mod loader;
 pub mod logging;
 pub mod parser;
+pub mod runner;
 pub mod util;
