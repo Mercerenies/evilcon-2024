@@ -15,6 +15,10 @@ pub struct CliArgs {
 
 #[derive(Debug, Subcommand)]
 pub enum Command {
+  /// Validate a deck of cards, without playing a game.
+  ValidateDeck {
+    deck: Deck,
+  },
   /// Plays a single instance of the card game from a hex code.
   PlayFromCode {
     /// The base64-encoded string containing the game's seed and

@@ -9,6 +9,9 @@ fn main() -> anyhow::Result<()> {
   let _worker_guard = logging::init_logger();
   let args = CliArgs::parse();
   match args.command {
+    cli::Command::ValidateDeck { deck } => {
+      runner::validate_user_deck(&deck);
+    }
     cli::Command::PlayFromCode { code } => {
       runner::play_from_code(&code)?;
     }
