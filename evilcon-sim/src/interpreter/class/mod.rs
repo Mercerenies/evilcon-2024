@@ -53,11 +53,11 @@ pub struct InstanceVar {
 }
 
 pub struct ProxyVar {
-  field: Box<dyn ProxyField>,
+  field: Box<dyn ProxyField + Send + Sync>,
 }
 
 pub struct CustomToStringMethod {
-  inner: Arc<dyn Fn(&ObjectInst) -> String + 'static>,
+  inner: Arc<dyn Fn(&ObjectInst) -> String + Send + Sync + 'static>,
 }
 
 #[derive(Debug, Clone)]
@@ -241,7 +241,7 @@ impl InstanceVar {
 }
 
 impl ProxyVar {
-  pub fn new(field: impl ProxyField + 'static) -> Self {
+  pub fn new(field: impl ProxyField + Send + Sync + 'static) -> Self {
     Self {
       field: Box::new(field),
     }
@@ -297,7 +297,7 @@ impl From<VarStmt> for InstanceVar {
 }
 
 impl<F> From<F> for CustomToStringMethod
-where F: Fn(&ObjectInst) -> String + 'static {
+where F: Fn(&ObjectInst) -> String + Send + Sync + 'static {
   fn from(inner: F) -> Self {
     Self {
       inner: Arc::new(inner),

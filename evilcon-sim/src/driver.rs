@@ -103,7 +103,7 @@ fn do_surgery(superglobals: &mut SuperglobalState) -> anyhow::Result<()> {
 }
 
 fn with_custom_to_string(
-  custom_to_string: impl Fn(&ObjectInst) -> String + 'static,
+  custom_to_string: impl Fn(&ObjectInst) -> String + Send + Sync + 'static,
 ) -> (impl FnOnce(ClassBuilder) -> ClassBuilder + 'static) {
   move |builder| {
     builder.custom_to_string(custom_to_string)
