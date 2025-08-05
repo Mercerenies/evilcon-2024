@@ -1,30 +1,51 @@
 
 //! Genetic algorithm for identifying good decks in the card game.
 
-use crate::cardgame::{Deck, CardId, DECK_SIZE};
+use crate::driver;
+use crate::cardgame::{GameEngine, Deck, CardId, DECK_SIZE};
 use crate::cardgame::deck::validator::DeckValidator;
 use crate::interpreter::mocking::codex::CodexDataFile;
 
 use rand::Rng;
 use rand::rngs::ThreadRng;
 use rand::seq::SliceRandom;
+use threadpool::ThreadPool;
+
+use std::sync::Arc;
 
 #[derive(Debug)]
-pub struct GeneticAlgorithm {
+pub struct GeneticAlgorithm<'a> {
   random: ThreadRng,
   codex: CodexDataFile,
   validator: DeckValidator,
+  thread_pool: &'a ThreadPool,
+  engine: Arc<GameEngine>,
 }
 
-impl GeneticAlgorithm {
-  pub fn new() -> anyhow::Result<Self> {
+impl<'a> GeneticAlgorithm<'a> {
+  pub fn new(thread_pool: &'a ThreadPool) -> anyhow::Result<Self> {
     let codex = CodexDataFile::read_from_default_file()?;
     let validator = DeckValidator::new(codex.clone());
+    let superglobals = driver::load_all_files()?;
+    let engine = Arc::new(GameEngine::new(superglobals));
     Ok(GeneticAlgorithm {
       random: rand::rng(),
       codex,
       validator,
+      thread_pool,
+      engine,
     })
+  }
+
+  /// Generates a completely random deck. Note that this deck MIGHT
+  /// NOT be valid.
+  pub fn generate_random_deck(&mut self) -> Deck {
+    let mut new_deck = Vec::with_capacity(DECK_SIZE);
+    for _ in 0..DECK_SIZE {
+      let new_card_id = self.random.random_range(1..=self.codex.max_id);
+      new_deck.push(CardId(new_card_id));
+    }
+    Deck(new_deck)
   }
 
   pub fn splice(&mut self, deck1: &[CardId], deck2: &[CardId]) -> Deck {
