@@ -6,585 +6,975 @@ cards:
 - id: 0
   name: NULL_MINION
   path: res://card_game/playing_card/cards/null_minion.gd
+  limited: false
+  rarity: COMMON
 - id: 1
   name: MUSHROOM_MAN
   path: res://card_game/playing_card/cards/mushroom_man.gd
+  limited: false
+  rarity: COMMON
 - id: 2
   name: POT_OF_LINGUINE
   path: res://card_game/playing_card/cards/pot_of_linguine.gd
+  limited: true
+  rarity: UNCOMMON
 - id: 3
   name: SPIKY_MUSHROOM_MAN
   path: res://card_game/playing_card/cards/spiky_mushroom_man.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 4
   name: TINY_TURTLE
   path: res://card_game/playing_card/cards/tiny_turtle.gd
+  limited: false
+  rarity: COMMON
 - id: 5
   name: ZANY_ZOMBIE
   path: res://card_game/playing_card/cards/zany_zombie.gd
+  limited: false
+  rarity: COMMON
 - id: 6
   name: TRIANGLE_TROOPER
   path: res://card_game/playing_card/cards/triangle_trooper.gd
+  limited: false
+  rarity: COMMON
 - id: 7
   name: SERGEANT_SQUARE
   path: res://card_game/playing_card/cards/sergeant_square.gd
+  limited: false
+  rarity: COMMON
 - id: 8
   name: RHOMBUS_RANGER
   path: res://card_game/playing_card/cards/rhombus_ranger.gd
+  limited: false
+  rarity: COMMON
 - id: 9
   name: PENTAGON_PROTECTOR
   path: res://card_game/playing_card/cards/pentagon_protector.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 10
   name: CAPTAIN_CIRCLE
   path: res://card_game/playing_card/cards/captain_circle.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 11
   name: RAVIOLI_RUNT
   path: res://card_game/playing_card/cards/ravioli_runt.gd
+  limited: false
+  rarity: COMMON
 - id: 12
   name: BUSY_BEE
   path: res://card_game/playing_card/cards/busy_bee.gd
+  limited: false
+  rarity: COMMON
 - id: 13
   name: CORNY_ACORN
   path: res://card_game/playing_card/cards/corny_acorn.gd
+  limited: false
+  rarity: COMMON
 - id: 14
   name: GOLDEN_ACORN
   path: res://card_game/playing_card/cards/golden_acorn.gd
+  limited: false
+  rarity: RARE
 - id: 15
   name: ROBOT_MITE
   path: res://card_game/playing_card/cards/robot_mite.gd
+  limited: false
+  rarity: COMMON
 - id: 16
   name: MEATBALL_MAN
   path: res://card_game/playing_card/cards/meatball_man.gd
+  limited: false
+  rarity: COMMON
 - id: 17
   name: UNPAID_INTERN
   path: res://card_game/playing_card/cards/unpaid_intern.gd
+  limited: false
+  rarity: COMMON
 - id: 18
   name: BABY_CLOWN
   path: res://card_game/playing_card/cards/baby_clown.gd
+  limited: false
+  rarity: COMMON
 - id: 19
   name: SPAGHETTI_MONSTER
   path: res://card_game/playing_card/cards/spaghetti_monster.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 20
   name: PENNE_PIKEMAN
   path: res://card_game/playing_card/cards/penne_pikeman.gd
+  limited: false
+  rarity: COMMON
 - id: 21
   name: PENNE_SHARPSHOOTER
   path: res://card_game/playing_card/cards/penne_sharpshooter.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 22
   name: TEMP_WORKER
   path: res://card_game/playing_card/cards/temp_worker.gd
+  limited: false
+  rarity: COMMON
 - id: 23
   name: IT_WORKER
   path: res://card_game/playing_card/cards/it_worker.gd
+  limited: false
+  rarity: COMMON
 - id: 24
   name: CONTRACTOR
   path: res://card_game/playing_card/cards/contractor.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 25
   name: MIDDLE_MANAGER
   path: res://card_game/playing_card/cards/middle_manager.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 26
   name: TODDLER_CLOWN
   path: res://card_game/playing_card/cards/toddler_clown.gd
+  limited: false
+  rarity: COMMON
 - id: 27
   name: ROBOT_ASSISTANT
   path: res://card_game/playing_card/cards/robot_assistant.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 28
   name: DEATH_CYBORG
   path: res://card_game/playing_card/cards/death_cyborg.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 29
   name: PASTA_POWER
   path: res://card_game/playing_card/cards/pasta_power.gd
+  limited: false
+  rarity: COMMON
 - id: 30
   name: HIRED_NINJA
   path: res://card_game/playing_card/cards/hired_ninja.gd
+  limited: false
+  rarity: COMMON
 - id: 31
   name: ANCIENT_SCROLL
   path: res://card_game/playing_card/cards/ancient_scroll.gd
+  limited: false
+  rarity: COMMON
 - id: 32
   name: SPIKY_TURTLE
   path: res://card_game/playing_card/cards/spiky_turtle.gd
+  limited: false
+  rarity: COMMON
 - id: 33
   name: CHICKEN
   path: res://card_game/playing_card/cards/chicken.gd
+  limited: false
+  rarity: COMMON
 - id: 34
   name: PIG
   path: res://card_game/playing_card/cards/pig.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 35
   name: GIANT_PIG
   path: res://card_game/playing_card/cards/giant_pig.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 36
   name: METAL_SPIDER
   path: res://card_game/playing_card/cards/metal_spider.gd
+  limited: false
+  rarity: COMMON
 - id: 37
   name: NINJA_ASSASSIN
   path: res://card_game/playing_card/cards/ninja_assassin.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 38
   name: MASKED_TURTLE
   path: res://card_game/playing_card/cards/masked_turtle.gd
+  limited: false
+  rarity: COMMON
 - id: 39
   name: UNDEAD_PIG
   path: res://card_game/playing_card/cards/undead_pig.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 40
   name: QUEEN_BEE
   path: res://card_game/playing_card/cards/queen_bee.gd
+  limited: false
+  rarity: RARE
 - id: 41
   name: CATACOMB_CHARMER
   path: res://card_game/playing_card/cards/catacomb_charmer.gd
+  limited: false
+  rarity: ULTRA_RARE
 - id: 42
   name: MIRROR_CRYSTAL
   path: res://card_game/playing_card/cards/mirror_crystal.gd
+  limited: false
+  rarity: COMMON
 - id: 43
   name: RAIN_DANCE
   path: res://card_game/playing_card/cards/rain_dance.gd
+  limited: false
+  rarity: COMMON
 - id: 44
   name: REINFORCED_SHELL
   path: res://card_game/playing_card/cards/reinforced_shell.gd
+  limited: false
+  rarity: COMMON
 - id: 45
   name: POWER_SURGE
   path: res://card_game/playing_card/cards/power_surge.gd
+  limited: false
+  rarity: COMMON
 - id: 46
   name: WORKER_BEE
   path: res://card_game/playing_card/cards/worker_bee.gd
+  limited: false
+  rarity: COMMON
 - id: 47
   name: BEEHIVE
   path: res://card_game/playing_card/cards/beehive.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 48
   name: FURIOUS_PHANTOM
   path: res://card_game/playing_card/cards/furious_phantom.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 49
   name: HONEY_JAR
   path: res://card_game/playing_card/cards/honey_jar.gd
+  limited: false
+  rarity: COMMON
 - id: 50
   name: GRAVESTONE_POLISHING
   path: res://card_game/playing_card/cards/gravestone_polishing.gd
+  limited: false
+  rarity: COMMON
 - id: 51
   name: THE_INTERNET
   path: res://card_game/playing_card/cards/the_internet.gd
+  limited: false
+  rarity: COMMON
 - id: 52
   name: SPARE_BATTERY
   path: res://card_game/playing_card/cards/spare_battery.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 53
   name: MILK_DELIVERY
   path: res://card_game/playing_card/cards/milk_delivery.gd
+  limited: false
+  rarity: RARE
 - id: 54
   name: NUCLEAR_POWER_PLANT
   path: res://card_game/playing_card/cards/nuclear_power_plant.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 55
   name: NUCLEAR_FUSION_PLANT
   path: res://card_game/playing_card/cards/nuclear_fusion_plant.gd
+  limited: false
+  rarity: RARE
 - id: 56
   name: SECOND_COURSE
   path: res://card_game/playing_card/cards/second_course.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 57
   name: WITH_EXTRA_CHEESE
   path: res://card_game/playing_card/cards/with_extra_cheese.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 58
   name: COVER_OF_MOONLIGHT
   path: res://card_game/playing_card/cards/cover_of_moonlight.gd
+  limited: false
+  rarity: RARE
 - id: 59
   name: PLUMBERMAN
   path: res://card_game/playing_card/cards/plumberman.gd
+  limited: false
+  rarity: RARE
 - id: 60
   name: DAMSEL_IN_DISTRESS
   path: res://card_game/playing_card/cards/damsel_in_distress.gd
+  limited: false
+  rarity: COMMON
 - id: 61
   name: KIDNAPPING_THE_PRESIDENT
   path: res://card_game/playing_card/cards/kidnapping_the_president.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 62
   name: ZOMBEE
   path: res://card_game/playing_card/cards/zombee.gd
+  limited: false
+  rarity: COMMON
 - id: 63
   name: MIMEDROID
   path: res://card_game/playing_card/cards/mimedroid.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 64
   name: NINJA_MASTER
   path: res://card_game/playing_card/cards/ninja_master.gd
+  limited: false
+  rarity: RARE
 - id: 65
   name: MILITARY_ANDROID
   path: res://card_game/playing_card/cards/military_android.gd
+  limited: false
+  rarity: RARE
 - id: 66
   name: SPIKY_ACORN
   path: res://card_game/playing_card/cards/spiky_acorn.gd
+  limited: false
+  rarity: COMMON
 - id: 67
   name: CORDYCEPS
   path: res://card_game/playing_card/cards/cordyceps.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 68
   name: METAL_TURTLE
   path: res://card_game/playing_card/cards/metal_turtle.gd
+  limited: false
+  rarity: COMMON
 - id: 69
   name: SPIKY_METAL_TURTLE
   path: res://card_game/playing_card/cards/spiky_metal_turtle.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 70
   name: PLUMBERMANS_BROTHER
   path: res://card_game/playing_card/cards/plumbermans_brother.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 71
   name: KING_TURTLE
   path: res://card_game/playing_card/cards/king_turtle.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 72
   name: STREET_MIME
   path: res://card_game/playing_card/cards/street_mime.gd
+  limited: false
+  rarity: COMMON
 - id: 73
   name: MIME_SUPERIOR
   path: res://card_game/playing_card/cards/mime_superior.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 74
   name: FINAL_CLOWN
   path: res://card_game/playing_card/cards/final_clown.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 75
   name: METAL_SCORPION
   path: res://card_game/playing_card/cards/metal_scorpion.gd
+  limited: false
+  rarity: COMMON
 - id: 76
   name: DISEMBODIED_SOUL
   path: res://card_game/playing_card/cards/disembodied_soul.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 77
   name: NANOBOT_SWARM
   path: res://card_game/playing_card/cards/nanobot_swarm.gd
+  limited: false
+  rarity: COMMON
 - id: 78
   name: FOREVER_CLOWN
   path: res://card_game/playing_card/cards/forever_clown.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 79
   name: SPIKY_MASKED_TURTLE
   path: res://card_game/playing_card/cards/spiky_masked_turtle.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 80
   name: MINIONMAN
   path: res://card_game/playing_card/cards/minionman.gd
+  limited: false
+  rarity: ULTRA_RARE
 - id: 81
   name: DR_BADGUY_DOOMCAKE
   path: res://card_game/playing_card/cards/dr_badguy_doomcake.gd
+  limited: false
+  rarity: ULTRA_RARE
 - id: 82
   name: FARMER_BLUE
   path: res://card_game/playing_card/cards/farmer_blue.gd
+  limited: false
+  rarity: ULTRA_RARE
 - id: 83
   name: RHOMBICUBOCTAHEDRON
   path: res://card_game/playing_card/cards/rhombicuboctahedron.gd
+  limited: false
+  rarity: RARE
 - id: 84
   name: HYPERCUBE_PRISON
   path: res://card_game/playing_card/cards/hypercube_prison.gd
+  limited: false
+  rarity: COMMON
 - id: 85
   name: FLYING_BRICKMAN
   path: res://card_game/playing_card/cards/flying_brickman.gd
+  limited: false
+  rarity: RARE
 - id: 86
   name: KING_CANNOLI
   path: res://card_game/playing_card/cards/king_cannoli.gd
+  limited: false
+  rarity: RARE
 - id: 87
   name: RAVENMAN
   path: res://card_game/playing_card/cards/ravenman.gd
+  limited: true
+  rarity: RARE
 - id: 88
   name: RAVENBOY
   path: res://card_game/playing_card/cards/ravenboy.gd
+  limited: true
+  rarity: RARE
 - id: 89
   name: RAVENGIRL
   path: res://card_game/playing_card/cards/ravengirl.gd
+  limited: true
+  rarity: RARE
 - id: 90
   name: SQUAREDUDE
   path: res://card_game/playing_card/cards/squaredude.gd
+  limited: false
+  rarity: ULTRA_RARE
 - id: 91
   name: CIRCLEGIRL
   path: res://card_game/playing_card/cards/circlegirl.gd
+  limited: false
+  rarity: ULTRA_RARE
 - id: 92
   name: PRISMAN
   path: res://card_game/playing_card/cards/prisman.gd
+  limited: false
+  rarity: ULTRA_RARE
 - id: 93
   name: CALL_OF_ECTOPLASM
   path: res://card_game/playing_card/cards/call_of_ectoplasm.gd
+  limited: false
+  rarity: RARE
 - id: 94
   name: CLUELESS_MAN
   path: res://card_game/playing_card/cards/clueless_man.gd
+  limited: false
+  rarity: COMMON
 - id: 95
   name: WALL_GOLEM
   path: res://card_game/playing_card/cards/wall_golem.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 96
   name: GRAVEYARD_DANCE
   path: res://card_game/playing_card/cards/graveyard_dance.gd
+  limited: false
+  rarity: RARE
 - id: 97
   name: VENOMATRIX
   path: res://card_game/playing_card/cards/venomatrix.gd
+  limited: false
+  rarity: ULTRA_RARE
 - id: 98
   name: COUNT_CARBONARA
   path: res://card_game/playing_card/cards/count_carbonara.gd
+  limited: false
+  rarity: ULTRA_RARE
 - id: 99
   name: VITAMIN_CAPSULE
   path: res://card_game/playing_card/cards/vitamin_capsule.gd
+  limited: false
+  rarity: COMMON
 - id: 100
   name: TURKEY
   path: res://card_game/playing_card/cards/turkey.gd
+  limited: false
+  rarity: COMMON
 - id: 101
   name: DUCK
   path: res://card_game/playing_card/cards/duck.gd
+  limited: false
+  rarity: COMMON
 - id: 102
   name: TURDUCKEN
   path: res://card_game/playing_card/cards/turducken.gd
+  limited: false
+  rarity: RARE
 - id: 103
   name: DR_MEGURUKU
   path: res://card_game/playing_card/cards/dr_meguruku.gd
+  limited: false
+  rarity: ULTRA_RARE
 - id: 104
   name: ULTIMATE_FUSION
   path: res://card_game/playing_card/cards/ultimate_fusion.gd
+  limited: false
+  rarity: RARE
 - id: 105
   name: SPIRIT_FLUTE
   path: res://card_game/playing_card/cards/spirit_flute.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 106
   name: PET_COW
   path: res://card_game/playing_card/cards/pet_cow.gd
+  limited: false
+  rarity: RARE
 - id: 107
   name: MANDATORY_OVERTIME
   path: res://card_game/playing_card/cards/mandatory_overtime.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 108
   name: DESTINYS_SINGER
   path: res://card_game/playing_card/cards/destinys_singer.gd
+  limited: true
+  rarity: RARE
 - id: 109
   name: RED_TURTLE
   path: res://card_game/playing_card/cards/red_turtle.gd
+  limited: false
+  rarity: COMMON
 - id: 110
   name: SPIKY_RED_TURTLE
   path: res://card_game/playing_card/cards/spiky_red_turtle.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 111
   name: TREE_NYMPH
   path: res://card_game/playing_card/cards/tree_nymph.gd
+  limited: false
+  rarity: COMMON
 - id: 112
   name: FANCIFUL_FAIRY
   path: res://card_game/playing_card/cards/fanciful_fairy.gd
+  limited: false
+  rarity: COMMON
 - id: 113
   name: ICOSAKING
   path: res://card_game/playing_card/cards/icosaking.gd
+  limited: false
+  rarity: ULTRA_RARE
 - id: 114
   name: TRUE_NINJA_MASTER
   path: res://card_game/playing_card/cards/true_ninja_master.gd
+  limited: false
+  rarity: ULTRA_RARE
 - id: 115
   name: THE_MASTERMIME
   path: res://card_game/playing_card/cards/the_mastermime.gd
+  limited: false
+  rarity: ULTRA_RARE
 - id: 116
   name: DEATH
   path: res://card_game/playing_card/cards/death.gd
+  limited: false
+  rarity: ULTRA_RARE
 - id: 117
   name: NEEDLE_STRIKE
   path: res://card_game/playing_card/cards/needle_strike.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 118
   name: BRISTLEGAZE
   path: res://card_game/playing_card/cards/bristlegaze.gd
+  limited: false
+  rarity: ULTRA_RARE
 - id: 119
   name: BOILING_POT_OF_WATER
   path: res://card_game/playing_card/cards/boiling_pot_of_water.gd
+  limited: true
+  rarity: UNCOMMON
 - id: 120
   name: LAST_STAND
   path: res://card_game/playing_card/cards/last_stand.gd
+  limited: true
+  rarity: RARE
 - id: 121
   name: CIRCLE_OF_LIFE
   path: res://card_game/playing_card/cards/circle_of_life.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 122
   name: CIRCUS_MAKEUP
   path: res://card_game/playing_card/cards/circus_makeup.gd
+  limited: false
+  rarity: COMMON
 - id: 123
   name: HAY_BALES
   path: res://card_game/playing_card/cards/hay_bales.gd
+  limited: false
+  rarity: COMMON
 - id: 124
   name: CURSED_TALISMAN
   path: res://card_game/playing_card/cards/cursed_talisman.gd
+  limited: false
+  rarity: COMMON
 - id: 125
   name: GIGGLES_GALORE
   path: res://card_game/playing_card/cards/giggles_galore.gd
+  limited: false
+  rarity: ULTRA_RARE
 - id: 126
   name: MILKMAN_MARAUDER
   path: res://card_game/playing_card/cards/milkman_marauder.gd
+  limited: false
+  rarity: ULTRA_RARE
 - id: 127
   name: MAXWELL_STERLING
   path: res://card_game/playing_card/cards/maxwell_sterling.gd
+  limited: false
+  rarity: ULTRA_RARE
 - id: 128
   name: BARRY
   path: res://card_game/playing_card/cards/barry.gd
+  limited: false
+  rarity: ULTRA_RARE
 - id: 129
   name: THE_DEVIL
   path: res://card_game/playing_card/cards/the_devil.gd
+  limited: false
+  rarity: ULTRA_RARE
 - id: 130
   name: MYSTERY_BOX
   path: res://card_game/playing_card/cards/mystery_box.gd
+  limited: false
+  rarity: RARE
 - id: 131
   name: INFERNAL_IMP
   path: res://card_game/playing_card/cards/infernal_imp.gd
+  limited: false
+  rarity: COMMON
 - id: 132
   name: GREEDY_GOBLIN
   path: res://card_game/playing_card/cards/greedy_goblin.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 133
   name: ANCIENT_DEMON
   path: res://card_game/playing_card/cards/ancient_demon.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 134
   name: AGARIC_TURTLE
   path: res://card_game/playing_card/cards/agaric_turtle.gd
+  limited: false
+  rarity: COMMON
 - id: 135
   name: REPLACEABLE_PARTS
   path: res://card_game/playing_card/cards/replaceable_parts.gd
+  limited: false
+  rarity: RARE
 - id: 136
   name: PET_COWN
   path: res://card_game/playing_card/cards/pet_cown.gd
+  limited: false
+  rarity: RARE
 - id: 137
   name: LIBRARY_OF_ALEXANDRIA
   path: res://card_game/playing_card/cards/library_of_alexandria.gd
+  limited: false
+  rarity: RARE
 - id: 138
   name: CLOWN_NOSE
   path: res://card_game/playing_card/cards/clown_nose.gd
+  limited: false
+  rarity: COMMON
 - id: 139
   name: PACIFIER
   path: res://card_game/playing_card/cards/pacifier.gd
+  limited: false
+  rarity: RARE
 - id: 140
   name: CHICK_INATOR
   path: res://card_game/playing_card/cards/chick_inator.gd
+  limited: false
+  rarity: COMMON
 - id: 141
   name: BRAINWASHING_RAY
   path: res://card_game/playing_card/cards/brainwashing_ray.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 142
   name: NO_HONK_ZONE
   path: res://card_game/playing_card/cards/no_honk_zone.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 143
   name: SILENT_CLOWN
   path: res://card_game/playing_card/cards/silent_clown.gd
+  limited: false
+  rarity: COMMON
 - id: 144
   name: FOREMAN
   path: res://card_game/playing_card/cards/foreman.gd
+  limited: false
+  rarity: COMMON
 - id: 145
   name: CULTIST
   path: res://card_game/playing_card/cards/cultist.gd
+  limited: false
+  rarity: COMMON
 - id: 146
   name: BEEKEEPER
   path: res://card_game/playing_card/cards/beekeeper.gd
+  limited: false
+  rarity: COMMON
 - id: 147
   name: GREENER_PASTURES
   path: res://card_game/playing_card/cards/greener_pastures.gd
+  limited: false
+  rarity: COMMON
 - id: 148
   name: SPIKY_SHELL
   path: res://card_game/playing_card/cards/spiky_shell.gd
+  limited: false
+  rarity: COMMON
 - id: 149
   name: SHELL_POLISHING
   path: res://card_game/playing_card/cards/shell_polishing.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 150
   name: BERRY
   path: res://card_game/playing_card/cards/berry.gd
+  limited: false
+  rarity: ULTRA_RARE
 - id: 151
   name: CHRIS_COGSWORTH
   path: res://card_game/playing_card/cards/chris_cogsworth.gd
+  limited: false
+  rarity: ULTRA_RARE
 - id: 152
   name: STINGER_SWARM
   path: res://card_game/playing_card/cards/stinger_swarm.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 153
   name: HIVEMIND
   path: res://card_game/playing_card/cards/hivemind.gd
+  limited: false
+  rarity: COMMON
 - id: 154
   name: EXTENDED_WARRANTY
   path: res://card_game/playing_card/cards/extended_warranty.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 155
   name: NINJA_MASK
   path: res://card_game/playing_card/cards/ninja_mask.gd
+  limited: false
+  rarity: COMMON
 - id: 156
   name: LAUGHING_GAS
   path: res://card_game/playing_card/cards/laughing_gas.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 157
   name: INVASIVE_PARASITES
   path: res://card_game/playing_card/cards/invasive_parasites.gd
+  limited: false
+  rarity: RARE
 - id: 158
   name: METAL_CHICKEN
   path: res://card_game/playing_card/cards/metal_chicken.gd
+  limited: false
+  rarity: COMMON
 - id: 159
   name: DESTRUCTION_TANK
   path: res://card_game/playing_card/cards/destruction_tank.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 160
   name: WIMPY
   path: res://card_game/playing_card/cards/wimpy.gd
+  limited: false
+  rarity: COMMON
 - id: 161
   name: WIMPY_SMASH
   path: res://card_game/playing_card/cards/wimpy_smash.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 162
   name: BULL_MARKET
   path: res://card_game/playing_card/cards/bull_market.gd
+  limited: false
+  rarity: RARE
 - id: 163
   name: HYPERACTIVE_BEE
   path: res://card_game/playing_card/cards/hyperactive_bee.gd
+  limited: false
+  rarity: RARE
 - id: 164
   name: GREEN_RANGER
   path: res://card_game/playing_card/cards/green_ranger.gd
+  limited: false
+  rarity: RARE
 - id: 165
   name: ICE_MOTH
   path: res://card_game/playing_card/cards/ice_moth.gd
+  limited: false
+  rarity: RARE
 - id: 166
   name: FORBIDDEN_FRUIT
   path: res://card_game/playing_card/cards/forbidden_fruit.gd
+  limited: false
+  rarity: COMMON
 - id: 167
   name: CYBERNETIC_ENHANCEMENT
   path: res://card_game/playing_card/cards/cybernetic_enhancement.gd
+  limited: false
+  rarity: COMMON
 - id: 168
   name: SHELL_SHIELD
   path: res://card_game/playing_card/cards/shell_shield.gd
+  limited: false
+  rarity: COMMON
 - id: 169
   name: TOXIC_SPORES
   path: res://card_game/playing_card/cards/toxic_spores.gd
+  limited: false
+  rarity: COMMON
 - id: 170
   name: CIRCUS_TENT
   path: res://card_game/playing_card/cards/circus_tent.gd
+  limited: false
+  rarity: COMMON
 - id: 171
   name: POISON_CLOUD
   path: res://card_game/playing_card/cards/poison_cloud.gd
+  limited: true
+  rarity: RARE
 - id: 172
   name: POLLINATION
   path: res://card_game/playing_card/cards/pollination.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 173
   name: EVIL_LAIR
   path: res://card_game/playing_card/cards/evil_lair.gd
+  limited: false
+  rarity: COMMON
 - id: 174
   name: BARONI
   path: res://card_game/playing_card/cards/baroni.gd
+  limited: false
+  rarity: ULTRA_RARE
 - id: 175
   name: TURTLES_UNITE
   path: res://card_game/playing_card/cards/turtles_unite.gd
+  limited: true
+  rarity: UNCOMMON
 - id: 176
   name: DEFENSIVE_FORMATION
   path: res://card_game/playing_card/cards/defensive_formation.gd
+  limited: true
+  rarity: RARE
 - id: 177
   name: TEAM_COBRA
   path: res://card_game/playing_card/cards/team_cobra.gd
+  limited: false
+  rarity: RARE
 - id: 178
   name: SUPER_PLUMBER_BROS
   path: res://card_game/playing_card/cards/super_plumber_bros.gd
+  limited: false
+  rarity: RARE
 - id: 179
   name: DEAL_WITH_THE_DEVIL
   path: res://card_game/playing_card/cards/deal_with_the_devil.gd
+  limited: false
+  rarity: RARE
 - id: 180
   name: ALONE_IN_THE_DARK
   path: res://card_game/playing_card/cards/alone_in_the_dark.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 181
   name: LIFE_FORCE_CANNON
   path: res://card_game/playing_card/cards/life_force_cannon.gd
+  limited: false
+  rarity: COMMON
 - id: 182
   name: LIFE_DRAIN
   path: res://card_game/playing_card/cards/life_drain.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 183
   name: LIVESTOCK_DELIVERY
   path: res://card_game/playing_card/cards/livestock_delivery.gd
+  limited: false
+  rarity: COMMON
 - id: 184
   name: POULTRY_FARM
   path: res://card_game/playing_card/cards/poultry_farm.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 185
   name: FARMERS_MARKET
   path: res://card_game/playing_card/cards/farmers_market.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 186
   name: SKUNKMAN
   path: res://card_game/playing_card/cards/skunkman.gd
+  limited: false
+  rarity: ULTRA_RARE
 - id: 187
   name: BEEATRICE
   path: res://card_game/playing_card/cards/beeatrice.gd
+  limited: false
+  rarity: ULTRA_RARE
 - id: 188
   name: WILD_CARD
   path: res://card_game/playing_card/cards/wild_card.gd
+  limited: false
+  rarity: COMMON
 - id: 189
   name: SPAGHETTI_CODE
   path: res://card_game/playing_card/cards/spaghetti_code.gd
+  limited: false
+  rarity: COMMON
 - id: 190
   name: REFRIGERATION
   path: res://card_game/playing_card/cards/refrigeration.gd
+  limited: false
+  rarity: COMMON
 - id: 191
   name: RULE_22
   path: res://card_game/playing_card/cards/rule_22.gd
+  limited: true
+  rarity: RARE
 - id: 192
   name: RULE_OF_STRENGTH
   path: res://card_game/playing_card/cards/rule_of_strength.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 193
   name: RULE_OF_BRAVERY
   path: res://card_game/playing_card/cards/rule_of_bravery.gd
+  limited: false
+  rarity: UNCOMMON
 - id: 194
   name: RULE_OF_KNOWLEDGE
   path: res://card_game/playing_card/cards/rule_of_knowledge.gd
+  limited: false
+  rarity: UNCOMMON

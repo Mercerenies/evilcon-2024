@@ -32,6 +32,12 @@ module Lists
         @title = with_file { |f| find_title f }
       end
 
+      def limited?
+        return @limited unless @limited.nil?
+
+        @limited = with_file { |f| find_limited f }
+      end
+
       private def find_cost(file)
         file.read =~ /^func get_star_cost\(\).*:\n\s+return (-?\d+)/ or return nil
         $1.to_i
@@ -50,6 +56,11 @@ module Lists
       private def find_title(file)
         file.read =~ /^func get_title\(\).*:\n\s+return "([^"]+)"/ or return nil
         $1
+      end
+
+      private def find_limited(file)
+        file.read =~ /^func is_limited\(\).*:\n\s+return (.+)/ or return nil
+        $1 == 'true'
       end
     end
   end

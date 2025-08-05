@@ -51,6 +51,17 @@ pub struct CodexEntry {
   pub id: i64,
   pub name: String,
   pub path: String,
+  pub limited: bool,
+  pub rarity: Rarity,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum Rarity {
+  Common,
+  Uncommon,
+  Rare,
+  UltraRare,
 }
 
 /// Small error type for [`CodexDataFile::read_from_default_file`].

@@ -6,10 +6,13 @@ require 'yaml'
 require_relative './entry'
 require_relative './entry_file'
 require_relative './helpers'
+require_relative '../lists/entry_file_ext'
 
 module Codex
   class Task
     include Helpers
+
+    using Lists::EntryFileExt
 
     attr_reader :output_path
 
@@ -49,7 +52,12 @@ module Codex
       when entry_file.id.nil?
         raise "No ID value at #{path}"
       else
-        Entry.new(id: entry_file.id, path: godot_path)
+        Entry.new(
+          id: entry_file.id,
+          path: godot_path,
+          limited: !!entry_file.limited?,
+          rarity: entry_file.rarity,
+        )
       end
     end
 
