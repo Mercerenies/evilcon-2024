@@ -53,6 +53,21 @@ impl EvaluatorState {
     }
   }
 
+  fn new_with_shared_rng(superglobal_state: Arc<SuperglobalState>, random_generator: Arc<RefCell<dyn RngCore>>) -> Self {
+    EvaluatorState {
+      self_instance: Box::new(Value::default()),
+      locals: HashMap::new(),
+      enclosing_class: None,
+      superglobal_state,
+      random_generator,
+    }
+  }
+
+  /// A new state that only shares the RNG with `self`.
+  pub fn fresh_state(&self) -> Self {
+    Self::new_with_shared_rng(Arc::clone(&self.superglobal_state), Arc::clone(&self.random_generator))
+  }
+
   pub fn bootstrapped_classes(&self) -> &BootstrappedTypes {
     &self.superglobal_state.bootstrapped_classes
   }
@@ -448,7 +463,8 @@ impl EvaluatorState {
                 method: &Method,
                 self_instance: Box<Value>,
                 args: MethodArgs) -> Result<Value, EvalError> {
-      let mut method_scope = state.clone().with_self(self_instance);
+      let mut method_scope = state.fresh_state()
+        .with_self(self_instance);
       if let Some(globals) = globals {
         method_scope = method_scope.with_enclosing_class(Some(globals));
       }

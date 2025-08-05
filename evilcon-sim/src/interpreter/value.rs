@@ -358,7 +358,7 @@ impl Value {
 
   pub fn to_rust_function(&self, state: &EvaluatorState) -> impl Fn(MethodArgs) -> Result<Value, EvalError> {
     move |args| {
-      let mut state = state.clone().with_self(Box::new(self.clone()));
+      let mut state = state.clone().with_self(Box::new(self.clone())); // TODO clone or fresh_state here?
       bootstrapping::call_func(&mut state, args)
     }
   }

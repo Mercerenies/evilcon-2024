@@ -221,7 +221,7 @@ pub fn call_func(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, 
       let mut all_args = Vec::new();
       all_args.extend(args.0);
       all_args.extend(inner.bound_params.clone());
-      let mut new_state = state.clone().with_self(Box::new(inner_method.clone()));
+      let mut new_state = state.fresh_state().with_self(Box::new(inner_method.clone()));
       call_func(&mut new_state, MethodArgs(all_args))
     }
     inst => {
