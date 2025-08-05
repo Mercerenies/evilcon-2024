@@ -17,12 +17,12 @@ pub struct LazyConst {
   value: OnceLock<Result<SimpleValue, EvalError>>,
   // Invariant: initializer is always Some if the value is
   // uninitialized.
-  initializer: Mutex<Option<Box<dyn FnOnce(&EvaluatorState) -> Result<SimpleValue, EvalError>>>>,
+  initializer: Mutex<Option<Box<dyn FnOnce(&EvaluatorState) -> Result<SimpleValue, EvalError> + Send + Sync>>>,
 }
 
 impl LazyConst {
   pub fn new<F>(initializer: F) -> Self
-  where F: FnOnce(&EvaluatorState) -> Result<SimpleValue, EvalError> + 'static {
+  where F: FnOnce(&EvaluatorState) -> Result<SimpleValue, EvalError> + Send + Sync + 'static {
     Self {
       value: OnceLock::new(),
       initializer: Mutex::new(Some(Box::new(initializer))),
