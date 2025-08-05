@@ -1,6 +1,7 @@
 
 pub mod ast;
 pub mod cardgame;
+pub mod cli;
 pub mod driver;
 pub mod interpreter;
 pub mod loader;

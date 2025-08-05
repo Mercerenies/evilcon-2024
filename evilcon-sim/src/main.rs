@@ -1,42 +1,39 @@
 
 use evilcon_sim::driver;
+use evilcon_sim::cli::{self, CliArgs};
 use evilcon_sim::logging;
-use evilcon_sim::cardgame::{GameEngine, CardId, CardGameEnv};
+use evilcon_sim::cardgame::{GameEngine, CardId};
+use evilcon_sim::cardgame::code::deserialize_game_code;
 
-use tracing::info;
-
-use std::env;
+use clap::Parser;
+use itertools::Itertools;
 
 fn main() -> anyhow::Result<()> {
   let _worker_guard = logging::init_logger();
-
-  // Get a u64 random seed from cmd line args, or a random one if none
-  // is provided.
-  let rand_seed;
-  if let Some(seed) = env::args().nth(1) {
-    rand_seed = seed.parse::<u64>()?;
-    info!("Running with user-provided seed: {}", rand_seed);
-  } else {
-    rand_seed = rand::random::<u64>();
-    info!("Running with random seed: {}", rand_seed);
-  };
-
-  let superglobals = driver::load_all_files()?;
-  let engine = GameEngine::new(superglobals);
-  let env = CardGameEnv {
-    bottom_deck: sample_deck(),
-    top_deck: sample_deck(),
-  };
-  let outcome = engine.play_game_seeded(&env, rand_seed)?;
-  info!("Winner: {}", outcome);
+  let args = CliArgs::parse();
+  match args.command {
+    cli::Command::PlayFromCode { code } => {
+      play_from_code(&code)?;
+    }
+  }
   Ok(())
 }
 
-fn sample_deck() -> Vec<CardId> {
-  vec![
-    CardId(10), CardId(17), CardId(99), CardId(101), CardId(4),
-    CardId(1), CardId(1), CardId(1), CardId(81), CardId(82),
-    CardId(83), CardId(91), CardId(140), CardId(141), CardId(17),
-    CardId(83), CardId(91), CardId(140), CardId(141), CardId(17),
-  ]
+fn play_from_code(code_str: &str) -> anyhow::Result<()> {
+  let (seed, env) = deserialize_game_code(code_str)?;
+  tracing::info!("Running with user-provided seed: {seed}");
+  tracing::info!("Player BOTTOM deck = {}", show_deck(&env.bottom_deck));
+  tracing::info!("Player TOP deck = {}", show_deck(&env.top_deck));
+
+  let superglobals = driver::load_all_files()?;
+  let engine = GameEngine::new(superglobals);
+  let outcome = engine.play_game_seeded(&env, seed)?;
+  tracing::info!("Game Winner: {}", outcome);
+  Ok(())
+}
+
+fn show_deck(deck: &[CardId]) -> String {
+  deck.iter()
+    .map(|x| format!("{}", x.0))
+    .join(", ")
 }
