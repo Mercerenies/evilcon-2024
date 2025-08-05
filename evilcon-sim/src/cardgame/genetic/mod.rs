@@ -1,6 +1,8 @@
 
 //! Genetic algorithm for identifying good decks in the card game.
 
+mod bradley_terry;
+
 use crate::driver;
 use crate::cardgame::{GameEngine, Deck, CardId, DECK_SIZE};
 use crate::cardgame::deck::validator::DeckValidator;
