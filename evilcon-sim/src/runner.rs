@@ -3,12 +3,16 @@
 //! directly.
 
 use crate::driver;
-use crate::cardgame::{GameEngine, CardGameEnv, GameWinner, CardId};
+use crate::cardgame::{GameEngine, GameEngineError, CardGameEnv, GameWinner, CardId};
 use crate::cardgame::deck::{DeckValidator, Deck};
 use crate::cardgame::code::deserialize_game_code;
 
+use threadpool::ThreadPool;
+
 use std::process::ExitCode;
-use std::sync::LazyLock;
+use std::sync::{Arc, LazyLock};
+use std::sync::mpsc;
+use std::thread;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub enum ValidationResult {
@@ -62,22 +66,17 @@ pub fn play_sequential(env: &CardGameEnv, user_seed: Option<u64>, run_count: u32
   validate_deck("BOTTOM", env.bottom_deck.as_ref());
   validate_deck("TOP", env.top_deck.as_ref());
 
+  tracing::info!("Running sequentially {} game(s)", run_count);
+
   let mut bottom_wins = 0;
   let mut top_wins = 0;
   for i in 0..run_count {
     tracing::info!("Run {} of {}", i + 1, run_count);
-    let seed;
-    if let Some(user_seed) = user_seed {
-      seed = user_seed;
-      tracing::info!("Running with user-provided seed: {seed}");
-    } else {
-      seed = rand::random::<u64>();
-      tracing::info!("Running with random seed: {seed}");
-    };
-    tracing::info!("Player BOTTOM deck = {}", env.bottom_deck);
-    tracing::info!("Player TOP deck = {}", env.top_deck);
+    let seed = resolve_seed(user_seed);
+    tracing::debug!("Player BOTTOM deck = {}", env.bottom_deck);
+    tracing::debug!("Player TOP deck = {}", env.top_deck);
     let outcome = engine.play_game_seeded(&env, seed)?;
-    tracing::info!("Game Winner: {}", outcome);
+    tracing::info!("Game {} Winner: {}", i + 1, outcome);
     match outcome {
       GameWinner::Bottom => bottom_wins += 1,
       GameWinner::Top => top_wins += 1,
@@ -85,6 +84,62 @@ pub fn play_sequential(env: &CardGameEnv, user_seed: Option<u64>, run_count: u32
   }
   tracing::info!("Player BOTTOM won {bottom_wins} time(s) of {run_count}");
   tracing::info!("Player TOP won {top_wins} time(s) of {run_count}");
+  Ok(())
+}
+
+pub fn play_parallel(env: CardGameEnv, user_seed: Option<u64>, run_count: u32, thread_count: Option<usize>) -> anyhow::Result<()> {
+  let env = Arc::new(env);
+
+  let superglobals = driver::load_all_files()?;
+  let engine = GameEngine::new(superglobals);
+
+  validate_deck("BOTTOM", env.bottom_deck.as_ref());
+  validate_deck("TOP", env.top_deck.as_ref());
+
+  let thread_count = thread_count.unwrap_or_else(get_cpu_cores);
+  tracing::info!("Running {run_count} game(s) on {thread_count} thread(s)");
+  let pool = ThreadPool::new(thread_count);
+
+  let (tx, rx) = mpsc::channel::<(u32, Result<GameWinner, GameEngineError>)>();
+  for i in 0..run_count {
+    let tx = tx.clone();
+    let seed = resolve_seed(user_seed);
+    let env = Arc::clone(&env);
+    let engine = engine.clone();
+    pool.execute(move || {
+      tracing::info!("Run {} of {}", i + 1, run_count);
+      tracing::debug!("Player BOTTOM deck = {}", env.bottom_deck);
+      tracing::debug!("Player TOP deck = {}", env.top_deck);
+      let outcome_or_err = engine.play_game_seeded(&env, seed);
+      match &outcome_or_err {
+        Ok(outcome) => {
+          tracing::info!("Game {} Winner: {}", i + 1, outcome);
+        }
+        Err(err) => {
+          tracing::error!("Game {i} Error: {err}");
+        }
+      }
+      if let Err(err) = tx.send((i, outcome_or_err)) {
+        tracing::error!("Channel error in game thread: {err}");
+      }
+    });
+  }
+
+  // Collect results
+  let mut bottom_wins = 0;
+  let mut top_wins = 0;
+  let mut error_outcomes = 0;
+  for (_i, result) in rx.iter().take(run_count as usize) {
+    match result {
+      Ok(GameWinner::Bottom) => bottom_wins += 1,
+      Ok(GameWinner::Top) => top_wins += 1,
+      Err(_) => error_outcomes += 1,
+    }
+  }
+
+  tracing::info!("Player BOTTOM won {bottom_wins} time(s) of {run_count}");
+  tracing::info!("Player TOP won {top_wins} time(s) of {run_count}");
+  tracing::info!("Game errored on {error_outcomes} time(s) of {run_count}");
   Ok(())
 }
 
@@ -112,4 +167,28 @@ fn validate_deck(deck_name: &str, deck: &[CardId]) -> ValidationResult {
     }
   }
   validation_result
+}
+
+fn get_cpu_cores() -> usize {
+  match thread::available_parallelism() {
+    Ok(count) => count.into(),
+    Err(err) => {
+      tracing::error!("Could not get available parallelism: {err}");
+      4
+    }
+  }
+}
+
+/// If user seed was provided, return it. If not, generate one with
+/// system-provided entropy.
+fn resolve_seed(user_seed: Option<u64>) -> u64 {
+  let seed;
+  if let Some(user_seed) = user_seed {
+    seed = user_seed;
+    tracing::info!("Running with user-provided seed: {seed}");
+  } else {
+    seed = rand::random::<u64>();
+    tracing::info!("Running with random seed: {seed}");
+  };
+  seed
 }

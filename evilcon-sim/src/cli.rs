@@ -42,4 +42,26 @@ pub enum Command {
     #[arg(short, long = "top")]
     top_deck: Deck,
   },
+  /// Plays the card game one or more times with the supplied player
+  /// decks, using multiple threads to run in parallel.
+  PlayParallel {
+    /// Random seed as a u64. If not provided, generator will be
+    /// randomly seeded.
+    #[arg(long)]
+    seed: Option<u64>,
+    /// Number of runs to perform.
+    #[arg(short = 'n', long, default_value_t = 1)]
+    count: u32,
+    /// Number of threads to utilize. If not supplied, a best estimate
+    /// will be made based on the CPU capabilities of the host
+    /// machine.
+    #[arg(long = "threads")]
+    thread_count: Option<usize>,
+    /// Bottom player's deck.
+    #[arg(short, long = "bottom")]
+    bottom_deck: Deck,
+    /// Top player's deck.
+    #[arg(short, long = "top")]
+    top_deck: Deck,
+  },
 }

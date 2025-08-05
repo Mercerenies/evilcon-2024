@@ -55,3 +55,6 @@
      - [X] ~card_game/playing_field/util/popup_text.gd~
    + [X] Promise.gd
      - Needs to exist but hopefully will not ever be /actually/ used.
+* NOW
+  + Need to prevent infinite loops. If the game goes on longer than
+    like 200 turns, it's a failure

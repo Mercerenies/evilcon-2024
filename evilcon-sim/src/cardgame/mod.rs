@@ -25,6 +25,9 @@ pub const LOOKAHEAD_AI_AGENT_PATH: &str = "res://card_game/playing_field/player_
 /// Newtype wrapper around a superglobal state, indicating that it has
 /// loaded the requisite files in order to play the card game. This
 /// condition is unchecked.
+///
+/// `GameEngine` is cheap to clone, as it maintains an `Arc`
+/// internally.
 #[derive(Debug, Clone)]
 pub struct GameEngine(pub Arc<SuperglobalState>);
 

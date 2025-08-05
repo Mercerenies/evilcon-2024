@@ -24,5 +24,10 @@ fn main() -> anyhow::Result<ExitCode> {
       runner::play_sequential(&env, seed, count)?;
       Ok(ExitCode::SUCCESS)
     }
+    cli::Command::PlayParallel { seed, count, thread_count, bottom_deck, top_deck } => {
+      let env = CardGameEnv { bottom_deck, top_deck };
+      runner::play_parallel(env, seed, count, thread_count)?;
+      Ok(ExitCode::SUCCESS)
+    }
   }
 }
