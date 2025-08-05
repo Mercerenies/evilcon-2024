@@ -16,7 +16,7 @@ pub const DECK_SIZE: usize = 20;
 pub struct Deck(pub Vec<CardId>);
 
 /// The ID of a playing card.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct CardId(pub i64);
 
 #[derive(Debug, Clone, Error)]
@@ -63,6 +63,12 @@ impl FromStr for Deck {
   }
 }
 
+impl Display for CardId {
+  fn fmt(&self, f: &mut Formatter) -> fmt::Result {
+    write!(f, "{}", self.0)
+  }
+}
+
 impl Display for Deck {
   fn fmt(&self, f: &mut Formatter) -> fmt::Result {
     let mut first = true;
@@ -70,7 +76,7 @@ impl Display for Deck {
       if !first {
         write!(f, ", ")?;
       }
-      write!(f, "{}", card.0)?;
+      write!(f, "{}", card)?;
       first = false;
     }
     Ok(())
