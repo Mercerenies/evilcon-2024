@@ -257,6 +257,21 @@
      + Ricky Riddle, Jr. :: An environmental extremist turned
        supervillain. He endeavors to protect natural wildlife... at
        all costs.
+     + Little Diceman :: Big Diceman's little brother. The two of them
+       escaped from a video game a long time ago. Little Diceman
+       doesn't speak and just wants several Dice-themed cards (all
+       common). Once you give them to him, he'll play you in a card
+       game. After you defeat him, he runs off and opens a "random"
+       shop, which gives you random "lootbox"-style cards (most cards
+       in the game are available in this way, with some exceptions)
+       - Specifics on the shop: You can get any common/uncommon card
+         this way. You can never get ultra rares. Rare cards can only
+         be acquired if you've already seen that rare card at least
+         once, and some (like Destiny's Singer) cannot be acquired in
+         this way at all)
+     + Big Diceman :: Little Diceman's big brother. He is capable of
+       speech and will play games with you. Only appears after you've
+       beaten Little Diceman.
 **** OPTIONAL BONUS BOSSES
      + B'aroni :: Barry the Brainless Overlord's great grandson, a
        time traveller with futuristic technology. Crashed into the
