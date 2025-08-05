@@ -32,7 +32,7 @@ pub struct ScopedMethod {
 pub struct RustMethod {
   pub name: Identifier,
   pub is_static: bool,
-  pub body: Arc<dyn Fn(&mut EvaluatorState, MethodArgs) -> Result<Value, EvalError>>,
+  pub body: Arc<dyn Fn(&mut EvaluatorState, MethodArgs) -> Result<Value, EvalError> + Send + Sync>,
 }
 
 #[derive(Debug, Clone)]
@@ -51,7 +51,7 @@ impl Method {
   }
 
   pub fn rust_method(name: impl Into<Identifier>,
-                     body: impl Fn(&mut EvaluatorState, MethodArgs) -> Result<Value, EvalError> + 'static) -> Method {
+                     body: impl Fn(&mut EvaluatorState, MethodArgs) -> Result<Value, EvalError> + Send + Sync + 'static) -> Method {
     Method::RustMethod(RustMethod {
       name: name.into(),
       is_static: false,
@@ -60,7 +60,7 @@ impl Method {
   }
 
   pub fn rust_static_method(name: impl Into<Identifier>,
-                            body: impl Fn(&mut EvaluatorState, MethodArgs) -> Result<Value, EvalError> + 'static) -> Method {
+                            body: impl Fn(&mut EvaluatorState, MethodArgs) -> Result<Value, EvalError> + Send + Sync + 'static) -> Method {
     Method::RustMethod(RustMethod {
       name: name.into(),
       is_static: true,
@@ -139,7 +139,7 @@ impl Method {
   }
 
   pub fn with_tracing<F>(self, tracing_function: F) -> Self
-  where F: Fn(&EvaluatorState, &MethodArgs) + 'static {
+  where F: Fn(&EvaluatorState, &MethodArgs) + Send + Sync + 'static {
     Method::RustMethod(RustMethod {
       name: self.name().clone(),
       is_static: self.is_static(),

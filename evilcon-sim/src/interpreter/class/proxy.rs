@@ -32,7 +32,7 @@ pub trait ProxyField {
 /// (possibly-modified) version of the value.
 pub struct BackedField<'a> {
   inner_field_name: &'a str,
-  value_adjustment: Box<dyn Fn(Value) -> Result<Value, EvalError>>,
+  value_adjustment: Box<dyn Fn(Value) -> Result<Value, EvalError> + Send + Sync>,
 }
 
 impl<'a> BackedField<'a> {
@@ -45,7 +45,7 @@ impl<'a> BackedField<'a> {
 
   pub fn with_adjustment(
     mut self,
-    value_adjustment: impl Fn(Value) -> Result<Value, EvalError> + 'static,
+    value_adjustment: impl Fn(Value) -> Result<Value, EvalError> + Send + Sync + 'static,
   ) -> Self {
     self.value_adjustment = Box::new(value_adjustment);
     self
