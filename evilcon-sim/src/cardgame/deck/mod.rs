@@ -1,4 +1,8 @@
 
+pub mod validator;
+
+pub use validator::DeckValidator;
+
 use thiserror::Error;
 
 use std::str::FromStr;
