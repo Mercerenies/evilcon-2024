@@ -21,12 +21,12 @@ use std::sync::Arc;
 use std::sync::mpsc::{self, Sender};
 use std::thread;
 
-const GENERATION_SIZE: usize = 100;
-const TOTAL_MATCHUPS_PER_INDIVIDUAL: usize = 15;
+const GENERATION_SIZE: usize = 150;
+const TOTAL_MATCHUPS_PER_INDIVIDUAL: usize = 20;
 const TOTAL_GAMES_PER_MATCHUP: usize = 5;
 
-pub const ELITE_DECKS: usize = 10;
-const CANDIDATE_PARENT_DECKS: usize = 50;
+pub const ELITE_DECKS: usize = 15;
+const CANDIDATE_PARENT_DECKS: usize = 75;
 const MUTATION_RATE: f64 = 0.02;
 
 #[derive(Debug)]
