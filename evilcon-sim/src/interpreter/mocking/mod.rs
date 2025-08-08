@@ -136,8 +136,9 @@ pub fn bind_mocked_methods(superglobals: &mut SuperglobalState) {
   superglobals.define_func(Identifier::new("maxi"), Method::rust_method("maxi", binary_int_function("maxi", i64::max)));
   superglobals.define_func(Identifier::new("clampi"), Method::rust_method("clampi", clampi_function));
 
-  // float cast
+  // Casts
   superglobals.define_func(Identifier::new("float"), Method::rust_method("float", float_cast_function));
+  superglobals.define_func(Identifier::new("int"), Method::rust_method("int", int_cast_function));
 }
 
 fn node_class(object: Arc<Class>) -> Class {
@@ -275,5 +276,19 @@ fn float_cast_function(_state: &mut EvaluatorState, args: MethodArgs) -> Result<
       Ok(Value::from(f))
     }
     arg => Err(EvalError::type_error("float", "number, string, or bool", arg)),
+  }
+}
+
+fn int_cast_function(_state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
+  let arg = args.expect_one_arg("int")?;
+  match arg {
+    Value::Float(f) => Ok(Value::from(*f as i64)),
+    Value::Int(i) => Ok(Value::from(i)),
+    Value::Bool(b) => Ok(Value::from(if b { 1 } else { 0 })),
+    Value::String(s) => {
+      let f = s.parse::<i64>().map_err(|_| EvalError::NumberParseError(s.to_owned()))?;
+      Ok(Value::from(f))
+    }
+    arg => Err(EvalError::type_error("int", "number, string, or bool", arg)),
   }
 }
