@@ -65,6 +65,24 @@ impl DeckValidator {
     }
     errors
   }
+
+  // TODO This method is here because validator is the only place we
+  // build the codex into a hash map. In principle, this should be
+  // somewhere in codex.
+  pub fn pretty_to_string(&self, deck: &[CardId]) -> String {
+    let mut output = String::new();
+    let mut first = true;
+    for card_id in deck {
+      if first {
+        first = false;
+      } else {
+        output.push_str(", ");
+      }
+      let card_name = self.codex_dict.get(card_id).map(|entry| &*entry.name).unwrap_or("???");
+      output.push_str(&format!("{card_id} ({card_name})"));
+    }
+    output
+  }
 }
 
 impl DeckValidityError {

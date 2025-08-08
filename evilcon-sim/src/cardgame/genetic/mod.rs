@@ -13,15 +13,21 @@ use bradley_terry::{WinMatrix, compute_scores};
 use rand::Rng;
 use rand::rngs::ThreadRng;
 use rand::seq::SliceRandom;
+use rand::distr::Distribution;
+use rand::distr::weighted::WeightedIndex;
 use threadpool::ThreadPool;
 
 use std::sync::Arc;
 use std::sync::mpsc::{self, Sender};
 use std::thread;
 
-pub const GENERATION_SIZE: usize = 3_000;
-pub const TOTAL_MATCHUPS_PER_INDIVIDUAL: usize = 100;
-pub const TOTAL_GAMES_PER_MATCHUP: usize = 130;
+const GENERATION_SIZE: usize = 100;
+const TOTAL_MATCHUPS_PER_INDIVIDUAL: usize = 15;
+const TOTAL_GAMES_PER_MATCHUP: usize = 5;
+
+pub const ELITE_DECKS: usize = 10;
+const CANDIDATE_PARENT_DECKS: usize = 50;
+const MUTATION_RATE: f64 = 0.02;
 
 #[derive(Debug)]
 pub struct GeneticAlgorithm<'a> {
@@ -56,16 +62,78 @@ impl<'a> GeneticAlgorithm<'a> {
     })
   }
 
-  pub fn run_genetic_algorithm(&mut self, generation_count: usize) {
+  pub fn validator(&self) -> &DeckValidator {
+    &self.validator
+  }
+
+  pub fn codex(&self) -> &CodexDataFile {
+    &self.codex
+  }
+
+  /// Runs the genetic algorithm with the given parameters. Returned
+  /// decks include the "top" elite decks at the beginning, followed
+  /// by final generation splices.
+  pub fn run_genetic_algorithm(&mut self, generation_count: usize) -> Vec<Deck> {
     let mut generation_pool = Arc::new(self.generate_initial_generation_pool());
     for index in 1..=generation_count {
       let span = tracing::info_span!("generation", index = index);
       let _span_guard = span.enter();
       tracing::info!("Running generation {} of {}", index, generation_count);
       let scores = self.run_one_generation(&generation_pool, &span);
-      dbg!(&scores);
-      break;
+      let mut deck_indices_by_rank = (0..GENERATION_SIZE).collect::<Vec<_>>();
+      deck_indices_by_rank.sort_by(|&a, &b| scores[b].partial_cmp(&scores[a]).unwrap());
+
+      let mut new_generation_pool = Vec::with_capacity(generation_pool.len());
+      // Copy the first few elite decks over verbatim
+      for i in 0..ELITE_DECKS {
+        new_generation_pool.push(generation_pool[deck_indices_by_rank[i]].clone());
+      }
+
+      // Build weights (lowest-scoring should be set to zero)
+      let mut weights = normalize_scores_to_positive(&scores);
+      for i in &deck_indices_by_rank[CANDIDATE_PARENT_DECKS..] {
+        weights[*i] = 0.0;
+      }
+
+      // Generate the rest by splicing genes
+      let weighted = WeightedIndex::new(weights).unwrap();
+      while new_generation_pool.len() < GENERATION_SIZE {
+        let i = weighted.sample(&mut self.random);
+        let j = weighted.sample(&mut self.random);
+        if i == j {
+          continue;
+        }
+        let deck_i = generation_pool[deck_indices_by_rank[i]].as_ref();
+        let deck_j = generation_pool[deck_indices_by_rank[j]].as_ref();
+        let new_deck = self.splice(deck_i, deck_j);
+        if self.is_reasonable_deck(new_deck.as_ref()) {
+          new_generation_pool.push(new_deck);
+        }
+      }
+
+      // Mutate some of the individuals.
+      for deck in &mut new_generation_pool {
+        if self.random.random::<f64>() < MUTATION_RATE {
+          self.mutate(deck);
+        }
+      }
+
+      // Final check; if any of the decks are invalid, replace them
+      // with a new splice.
+      for deck in &mut new_generation_pool {
+        while !self.is_reasonable_deck(deck.as_ref()) {
+          let i = weighted.sample(&mut self.random);
+          let j = weighted.sample(&mut self.random);
+          if i == j {
+            continue;
+          }
+          *deck = self.splice(generation_pool[deck_indices_by_rank[i]].as_ref(), generation_pool[deck_indices_by_rank[j]].as_ref());
+        }
+      }
+
+      generation_pool = Arc::new(new_generation_pool);
     }
+    Arc::unwrap_or_clone(generation_pool)
   }
 
   fn generate_initial_generation_pool(&mut self) -> Vec<Deck> {
@@ -180,4 +248,13 @@ fn play_games(
     }
   }
   out_channel.send(results).unwrap();
+}
+
+/// Add a constant to all scores to force them all to be greater than
+/// zero.
+fn normalize_scores_to_positive(scores: &[f64]) -> Vec<f64> {
+  const EPSILON: f64 = 0.01;
+
+  let min = scores.iter().copied().min_by(|a, b| a.partial_cmp(b).unwrap()).unwrap();
+  scores.iter().map(|s| s - min + EPSILON).collect()
 }

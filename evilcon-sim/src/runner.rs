@@ -6,7 +6,7 @@ use crate::driver;
 use crate::cardgame::{GameEngine, GameEngineError, CardGameEnv, GameWinner, CardId};
 use crate::cardgame::deck::{DeckValidator, Deck};
 use crate::cardgame::code::deserialize_game_code;
-use crate::cardgame::genetic::GeneticAlgorithm;
+use crate::cardgame::genetic::{GeneticAlgorithm, ELITE_DECKS};
 
 use threadpool::ThreadPool;
 
@@ -150,7 +150,11 @@ pub fn run_genetic_algorithm(thread_count: Option<usize>, generations: usize) ->
   let thread_size = thread_count.unwrap_or_else(get_cpu_cores);
   let thread_pool = ThreadPool::new(thread_size);
   let mut genetic_algorithm = GeneticAlgorithm::new(&thread_pool)?;
-  genetic_algorithm.run_genetic_algorithm(generations);
+  let best_decks = genetic_algorithm.run_genetic_algorithm(generations);
+  tracing::info!("Genetic algorithm completed");
+  for deck in &best_decks[..ELITE_DECKS] {
+    tracing::info!("Elite deck: {}", genetic_algorithm.validator().pretty_to_string(deck.as_ref()));
+  }
   Ok(())
 }
 
