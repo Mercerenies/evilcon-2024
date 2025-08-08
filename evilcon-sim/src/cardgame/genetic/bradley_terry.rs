@@ -3,8 +3,8 @@
 
 use std::ops::{Index, IndexMut};
 
-pub const BRADLEY_TERRY_ITERS: usize = 1_000;
-pub const LEARNING_RATE: f64 = 0.1;
+pub(super) const BRADLEY_TERRY_ITERS: usize = 1_000;
+pub(super) const LEARNING_RATE: f64 = 0.1;
 
 /// Matrix of win records, as a square matrix. Should be stored in
 /// row-major format, so that an entry `(x, y)` (meaning "how many
@@ -13,9 +13,18 @@ pub const LEARNING_RATE: f64 = 0.1;
 /// This is a pure data structure; no preconditions are validated. In
 /// principle, it should be a square matrix of size `width * width`.
 #[derive(Debug, Clone)]
-pub struct WinMatrix {
+pub(super) struct WinMatrix {
   pub width: usize,
   pub data: Vec<u64>,
+}
+
+impl WinMatrix {
+  pub(super) fn zeroes(width: usize) -> Self {
+    Self {
+      width,
+      data: vec![0; width * width],
+    }
+  }
 }
 
 impl Index<(usize, usize)> for WinMatrix {
