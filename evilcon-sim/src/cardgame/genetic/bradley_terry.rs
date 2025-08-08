@@ -80,17 +80,3 @@ pub(super) fn compute_gradients(scores: &[f64], wins: &WinMatrix) -> Vec<f64> {
   }
   grads
 }
-
-#[test]
-fn quick_test_fn() {
-  // Assume scores = [1, 3, 5, 10, -3].
-  //
-  // This matrix is hand-computed in the forward direction.
-  let matrix = WinMatrix {
-    width: 5,
-    data: vec![250, 440, 491, 499, 8, 59, 250, 440, 499, 1, 8, 59, 250, 496, 0, 0, 0, 3, 250, 0, 491, 498, 499, 499, 250],
-  };
-  let scores = compute_scores(&matrix);
-  dbg!(&scores);
-  panic!("test fail");
-}
