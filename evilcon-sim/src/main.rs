@@ -29,5 +29,9 @@ fn main() -> anyhow::Result<ExitCode> {
       runner::play_parallel(env, seed, count, thread_count)?;
       Ok(ExitCode::SUCCESS)
     }
+    cli::Command::RunGeneticAlgorithm { thread_count, generations } => {
+      runner::run_genetic_algorithm(thread_count, generations)?;
+      Ok(ExitCode::SUCCESS)
+    }
   }
 }

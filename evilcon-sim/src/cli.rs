@@ -64,4 +64,15 @@ pub enum Command {
     #[arg(short, long = "top")]
     top_deck: Deck,
   },
+  /// Runs a genetic algorithm to identify the most powerful decks.
+  RunGeneticAlgorithm {
+    /// Number of generations to run.
+    #[arg(long)]
+    generations: usize,
+    /// Number of threads to utilize. If not supplied, a best estimate
+    /// will be made based on the CPU capabilities of the host
+    /// machine.
+    #[arg(long = "threads")]
+    thread_count: Option<usize>,
+  }
 }
