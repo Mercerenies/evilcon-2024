@@ -139,6 +139,16 @@ impl EvaluatorState {
     self.get_superglobal_func(ident).map(|m| m.clone().scoped(None))
   }
 
+  /// As raw names, Godot seems to prefer superglobals before self
+  /// calls, so we have to support both lookup orders.
+  pub fn get_func_prefer_superglobal(&self, ident: &Identifier) -> Option<ScopedMethod> {
+    if let Some(func) = self.get_superglobal_func(ident) {
+      return Some(func.clone().scoped(None));
+    } else {
+      self.get_func(ident)
+    }
+  }
+
   pub fn get_superglobal_func(&self, ident: &Identifier) -> Option<&Method> {
     self.superglobal_state.get_func(ident)
   }
@@ -191,7 +201,7 @@ impl EvaluatorState {
       }
       Expr::Call { func, args } => {
         let func = match func.as_ref() {
-          Expr::Name(id) => self.get_func(id).ok_or_else(|| EvalError::UndefinedFunc(id.clone().into()))?,
+          Expr::Name(id) => self.get_func_prefer_superglobal(id).ok_or_else(|| EvalError::UndefinedFunc(id.clone().into()))?,
           func => { return Err(EvalError::CannotCall(func.clone())); }
         };
         let args = MethodArgs(args.iter().map(|arg| self.eval_expr(arg)).collect::<Result<Vec<_>, _>>()?);
