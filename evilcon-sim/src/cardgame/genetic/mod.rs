@@ -16,7 +16,8 @@ use rand::seq::SliceRandom;
 use threadpool::ThreadPool;
 
 use std::sync::Arc;
-use std::sync::mpsc::{self, Sender, Receiver};
+use std::sync::mpsc::{self, Sender};
+use std::thread;
 
 pub const GENERATION_SIZE: usize = 3_000;
 pub const TOTAL_MATCHUPS_PER_INDIVIDUAL: usize = 100;
@@ -107,6 +108,7 @@ impl<'a> GeneticAlgorithm<'a> {
         let enclosing_span = span.clone();
         self.thread_pool.execute(move || {
           let _span_guard = enclosing_span.enter();
+          let _span_guard = tracing::info_span!("thread", thread_id = ?thread::current().id()).entered();
           play_games(sender, engine, generation, bottom_index, top_index);
         });
       }

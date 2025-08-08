@@ -9,7 +9,7 @@ use tracing_appender::non_blocking::WorkerGuard;
 
 use std::io;
 
-pub fn init_logger() -> WorkerGuard {
+pub fn init_logger(min_log_level_for_file: &str) -> WorkerGuard {
   let file_appender = rolling::daily("logs", "app.log");
   let (non_blocking_file, guard) = tracing_appender::non_blocking(file_appender);
 
@@ -23,7 +23,7 @@ pub fn init_logger() -> WorkerGuard {
   let file_layer = fmt::layer()
     .with_writer(non_blocking_file)
     .with_ansi(false)
-    .with_filter(EnvFilter::new("trace"));
+    .with_filter(EnvFilter::new(min_log_level_for_file));
 
   // Compose the subscriber
   tracing_subscriber::registry()

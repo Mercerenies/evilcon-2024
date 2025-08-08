@@ -71,8 +71,7 @@ impl GameEngine {
     env: &CardGameEnv<T>,
     seed: u64,
   ) -> Result<GameWinner, GameEngineError> {
-    let game_code = serialize_game_code(seed, env)?;
-    tracing::info!("Running game with code: {game_code}");
+    tracing::debug!("Running game with code: {}", serialize_game_code(seed, env).unwrap_or("(failed to serialize)".to_string()));
 
     let random = ChaCha8Rng::seed_from_u64(seed);
     self.play_game(env, random)

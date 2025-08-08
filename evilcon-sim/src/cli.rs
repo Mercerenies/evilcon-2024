@@ -76,3 +76,12 @@ pub enum Command {
     thread_count: Option<usize>,
   }
 }
+
+impl Command {
+  pub fn min_log_level(&self) -> &'static str {
+    match self {
+      Self::RunGeneticAlgorithm { .. } => "info",
+      _ => "trace"
+    }
+  }
+}

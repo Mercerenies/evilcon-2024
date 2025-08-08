@@ -8,8 +8,8 @@ use clap::Parser;
 use std::process::ExitCode;
 
 fn main() -> anyhow::Result<ExitCode> {
-  let _worker_guard = logging::init_logger();
   let args = CliArgs::parse();
+  let _worker_guard = logging::init_logger(args.command.min_log_level());
   match args.command {
     cli::Command::ValidateDeck { deck } => {
       let res = runner::validate_user_deck(&deck);
