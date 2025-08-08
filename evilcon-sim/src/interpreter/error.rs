@@ -113,6 +113,14 @@ impl EvalError {
       inner: Box::new(self),
     }
   }
+
+  pub fn root_cause(&self) -> &Self {
+    if let EvalError::ErrorInFunction { inner, .. } = self {
+      inner.root_cause()
+    } else {
+      self
+    }
+  }
 }
 
 impl ExpectedArity {
