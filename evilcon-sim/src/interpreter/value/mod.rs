@@ -287,8 +287,12 @@ impl Value {
   }
 
   pub fn try_iter(&self) -> Result<ValueIter, EvalError> {
-    // Currently we only support arrays and dictionaries.
+    // Currently we only support arrays, dictionaries, and integers.
     match self {
+      Value::Int(n) => {
+        let elems = (0..*n).map(Value::from);
+        Ok(ValueIter { inner: Box::new(elems) })
+      }
       Value::ArrayRef(arr) => {
         let elems = RefCell::borrow(&arr).clone();
         Ok(ValueIter { inner: Box::new(elems.into_iter()) })
