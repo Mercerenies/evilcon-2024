@@ -20,6 +20,7 @@ use rand::seq::SliceRandom;
 use strum_macros::Display;
 
 use std::sync::Arc;
+use std::error::Error as StdError;
 
 pub const LOOKAHEAD_AI_AGENT_PATH: &str = "res://card_game/playing_field/player_agent/lookahead_ai_agent/lookahead_ai_agent.gd";
 
@@ -37,9 +38,9 @@ pub struct GameEngine(pub Arc<SuperglobalState>);
 
 /// The contents of the players' decks at the start of a card game.
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub struct CardGameEnv {
-  pub bottom_deck: Deck,
-  pub top_deck: Deck,
+pub struct CardGameEnv<T> {
+  pub bottom_deck: T,
+  pub top_deck: T,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Display)]
@@ -65,9 +66,9 @@ impl GameEngine {
     Self(Arc::new(state))
   }
 
-  pub fn play_game_seeded(
+  pub fn play_game_seeded<T: AsRef<[CardId]>>(
     &self,
-    env: &CardGameEnv,
+    env: &CardGameEnv<T>,
     seed: u64,
   ) -> Result<GameWinner, GameEngineError> {
     let game_code = serialize_game_code(seed, env)?;
@@ -77,12 +78,12 @@ impl GameEngine {
     self.play_game(env, random)
   }
 
-  pub fn play_game(
+  pub fn play_game<T: AsRef<[CardId]>>(
     &self,
-    env: &CardGameEnv,
+    env: &CardGameEnv<T>,
     random: impl RngCore + 'static,
   ) -> Result<GameWinner, GameEngineError> {
-    if env.bottom_deck.len() != DECK_SIZE || env.top_deck.len() != DECK_SIZE {
+    if env.bottom_deck.as_ref().len() != DECK_SIZE || env.top_deck.as_ref().len() != DECK_SIZE {
       return Err(GameEngineError::BadDeckSize);
     }
     let (state, playing_field) = self.initialize_game(env, random)?;
@@ -101,9 +102,9 @@ impl GameEngine {
     }
   }
 
-  fn initialize_game(
+  fn initialize_game<T: AsRef<[CardId]>>(
     &self,
-    env: &CardGameEnv,
+    env: &CardGameEnv<T>,
     random: impl RngCore + 'static,
   ) -> Result<(EvaluatorState, Value), EvalError> {
     let state = EvaluatorState::new(Arc::clone(&self.0), random);
@@ -133,6 +134,16 @@ impl GameEngine {
       top_stats.set_value("fort_defense", SECOND_PLAYER_FORT_DEFENSE, state.superglobal_state())?;
     }
     Ok((state, playing_field))
+  }
+}
+
+impl GameEngineError {
+  pub fn root_cause(&self) -> &dyn StdError {
+    if let GameEngineError::EvalError(e) = self {
+      e.root_cause()
+    } else {
+      self
+    }
   }
 }
 

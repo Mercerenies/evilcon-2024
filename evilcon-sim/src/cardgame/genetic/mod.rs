@@ -4,9 +4,10 @@
 mod bradley_terry;
 
 use crate::driver;
-use crate::cardgame::{GameEngine, Deck, CardId, DECK_SIZE};
+use crate::cardgame::{GameEngine, CardGameEnv, GameWinner, Deck, CardId, DECK_SIZE};
 use crate::cardgame::deck::validator::DeckValidator;
 use crate::interpreter::mocking::codex::CodexDataFile;
+use bradley_terry::{WinMatrix, compute_scores};
 
 use rand::Rng;
 use rand::rngs::ThreadRng;
@@ -14,10 +15,11 @@ use rand::seq::SliceRandom;
 use threadpool::ThreadPool;
 
 use std::sync::Arc;
+use std::sync::mpsc::{self, Sender, Receiver};
 
 pub const GENERATION_SIZE: usize = 3_000;
 pub const TOTAL_MATCHUPS_PER_INDIVIDUAL: usize = 100;
-pub const TOTAL_GAMES_PER_MATCHUP: usize = 120;
+pub const TOTAL_GAMES_PER_MATCHUP: usize = 130;
 
 #[derive(Debug)]
 pub struct GeneticAlgorithm<'a> {
@@ -30,10 +32,10 @@ pub struct GeneticAlgorithm<'a> {
 
 #[derive(Debug, Clone, Default)]
 struct MatchupsResult {
-  left_index: usize,
-  right_index: usize,
-  left_wins: u64,
-  right_wins: u64,
+  bottom_index: usize,
+  top_index: usize,
+  bottom_wins: u64,
+  top_wins: u64,
   error_outcomes: u64,
 }
 
@@ -55,9 +57,12 @@ impl<'a> GeneticAlgorithm<'a> {
   pub fn run_genetic_algorithm(&mut self, generation_count: usize) {
     let mut generation_pool = Arc::new(self.generate_initial_generation_pool());
     for index in 1..=generation_count {
-      let _span_guard = tracing::info_span!("generation", index = index).entered();
+      let span = tracing::info_span!("generation", index = index);
+      let _span_guard = span.enter();
       tracing::info!("Running generation {} of {}", index, generation_count);
-      self.run_one_generation(&generation_pool);
+      let scores = self.run_one_generation(&generation_pool, &span);
+      dbg!(&scores);
+      break;
     }
   }
 
@@ -83,8 +88,39 @@ impl<'a> GeneticAlgorithm<'a> {
     Deck(new_deck)
   }
 
-  fn run_one_generation(&mut self, generation: &Arc<Vec<Deck>>) {
+  fn run_one_generation(&mut self, generation: &Arc<Vec<Deck>>, span: &tracing::Span) -> Vec<f64> {
+    let (sender, receiver) = mpsc::channel();
+    let mut total_matches = 0;
+    for bottom_index in 0..generation.len() {
+      for _ in 0..TOTAL_MATCHUPS_PER_INDIVIDUAL {
+        let top_index = self.random.random_range(0..generation.len());
+        if top_index == bottom_index {
+          // Don't do self-matchups; it'll confuse the logistic
+          // regression.
+          continue
+        }
+        total_matches += 1;
+        let sender = sender.clone();
+        let engine = Arc::clone(&self.engine);
+        let generation = Arc::clone(&generation);
+        let enclosing_span = span.clone();
+        self.thread_pool.execute(move || {
+          let _span_guard = enclosing_span.enter();
+          play_games(sender, engine, generation, bottom_index, top_index);
+        });
+      }
+    }
 
+    // Collect results
+    let mut win_matrix = WinMatrix::zeroes(generation.len());
+    for _ in 0..total_matches {
+      let outcome = receiver.recv().unwrap();
+      win_matrix[(outcome.bottom_index, outcome.top_index)] += outcome.bottom_wins;
+      win_matrix[(outcome.top_index, outcome.bottom_index)] += outcome.top_wins;
+    }
+
+    // Logistic regression
+    compute_scores(&win_matrix)
   }
 
   fn splice(&mut self, deck1: &[CardId], deck2: &[CardId]) -> Deck {
@@ -110,16 +146,34 @@ impl<'a> GeneticAlgorithm<'a> {
 }
 
 fn play_games(
+  out_channel: Sender<MatchupsResult>,
   engine: Arc<GameEngine>,
   generation: Arc<Vec<Deck>>,
-  left_index: usize,
-  right_index: usize,
+  bottom_index: usize,
+  top_index: usize,
 ) {
-  let left_deck = &generation[left_index];
-  let right_deck = &generation[right_index];
+  let env = CardGameEnv {
+    bottom_deck: &generation[bottom_index],
+    top_deck: &generation[top_index],
+  };
 
   let mut results = MatchupsResult::default();
+  results.bottom_index = bottom_index;
+  results.top_index = top_index;
   for _ in 0..TOTAL_GAMES_PER_MATCHUP {
-    
+    let seed = rand::rng().random::<u64>();
+    match engine.play_game_seeded(&env, seed) {
+      Ok(GameWinner::Top) => {
+        results.top_wins += 1;
+      }
+      Ok(GameWinner::Bottom) => {
+        results.bottom_wins += 1;
+      }
+      Err(err) => {
+        results.error_outcomes += 1;
+        tracing::error!("Error during game: {}", err.root_cause());
+      }
+    }
   }
+  out_channel.send(results).unwrap();
 }

@@ -4,7 +4,7 @@
 //! serialized and deserialized to base64 for easy logging and
 //! reproducibility.
 
-use super::{CardId, CardGameEnv, DECK_SIZE};
+use super::{CardId, CardGameEnv, Deck, DECK_SIZE};
 
 use base64::Engine;
 use base64::prelude::BASE64_STANDARD;
@@ -28,13 +28,13 @@ pub enum DeserializeError {
   BadInputLength,
 }
 
-pub fn serialize_game_code(seed: u64, env: &CardGameEnv) -> Result<String, SerializeError> {
+pub fn serialize_game_code<T: AsRef<[CardId]>>(seed: u64, env: &CardGameEnv<T>) -> Result<String, SerializeError> {
   // Note: This currently works for IDs up to 255. We're (as of
   // writing this on 8/3/25) at 194 right now, so it's not impossible
   // that we exceed 255 at some point. This function shall panic if it
   // encounters an ID above 255, in order to catch that as soon as
   // possible if it happens.
-  if env.bottom_deck.len() != DECK_SIZE || env.top_deck.len() != DECK_SIZE {
+  if env.bottom_deck.as_ref().len() != DECK_SIZE || env.top_deck.as_ref().len() != DECK_SIZE {
     return Err(SerializeError::BadDeckSize);
   }
   let mut bytes = Vec::with_capacity(48);
@@ -51,7 +51,7 @@ pub fn serialize_game_code(seed: u64, env: &CardGameEnv) -> Result<String, Seria
   Ok(BASE64_STANDARD.encode(bytes))
 }
 
-pub fn deserialize_game_code(s: &str) -> Result<(u64, CardGameEnv), DeserializeError> {
+pub fn deserialize_game_code(s: &str) -> Result<(u64, CardGameEnv<Deck>), DeserializeError> {
   let bytes = BASE64_STANDARD.decode(s)?;
   if bytes.len() != 49 {
     return Err(DeserializeError::BadInputLength);

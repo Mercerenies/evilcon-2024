@@ -60,7 +60,7 @@ pub fn play_from_code(code_str: &str) -> anyhow::Result<()> {
   Ok(())
 }
 
-pub fn play_sequential(env: &CardGameEnv, user_seed: Option<u64>, run_count: u32) -> anyhow::Result<()> {
+pub fn play_sequential(env: &CardGameEnv<Deck>, user_seed: Option<u64>, run_count: u32) -> anyhow::Result<()> {
   let superglobals = driver::load_all_files()?;
   let engine = GameEngine::new(superglobals);
 
@@ -89,7 +89,7 @@ pub fn play_sequential(env: &CardGameEnv, user_seed: Option<u64>, run_count: u32
   Ok(())
 }
 
-pub fn play_parallel(env: CardGameEnv, user_seed: Option<u64>, run_count: u32, thread_count: Option<usize>) -> anyhow::Result<()> {
+pub fn play_parallel(env: CardGameEnv<Deck>, user_seed: Option<u64>, run_count: u32, thread_count: Option<usize>) -> anyhow::Result<()> {
   let env = Arc::new(env);
 
   let superglobals = driver::load_all_files()?;
