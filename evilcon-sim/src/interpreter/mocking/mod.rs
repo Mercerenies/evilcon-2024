@@ -95,10 +95,13 @@ pub fn bind_mocked_classes(superglobals: &mut SuperglobalState) {
   superglobals.add_file(ResourcePath::new(turn_transitions::TURN_TRANSITIONS_RES_PATH), Arc::clone(&turn_transitions));
   superglobals.bind_class(Identifier::new("CardGameTurnTransitions"), turn_transitions);
 
+  // InputBlockAnimation placeholder (needs to inherit from Object so we get free())
+  let input_block_animation = ClassBuilder::default().parent(Arc::clone(&superglobals.bootstrapped_classes().object())).build();
+  superglobals.add_file(ResourcePath::new("res://card_game/playing_field/animation/input_block_animation.gd"), Arc::new(input_block_animation));
+
   // A bunch of placeholders that CardGameApi needs :)
   superglobals.add_file(ResourcePath::new("res://card_game/playing_card/hidden_card_display/hidden_card_display.tscn"), Arc::new(dummy_class()));
   superglobals.add_file(ResourcePath::new("res://card_game/playing_card/deck_card_display/deck_card_display.tscn"), Arc::new(dummy_class()));
-  superglobals.add_file(ResourcePath::new("res://card_game/playing_field/animation/input_block_animation.gd"), Arc::new(dummy_class()));
   superglobals.add_file(ResourcePath::new("res://card_game/playing_field/animation/puff_of_smoke/puff_of_smoke_animation.gd"), Arc::new(dummy_class()));
   superglobals.add_file(ResourcePath::new("res://card_game/playing_field/animation/musical_note/musical_note_animation.gd"), Arc::new(dummy_class()));
 }
