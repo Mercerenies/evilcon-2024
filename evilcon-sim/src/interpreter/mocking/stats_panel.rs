@@ -75,8 +75,8 @@ impl ProxyField for FortDefenseProxyField {
 
   fn set_field(&self, superglobals: &Arc<SuperglobalState>, object: &Value, value: Value) -> Result<(), EvalError> {
     let lower_bound = 0;
-    let upper_bound = expect_int(&object.get_value(&self.max_field_name, superglobals)?)?;
-    let new_value = clamp(expect_int(&value)?, lower_bound, upper_bound);
+    let upper_bound = expect_int("(field setter)", &object.get_value(&self.max_field_name, superglobals)?)?;
+    let new_value = clamp(expect_int("(field setter)", &value)?, lower_bound, upper_bound);
     object.set_value_raw(&self.curr_field_name, Value::from(new_value))?;
     Ok(())
   }
@@ -88,7 +88,7 @@ impl ProxyField for MaxFortDefenseProxyField {
   }
 
   fn set_field(&self, superglobals: &Arc<SuperglobalState>, object: &Value, value: Value) -> Result<(), EvalError> {
-    object.set_value_raw(&self.max_field_name, Value::from(i64::max(expect_int(&value)?, 0)))?;
+    object.set_value_raw(&self.max_field_name, Value::from(i64::max(expect_int("(field setter)", &value)?, 0)))?;
     // Invoke setter for fort_defense variable as well.
     let old_fort_defense = object.get_value(&self.curr_proxy_name, superglobals)?;
     object.set_value(&self.curr_proxy_name, old_fort_defense, superglobals)?;

@@ -55,7 +55,7 @@ impl<'a> BackedField<'a> {
   /// Non-integers produce a type error.
   pub fn clamped(self, min: i64, max: i64) -> Self {
     self.with_adjustment(move |value| {
-      let value = expect_int(&value)?;
+      let value = expect_int("(field setter)", &value)?;
       Ok(Value::from(clamp(value, min, max)))
     })
   }
@@ -64,7 +64,7 @@ impl<'a> BackedField<'a> {
   /// Non-integers produce a type error.
   pub fn clamped_below(self, upper_bound: i64) -> Self {
     self.with_adjustment(move |value| {
-      let value = expect_int(&value)?;
+      let value = expect_int("(field setter)", &value)?;
       Ok(Value::from(i64::min(upper_bound, value)))
     })
   }
@@ -73,7 +73,7 @@ impl<'a> BackedField<'a> {
   /// Non-integers produce a type error.
   pub fn clamped_above(self, lower_bound: i64) -> Self {
     self.with_adjustment(move |value| {
-      let value = expect_int(&value)?;
+      let value = expect_int("(field setter)", &value)?;
       Ok(Value::from(i64::max(lower_bound, value)))
     })
   }

@@ -48,7 +48,7 @@ fn play_full_game(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value,
     2 => {
       let max_turns_n;
       [playing_field, max_turns_n] = args.try_into().unwrap();
-      let max_turns_n: usize = expect_int(&max_turns_n)?
+      let max_turns_n: usize = expect_int("play_full_game", &max_turns_n)?
         .try_into()
         .map_err(|_| EvalError::domain_error("Expected unsigned int"))?;
       max_turns = Some(max_turns_n);
@@ -80,7 +80,8 @@ fn play_full_game(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value,
 fn draw_initial_hand(state: &EvaluatorState, playing_field: &Value, player: &str) -> Result<(), EvalError> {
   let stats_calculator = get_global(state, STATS_CALCULATOR)?;
   let card_game_api = get_global(state, CARD_GAME_API)?;
-  let hand_limit = expect_int(&state.call_function_on(&stats_calculator,
+  let hand_limit = expect_int("draw_initial_hand",
+                              &state.call_function_on(&stats_calculator,
                                                       "get_hand_limit",
                                                       vec![playing_field.clone(), Value::from(player)])?)?;
   state.call_function_on(&card_game_api,

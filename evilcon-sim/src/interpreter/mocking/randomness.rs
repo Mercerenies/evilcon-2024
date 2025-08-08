@@ -24,8 +24,8 @@ pub(super) fn randomness_class(refcounted: Arc<Class>) -> Class {
   methods.insert(Identifier::new("randi_range"), Method::rust_method("randi_range", |state, args| {
     args.expect_arity(2, "randi_range")?;
     let [from, to] = args.0.try_into().expect("Expected 2 args");
-    let from = expect_int(&from)?;
-    let to = expect_int(&to)?;
+    let from = expect_int("randi_range", &from)?;
+    let to = expect_int("randi_range", &to)?;
     let result = state.do_random(|rng| rng.random_range(from..=to));
     Ok(Value::from(result))
   }));
@@ -33,7 +33,7 @@ pub(super) fn randomness_class(refcounted: Arc<Class>) -> Class {
   methods.insert(Identifier::new("choose"), Method::rust_method("choose", |state, args| {
     args.expect_arity(1, "choose")?;
     let [arr] = args.0.try_into().expect("Expected 1 arg");
-    let arr = expect_array(&arr)?.borrow();
+    let arr = expect_array("choose", &arr)?.borrow();
     let value = state.do_random(|rng| arr.choose(rng))
       .ok_or_else(|| EvalError::domain_error("Can't choose from empty array"))?;
     Ok(value.clone())

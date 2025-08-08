@@ -170,7 +170,7 @@ fn dummy_class() -> Class {
 fn preload_method(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
   args.expect_arity(1, "preload")?;
   let [arg] = args.0.try_into().unwrap();
-  let arg = expect_string(&arg)?;
+  let arg = expect_string("preload", &arg)?;
   let class = state.get_file(arg)
     .ok_or_else(|| EvalError::UndefinedClass(arg.to_owned()))?;
   Ok(Value::ClassRef(class))
@@ -182,7 +182,7 @@ fn len_method(_state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, Ev
     Value::ArrayRef(arr) => Ok(Value::Int(arr.borrow().len() as i64)),
     Value::DictRef(arr) => Ok(Value::Int(arr.borrow().len() as i64)),
     Value::String(s) => Ok(Value::Int(s.len() as i64)),
-    _ => Err(EvalError::type_error("array, string, or dict", arg)),
+    _ => Err(EvalError::type_error("len", "array, string, or dict", arg)),
   }
 }
 
@@ -190,13 +190,13 @@ fn range_method(_state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, 
   args.expect_arity_within(1, 3, "range")?;
   let (begin, end, step) = match args.len() {
     1 => {
-      (0, expect_int_loosely(&args[0])?, 1)
+      (0, expect_int_loosely("range", &args[0])?, 1)
     }
     2 => {
-      (expect_int_loosely(&args[0])?, expect_int_loosely(&args[1])?, 1)
+      (expect_int_loosely("range", &args[0])?, expect_int_loosely("range", &args[1])?, 1)
     }
     3 => {
-      (expect_int_loosely(&args[0])?, expect_int_loosely(&args[1])?, expect_int_loosely(&args[2])?)
+      (expect_int_loosely("range", &args[0])?, expect_int_loosely("range", &args[1])?, expect_int_loosely("range", &args[2])?)
     }
     _ => unreachable!(),
   };
@@ -237,9 +237,9 @@ fn prettify(value: Value) -> String {
 fn clampi_function(_: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
   args.expect_arity(3, "clampi")?;
   let [a, b, c] = args.try_into().unwrap();
-  let a = expect_int_loosely(&a)?;
-  let b = expect_int_loosely(&b)?;
-  let c = expect_int_loosely(&c)?;
+  let a = expect_int_loosely("clampi", &a)?;
+  let b = expect_int_loosely("clampi", &b)?;
+  let c = expect_int_loosely("clampi", &c)?;
   let result_value = if a < b { b } else if a > c { c } else { a };
   Ok(Value::Int(result_value))
 }
@@ -250,7 +250,7 @@ where F: Fn(i64, i64) -> R + 'static,
   let fn_name = fn_name.to_owned();
   move |_, args| {
     let (a, b) = args.expect_two_args(&fn_name)?;
-    Ok(func(expect_int_loosely(&a)?, expect_int_loosely(&b)?).into())
+    Ok(func(expect_int_loosely(&fn_name, &a)?, expect_int_loosely(&fn_name, &b)?).into())
   }
 }
 
@@ -260,7 +260,7 @@ where F: Fn(f64, f64) -> R + 'static,
   let fn_name = fn_name.to_owned();
   move |_, args| {
     let (a, b) = args.expect_two_args(&fn_name)?;
-    Ok(func(expect_float_loosely(&a)?, expect_float_loosely(&b)?).into())
+    Ok(func(expect_float_loosely(&fn_name, &a)?, expect_float_loosely(&fn_name, &b)?).into())
   }
 }
 
@@ -274,6 +274,6 @@ fn float_cast_function(_state: &mut EvaluatorState, args: MethodArgs) -> Result<
       let f = s.parse::<f64>().map_err(|_| EvalError::NumberParseError(s.to_owned()))?;
       Ok(Value::from(f))
     }
-    arg => Err(EvalError::type_error("number, string, or bool", arg)),
+    arg => Err(EvalError::type_error("float", "number, string, or bool", arg)),
   }
 }

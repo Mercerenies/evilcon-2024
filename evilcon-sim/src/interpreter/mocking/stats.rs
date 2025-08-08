@@ -97,7 +97,7 @@ fn basic_set_stat(func_name: &str, stat_name: &str, state: &mut EvaluatorState, 
   let stats = state.call_function_on(&playing_field, "get_stats", vec![player.clone()])?;
   stats.set_value(stat_name, new_value.clone(), state.superglobal_state())?;
   Ok(BasicStatResult {
-    new_value: expect_int(&new_value)?,
+    new_value: expect_int(stat_name, &new_value)?,
     playing_field,
     player,
   })
@@ -105,9 +105,9 @@ fn basic_set_stat(func_name: &str, stat_name: &str, state: &mut EvaluatorState, 
 
 fn basic_add_stat(func_name: &str, stat_name: &str, state: &mut EvaluatorState, args: MethodArgs) -> Result<BasicStatResult, EvalError> {
   let (playing_field, player, delta_value) = args.expect_three_args(func_name)?;
-  let delta_value = expect_int(&delta_value)?;
+  let delta_value = expect_int(stat_name, &delta_value)?;
   let stats = state.call_function_on(&playing_field, "get_stats", vec![player.clone()])?;
-  let old_value = expect_int(&stats.get_value(stat_name, state.superglobal_state())?)?;
+  let old_value = expect_int(stat_name, &stats.get_value(stat_name, state.superglobal_state())?)?;
   stats.set_value(stat_name, Value::from(old_value + delta_value), state.superglobal_state())?;
   Ok(BasicStatResult {
     new_value: old_value + delta_value,
@@ -123,7 +123,7 @@ fn set_card_level(state: &mut EvaluatorState, mut args: MethodArgs) -> Result<Va
     args.0.pop();
   }
   let [_, card, new_value] = args.try_into().unwrap();
-  let new_value = i64::max(0, expect_int(&new_value)?);
+  let new_value = i64::max(0, expect_int("set_level", &new_value)?);
   let metadata = card.get_value("metadata", state.superglobal_state())?;
   metadata.set_index(Value::from(CARD_META_LEVEL), Value::from(new_value))?;
   Ok(Value::Null)
@@ -136,9 +136,9 @@ fn add_card_level(state: &mut EvaluatorState, mut args: MethodArgs) -> Result<Va
     args.0.pop();
   }
   let [_, card, delta_value] = args.try_into().unwrap();
-  let delta_value = i64::max(0, expect_int(&delta_value)?);
+  let delta_value = i64::max(0, expect_int("add_level", &delta_value)?);
   let metadata = card.get_value("metadata", state.superglobal_state())?;
-  let old_value = expect_int(&metadata.get_index(Value::from(CARD_META_LEVEL), state)?)?;
+  let old_value = expect_int("add_level", &metadata.get_index(Value::from(CARD_META_LEVEL), state)?)?;
   let new_value = i64::max(0, old_value + delta_value);
   metadata.set_index(Value::from(CARD_META_LEVEL), Value::from(new_value))?;
   Ok(Value::Null)
@@ -151,7 +151,7 @@ fn set_card_morale(state: &mut EvaluatorState, mut args: MethodArgs) -> Result<V
     args.0.pop();
   }
   let [playing_field, card, new_value] = args.try_into().unwrap();
-  let new_value = i64::max(0, expect_int(&new_value)?);
+  let new_value = i64::max(0, expect_int("set_morale", &new_value)?);
   let metadata = card.get_value("metadata", state.superglobal_state())?;
   metadata.set_index(Value::from(CARD_META_MORALE), Value::from(new_value))?;
   do_morale_check(state, playing_field, card)?;
@@ -165,9 +165,9 @@ fn add_card_morale(state: &mut EvaluatorState, mut args: MethodArgs) -> Result<V
     args.0.pop();
   }
   let [playing_field, card, delta_value] = args.try_into().unwrap();
-  let delta_value = i64::max(0, expect_int(&delta_value)?);
+  let delta_value = i64::max(0, expect_int("add_morale", &delta_value)?);
   let metadata = card.get_value("metadata", state.superglobal_state())?;
-  let old_value = expect_int(&metadata.get_index(Value::from(CARD_META_LEVEL), state)?)?;
+  let old_value = expect_int("add_morale", &metadata.get_index(Value::from(CARD_META_LEVEL), state)?)?;
   let new_value = i64::max(0, old_value + delta_value);
   metadata.set_index(Value::from(CARD_META_MORALE), Value::from(new_value))?;
   do_morale_check(state, playing_field, card)?;
@@ -176,11 +176,11 @@ fn add_card_morale(state: &mut EvaluatorState, mut args: MethodArgs) -> Result<V
 
 fn do_morale_check(state: &EvaluatorState, playing_field: Value, card: Value) -> Result<(), EvalError> {
   let metadata = card.get_value("metadata", state.superglobal_state())?;
-  let curr_morale = expect_int(&metadata.get_index(Value::from(CARD_META_MORALE), state)?)?;
+  let curr_morale = expect_int("(morale setter)", &metadata.get_index(Value::from(CARD_META_MORALE), state)?)?;
   if curr_morale <= 0 {
     let card_type = card.get_value("card_type", state.superglobal_state())?;
     state.call_function_on(&card_type, "on_pre_expire", vec![playing_field.clone(), card.clone()])?;
-    let curr_morale = expect_int(&metadata.get_index(Value::from(CARD_META_MORALE), state)?)?;
+    let curr_morale = expect_int("(morale setter)", &metadata.get_index(Value::from(CARD_META_MORALE), state)?)?;
     if curr_morale <= 0 {
       state.call_function_on(&card_type, "on_expire", vec![playing_field.clone(), card.clone()])?;
       let card_game_api = get_card_game_api(state)?;
@@ -202,7 +202,7 @@ fn send_endgame_signal(state: &EvaluatorState, playing_field: Value, winning_pla
 }
 
 fn other_player(player: Value) -> Result<Value, EvalError> {
-  let player = expect_string(&player)?;
+  let player = expect_string("CardPlayer.other", &player)?;
   match player {
     "TOP" => Ok(Value::from("BOTTOM")),
     "BOTTOM" => Ok(Value::from("TOP")),

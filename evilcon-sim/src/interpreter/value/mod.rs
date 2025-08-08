@@ -218,7 +218,7 @@ impl Value {
       obj.dict.insert(name.to_owned(), value);
       Ok(())
     } else {
-      Err(EvalError::type_error("object", self.clone()))
+      Err(EvalError::type_error("(value raw setter)", "object", self.clone()))
     }
   }
 
@@ -238,7 +238,7 @@ impl Value {
             Err(EvalError::IndexOutOfBounds(index))
           }
         } else {
-          Err(EvalError::type_error("integer", value))
+          Err(EvalError::type_error("__setitem__", "integer", value))
         }
       }
       Value::DictRef(d) => {
@@ -247,7 +247,7 @@ impl Value {
         d.insert(key, value);
         Ok(())
       }
-      _ => Err(EvalError::type_error("array or dictionary", self.clone())),
+      _ => Err(EvalError::type_error("__setitem__", "array or dictionary", self.clone())),
     }
   }
 

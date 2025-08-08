@@ -135,7 +135,7 @@ impl CodexDataFile {
   /// Rust-side implementation of the GDScript method
   /// `get_entity_script`.
   fn get_entity_script(&self, evaluator: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
-    let id = expect_int_loosely(&args.expect_one_arg("get_entity_script")?)?;
+    let id = expect_int_loosely("get_entity_script", &args.expect_one_arg("get_entity_script")?)?;
     let id = usize::try_from(id).map_err(|_| EvalError::domain_error("Card ID out of range"))?;
     let Some(card_entry) = self.cards.get(id) else {
       tracing::error!("Invalid ID value: {}", id);

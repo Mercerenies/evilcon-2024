@@ -115,7 +115,7 @@ fn selector_function(func_name: &str, bottom_var: &str, top_var: &str) -> Method
   let top_var = top_var.to_owned();
   let method_body = move |evaluator: &mut EvaluatorState, args: MethodArgs| {
     let arg = args.expect_one_arg(&func_name)?;
-    match expect_string(&arg)? {
+    match expect_string("(PlayingField selector)", &arg)? {
       "BOTTOM" => evaluator.self_instance().get_value(&bottom_var, evaluator.superglobal_state()),
       "TOP" => evaluator.self_instance().get_value(&top_var, evaluator.superglobal_state()),
       _ => {
@@ -155,7 +155,7 @@ fn hand_cards_are_hidden(_: &mut EvaluatorState, _: MethodArgs) -> Result<Value,
 
 fn player_agent(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
   let player = args.expect_one_arg("player_agent")?;
-  let player = expect_string(&player)?;
+  let player = expect_string("player_agent", &player)?;
   match player {
     "BOTTOM" => state.self_instance().get_value("_bottom_agent", state.superglobal_state()),
     "TOP" => state.self_instance().get_value("_top_agent", state.superglobal_state()),

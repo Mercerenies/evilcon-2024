@@ -61,8 +61,8 @@ pub enum EvalError {
   CannotIterate(ValueString),
   #[error("{0:?} is not assignable")]
   CannotAssignTo(Expr),
-  #[error("Type error: Expected {expected_type}, got {value:?}")]
-  TypeError { expected_type: String, value: ValueString },
+  #[error("Type error in function '{function_name}': Expected {expected_type}, got {value:?}")]
+  TypeError { function_name: String, expected_type: String, value: ValueString },
   #[error("Index {0} out of bounds")]
   IndexOutOfBounds(i64),
   #[error("Invalid enum constant {0:?}")]
@@ -92,8 +92,9 @@ pub enum ExpectedArity {
 }
 
 impl EvalError {
-  pub fn type_error(expected: impl Into<String>, value: Value) -> Self {
+  pub fn type_error(function_name: impl Into<String>, expected: impl Into<String>, value: Value) -> Self {
     Self::TypeError {
+      function_name: function_name.into(),
       expected_type: expected.into(),
       value: value.to_string(),
     }

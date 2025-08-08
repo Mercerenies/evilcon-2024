@@ -49,7 +49,7 @@ pub(super) fn card_strip_tscn_class() -> Class {
 // properly.
 fn card_strip_constructor(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
   let card_kind = args.expect_one_arg("_init")?;
-  let card_kind = expect_string(&card_kind)?;
+  let card_kind = expect_string("_init", &card_kind)?;
   let card_container = state.self_instance().get_value("__evilconsim_cards", state.superglobal_state())?;
   card_container.set_value("contained_type", Value::from(card_kind), state.superglobal_state())?;
   Ok(Value::Null)

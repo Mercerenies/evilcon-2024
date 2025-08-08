@@ -71,7 +71,7 @@ impl Method {
   pub fn constructor_method() -> Method {
     fn body(state: &mut EvaluatorState, args: MethodArgs) -> Result<Value, EvalError> {
       let Value::ClassRef(class) = state.self_instance() else {
-        return Err(EvalError::type_error("class", state.self_instance().clone()));
+        return Err(EvalError::type_error("_init", "class", state.self_instance().clone()));
       };
       let new_inst = Value::new_object(Arc::clone(class));
       for var in class.instance_vars() {
