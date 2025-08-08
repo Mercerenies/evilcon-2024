@@ -7,17 +7,17 @@ use thiserror::Error;
 
 use std::str::FromStr;
 use std::num::ParseIntError;
-use std::fmt::{self, Display, Formatter};
+use std::fmt::{self, Debug, Display, Formatter};
 use std::ops::{Index, IndexMut};
 
 pub const DECK_SIZE: usize = 20;
 
 /// Newtype wrapper around a vector of [`CardId`].
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Clone, PartialEq, Eq)]
 pub struct Deck(pub Vec<CardId>);
 
 /// The ID of a playing card.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash)]
 pub struct CardId(pub i64);
 
 #[derive(Debug, Clone, Error)]
@@ -84,6 +84,12 @@ impl Display for CardId {
   }
 }
 
+impl Debug for CardId {
+  fn fmt(&self, f: &mut Formatter) -> fmt::Result {
+    Display::fmt(&self, f)
+  }
+}
+
 impl Display for Deck {
   fn fmt(&self, f: &mut Formatter) -> fmt::Result {
     let mut first = true;
@@ -95,6 +101,12 @@ impl Display for Deck {
       first = false;
     }
     Ok(())
+  }
+}
+
+impl Debug for Deck {
+  fn fmt(&self, f: &mut Formatter) -> fmt::Result {
+    self.0.fmt(f)
   }
 }
 
