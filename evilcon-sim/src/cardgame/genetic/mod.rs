@@ -6,6 +6,7 @@ mod bradley_terry;
 use crate::driver;
 use crate::cardgame::{GameEngine, CardGameEnv, GameWinner, Deck, CardId, DECK_SIZE};
 use crate::cardgame::deck::validator::DeckValidator;
+use crate::cardgame::code::serialize_game_code;
 use crate::interpreter::mocking::codex::CodexDataFile;
 use bradley_terry::{WinMatrix, compute_scores};
 
@@ -171,7 +172,8 @@ fn play_games(
       }
       Err(err) => {
         results.error_outcomes += 1;
-        tracing::error!("Error during game: {}", err.root_cause());
+        let game_code = serialize_game_code(seed, &env).unwrap_or_else(|_| "(failed to get game code)".to_owned());
+        tracing::error!(%game_code, "Error during game: {}", err.root_cause());
       }
     }
   }
