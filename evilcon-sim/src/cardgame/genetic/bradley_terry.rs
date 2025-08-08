@@ -7,7 +7,8 @@ pub const BRADLEY_TERRY_ITERS: usize = 1_000;
 pub const LEARNING_RATE: f64 = 0.1;
 
 /// Matrix of win records, as a square matrix. Should be stored in
-/// row-major format, so that an entry `(x, y)` is at `y * width + x`.
+/// row-major format, so that an entry `(x, y)` (meaning "how many
+/// times did `x` beat `y`) is at `y * width + x`.
 ///
 /// This is a pure data structure; no preconditions are validated. In
 /// principle, it should be a square matrix of size `width * width`.
@@ -32,7 +33,7 @@ impl IndexMut<(usize, usize)> for WinMatrix {
 }
 
 /// Compute scores given the result of random matchups.
-pub fn compute_scores(wins: &WinMatrix) -> Vec<f64> {
+pub(super) fn compute_scores(wins: &WinMatrix) -> Vec<f64> {
   let mut scores = vec![0.0; wins.width];
   for _ in 0..BRADLEY_TERRY_ITERS {
     let gradients = compute_gradients(&scores, wins);
@@ -45,7 +46,7 @@ pub fn compute_scores(wins: &WinMatrix) -> Vec<f64> {
 
 /// Gradients for Bradley-Terry model function `P(i > j) = e^bi /
 /// (e^bi + e^bj)`
-pub fn compute_gradients(scores: &[f64], wins: &WinMatrix) -> Vec<f64> {
+pub(super) fn compute_gradients(scores: &[f64], wins: &WinMatrix) -> Vec<f64> {
   let width = wins.width;
   assert!(width == scores.len());
 
@@ -78,4 +79,18 @@ pub fn compute_gradients(scores: &[f64], wins: &WinMatrix) -> Vec<f64> {
     }
   }
   grads
+}
+
+#[test]
+fn quick_test_fn() {
+  // Assume scores = [1, 3, 5, 10, -3].
+  //
+  // This matrix is hand-computed in the forward direction.
+  let matrix = WinMatrix {
+    width: 5,
+    data: vec![250, 440, 491, 499, 8, 59, 250, 440, 499, 1, 8, 59, 250, 496, 0, 0, 0, 3, 250, 0, 491, 498, 499, 499, 250],
+  };
+  let scores = compute_scores(&matrix);
+  dbg!(&scores);
+  panic!("test fail");
 }
