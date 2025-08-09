@@ -63,12 +63,14 @@ func _debug_interactive_game():
     top_deck.cards().shuffle()
 
     $PlayingField.turn_number = 10  # Get extra EP :)
-    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.BARRY))
+    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.PERFORMANCE_REVIEW))
+    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN))
+    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.MIDDLE_MANAGER))
     #$PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.REFRIGERATION))
     #$PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DUCK))
     #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.KING_TURTLE))
     #$PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DR_BADGUY_DOOMCAKE))
-    #$PlayingField.get_minion_strip(CardPlayer.BOTTOM).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.KING_TURTLE), CardPlayer.BOTTOM))
+    $PlayingField.get_minion_strip(CardPlayer.BOTTOM).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.MAXWELL_STERLING), CardPlayer.BOTTOM))
     #$PlayingField.get_minion_strip(CardPlayer.BOTTOM).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.MILKMAN_MARAUDER), CardPlayer.BOTTOM))
     #$PlayingField.get_minion_strip(CardPlayer.BOTTOM).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.TURKEY), CardPlayer.BOTTOM))
     #$PlayingField.get_minion_strip(CardPlayer.TOP).cards().push_card(Card.new(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DUCK), CardPlayer.TOP))
@@ -87,14 +89,14 @@ func _debug_interactive_game():
 
 func _sample_deck():
     return [
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.ICOSAKING),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.PERFORMANCE_REVIEW),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.REFRIGERATION),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.TRIANGLE_TROOPER),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.TRIANGLE_TROOPER),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.SERGEANT_SQUARE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.MAXWELL_STERLING),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.MIDDLE_MANAGER),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.RHOMBUS_RANGER),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.RHOMBUS_RANGER),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.PENTAGON_PROTECTOR),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.TEMP_WORKER),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.IT_WORKER),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.CAPTAIN_CIRCLE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.POT_OF_LINGUINE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.RULE_22),
@@ -102,10 +104,10 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.GREEDY_GOBLIN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.MILK_DELIVERY),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.PET_COW),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.MILK_DELIVERY),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.PERFORMANCE_REVIEW),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.RULE_OF_BRAVERY),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.WITH_EXTRA_CHEESE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.BOILING_POT_OF_WATER),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.PERFORMANCE_REVIEW),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.RULE_OF_KNOWLEDGE),
     ]
 
