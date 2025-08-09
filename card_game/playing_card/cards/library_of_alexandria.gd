@@ -10,7 +10,7 @@ func get_title() -> String:
 
 
 func get_text() -> String:
-    return "[icon]HUMAN[/icon] HUMAN Minions do not drop morale, regardless of owner. Lasts 1 turn."
+    return "[icon]HUMAN[/icon] HUMAN Minions do not decrease Morale during the Morale Phase, regardless of owner. Lasts 1 turn."
 
 
 func get_total_turn_count() -> int:

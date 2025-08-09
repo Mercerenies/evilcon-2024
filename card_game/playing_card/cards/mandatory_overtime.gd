@@ -10,7 +10,7 @@ func get_title() -> String:
 
 
 func get_text() -> String:
-    return "Your [icon]HUMAN[/icon] HUMAN Minions with 1 Morale do not decrease Morale. Lasts 2 turns."
+    return "Your [icon]HUMAN[/icon] HUMAN Minions with 1 Morale do not decrease Morale during the Morale Phase. Lasts 2 turns."
 
 
 func get_total_turn_count() -> int:
