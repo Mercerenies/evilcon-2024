@@ -269,6 +269,8 @@
          be acquired if you've already seen that rare card at least
          once, and some (like Destiny's Singer) cannot be acquired in
          this way at all)
+       - Little Diceman's card is a hero card. Little Diceman isn't
+         really a hero but he insisted on being made into a hero card.
      + Big Diceman :: Little Diceman's big brother. He is capable of
        speech and will play games with you. Only appears after you've
        beaten Little Diceman.
@@ -711,8 +713,9 @@
 ** RANDOM IDEAS
    + [ ] Villain(s) from Three Rules Standing
    + [ ] Costume shop for some cosmetic upgrades
-   + [ ] Turtle support: block enemy damage
-   + [ ] Fungus support: Progressively increase in power the longer effects stay in play
+   + [X] Turtle support: block enemy damage
+   + [X] Fungus support: Progressively increase in power the longer
+     effects stay in play
    + [ ] Provide "collectors' editions" of certain cards, when there's
      original artwork from the source game that we can feature
      - Cards that potentially have original artwork: Barry, Dr.
@@ -737,7 +740,7 @@
    + [ ] Fast travel system is being dug by a new, original mole
      character who happens to know Marty the Mole.
    + [ ] Boss support? The /only/ boss interactions right now are
-     Prisman and Evil Lair. And Prisman is a debuff for bosses.
+     Prisman, Skunkman, and Evil Lair. And two of those are debuffs.
    + [X] "Spaghetti Code" (Pasta + Robot synergy :))
    + [X] Clarify on Squaredude/Circlegirl whether it counts as
      "playing" the other if a hero card intercepted it
