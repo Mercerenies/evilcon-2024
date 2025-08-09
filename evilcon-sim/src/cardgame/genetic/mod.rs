@@ -21,13 +21,13 @@ use std::sync::Arc;
 use std::sync::mpsc::{self, Sender};
 use std::thread;
 
-const GENERATION_SIZE: usize = 150;
-const TOTAL_MATCHUPS_PER_INDIVIDUAL: usize = 20;
+const GENERATION_SIZE: usize = 125;
+const TOTAL_MATCHUPS_PER_INDIVIDUAL: usize = 15;
 const TOTAL_GAMES_PER_MATCHUP: usize = 5;
 
 pub const ELITE_DECKS: usize = 15;
 const CANDIDATE_PARENT_DECKS: usize = 75;
-const MUTATION_RATE: f64 = 0.02;
+const MUTATION_RATE: f64 = 0.03;
 
 #[derive(Debug)]
 pub struct GeneticAlgorithm<'a> {
