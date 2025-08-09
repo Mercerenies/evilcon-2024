@@ -63,9 +63,9 @@ func _debug_interactive_game():
     top_deck.cards().shuffle()
 
     $PlayingField.turn_number = 10  # Get extra EP :)
-    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.TRUE_SPAGHETTI_MONSTER))
+    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.RIVER_STYX))
     $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.BLUE_DICE))
-    $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.BLUE_DICE))
+    $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.RIVER_STYX))
     #$PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.REFRIGERATION))
     #$PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DUCK))
     #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.KING_TURTLE))
@@ -90,9 +90,9 @@ func _debug_interactive_game():
 func _sample_deck():
     return [
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.PERFORMANCE_REVIEW),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.REFRIGERATION),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.ZOMBEE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.MAXWELL_STERLING),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.FANCIFUL_FAIRY),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.MIDDLE_MANAGER),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.RHOMBUS_RANGER),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.TEMP_WORKER),
