@@ -1009,7 +1009,7 @@ cards:
   limited: false
   rarity: COMMON
 - id: 201
-  name: FINAL_BOSS
-  path: res://card_game/playing_card/cards/final_boss.gd
+  name: FINAL_BATTLE
+  path: res://card_game/playing_card/cards/final_battle.gd
   limited: true
   rarity: UNCOMMON
