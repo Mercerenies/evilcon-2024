@@ -172,6 +172,12 @@ const DEVIL_OPPORTUNITY := &"DEVIL_OPPORTUNITY"
 # this.
 const RULE_22 := &"RULE_22"
 
+# Opportunity cost associated with playing a Dice card instead of
+# waiting for Little Diceman. For standard decks, this is 0 since Dice
+# cards are useless to them. Decks containing Little Diceman may
+# choose to modify this value.
+const THROWING_DICE := &"THROWING_DICE"
+
 const DEFAULT_PRIORITIES := {
     &"EVIL_POINT": 1.0,
     &"FORT_DEFENSE": 1.0,
@@ -202,6 +208,7 @@ const DEFAULT_PRIORITIES := {
     &"MINOR_RIGHT_ORDER": 1.1,
     &"DEVIL_OPPORTUNITY": 3.5,
     &"RULE_22": 0.0,
+    &"THROWING_DICE": 0.0,
 }
 
 var _data: Dictionary

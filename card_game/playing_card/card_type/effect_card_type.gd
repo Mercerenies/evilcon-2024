@@ -10,9 +10,15 @@ func is_hero() -> bool:
     return false
 
 
+func is_dice() -> bool:
+    return false
+
+
 func get_archetypes_row_text() -> String:
     if is_hero():
         return "(Effect / Hero)"
+    elif is_dice():
+        return "(Effect / Dice)"
     elif is_ongoing():
         return "(Effect / Ongoing)"
     else:
