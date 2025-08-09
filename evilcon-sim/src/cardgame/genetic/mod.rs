@@ -39,19 +39,19 @@ pub struct GeneticAlgorithmArgs {
   pub generation_size: usize,
   /// Number of matchups per individual in each generation. (Default =
   /// 15)
-  #[arg(long = "matchups_per_individual", default_value_t = 15)]
+  #[arg(long = "matchups-per-individual", default_value_t = 15)]
   pub total_matchups_per_individual: usize,
   /// Total number of games to play between two paired decks. (Default
   /// = 5)
-  #[arg(long = "games_per_matchup", default_value_t = 5)]
+  #[arg(long = "games-per-matchup", default_value_t = 5)]
   pub total_games_per_matchup: usize,
   /// The number of "elite" high-quality decks to carry over each
   /// generation verbatim. (default = 1/10 of generation size)
-  #[arg(long = "elite_decks")]
+  #[arg(long = "elite-decks")]
   pub elite_deck_count: Option<usize>,
   /// The number of candidate parent decks to draw genetic material
   /// from at each generation. (default = 1/2 of generation size)
-  #[arg(long = "candidate_parent_decks")]
+  #[arg(long = "candidate-parent-decks")]
   pub candidate_parent_deck_count: Option<usize>,
   /// Mutation rate, as a fraction from 0 to 1. (default = 0.03)
   #[arg(long, default_value_t = 0.03)]
