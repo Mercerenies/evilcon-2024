@@ -10,6 +10,7 @@ use crate::cardgame::code::serialize_game_code;
 use crate::interpreter::mocking::codex::CodexDataFile;
 use bradley_terry::{WinMatrix, compute_scores};
 
+use clap::Args;
 use rand::Rng;
 use rand::rngs::ThreadRng;
 use rand::seq::SliceRandom;
@@ -21,14 +22,6 @@ use std::sync::Arc;
 use std::sync::mpsc::{self, Sender};
 use std::thread;
 
-const GENERATION_SIZE: usize = 125;
-const TOTAL_MATCHUPS_PER_INDIVIDUAL: usize = 15;
-const TOTAL_GAMES_PER_MATCHUP: usize = 5;
-
-pub const ELITE_DECKS: usize = 15;
-const CANDIDATE_PARENT_DECKS: usize = 75;
-const MUTATION_RATE: f64 = 0.03;
-
 #[derive(Debug)]
 pub struct GeneticAlgorithm<'a> {
   random: ThreadRng,
@@ -36,6 +29,33 @@ pub struct GeneticAlgorithm<'a> {
   validator: DeckValidator,
   thread_pool: &'a ThreadPool,
   engine: Arc<GameEngine>,
+  args: GeneticAlgorithmArgs,
+}
+
+#[derive(Debug, Clone, Args)]
+pub struct GeneticAlgorithmArgs {
+  /// Number of individuals in each generation. (Default = 125)
+  #[arg(long, default_value_t = 125)]
+  pub generation_size: usize,
+  /// Number of matchups per individual in each generation. (Default =
+  /// 15)
+  #[arg(long = "matchups_per_individual", default_value_t = 15)]
+  pub total_matchups_per_individual: usize,
+  /// Total number of games to play between two paired decks. (Default
+  /// = 5)
+  #[arg(long = "games_per_matchup", default_value_t = 5)]
+  pub total_games_per_matchup: usize,
+  /// The number of "elite" high-quality decks to carry over each
+  /// generation verbatim. (default = 1/10 of generation size)
+  #[arg(long = "elite_decks")]
+  pub elite_deck_count: Option<usize>,
+  /// The number of candidate parent decks to draw genetic material
+  /// from at each generation. (default = 1/2 of generation size)
+  #[arg(long = "candidate_parent_decks")]
+  pub candidate_parent_deck_count: Option<usize>,
+  /// Mutation rate, as a fraction from 0 to 1. (default = 0.03)
+  #[arg(long, default_value_t = 0.03)]
+  pub mutation_rate: f64,
 }
 
 #[derive(Debug, Clone, Default)]
@@ -48,7 +68,10 @@ struct MatchupsResult {
 }
 
 impl<'a> GeneticAlgorithm<'a> {
-  pub fn new(thread_pool: &'a ThreadPool) -> anyhow::Result<Self> {
+  pub fn new(
+    thread_pool: &'a ThreadPool,
+    args: GeneticAlgorithmArgs,
+  ) -> anyhow::Result<Self> {
     let codex = CodexDataFile::read_from_default_file()?;
     let validator = DeckValidator::new(codex.clone());
     let superglobals = driver::load_all_files()?;
@@ -59,6 +82,7 @@ impl<'a> GeneticAlgorithm<'a> {
       validator,
       thread_pool,
       engine,
+      args,
     })
   }
 
@@ -74,30 +98,35 @@ impl<'a> GeneticAlgorithm<'a> {
   /// decks include the "top" elite decks at the beginning, followed
   /// by final generation splices.
   pub fn run_genetic_algorithm(&mut self, generation_count: usize) -> Vec<Deck> {
+    // Resolve default values for fields
+    let generation_size = self.args.generation_size;
+    let elite_deck_count = self.args.elite_deck_count();
+    let candidate_parent_deck_count = self.args.candidate_parent_deck_count.unwrap_or(generation_size / 2);
+
     let mut generation_pool = Arc::new(self.generate_initial_generation_pool());
     for index in 1..=generation_count {
       let span = tracing::info_span!("generation", index = index);
       let _span_guard = span.enter();
       tracing::info!("Running generation {} of {}", index, generation_count);
       let scores = self.run_one_generation(&generation_pool, &span);
-      let mut deck_indices_by_rank = (0..GENERATION_SIZE).collect::<Vec<_>>();
+      let mut deck_indices_by_rank = (0..generation_size).collect::<Vec<_>>();
       deck_indices_by_rank.sort_by(|&a, &b| scores[b].partial_cmp(&scores[a]).unwrap());
 
       let mut new_generation_pool = Vec::with_capacity(generation_pool.len());
       // Copy the first few elite decks over verbatim
-      for i in 0..ELITE_DECKS {
+      for i in 0..elite_deck_count {
         new_generation_pool.push(generation_pool[deck_indices_by_rank[i]].clone());
       }
 
       // Build weights (lowest-scoring should be set to zero)
       let mut weights = normalize_scores_to_positive(&scores);
-      for i in &deck_indices_by_rank[CANDIDATE_PARENT_DECKS..] {
+      for i in &deck_indices_by_rank[candidate_parent_deck_count..] {
         weights[*i] = 0.0;
       }
 
       // Generate the rest by splicing genes
       let weighted = WeightedIndex::new(weights).unwrap();
-      while new_generation_pool.len() < GENERATION_SIZE {
+      while new_generation_pool.len() < generation_size {
         let i = weighted.sample(&mut self.random);
         let j = weighted.sample(&mut self.random);
         if i == j {
@@ -113,7 +142,7 @@ impl<'a> GeneticAlgorithm<'a> {
 
       // Mutate some of the individuals.
       for deck in &mut new_generation_pool {
-        if self.random.random::<f64>() < MUTATION_RATE {
+        if self.random.random::<f64>() < self.args.mutation_rate {
           self.mutate(deck);
         }
       }
@@ -137,8 +166,8 @@ impl<'a> GeneticAlgorithm<'a> {
   }
 
   fn generate_initial_generation_pool(&mut self) -> Vec<Deck> {
-    let mut decks = Vec::with_capacity(GENERATION_SIZE);
-    while decks.len() < GENERATION_SIZE {
+    let mut decks = Vec::with_capacity(self.args.generation_size);
+    while decks.len() < self.args.generation_size {
       let deck = self.generate_random_deck();
       if self.is_reasonable_deck(deck.as_ref()) {
         decks.push(deck);
@@ -162,7 +191,7 @@ impl<'a> GeneticAlgorithm<'a> {
     let (sender, receiver) = mpsc::channel();
     let mut total_matches = 0;
     for bottom_index in 0..generation.len() {
-      for _ in 0..TOTAL_MATCHUPS_PER_INDIVIDUAL {
+      for _ in 0..self.args.total_matchups_per_individual {
         let top_index = self.random.random_range(0..generation.len());
         if top_index == bottom_index {
           // Don't do self-matchups; it'll confuse the logistic
@@ -174,10 +203,11 @@ impl<'a> GeneticAlgorithm<'a> {
         let engine = Arc::clone(&self.engine);
         let generation = Arc::clone(&generation);
         let enclosing_span = span.clone();
+        let total_matchups_per_individual = self.args.total_matchups_per_individual;
         self.thread_pool.execute(move || {
           let _span_guard = enclosing_span.enter();
           let _span_guard = tracing::info_span!("thread", thread_id = ?thread::current().id()).entered();
-          play_games(sender, engine, generation, bottom_index, top_index);
+          play_games(sender, engine, generation, total_matchups_per_individual, bottom_index, top_index);
         });
       }
     }
@@ -216,10 +246,17 @@ impl<'a> GeneticAlgorithm<'a> {
   }
 }
 
+impl GeneticAlgorithmArgs {
+  pub fn elite_deck_count(&self) -> usize {
+    self.elite_deck_count.unwrap_or(self.generation_size / 10)
+  }
+}
+
 fn play_games(
   out_channel: Sender<MatchupsResult>,
   engine: Arc<GameEngine>,
   generation: Arc<Vec<Deck>>,
+  games_count: usize,
   bottom_index: usize,
   top_index: usize,
 ) {
@@ -231,7 +268,7 @@ fn play_games(
   let mut results = MatchupsResult::default();
   results.bottom_index = bottom_index;
   results.top_index = top_index;
-  for _ in 0..TOTAL_GAMES_PER_MATCHUP {
+  for _ in 0..games_count {
     let seed = rand::rng().random::<u64>();
     match engine.play_game_seeded(&env, seed) {
       Ok(GameWinner::Top) => {

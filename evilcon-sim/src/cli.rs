@@ -2,6 +2,7 @@
 //! Command line args.
 
 use crate::cardgame::Deck;
+use crate::cardgame::genetic::GeneticAlgorithmArgs;
 
 use clap::{Parser, Subcommand};
 
@@ -67,13 +68,15 @@ pub enum Command {
   /// Runs a genetic algorithm to identify the most powerful decks.
   RunGeneticAlgorithm {
     /// Number of generations to run.
-    #[arg(long)]
+    #[arg(short = 'n', long)]
     generations: usize,
     /// Number of threads to utilize. If not supplied, a best estimate
     /// will be made based on the CPU capabilities of the host
     /// machine.
     #[arg(long = "threads")]
     thread_count: Option<usize>,
+    #[command(flatten)]
+    additional_args: GeneticAlgorithmArgs,
   }
 }
 
