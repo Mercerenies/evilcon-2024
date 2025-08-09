@@ -103,6 +103,15 @@ impl<'a> GeneticAlgorithm<'a> {
     let elite_deck_count = self.args.elite_deck_count();
     let candidate_parent_deck_count = self.args.candidate_parent_deck_count.unwrap_or(generation_size / 2);
 
+    tracing::info!("Genetic Algorithm initiated");
+    tracing::info!("Running {} generations of {} individuals each", generation_count, generation_size);
+    tracing::info!("Additional parameters: total_matchups_per_individual = {}, total_games_per_matchup = {}, elite_deck_count = {}, candidate_parent_deck_count = {}, mutation_rate = {}",
+                   self.args.total_matchups_per_individual,
+                   self.args.total_games_per_matchup,
+                   elite_deck_count,
+                   candidate_parent_deck_count,
+                   self.args.mutation_rate);
+
     let mut generation_pool = Arc::new(self.generate_initial_generation_pool());
     for index in 1..=generation_count {
       let span = tracing::info_span!("generation", index = index);
