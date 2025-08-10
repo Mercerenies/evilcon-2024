@@ -141,3 +141,27 @@ static func ncr(n: int, r: int) -> int:
         denominator *= (i + 1)
     @warning_ignore("integer_division")
     return numerator / denominator
+
+
+# Filter but operates in place on the input array.
+static func filter_in_place(arr: Array, filter_func: Callable) -> void:
+    var i = 0
+    while i < len(arr):
+        if filter_func.call(arr[i]):
+            i += 1
+        else:
+            arr.remove_at(i)
+
+
+# Filter but operates in place on the input array. More efficient than
+# filter_in_place but does not preserve element ordering.
+static func filter_swap_in_place(arr: Array, filter_func: Callable) -> void:
+    var i = 0
+    while i < len(arr):
+        if filter_func.call(arr[i]):
+            i += 1
+        else:
+            var tmp = arr[i]
+            arr[i] = arr[len(arr) - 1]
+            arr[len(arr) - 1] = tmp
+            arr.pop_back()
