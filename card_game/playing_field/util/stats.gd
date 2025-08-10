@@ -15,6 +15,9 @@ const GameStatsDict = preload("res://card_game/playing_field/game_stats_panel/ga
 # Pass this value as the { "offset": ... } keyword argument.
 const CARD_MULTI_UI_OFFSET := Vector2(0, -32)
 
+# TODO These constants are, I think, unused and superseded by those in
+# PopupText. Consider removing.
+
 const NO_TARGET_TEXT := "No Target!"
 const NO_TARGET_COLOR := Color.BLACK
 

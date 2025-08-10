@@ -5,6 +5,7 @@ extends Node
 # result of effect evaluations.
 const NO_TARGET = &"NO_TARGET"
 const BLOCKED = &"BLOCKED"
+const MISMATCH = &"MISMATCH"
 const CLOWNED = &"CLOWNED"
 const DEMONED = &"DEMONED"
 const ROBOTED = &"ROBOTED"
@@ -25,6 +26,8 @@ static func get_text(value: StringName):
             return Text.new("No Target!", Color.BLACK)
         &"BLOCKED":
             return Text.new("Blocked!", Color.BLACK)
+        &"MISMATCH":
+            return Text.new("Mismatch!", Color.BLACK)
         &"CLOWNED":
             return Text.new("Clowned!", Color.WEB_PURPLE)
         &"DEMONED":
