@@ -41,8 +41,7 @@ func _evaluate_effect(playing_field, this_card) -> void:
     else:
         # Choose a target minion and play
         var target_minion = valid_target_minions[-1]
-        var new_card = await CardGameApi.play_card_from_deck(playing_field, owner, target_minion)
-        new_card.metadata[CardMeta.SKIP_MORALE] = true
+        await CardGameApi.play_card_from_deck(playing_field, owner, target_minion)
 
 
 func _is_farm_card_type(card_type):
