@@ -51,6 +51,7 @@ func on_play(playing_field, card) -> void:
         return
     for target_card in cards_to_discard:
         await CardGameApi.discard_card(playing_field, opponent, target_card)
+    await CardEffects.broadcast_discards(playing_field, opponent, cards_to_discard)
 
 
 func ai_get_score(playing_field, player: StringName, priorities) -> float:

@@ -43,6 +43,7 @@ func _evaluate_effect(playing_field, card) -> void:
         return
     for target_card in target_cards:
         await CardGameApi.discard_card(playing_field, owner, target_card)
+    await CardEffects.broadcast_discards(playing_field, owner, target_cards)
 
     # Destroy 3 most powerful minions.
     var minions = playing_field.get_minion_strip(CardPlayer.other(owner)).cards().card_array()

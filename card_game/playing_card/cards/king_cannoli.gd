@@ -53,6 +53,7 @@ func _evaluate_effect(playing_field, card) -> bool:
     var hand_cards = playing_field.get_hand(owner).cards().card_array()
     for card_type in hand_cards:
         await CardGameApi.discard_card(playing_field, owner, card_type)
+    await CardEffects.broadcast_discards(playing_field, owner, hand_cards)
 
     # Find most powerful Minion
     var most_powerful_minion = CardEffects.most_powerful_minion(playing_field, owner)

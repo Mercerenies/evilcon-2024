@@ -213,3 +213,7 @@ static func most_powerful_minion(playing_field, player):
 static func do_hypothetical_influence_check(playing_field, target_card: Card, activating_card_type, player: StringName) -> bool:
     var hypothetical_card = Card.new(activating_card_type, player)
     return target_card.card_type.do_influence_check(playing_field, target_card, hypothetical_card, true)
+
+
+static func broadcast_discards(playing_field, discarding_player: StringName, cards_discarded) -> void:
+    await CardGameApi.broadcast_to_cards_async(playing_field, "on_cards_discarded", [discarding_player, cards_discarded])

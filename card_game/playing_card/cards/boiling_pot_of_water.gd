@@ -45,6 +45,7 @@ func _evaluate_effect(playing_field, this_card) -> void:
     )
     for card in cards_to_discard:
         await CardGameApi.discard_card(playing_field, owner, card)
+    await CardEffects.broadcast_discards(playing_field, owner, cards_to_discard)
     await CardGameApi.draw_cards(playing_field, owner, len(cards_to_discard) + 1)
 
 

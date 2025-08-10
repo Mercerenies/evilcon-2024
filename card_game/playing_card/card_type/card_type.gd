@@ -275,6 +275,14 @@ func on_expire_broadcasted(_playing_field, _this_card, _expiring_card) -> void:
     pass
 
 
+func on_cards_discarded(_playing_field, _this_card, _discarding_player: StringName, _cards_discarded) -> void:
+    # Broadcasted to all cards when a player discards cards from their
+    # hand to the discard pile as a result of a card effect. This
+    # shall be broadcasted once for the entire set of discarded cards,
+    # NOT once per card. This method MAY await.
+    pass
+
+
 func get_ep_per_turn_modifier(_playing_field, _card, _player: StringName) -> int:
     return 0
 

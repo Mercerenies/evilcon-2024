@@ -51,6 +51,7 @@ func _evaluate_effect(playing_field, this_card) -> void:
         var cards_to_discard = opponent_hand.slice(0, 3)
         for target in cards_to_discard:
             await CardGameApi.discard_card(playing_field, opponent, target)
+        await CardEffects.broadcast_discards(playing_field, opponent, cards_to_discard)
 
 
 func ai_get_score(playing_field, player: StringName, priorities) -> float:

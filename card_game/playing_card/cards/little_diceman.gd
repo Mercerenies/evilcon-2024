@@ -57,6 +57,7 @@ func _evaluate_effect(playing_field, this_card) -> void:
         var can_influence = chosen_minion.card_type.do_influence_check(playing_field, chosen_minion, this_card, false)
         if can_influence:
             await Stats.add_morale(playing_field, chosen_minion, -1)
+    await CardEffects.broadcast_discards(playing_field, owner, cards_to_discard)
 
 
 func ai_get_score(playing_field, player: StringName, priorities) -> float:
