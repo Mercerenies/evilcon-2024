@@ -328,6 +328,10 @@ class NumericalCompare:
         return func comparison(playing_field, card):
             return _getter.call(playing_field, card) <= value
 
+    func exactly(value):
+        return func comparison(playing_field, card):
+            return _getter.call(playing_field, card) == value
+
     # Returns the numerical value as an integer when queried. Useful
     # in map() and similar functions.
     func value():
