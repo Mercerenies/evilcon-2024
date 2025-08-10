@@ -57,6 +57,7 @@ func ai_get_score(playing_field, player: StringName, priorities) -> float:
         .count(Query.by_archetype(Archetype.PASTA))
     )
     score -= cards_to_discard * priorities.of(LookaheadPriorities.CARD_IN_HAND)
+    score += CardEffects.do_hypothetical_broadcast_discards(playing_field, player, player, cards_to_discard, priorities)
 
     var cards_in_hand = playing_field.get_hand(player).cards().card_count() - 1  # Subtract this card
     var max_hand_size = StatsCalculator.get_hand_limit(playing_field, player)

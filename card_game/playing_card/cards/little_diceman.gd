@@ -81,6 +81,8 @@ func ai_get_score(playing_field, player: StringName, priorities) -> float:
 
     #score -= cards_to_discard * priorities.of(LookaheadPriorities.CARD_IN_HAND)
 
+    score += CardEffects.do_hypothetical_broadcast_discards(playing_field, player, player, cards_to_discard, priorities)
+
     var enemy_minions = playing_field.get_minion_strip(CardPlayer.other(player)).cards().card_array()
     var average_enemy_level = 0.0
     if len(enemy_minions) > 0:

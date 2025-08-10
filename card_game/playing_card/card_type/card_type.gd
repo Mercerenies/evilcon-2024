@@ -378,3 +378,14 @@ func ai_get_score_broadcasted_in_hand(_playing_field, _player: StringName, _prio
 # This method MUST NOT await.
 func ai_will_be_spiky_broadcasted(_playing_field, _this_card, _candidate_card_type, _candidate_owner):
     return false
+
+
+func ai_get_value_of_discarding(_playing_field, _this_card, _activating_player: StringName, _discarding_player: StringName, _cards_to_discard, _priorities) -> float:
+    # Called when this_card is in the field and an effect is being
+    # considered which would result in the discard of
+    # cards_to_discard. This method is broadcasted to all cards in
+    # play.
+    #
+    # Note that this_card may or may not belong to the same owner as
+    # the AI considering playing target_card_type.
+    return 0.0

@@ -83,6 +83,7 @@ func ai_get_score(playing_field, player: StringName, priorities) -> float:
 
     var cards_in_hand = Query.on(playing_field).hand(player).count() - 1
     score -= cards_in_hand * priorities.of(LookaheadPriorities.CARD_IN_HAND)
+    score += CardEffects.do_hypothetical_broadcast_discards(playing_field, player, player, cards_in_hand, priorities)
 
     var most_powerful_minion = CardEffects.most_powerful_minion(playing_field, player)
     if most_powerful_minion != null:

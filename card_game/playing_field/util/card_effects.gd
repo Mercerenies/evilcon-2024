@@ -217,3 +217,13 @@ static func do_hypothetical_influence_check(playing_field, target_card: Card, ac
 
 static func broadcast_discards(playing_field, discarding_player: StringName, cards_discarded) -> void:
     await CardGameApi.broadcast_to_cards_async(playing_field, "on_cards_discarded", [discarding_player, cards_discarded])
+
+
+# Note: This takes an integer for cards_discarded, unlike
+# broadcast_discards. That's all I need right now and it's all I have
+# easily accessible in some existing AI methods. If we need an array
+# later, we'll have to add that.
+static func do_hypothetical_broadcast_discards(playing_field, activating_player: StringName, discarding_player: StringName, cards_discarded: int, priorities) -> float:
+    return Util.sum(
+        CardGameApi.broadcast_to_cards(playing_field, "ai_get_value_of_discarding", [activating_player, discarding_player, cards_discarded, priorities]),
+    )

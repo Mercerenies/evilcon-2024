@@ -63,4 +63,5 @@ func ai_get_score(playing_field, player: StringName, priorities) -> float:
     var enemy_cards_in_hand = Query.on(playing_field).hand(CardPlayer.other(player)).count()
     var cards_to_discard = mini(enemy_cards_in_hand, 3)
     score += cards_to_discard * priorities.of(LookaheadPriorities.CARD_IN_HAND)
+    score += CardEffects.do_hypothetical_broadcast_discards(playing_field, player, CardPlayer.other(player), cards_to_discard, priorities)
     return score

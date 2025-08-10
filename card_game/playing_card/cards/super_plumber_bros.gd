@@ -77,6 +77,8 @@ func ai_get_score(playing_field, player: StringName, priorities) -> float:
     if plumbers == null:
         return score  # Effect will fizzle.
 
+    score += CardEffects.do_hypothetical_broadcast_discards(playing_field, player, player, 2, priorities)
+
     var minions = playing_field.get_minion_strip(CardPlayer.other(player)).cards().card_array()
     minions.sort_custom(CardEffects.card_power_less_than(playing_field))
     var minions_to_destroy = minions.slice(-3)
