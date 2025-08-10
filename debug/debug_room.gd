@@ -63,9 +63,9 @@ func _debug_interactive_game():
     top_deck.cards().shuffle()
 
     $PlayingField.turn_number = 10  # Get extra EP :)
-    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.GALAHAD_RULER_OF_GREED))
+    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.IC_RULER_OF_CONTROL))
     $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.BLUE_DICE))
-    $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.GALAHAD_RULER_OF_GREED))
+    $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.IC_RULER_OF_CONTROL))
     $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.WORKER_BEE))
     #$PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.REFRIGERATION))
     #$PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DUCK))
@@ -106,7 +106,7 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.MILK_DELIVERY),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.PET_COW),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.RULE_OF_BRAVERY),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.DESTRUCTION_TANK),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.TRUE_SPAGHETTI_MONSTER),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.PERFORMANCE_REVIEW),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.FANCIFUL_FAIRY),
