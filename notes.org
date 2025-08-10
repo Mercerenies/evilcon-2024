@@ -780,6 +780,8 @@
      of synergy options)
    + [ ] Something that costs 9 EP. I checked; we can fit nine stars
      on the card.
+   + [ ] If a lot of damage is dealt by one attack, emphasize that
+     visually with bigger text or something.
 ** SCRAPPED IDEAS
    Various ideas that didn't end up working out or were cut for one
    reason or another.
