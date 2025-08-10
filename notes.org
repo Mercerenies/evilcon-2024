@@ -342,6 +342,55 @@
     + (Unplaced)
       - Minionman
       - Chris Cogsworth
+** BASIC GAME FLOW
+   See ~hotel_map_plans.svg~ as well.
+
+   Area 1:
+   + Ravengirl starts in the front foyer area. The doorway to the main
+     lobby has been destroyed by one of Barry's inventions gone
+     haywire. So has most of the Minionmansion.
+
+   Area 2:
+   + After defeating Minionman in an /abbreviated/ form of the
+     Minionmansion, Ravengirl gains access to the following:
+     - Count Carbonara's domain (the kitchen, dining room, and Pasta
+       Dimension)
+     - Giggles Galore's circus tent
+     - The first shop
+   + The doorway onward is blocked by one of Count Carbonara's goons,
+     who refuses to let Ravengirl pass until she gets the Pasta Stamp.
+   + The Funny Stamp is /not/ required at this time. The Funny Stamp
+     can be collected at any time from now until the end of the game
+     and is only required in order to face the final boss.
+   + To get access to Giggles' circus tent, Ravengirl must get
+     invitations from all of the hidden mimes. The hidden mimes are
+     positioned in various places in Area 1 and Area 2.
+
+   Area 3:
+   + After defeating Count Carbonara, Ravengirl gains access to
+     Area 3.
+   + Area 3 contains the second shop, the achievements guy, the
+     graveyard, and the beehive.
+
+   Area 4:
+   + Area 4 is blocked off by a hotel security guard, who only lets
+     Ravengirl pass if she has a certain number of unique cards
+     collected. She does /not/ have to defeat any stamp villains to
+     pass this guard.
+   + Area 4 contains the Ninja Master's papercraft town, Barry's
+     factory, B'aroni's crashed timeship, the Icosatower, and the
+     third shop.
+
+   Final Boss:
+   + Once Ravengirl has all eight stamps, she can take the elevator at
+     the end of the Area 4 hallway to the rooftop, where she faces the
+     Final Gauntlet.
+     - Minionman is the first of the Final Gauntlet. He removes his
+       mask and shows his true face. Minionman's true self runs a
+       powerful multi-tribe deck of (TODO What deck?)
+     - Death is second in the lineup and runs an Undead/Demon deck.
+     - Bristlegaze is third in the Final Gauntlet (TODO Deck)
+     - Ravenboy (the King of Crime) is the final threat (TODO Deck)
 ** WORLD MAP
    You first face a tutorial character (probably Minionman), who
    fights you and then, upon your victory, tells you about the stamps.
