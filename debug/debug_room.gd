@@ -67,7 +67,7 @@ func _debug_interactive_game():
     $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.BLUE_DICE))
     $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.IC_RULER_OF_CONTROL))
     $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.ELVIRA_RULER_OF_IDEOLOGY))
-    $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.MIME_SUPERIOR))
+    $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.LITTLE_DICEMAN))
     $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.STREET_MIME))
     $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.STREET_MIME))
     #$PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.REFRIGERATION))
@@ -109,11 +109,11 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.GREEDY_GOBLIN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.TRIANGLE_TROOPER),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.PET_COW),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.BLUE_DICE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.DESTRUCTION_TANK),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.TRUE_SPAGHETTI_MONSTER),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.PERFORMANCE_REVIEW),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.FANCIFUL_FAIRY),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.GREEN_DICE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.RED_DICE),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.LITTLE_DICEMAN),
     ]
 
     # return [

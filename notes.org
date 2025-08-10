@@ -474,7 +474,7 @@
      [icon]BEE[/icon] BEEs".
    + The following words are capitalized: Minion, Effect (in the
      context of an Effect card), Hero, Cost, Level, Morale, Tribe,
-     each phase name.
+     Dice (in the context of the pseudo-archetype), each phase name.
    + The following words needn't be capitalized: card, discard pile,
      fortress, phase (on its own), defense.
    + The word "Spiky", in the context of the pseudo-archetype of
