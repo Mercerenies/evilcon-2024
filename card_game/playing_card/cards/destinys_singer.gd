@@ -26,7 +26,7 @@ func is_hero() -> bool:
 
 
 func get_rarity() -> int:
-    return Rarity.RARE
+    return Rarity.ULTRA_RARE
 
 
 func is_limited() -> bool:

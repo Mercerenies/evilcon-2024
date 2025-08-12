@@ -547,7 +547,7 @@ cards:
   name: DESTINYS_SINGER
   path: res://card_game/playing_card/cards/destinys_singer.gd
   limited: true
-  rarity: RARE
+  rarity: ULTRA_RARE
 - id: 109
   name: RED_TURTLE
   path: res://card_game/playing_card/cards/red_turtle.gd
