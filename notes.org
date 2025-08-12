@@ -182,6 +182,25 @@
          to change your deck in between. Might also consider doing
          something exciting like making exiles permanent until you
          exit the Minionmansion.
+     + Count Carbonara :: Pasta-obsessed supervillain and holder of
+       the Spaghetti Stamp. His minions are all sentient pasta-related
+       foods taken from the pasta dimension. The Spaghetti Monsters
+       that rule over that dimension are not happy about his
+       intrusion.
+       - Later (after Ravengirl defeats him but before the postgame),
+         Count Carbonara opens a portal to the Pasta Dimension in
+         search of the fabled Destiny's Singer card and gets sucked
+         in. In the Pasta Dimension, he faces Ravengirl with Destiny's
+         Singer in his deck.
+     + Giggles Galore :: Clown boss. Leader of the clown lair and
+       holder of the Funny Stamp.
+       - Circus tent only allows admission if you've found his hidden
+         mimes, who each give you an invitation.
+     + Venomatrix :: Human-sized queen bee, obsessed with replacing
+       the human race with bees. Holder of the Insect Stamp.
+     + Catacomb Charmer :: Skeleton girl, was so obsessed with the
+       undead that she decided to become one herself. Holder of the
+       Graveyard Stamp out in the graveyard behind the hotel.
      + Icosaking :: Supervillain from the geometry world. Holder of
        the Geometry Stamp, operating in a tower of geometry with his
        loyal Icosaklones. Believes he's the rightful king of both
@@ -199,20 +218,6 @@
        - Hides away (with Dr. Meguruku) in a papercraft town
          resembling Rabbit Hole. Only reveals himself after you defeat
          Dr. Meguruku /and/ find his hiding place.
-     + Giggles Galore :: Clown boss. Leader of the clown lair and
-       holder of the Funny Stamp.
-       - Circus tent only allows admission if you've found his hidden
-         mimes, who each give you an invitation.
-     + Count Carbonara :: Pasta-obsessed supervillain and holder of
-       the Spaghetti Stamp. His minions are all sentient pasta-related
-       foods taken from the pasta dimension. The Spaghetti Monsters
-       that rule over that dimension are not happy about his
-       intrusion.
-     + Venomatrix :: Human-sized queen bee, obsessed with replacing
-       the human race with bees. Holder of the Insect Stamp.
-     + Catacomb Charmer :: Skeleton girl, was so obsessed with the
-       undead that she decided to become one herself. Holder of the
-       Graveyard Stamp out in the graveyard behind the hotel.
 **** STAMP VILLAIN SIDEKICKS
      + Barry the Brainless Overlord :: Robot-obsessed supervillain
        with unworkable evil schemes. He runs the robotic lair but
@@ -222,8 +227,8 @@
          some dynamite, destroying part of the Minionmansion and
          blocking one of the main corridors. The hotel staff finishes
          repairing the corridor right when you get the Minion Stamp.
-         Additionally, they /might/ repair the Minionmansion (for an
-         optional post-game endurance test) after you beat the game.
+         Additionally, they repair the Minionmansion (for an optional
+         post-game endurance test) after you beat the game.
      + Dr. Meguruku :: Town physician who is secretly a powerful
        ninja. Guardian of the ninja lair. Once defeated, he will tell
        you how to find the True Ninja Master.
@@ -257,7 +262,7 @@
      + Minionman :: Again but with his mask off and going by his real
        identity; he's actually a powerful card player and just puts on
        the "Minionman" gimmick for show
-       - Minionman's real name is Red. He runs a massive underground
+       - Minionman's real name is **Red**. He runs a massive underground
          weapons smuggling operation and uses the "Minionman" persona
          to throw the cops and superheroes off and make them not take
          him seriously.
