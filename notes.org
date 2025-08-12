@@ -275,7 +275,9 @@
      + Maxwell Sterling :: Not a supervillain, just a CEO, but he gets
        invited to all of the important events anyway.
      + Chris Cogsworth :: Not a supervillain, just cleans clocks and
-       was disappointed to learn that the convention is about evil.
+       was disappointed to learn that the convention is about evil and
+       not (as per the convention's cover story) about clock
+       polishing.
      + Farmer Blue :: From Marty the Mole. There's a farmer's
        convention next week. He got the week wrong and showed up this
        week instead.
@@ -313,9 +315,14 @@
      + Devil :: From Nail. A devil from the fiery pits who makes deals
        for people's souls. Obsessed with meeting Death and heard a
        rumor that he was going to be at the convention.
-     + Maybe the boss from Mars God of War?
-     + Someone from Three Rules?
-     + Inquisitor from Suspicious City?
+     + +Maybe the boss from Mars God of War?+
+       - Cameos in the form of the /Performance Review/ card. Will not
+         appear in person in-game.
+     + +Someone from Three Rules?+
+       - The three Rulers appear as effect cards. The characters will
+         not appear in person.
+     + +Inquisitor from Suspicious City?+
+       - Appears as a card. The character will not appear in person.
 **** OTHER VILLAINOUS CHARACTERS
      + Skunkman :: Doesn't actually appear in game, but has a card and
        is mentioned as the reason that Ravenman cannot attent the
@@ -675,6 +682,10 @@
       So, for instance, if a Masked Turtle (Ninja + Turtle) was
       "turned into a Clown", then he is now /just/ a Clown, not a
       Ninja or a Turtle anymore.
+      - Wild Card (which makes a Minion act as all archetypes at once)
+        always takes precedent over /any/ archetype changes. A Minion
+        with the Wild Card status cannot have its archetype overridden
+        by any other effects.
     + When a card is removed from the field, any temporary changes
       that were made to that card are reverted. These include, but are
       not limited to, temporary increases or decreases to the Level,

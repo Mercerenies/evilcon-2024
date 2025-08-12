@@ -10,7 +10,7 @@ func get_title() -> String:
 
 
 func get_text() -> String:
-    return "Your most powerful Minion now belongs to every Tribe. ([icon]HUMAN[/icon] HUMAN, [icon]NATURE[/icon] NATURE, etc.)"
+    return "Your most powerful Minion now belongs to every tribe. ([icon]HUMAN[/icon] HUMAN, [icon]NATURE[/icon] NATURE, etc.)"
 
 
 func get_star_cost() -> int:
