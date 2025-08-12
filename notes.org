@@ -219,12 +219,8 @@
      + Beeatrice :: A human who has dedicated her life to the
        Venomatrix and seeks to make bees reign supreme.
 **** THE FINAL GAUNTLET
-     The four villains you must face before meeting the King of Crime.
-     Must be faced in order with no deck changes in betwee.
-     + Minionman :: Again but with his mask off and going by his real
-       identity; he's actually a powerful card player and just puts on
-       the "Minionman" gimmick for show (TODO Do we need an ultra rare
-       card for his unmasked variant?)
+     The three villains you must face before meeting the King of
+     Crime. Must be faced in order with no deck changes in between.
      + Death :: The Pale Specter himself. He gets paid a hefty
        commission to serve on the Final Gauntlet, and he's short on
        cash.
@@ -242,8 +238,16 @@
        - Bristlegaze might appear at some point before the final
          gauntlet, as an optional threat (with a weaker deck, of
          course).
-     + ??? :: ??? (We might just make Ravenboy be the fourth one if we
-       can't think of anyone else)
+     + Minionman :: Again but with his mask off and going by his real
+       identity; he's actually a powerful card player and just puts on
+       the "Minionman" gimmick for show
+       - Minionman's real name is Red. He runs a massive underground
+         weapons smuggling operation and uses the "Minionman" persona
+         to throw the cops and superheroes off and make them not take
+         him seriously.
+     + The King of Crime :: Ravenboy is really the King of Crime. Once
+       Ravengirl defeats Red (Minionman's unmasked form), she earns
+       the right to meet and face the King of Crime himself.
 **** RECURRING RIVALS
      + Dr. Badguy Doomcake :: Just Flying Brickman in a paper-thin
        disguise.
@@ -787,6 +791,11 @@
        a supervillain ;)
    + [ ] Fast travel system is being dug by a new, original mole
      character who happens to know Marty the Mole.
+     - The world, as currently planned, is a bit small to warrant a
+       fast travel system.
+     - Mickey the Mole dug a tunnel out of the oubliette that
+       Ravengirl falls into if she fails the Final Gauntlet. He can,
+       like pretty much everyone, be challenged to a card game.
    + [X] Boss support? The /only/ boss interactions right now are
      Prisman, Skunkman, and Evil Lair. And two of those are debuffs.
      - Added Final Battle, which helps somewhat
@@ -830,6 +839,9 @@
      - True Spaghetti Monster, a Pasta-Boss Minion
    + [ ] If a lot of damage is dealt by one attack, emphasize that
      visually with bigger text or something.
+   + [ ] For story reasons, Mystery Box should blacklist a handful of
+     cards (Red and King of Crime, mainly) unless Ravengirl has seen
+     those characters already.
 ** SCRAPPED IDEAS
    Various ideas that didn't end up working out or were cut for one
    reason or another.
