@@ -842,6 +842,12 @@
    + [ ] For story reasons, Mystery Box should blacklist a handful of
      cards (Red and King of Crime, mainly) unless Ravengirl has seen
      those characters already.
+     - Alternate idea that would require a little more setup, but I
+       kind of like it. So the /existence/ of the King of Crime and
+       Red isn't a spoiler, just their identities. We could let
+       Mystery Box functionally work the same, but if you get one of
+       those cards before having met the character, then the image
+       shown on the card is different and doesn't spoil anything.
 ** SCRAPPED IDEAS
    Various ideas that didn't end up working out or were cut for one
    reason or another.
