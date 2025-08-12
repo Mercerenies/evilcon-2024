@@ -34,23 +34,30 @@
 
    +Possibly multiple endings: You can choose to arrest Ravenboy or
    work with him as a criminal?+
+
+   Random worldbuilding thought: There is a room somewhere in the
+   later section of the game that contains a slideshow made by the
+   villains. The slideshow consists of "bios" for all of the heroes
+   and villains and gives some backstory as to who they are.
 ** GAMEPLAY
    The main game takes place as a top-down RPG-style world (think old
    Pokemon games). The entire game takes place in the hotel at which
    the conference is taking place. Most characters you meet will want
    to challenge you to a game of Evil Cards.
 
-   There are no consequences to losing a game of Evil Cards. If you
-   win, you get some money and a common or uncommon card from the
-   opponent's loot pool. Additionally, every villain has secondary
-   goals, and if you meet a secondary goal, you get a rare card
-   associated with that goal. These rare cards are renewable and can
-   be gotten multiple times. On top of that, if you've beaten every
-   secondary goal (not necessarily in one card game, just
-   cumulatively), you get an ultra rare card from that villain. The
-   ultra rare cards are non-renewable and can only be gotten once from
-   each villain. There is only one copy of each such card in the game,
-   and they will never show up in the shop.
+   There are no consequences to losing a game of Evil Cards
+   (Exception: Losing during the Final Gauntlet sets you back to the
+   beginning of the Gauntlet). If you win, you get some money and a
+   common or uncommon card from the opponent's loot pool.
+   Additionally, every villain has secondary goals, and if you meet a
+   secondary goal, you get a rare card associated with that goal.
+   These rare cards are renewable and can be gotten multiple times. On
+   top of that, if you've beaten every secondary goal (not necessarily
+   in one card game, just cumulatively), you get an ultra rare card
+   from that villain. The ultra rare cards are non-renewable and can
+   only be gotten once from each villain. There is only one copy of
+   each such card in the game, and they will never show up in the
+   shop.
 *** ACHIEVEMENT IDEAS
     There will be a non-card-player NPC who rewards you for extremely
     difficult achievements. You can complete these achievements in any
@@ -61,12 +68,12 @@
     smaller scale, be secondary goals for other NPCs)
     + Deal X damage to the fortress in one turn.
     + Win a game in the first X turns.
-    + Win a game in the first X turns, using Destiny Song.
+    + Win a game in the first X turns, using Destiny's Singer.
     + Win a game without using any Effect cards.
-    + Reduce enemy fort to zero using only Effect cards. (Doable with
-      Pill Capsule, Life Force Cannon, etc.; might add more support
-      for this strategy; phrased this way to carefully carve out
-      Destiny's Song strats as forbidden)
+    + Reduce enemy fort to zero without letting any Minions attack.
+      (Doable with Pill Capsule, Life Force Cannon, etc.; might add
+      more support for this strategy; phrased this way to carefully
+      carve out Destiny's Song strats as forbidden)
     + Win a game using at most 4 EP each turn.
     + Win a game using only Cost 2 or lower cards.
     + Achieve a hand size limit of eight or more.
@@ -77,11 +84,14 @@
       Does blocking with a Ninja count as negating, or do only hostage
       cards suffice? I'm inclined to say blocking counts, but it is
       more work to program it that way.)
+    + Destroy six or more Minions with one activation of Flying
+      Brickman.
     + Have a total of at least X Minions in play at once.
     + Have a total of at least X Effect cards in play at once.
     + Have at least 6 of your own cards exiled in one game.
     + Successfully activate Ultimate Fusion.
     + Successfully activate Team Cobra.
+    + Successfully activate Super Plumber Bros.
     + Successfully power up one Wimpy with three Wimpy Smashes.
     + Have 20 EP at one time.
       - Note: I think 36 is the legit maximum with a deck fully
@@ -101,8 +111,8 @@
 
     Variant ideas:
     + Both players' fort defense is insanely high
-    + Both players' fort defense is insanely high, and Destiny's Song
-      is forbidden
+    + Both players' fort defense is insanely high, and Destiny's
+      Singer is forbidden
     + All cards cost 1 EP to play
     + Both players start with completely randomized decks.
 *** SHOPS
@@ -114,9 +124,9 @@
     You may sell cards to the shop, except ultra rare cards. Ultra
     rare cards are non-renewable, so you may not sell them.
 
-    +Addendum: Maybe you /can/ sell them, and if you do, then you can
-    get another copy from the original NPC that gave them to you?
-    Could be a decent late-game money farm.+
+    +Addendum: Maybe you /can/ sell them, and if you do, then you can+
+    +get another copy from the original NPC that gave them to you?+
+    +Could be a decent late-game money farm.+
 *** OTHER QUESTS
     + Probably some RPG-style fetch quests.
     + Some basic overworld puzzles like ice-sliding puzzles or
@@ -166,6 +176,12 @@
          but the upper floors of the Mansion have been exploded by
          Barry's accidental dynamite. So you only have to face a
          couple.
+       - Postgame content: Minionman repairs his Minionmansion and you
+         can face a Pit of 100 Trials -esque gauntlet of a bunch of
+         characters. As with the Final Gauntlet, you are not permitted
+         to change your deck in between. Might also consider doing
+         something exciting like making exiles permanent until you
+         exit the Minionmansion.
      + Icosaking :: Supervillain from the geometry world. Holder of
        the Geometry Stamp, operating in a tower of geometry with his
        loyal Icosaklones. Believes he's the rightful king of both
