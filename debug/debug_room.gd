@@ -63,10 +63,10 @@ func _debug_interactive_game():
     top_deck.cards().shuffle()
 
     $PlayingField.turn_number = 10  # Get extra EP :)
-    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.THE_INQUISITOR))
-    $PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.KING_CANNOLI))
-    $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.THE_INQUISITOR))
-    $PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.KING_CANNOLI))
+    #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.THE_INQUISITOR))
+    #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.KING_CANNOLI))
+    #$PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.THE_INQUISITOR))
+    #$PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.KING_CANNOLI))
     #$PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.REFRIGERATION))
     #$PlayingField.get_hand(CardPlayer.TOP).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.DUCK))
     #$PlayingField.get_hand(CardPlayer.BOTTOM).cards().push_card(PlayingCardCodex.get_entity(PlayingCardCodex.ID.KING_TURTLE))
@@ -94,20 +94,20 @@ func _sample_deck():
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.LITTLE_DICEMAN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.KING_CANNOLI),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.SKUNKMAN),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.SUPER_PLUMBER_BROS),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.BOILING_POT_OF_WATER),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.RULE_OF_KNOWLEDGE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.TRIANGLE_TROOPER),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.IT_WORKER),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.CORNY_ACORN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.TRIANGLE_TROOPER),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.POT_OF_LINGUINE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.RULE_22),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.RULE_OF_STRENGTH),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.TINY_TURTLE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.GREEDY_GOBLIN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.TRIANGLE_TROOPER),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.PET_COW),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.BLUE_DICE),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.DESTRUCTION_TANK),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.REGINALD_RANDOLPH),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.BABY_CLOWN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.GREEN_DICE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.RED_DICE),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.LITTLE_DICEMAN),
