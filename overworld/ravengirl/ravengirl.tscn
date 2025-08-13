@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://fhismih5qxg7"]
+
+[ext_resource type="Script" uid="uid://x16yor0siub5" path="res://overworld/ravengirl/ravengirl.gd" id="1_g7q3s"]
+[ext_resource type="Texture2D" uid="uid://dblm7j82yms43" path="res://overworld/ravengirl/ravengirl.png" id="2_txbvu"]
+
+[node name="Ravengirl" type="Node2D"]
+script = ExtResource("1_g7q3s")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_txbvu")
+hframes = 4
+vframes = 8
+frame = 3
