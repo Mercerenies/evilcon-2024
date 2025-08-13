@@ -92,7 +92,7 @@ func _debug_interactive_game():
 func _sample_deck():
     return [
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.LITTLE_DICEMAN),
-        PlayingCardCodex.get_entity(PlayingCardCodex.ID.KING_CANNOLI),
+        PlayingCardCodex.get_entity(PlayingCardCodex.ID.THE_KING_OF_CRIME),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.SKUNKMAN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.UNPAID_INTERN),
         PlayingCardCodex.get_entity(PlayingCardCodex.ID.BOILING_POT_OF_WATER),
