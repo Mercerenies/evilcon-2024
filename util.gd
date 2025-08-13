@@ -165,3 +165,7 @@ static func filter_swap_in_place(arr: Array, filter_func: Callable) -> void:
             arr[i] = arr[len(arr) - 1]
             arr[len(arr) - 1] = tmp
             arr.pop_back()
+
+
+static func bits_subset(sub: int, sup: int) -> bool:
+    return bool((sub & sup) == sub)

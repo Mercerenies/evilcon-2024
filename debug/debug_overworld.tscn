@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://ce5ku2nxm8x54"]
+
+[ext_resource type="PackedScene" uid="uid://fhismih5qxg7" path="res://overworld/ravengirl/ravengirl.tscn" id="1_wbqr6"]
+
+[node name="DebugOverworld" type="Node2D"]
+
+[node name="Ravengirl" parent="." instance=ExtResource("1_wbqr6")]
+position = Vector2(111, 122)

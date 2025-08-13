@@ -10,4 +10,3 @@ script = ExtResource("1_g7q3s")
 texture = ExtResource("2_txbvu")
 hframes = 4
 vframes = 8
-frame = 3
