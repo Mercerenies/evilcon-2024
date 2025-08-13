@@ -4,17 +4,20 @@ const MAX_MOVE_SPEED := 180.0  # pixels per second
 const MOVE_ACCELERATION := 700.0  # pixels per second^2
 const MOVE_FRICTION := 800.0  # pixels per second^2
 #const MOVE_SPEED_CORRECTION_FRICTION := 900.0  # pixels per second^2
+const ANIMATION_SPEED := 9.1 # frames per second
 
 var _move_velocity := Vector2.ZERO
+var _animation_tick := 0.0
 
 func _process(delta: float) -> void:
     var input_dir = _get_input_move_dir()
 
-    if input_dir != Vector2.ZERO:
+    if input_dir != -1:
+        var input_vec = Vector2.RIGHT.rotated(input_dir * PI / 4.0)
         var accel = MOVE_ACCELERATION * delta
         if _move_velocity.length() < 40.0:
             accel *= 3
-        _move_velocity += input_dir * accel
+        _move_velocity += input_vec * accel
     else:
         if _move_velocity.length() < MOVE_FRICTION * delta:
             _move_velocity = Vector2.ZERO
@@ -25,32 +28,50 @@ func _process(delta: float) -> void:
         _move_velocity = _move_velocity.normalized() * MAX_MOVE_SPEED
         #_move_velocity *= 1.0 - MOVE_SPEED_CORRECTION_FRICTION * delta / _move_velocity.length()
     position += _move_velocity * delta
-    print(_move_velocity.length())
+
+    # Player animation
+    if input_dir == -1:
+        _animation_tick = 0.0
+    else:
+        var anim_speed = ANIMATION_SPEED
+        anim_speed *= (_move_velocity.length() / MAX_MOVE_SPEED)
+        _animation_tick += delta * anim_speed
+        $Sprite2D.frame = (input_dir * 4 + int(_animation_tick) % 4)
 
 
 # Returns unit vector of player 8-directional input direction, or
 # Vector2.ZERO if no input is being pressed.
-func _get_input_move_dir() -> Vector2:
+func _get_input_move_vec() -> Vector2:
+    var dir = _get_input_move_dir()
+    if dir == -1:
+        return Vector2.ZERO
+    else:
+        return Vector2.RIGHT.rotated(dir * PI / 4.0)
+
+
+# Returns direction (from 0 to 7 in clockwise order) of player
+# 8-directional input direction, or -1 if no input is being pressed.
+func _get_input_move_dir() -> int:
     var input_bitmask = 0
     input_bitmask |= 1 if Input.is_action_pressed("world_move_right") else 0
     input_bitmask |= 2 if Input.is_action_pressed("world_move_down") else 0
     input_bitmask |= 4 if Input.is_action_pressed("world_move_left") else 0
     input_bitmask |= 8 if Input.is_action_pressed("world_move_up") else 0
     if Util.bits_subset(9, input_bitmask):
-        return Vector2.RIGHT.rotated(- PI / 4)
+        return 7
     elif Util.bits_subset(12, input_bitmask):
-        return Vector2.RIGHT.rotated(- 3 * PI / 4)
+        return 5
     elif Util.bits_subset(6, input_bitmask):
-        return Vector2.RIGHT.rotated(3 * PI / 4)
+        return 3
     elif Util.bits_subset(3, input_bitmask):
-        return Vector2.RIGHT.rotated(PI / 4)
+        return 1
     elif Util.bits_subset(1, input_bitmask):
-        return Vector2.RIGHT
+        return 0
     elif Util.bits_subset(2, input_bitmask):
-        return Vector2.DOWN
+        return 2
     elif Util.bits_subset(4, input_bitmask):
-        return Vector2.LEFT
+        return 4
     elif Util.bits_subset(8, input_bitmask):
-        return Vector2.UP
+        return 6
     else:
-        return Vector2.ZERO
+        return -1
