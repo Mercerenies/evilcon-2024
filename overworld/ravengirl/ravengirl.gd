@@ -1,10 +1,31 @@
 extends Node2D
 
-const MOVE_SPEED := 50.0  # pixels per second
+const MAX_MOVE_SPEED := 180.0  # pixels per second
+const MOVE_ACCELERATION := 700.0  # pixels per second^2
+const MOVE_FRICTION := 800.0  # pixels per second^2
+#const MOVE_SPEED_CORRECTION_FRICTION := 900.0  # pixels per second^2
+
+var _move_velocity := Vector2.ZERO
 
 func _process(delta: float) -> void:
     var input_dir = _get_input_move_dir()
-    position += input_dir * MOVE_SPEED * delta
+
+    if input_dir != Vector2.ZERO:
+        var accel = MOVE_ACCELERATION * delta
+        if _move_velocity.length() < 40.0:
+            accel *= 3
+        _move_velocity += input_dir * accel
+    else:
+        if _move_velocity.length() < MOVE_FRICTION * delta:
+            _move_velocity = Vector2.ZERO
+        else:
+            _move_velocity *= 1.0 - MOVE_FRICTION * delta / _move_velocity.length()
+
+    if _move_velocity.length() > MAX_MOVE_SPEED:
+        _move_velocity = _move_velocity.normalized() * MAX_MOVE_SPEED
+        #_move_velocity *= 1.0 - MOVE_SPEED_CORRECTION_FRICTION * delta / _move_velocity.length()
+    position += _move_velocity * delta
+    print(_move_velocity.length())
 
 
 # Returns unit vector of player 8-directional input direction, or
