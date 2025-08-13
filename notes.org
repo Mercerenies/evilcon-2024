@@ -262,13 +262,14 @@
      + Minionman :: Again but with his mask off and going by his real
        identity; he's actually a powerful card player and just puts on
        the "Minionman" gimmick for show
-       - Minionman's real name is **Red**. He runs a massive underground
-         weapons smuggling operation and uses the "Minionman" persona
-         to throw the cops and superheroes off and make them not take
-         him seriously.
+       - Minionman's real name is **Reginald Randolph**. He runs a
+         massive underground weapons smuggling operation and uses the
+         "Minionman" persona to throw the cops and superheroes off and
+         make them not take him seriously.
      + The King of Crime :: Ravenboy is really the King of Crime. Once
-       Ravengirl defeats Red (Minionman's unmasked form), she earns
-       the right to meet and face the King of Crime himself.
+       Ravengirl defeats Reginald (Minionman's unmasked
+       form), she earns the right to meet and face the King of Crime
+       himself.
 **** RECURRING RIVALS
      + Dr. Badguy Doomcake :: Just Flying Brickman in a paper-thin
        disguise.
@@ -872,8 +873,8 @@
    + [ ] If a lot of damage is dealt by one attack, emphasize that
      visually with bigger text or something.
    + [ ] For story reasons, Mystery Box should blacklist a handful of
-     cards (Red and King of Crime, mainly) unless Ravengirl has seen
-     those characters already.
+     cards (Reginald and King of Crime, mainly) unless Ravengirl has
+     seen those characters already.
      - Alternate idea that would require a little more setup, but I
        kind of like it. So the /existence/ of the King of Crime and
        Red isn't a spoiler, just their identities. We could let
