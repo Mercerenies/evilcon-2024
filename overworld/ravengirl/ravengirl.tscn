@@ -75,8 +75,6 @@ script = ExtResource("1_g7q3s")
 [node name="FaceableSprite3D" parent="." instance=ExtResource("2_grh2k")]
 transform = Transform3D(1, 0, 0, 0, 1.41, 0, 0, 0, 1, 0, 0.34408, 0)
 texture = ExtResource("2_txbvu")
-hframes = 4
-vframes = 8
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0238971, 0.308159, -0.00760259)

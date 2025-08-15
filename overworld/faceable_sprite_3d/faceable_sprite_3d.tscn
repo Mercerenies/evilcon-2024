@@ -4,4 +4,6 @@
 
 [node name="FaceableSprite3D" type="Sprite3D"]
 transform = Transform3D(1, 0, 0, 0, 1.41, 0, 0, 0, 1, 0, 0, 0)
+hframes = 4
+vframes = 8
 script = ExtResource("1_y0jy8")

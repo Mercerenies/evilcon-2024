@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://psuugbya5c04"]
+
+[ext_resource type="PackedScene" uid="uid://pns6y2qpcqch" path="res://overworld/faceable_sprite_3d/faceable_sprite_3d.tscn" id="1_kxtwe"]
+[ext_resource type="Script" uid="uid://c1u23wd2ifygo" path="res://overworld/npc_character/npc_character.gd" id="1_uhni8"]
+[ext_resource type="PackedScene" uid="uid://brdivrxkovwdd" path="res://overworld/shadow/shadow.tscn" id="3_exyyk"]
+
+[node name="NpcCharacter" type="AnimatableBody3D"]
+script = ExtResource("1_uhni8")
+
+[node name="FaceableSprite3D" parent="." instance=ExtResource("1_kxtwe")]
+transform = Transform3D(1, 0, 0, 0, 1.41, 0, 0, 0, 1, 0, 0.427222, 0)
+vframes = 1
+frame_mode = 0
+
+[node name="Shadow" parent="." node_paths=PackedStringArray("target_node") instance=ExtResource("3_exyyk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+target_node = NodePath("..")

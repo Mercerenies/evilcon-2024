@@ -1,8 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://ce5ku2nxm8x54"]
+[gd_scene load_steps=6 format=3 uid="uid://ce5ku2nxm8x54"]
 
 [ext_resource type="PackedScene" uid="uid://fhismih5qxg7" path="res://overworld/ravengirl/ravengirl.tscn" id="1_wbqr6"]
 [ext_resource type="PackedScene" uid="uid://cg68l1fu64gfx" path="res://overworld/overworld_camera/overworld_camera.tscn" id="2_f4402"]
 [ext_resource type="PackedScene" uid="uid://l87fi5igbkb3" path="res://overworld/block/static_block.tscn" id="2_j8qma"]
+[ext_resource type="PackedScene" uid="uid://psuugbya5c04" path="res://overworld/npc_character/npc_character.tscn" id="4_wcei2"]
+[ext_resource type="Texture2D" uid="uid://bg1jfvok1krou" path="res://overworld/npc_character/minionman.png" id="5_6ijde"]
 
 [node name="DebugOverworld" type="Node3D"]
 
@@ -30,3 +32,7 @@ transform = Transform3D(1.39407, 0, -0.639903, 0, 1, 0, 0.882383, 0, 1.01098, 7.
 
 [node name="StaticBlock3" parent="." instance=ExtResource("2_j8qma")]
 transform = Transform3D(2.98683, 0, 0, 0, 1, 0, 0, 0, 0.825099, 0.497126, 0.726828, 1.91299)
+
+[node name="NpcCharacter" parent="." instance=ExtResource("4_wcei2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.51748, -0.0566066, -1.35217)
+texture = ExtResource("5_6ijde")

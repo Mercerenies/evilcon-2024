@@ -23,6 +23,10 @@ enum FrameMode {
         _update_frames_count()
 
 
+func _ready() -> void:
+    _update_frames_count()
+
+
 func _update_frames_count() -> void:
     match frame_mode:
         FrameMode.STATIC_FOUR:
