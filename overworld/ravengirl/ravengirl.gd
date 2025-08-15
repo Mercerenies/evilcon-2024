@@ -9,7 +9,8 @@ const ANIMATION_SPEED := 9.1  # frames per second
 const BASE_GRAVITY = -70.0  # meters per second^2
 const TERMINAL_VELOCITY := 20.0  # meters per second
 
-var _animation_tick := 0.0
+var _animation_tick := 0.2
+var _last_input_dir := 2
 
 func _physics_process(delta: float) -> void:
     var input_dir = _get_input_move_dir()
@@ -43,12 +44,13 @@ func _physics_process(delta: float) -> void:
 
     # Player animation
     if input_dir == -1:
-        _animation_tick = 0.0
+        _animation_tick = 0.2
     else:
+        _last_input_dir = input_dir
         var anim_speed = ANIMATION_SPEED
         anim_speed *= (velocity.length() / MAX_MOVE_SPEED)
         _animation_tick += delta * anim_speed
-        $Sprite3D.frame = (input_dir * 4 + int(_animation_tick) % 4)
+    $Sprite3D.frame = (_last_input_dir * 4 + int(_animation_tick) % 4)
 
 
 # Returns unit vector of player 8-directional input direction, or
