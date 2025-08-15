@@ -19,5 +19,11 @@ transform = Transform3D(7.10158, 0, 0, 0, 1, 0, 0, 0, 4.33527, 1.62437, -0.50104
 [node name="StaticBlock2" parent="." instance=ExtResource("2_j8qma")]
 transform = Transform3D(2.98683, 0, 0, 0, 1, 0, 0, 0, 4.33527, 3.50807, 0.726828, 0.0414801)
 
+[node name="StaticBlock4" parent="." instance=ExtResource("2_j8qma")]
+transform = Transform3D(2.98683, 0, 0, 0, 1, 0, 0, 0, 4.33527, 7.45301, 0.726828, 0.0414801)
+
+[node name="StaticBlock5" parent="." instance=ExtResource("2_j8qma")]
+transform = Transform3D(1.39407, 0, -0.639903, 0, 1, 0, 0.882383, 0, 1.01098, 7.45301, 0.726828, 3.62686)
+
 [node name="StaticBlock3" parent="." instance=ExtResource("2_j8qma")]
 transform = Transform3D(2.98683, 0, 0, 0, 1, 0, 0, 0, 0.825099, 0.497126, 0.726828, 1.91299)

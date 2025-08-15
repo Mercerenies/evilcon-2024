@@ -25,13 +25,17 @@ func _physics_process(delta: float) -> void:
     move_and_slide()
 
     # Player animation
+    var xz_velocity = velocity.slide(Vector3.UP)
     var input_dir = _get_input_move_dir()
-    if input_dir == -1:
-        _animation_tick = 0.2
+    if not is_on_floor():
+        # Airborne
+        _animation_tick = 1.5
+    elif input_dir == -1:
+        _animation_tick = 0.8
     else:
         _last_input_dir = input_dir
         var anim_speed = ANIMATION_SPEED
-        anim_speed *= (velocity.length() / MAX_MOVE_SPEED)
+        anim_speed *= (xz_velocity.length() / MAX_MOVE_SPEED)
         _animation_tick += delta * anim_speed
     $Sprite3D.frame = (_last_input_dir * 4 + int(_animation_tick) % 4)
 
@@ -46,7 +50,7 @@ func _update_horizontal_movement_dir(delta: float) -> void:
         accel = lerp(accel, MOVE_MAX_ACCELERATION, 1.0 - velocity.normalized().dot(input_vec))
         accel = clamp(accel, MOVE_MIN_ACCELERATION, MOVE_MAX_ACCELERATION)
         if not is_on_floor():
-            accel /= 10.0
+            accel /= 3.0
         velocity += input_vec * accel * delta
     elif is_on_floor():
         if xz_velocity.length() < MOVE_FRICTION * delta:
