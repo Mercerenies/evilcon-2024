@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=3 uid="uid://cg68l1fu64gfx"]
+
+[sub_resource type="GDScript" id="GDScript_4k0ng"]
+script/source = "extends Camera3D
+
+@export var target_node: Node
+@export var relative_position: Vector3 = Vector3(0, 5.7, 5.8)
+
+
+func _physics_process(delta: float) -> void:
+    position = target_node.position + relative_position
+"
+
+[node name="OverworldCamera" type="Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 0, 0)
+projection = 1
+size = 5.0
+script = SubResource("GDScript_4k0ng")
