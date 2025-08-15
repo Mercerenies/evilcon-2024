@@ -6,13 +6,37 @@ const MOVE_MAX_ACCELERATION := 10.0  # meters per second^2
 const MOVE_FRICTION := 8.0  # meters per second^2
 const ANIMATION_SPEED := 9.1  # frames per second
 
-const BASE_GRAVITY = -70.0  # meters per second^2
+const BASE_GRAVITY = -60.0  # meters per second^2
 const TERMINAL_VELOCITY := 20.0  # meters per second
+const JUMP_IMPULSE := 14.0  # meters per second
 
 var _animation_tick := 0.2
 var _last_input_dir := 2
 
 func _physics_process(delta: float) -> void:
+    _update_horizontal_movement_dir(delta)
+    _handle_jumping()
+
+    # Gravity
+    velocity.y += BASE_GRAVITY * delta
+    if abs(velocity.y) > TERMINAL_VELOCITY:
+        velocity.y = sign(velocity.y) * TERMINAL_VELOCITY
+
+    move_and_slide()
+
+    # Player animation
+    var input_dir = _get_input_move_dir()
+    if input_dir == -1:
+        _animation_tick = 0.2
+    else:
+        _last_input_dir = input_dir
+        var anim_speed = ANIMATION_SPEED
+        anim_speed *= (velocity.length() / MAX_MOVE_SPEED)
+        _animation_tick += delta * anim_speed
+    $Sprite3D.frame = (_last_input_dir * 4 + int(_animation_tick) % 4)
+
+
+func _update_horizontal_movement_dir(delta: float) -> void:
     var input_dir = _get_input_move_dir()
     var xz_velocity = velocity.slide(Vector3.UP)
     if input_dir != -1:
@@ -21,8 +45,10 @@ func _physics_process(delta: float) -> void:
         var accel = lerp(MOVE_MAX_ACCELERATION, MOVE_MIN_ACCELERATION, accel_lerp)
         accel = lerp(accel, MOVE_MAX_ACCELERATION, 1.0 - velocity.normalized().dot(input_vec))
         accel = clamp(accel, MOVE_MIN_ACCELERATION, MOVE_MAX_ACCELERATION)
+        if not is_on_floor():
+            accel /= 10.0
         velocity += input_vec * accel * delta
-    else:
+    elif is_on_floor():
         if xz_velocity.length() < MOVE_FRICTION * delta:
             velocity.x = 0.0
             velocity.z = 0.0
@@ -35,22 +61,10 @@ func _physics_process(delta: float) -> void:
         velocity.x = xz_velocity.normalized().x * MAX_MOVE_SPEED
         velocity.z = xz_velocity.normalized().z * MAX_MOVE_SPEED
 
-    # Gravity
-    velocity.y += BASE_GRAVITY * delta
-    if abs(velocity.y) > TERMINAL_VELOCITY:
-        velocity.y = sign(velocity.y) * TERMINAL_VELOCITY
 
-    move_and_slide()
-
-    # Player animation
-    if input_dir == -1:
-        _animation_tick = 0.2
-    else:
-        _last_input_dir = input_dir
-        var anim_speed = ANIMATION_SPEED
-        anim_speed *= (velocity.length() / MAX_MOVE_SPEED)
-        _animation_tick += delta * anim_speed
-    $Sprite3D.frame = (_last_input_dir * 4 + int(_animation_tick) % 4)
+func _handle_jumping() -> void:
+    if Input.is_action_just_pressed("world_move_jump") and is_on_floor():
+        velocity.y = JUMP_IMPULSE
 
 
 # Returns unit vector of player 8-directional input direction, or
