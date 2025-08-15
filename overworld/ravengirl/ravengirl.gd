@@ -15,6 +15,9 @@ const DASH_MAX_SPEED := 5.5  # meters per second
 var _animation_tick := 0.2
 var _last_input_dir := 2
 
+@export var dash_max_speed_lerp := 0.0
+@export var is_dashing := false
+
 func _physics_process(delta: float) -> void:
     _update_horizontal_movement_dir(delta)
     _handle_jumping()
@@ -30,7 +33,7 @@ func _physics_process(delta: float) -> void:
     # Player animation
     var xz_velocity = velocity.slide(Vector3.UP)
     var input_dir = _get_input_move_dir()
-    if not $DashTimer.is_stopped():
+    if is_dashing:
         # Dashing
         _animation_tick = 1.5
     if not is_on_floor():
@@ -68,8 +71,8 @@ func _update_horizontal_movement_dir(delta: float) -> void:
 
     xz_velocity = velocity.slide(Vector3.UP)
     var speed_cap = MAX_MOVE_SPEED
-    if not $DashTimer.is_stopped():
-        speed_cap = DASH_MAX_SPEED
+    if is_dashing:
+        speed_cap = lerp(MAX_MOVE_SPEED, DASH_MAX_SPEED, dash_max_speed_lerp)
     if xz_velocity.length() > speed_cap:
         velocity.x = xz_velocity.normalized().x * speed_cap
         velocity.z = xz_velocity.normalized().z * speed_cap
@@ -90,7 +93,7 @@ func _handle_dashing() -> void:
     var input_vec = Vector3.RIGHT.rotated(Vector3.DOWN, input_dir * PI / 4.0)
     velocity.x += DASH_IMPULSE * input_vec.x
     velocity.z += DASH_IMPULSE * input_vec.z
-    $DashTimer.start()
+    $AnimationPlayer.play("dash")
     $DashCooldownTimer.start()
 
 
