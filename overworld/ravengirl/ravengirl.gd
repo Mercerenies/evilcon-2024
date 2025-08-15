@@ -1,7 +1,8 @@
 extends Node2D
 
 const MAX_MOVE_SPEED := 180.0  # pixels per second
-const MOVE_ACCELERATION := 700.0  # pixels per second^2
+const MOVE_MIN_ACCELERATION := 700.0  # pixels per second^2
+const MOVE_MAX_ACCELERATION := 1000.0  # pixels per second^2
 const MOVE_FRICTION := 800.0  # pixels per second^2
 #const MOVE_SPEED_CORRECTION_FRICTION := 900.0  # pixels per second^2
 const ANIMATION_SPEED := 9.1 # frames per second
@@ -9,15 +10,17 @@ const ANIMATION_SPEED := 9.1 # frames per second
 var _move_velocity := Vector2.ZERO
 var _animation_tick := 0.0
 
-func _process(delta: float) -> void:
+func _physics_process(delta: float) -> void:
     var input_dir = _get_input_move_dir()
 
     if input_dir != -1:
         var input_vec = Vector2.RIGHT.rotated(input_dir * PI / 4.0)
-        var accel = MOVE_ACCELERATION * delta
-        if _move_velocity.length() < 40.0:
-            accel *= 3
-        _move_velocity += input_vec * accel
+        var accel_lerp = (_move_velocity.length() / MAX_MOVE_SPEED) ** 6
+        var accel = lerp(MOVE_MAX_ACCELERATION, MOVE_MIN_ACCELERATION, accel_lerp)
+        accel = lerp(accel, MOVE_MAX_ACCELERATION, 1.0 - _move_velocity.normalized().dot(input_vec))
+        accel = clamp(accel, MOVE_MIN_ACCELERATION, MOVE_MAX_ACCELERATION)
+        #print(accel, "    ", _move_velocity.length(), "   ", delta)
+        _move_velocity += input_vec * accel * delta
     else:
         if _move_velocity.length() < MOVE_FRICTION * delta:
             _move_velocity = Vector2.ZERO
