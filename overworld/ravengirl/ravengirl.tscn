@@ -4,9 +4,9 @@
 [ext_resource type="Texture2D" uid="uid://dblm7j82yms43" path="res://overworld/ravengirl/ravengirl.png" id="2_txbvu"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_txbvu"]
-size = Vector3(0.244629, 0.482849, 0.283203)
+size = Vector3(0.244629, 0.603745, 0.283203)
 
-[node name="Ravengirl" type="Node3D"]
+[node name="Ravengirl" type="CharacterBody3D"]
 script = ExtResource("1_g7q3s")
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
@@ -15,8 +15,6 @@ texture = ExtResource("2_txbvu")
 hframes = 4
 vframes = 8
 
-[node name="Area3D" type="Area3D" parent="."]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0238971, 0.247711, -0.00760259)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0238971, 0.308159, -0.00760259)
 shape = SubResource("BoxShape3D_txbvu")

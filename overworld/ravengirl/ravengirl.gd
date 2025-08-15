@@ -1,42 +1,50 @@
-extends Node3D
+extends CharacterBody3D
 
 const MAX_MOVE_SPEED := 1.8  # meters per second
 const MOVE_MIN_ACCELERATION := 7.0  # meters per second^2
 const MOVE_MAX_ACCELERATION := 10.0  # meters per second^2
 const MOVE_FRICTION := 8.0  # meters per second^2
-const ANIMATION_SPEED := 9.1 # frames per second
+const ANIMATION_SPEED := 9.1  # frames per second
 
-var _move_velocity := Vector3.ZERO
+const BASE_GRAVITY = -70.0  # meters per second^2
+const TERMINAL_VELOCITY := 20.0  # meters per second
+
 var _animation_tick := 0.0
 
 func _physics_process(delta: float) -> void:
     var input_dir = _get_input_move_dir()
-
+    var xz_velocity = velocity.slide(Vector3.UP)
     if input_dir != -1:
         var input_vec = Vector3.RIGHT.rotated(Vector3.DOWN, input_dir * PI / 4.0)
-        var accel_lerp = (_move_velocity.length() / MAX_MOVE_SPEED) ** 6
+        var accel_lerp = (velocity.length() / MAX_MOVE_SPEED) ** 6
         var accel = lerp(MOVE_MAX_ACCELERATION, MOVE_MIN_ACCELERATION, accel_lerp)
-        accel = lerp(accel, MOVE_MAX_ACCELERATION, 1.0 - _move_velocity.normalized().dot(input_vec))
+        accel = lerp(accel, MOVE_MAX_ACCELERATION, 1.0 - velocity.normalized().dot(input_vec))
         accel = clamp(accel, MOVE_MIN_ACCELERATION, MOVE_MAX_ACCELERATION)
-        _move_velocity += input_vec * accel * delta
+        velocity += input_vec * accel * delta
     else:
-        if _move_velocity.length() < MOVE_FRICTION * delta:
-            _move_velocity = Vector3.ZERO
+        if xz_velocity.length() < MOVE_FRICTION * delta:
+            velocity = Vector3.ZERO
         else:
-            _move_velocity *= 1.0 - MOVE_FRICTION * delta / _move_velocity.length()
+            velocity.x *= 1.0 - MOVE_FRICTION * delta / velocity.length()
+            velocity.z *= 1.0 - MOVE_FRICTION * delta / velocity.length()
 
-    if _move_velocity.length() > MAX_MOVE_SPEED:
-        _move_velocity = _move_velocity.normalized() * MAX_MOVE_SPEED
-        #_move_velocity *= 1.0 - MOVE_SPEED_CORRECTION_FRICTION * delta / _move_velocity.length()
+    if xz_velocity.length() > MAX_MOVE_SPEED:
+        velocity.x = xz_velocity.normalized().x * MAX_MOVE_SPEED
+        velocity.z = xz_velocity.normalized().z * MAX_MOVE_SPEED
 
-    position += _move_velocity * delta
+    # Gravity
+    velocity.y += BASE_GRAVITY * delta
+    if abs(velocity.y) > TERMINAL_VELOCITY:
+        velocity.y = sign(velocity.y) * TERMINAL_VELOCITY
+
+    move_and_slide()
 
     # Player animation
     if input_dir == -1:
         _animation_tick = 0.0
     else:
         var anim_speed = ANIMATION_SPEED
-        anim_speed *= (_move_velocity.length() / MAX_MOVE_SPEED)
+        anim_speed *= (velocity.length() / MAX_MOVE_SPEED)
         _animation_tick += delta * anim_speed
         $Sprite3D.frame = (input_dir * 4 + int(_animation_tick) % 4)
 

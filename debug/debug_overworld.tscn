@@ -14,4 +14,7 @@ projection = 1
 size = 5.0
 
 [node name="StaticBlock" parent="." instance=ExtResource("2_j8qma")]
-transform = Transform3D(7.10158, 0, 0, 0, 1, 0, 0, 0, 4.33527, 1.63343, -0.501047, -0.279944)
+transform = Transform3D(7.10158, 0, 0, 0, 1, 0, 0, 0, 4.33527, 1.62437, -0.501047, -0.283467)
+
+[node name="StaticBlock2" parent="." instance=ExtResource("2_j8qma")]
+transform = Transform3D(2.98683, 0, 0, 0, 1, 0, 0, 0, 4.33527, 3.50807, 0.726828, 0.0414801)
