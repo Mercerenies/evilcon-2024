@@ -23,3 +23,11 @@ shape = SubResource("BoxShape3D_txbvu")
 [node name="Shadow" parent="." node_paths=PackedStringArray("target_node") instance=ExtResource("3_vdh63")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
 target_node = NodePath("..")
+
+[node name="DashTimer" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+
+[node name="DashCooldownTimer" type="Timer" parent="."]
+wait_time = 0.75
+one_shot = true

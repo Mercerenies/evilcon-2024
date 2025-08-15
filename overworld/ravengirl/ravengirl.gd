@@ -9,6 +9,8 @@ const ANIMATION_SPEED := 9.1  # frames per second
 const BASE_GRAVITY = -60.0  # meters per second^2
 const TERMINAL_VELOCITY := 20.0  # meters per second
 const JUMP_IMPULSE := 14.0  # meters per second
+const DASH_IMPULSE := 5.5  # meters per second
+const DASH_MAX_SPEED := 5.5  # meters per second
 
 var _animation_tick := 0.2
 var _last_input_dir := 2
@@ -16,6 +18,7 @@ var _last_input_dir := 2
 func _physics_process(delta: float) -> void:
     _update_horizontal_movement_dir(delta)
     _handle_jumping()
+    _handle_dashing()
 
     # Gravity
     velocity.y += BASE_GRAVITY * delta
@@ -27,6 +30,9 @@ func _physics_process(delta: float) -> void:
     # Player animation
     var xz_velocity = velocity.slide(Vector3.UP)
     var input_dir = _get_input_move_dir()
+    if not $DashTimer.is_stopped():
+        # Dashing
+        _animation_tick = 1.5
     if not is_on_floor():
         # Airborne
         _animation_tick = 1.5
@@ -61,14 +67,31 @@ func _update_horizontal_movement_dir(delta: float) -> void:
             velocity.z *= 1.0 - MOVE_FRICTION * delta / xz_velocity.length()
 
     xz_velocity = velocity.slide(Vector3.UP)
-    if xz_velocity.length() > MAX_MOVE_SPEED:
-        velocity.x = xz_velocity.normalized().x * MAX_MOVE_SPEED
-        velocity.z = xz_velocity.normalized().z * MAX_MOVE_SPEED
+    var speed_cap = MAX_MOVE_SPEED
+    if not $DashTimer.is_stopped():
+        speed_cap = DASH_MAX_SPEED
+    if xz_velocity.length() > speed_cap:
+        velocity.x = xz_velocity.normalized().x * speed_cap
+        velocity.z = xz_velocity.normalized().z * speed_cap
 
 
 func _handle_jumping() -> void:
     if Input.is_action_just_pressed("world_move_jump") and is_on_floor():
         velocity.y = JUMP_IMPULSE
+
+
+func _handle_dashing() -> void:
+    if not (is_on_floor() and $DashCooldownTimer.is_stopped() and Input.is_action_just_pressed("world_move_dash")):
+        return
+    var input_dir = _get_input_move_dir()
+    if input_dir == -1:
+        return
+
+    var input_vec = Vector3.RIGHT.rotated(Vector3.DOWN, input_dir * PI / 4.0)
+    velocity.x += DASH_IMPULSE * input_vec.x
+    velocity.z += DASH_IMPULSE * input_vec.z
+    $DashTimer.start()
+    $DashCooldownTimer.start()
 
 
 # Returns unit vector of player 8-directional input direction, or
