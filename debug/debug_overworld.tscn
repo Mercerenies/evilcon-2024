@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://ce5ku2nxm8x54"]
+[gd_scene load_steps=3 format=3 uid="uid://ce5ku2nxm8x54"]
 
 [ext_resource type="PackedScene" uid="uid://fhismih5qxg7" path="res://overworld/ravengirl/ravengirl.tscn" id="1_wbqr6"]
+[ext_resource type="PackedScene" uid="uid://l87fi5igbkb3" path="res://overworld/block/static_block.tscn" id="2_j8qma"]
 
 [node name="DebugOverworld" type="Node3D"]
 
@@ -11,3 +12,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.128876, 0, 0)
 transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 5.71591, 5.83997)
 projection = 1
 size = 5.0
+
+[node name="StaticBlock" parent="." instance=ExtResource("2_j8qma")]
+transform = Transform3D(7.10158, 0, 0, 0, 1, 0, 0, 0, 4.33527, 1.63343, -0.501047, -0.279944)

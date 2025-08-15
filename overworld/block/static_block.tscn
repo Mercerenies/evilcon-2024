@@ -1,15 +1,21 @@
-[gd_scene load_steps=3 format=3 uid="uid://l87fi5igbkb3"]
+[gd_scene load_steps=5 format=3 uid="uid://l87fi5igbkb3"]
 
 [ext_resource type="Texture2D" uid="uid://cu8pon8cuya1g" path="res://overworld/block/block.png" id="1_473tf"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_ot3gb"]
-size = Vector2(99, 100)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2vbaj"]
+shading_mode = 0
+albedo_color = Color(0.254902, 0.282353, 0.419608, 1)
+albedo_texture = ExtResource("1_473tf")
 
-[node name="StaticBlock" type="Sprite2D"]
-texture = ExtResource("1_473tf")
+[sub_resource type="BoxMesh" id="BoxMesh_2vbaj"]
+material = SubResource("StandardMaterial3D_2vbaj")
 
-[node name="Area2D" type="Area2D" parent="."]
+[sub_resource type="BoxShape3D" id="BoxShape3D_473tf"]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(0.5, 0)
-shape = SubResource("RectangleShape2D_ot3gb")
+[node name="StaticBlock" type="MeshInstance3D"]
+mesh = SubResource("BoxMesh_2vbaj")
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("BoxShape3D_473tf")
