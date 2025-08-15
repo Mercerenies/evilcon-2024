@@ -12,11 +12,15 @@ const JUMP_IMPULSE := 14.0  # meters per second
 const DASH_IMPULSE := 5.5  # meters per second
 const DASH_MAX_SPEED := 5.5  # meters per second
 
+const COYOTE_TIME := 0.1  # seconds
+
 var _animation_tick := 0.2
 var _last_input_dir := 2
 
 @export var dash_max_speed_lerp := 0.0
 @export var is_dashing := false
+
+var _seconds_since_on_floor = 0.0
 
 func _physics_process(delta: float) -> void:
     _update_horizontal_movement_dir(delta)
@@ -29,6 +33,11 @@ func _physics_process(delta: float) -> void:
         velocity.y = sign(velocity.y) * TERMINAL_VELOCITY
 
     move_and_slide()
+
+    if is_on_floor():
+        _seconds_since_on_floor = 0.0
+    else:
+        _seconds_since_on_floor += delta
 
     # Player animation
     var xz_velocity = velocity.slide(Vector3.UP)
@@ -79,12 +88,15 @@ func _update_horizontal_movement_dir(delta: float) -> void:
 
 
 func _handle_jumping() -> void:
-    if Input.is_action_just_pressed("world_move_jump") and is_on_floor():
-        velocity.y = JUMP_IMPULSE
+    if Input.is_action_just_pressed("world_move_jump") and _seconds_since_on_floor < COYOTE_TIME:
+        if $JumpCooldownTimer.is_stopped():
+            velocity.y = JUMP_IMPULSE
+            # Minimal timer to prevent double-jump glitches from coyote time.
+            $JumpCooldownTimer.start()
 
 
 func _handle_dashing() -> void:
-    if not (is_on_floor() and $DashCooldownTimer.is_stopped() and Input.is_action_just_pressed("world_move_dash")):
+    if not (_seconds_since_on_floor < COYOTE_TIME and $DashCooldownTimer.is_stopped() and Input.is_action_just_pressed("world_move_dash")):
         return
     var input_dir = _get_input_move_dir()
     if input_dir == -1:

@@ -93,3 +93,7 @@ one_shot = true
 libraries = {
 &"": SubResource("AnimationLibrary_2w6o7")
 }
+
+[node name="JumpCooldownTimer" type="Timer" parent="."]
+wait_time = 0.1
+one_shot = true
