@@ -5,8 +5,9 @@
 [ext_resource type="Texture2D" uid="uid://dblm7j82yms43" path="res://overworld/ravengirl/ravengirl.png" id="2_txbvu"]
 [ext_resource type="PackedScene" uid="uid://brdivrxkovwdd" path="res://overworld/shadow/shadow.tscn" id="3_vdh63"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_txbvu"]
-size = Vector3(0.244629, 0.603745, 0.283203)
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_grh2k"]
+height = 0.668335
+radius = 0.158691
 
 [sub_resource type="Animation" id="Animation_grh2k"]
 length = 0.001
@@ -77,8 +78,8 @@ transform = Transform3D(1, 0, 0, 0, 1.41, 0, 0, 0, 1, 0, 0.34408, 0)
 texture = ExtResource("2_txbvu")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0238971, 0.308159, -0.00760259)
-shape = SubResource("BoxShape3D_txbvu")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0238971, 0.383415, -0.00760259)
+shape = SubResource("CylinderShape3D_grh2k")
 
 [node name="Shadow" parent="." node_paths=PackedStringArray("target_node") instance=ExtResource("3_vdh63")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
