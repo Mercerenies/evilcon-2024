@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://pns6y2qpcqch"]
+
+[ext_resource type="Script" uid="uid://x8o7x50vuq7n" path="res://overworld/faceable_sprite_3d/faceable_sprite_3d.gd" id="1_y0jy8"]
+
+[node name="FaceableSprite3D" type="Sprite3D"]
+transform = Transform3D(1, 0, 0, 0, 1.41, 0, 0, 0, 1, 0, 0, 0)
+script = ExtResource("1_y0jy8")
