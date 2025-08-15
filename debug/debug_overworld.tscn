@@ -1,26 +1,13 @@
-[gd_scene load_steps=3 format=3 uid="uid://ce5ku2nxm8x54"]
+[gd_scene load_steps=2 format=3 uid="uid://ce5ku2nxm8x54"]
 
 [ext_resource type="PackedScene" uid="uid://fhismih5qxg7" path="res://overworld/ravengirl/ravengirl.tscn" id="1_wbqr6"]
-[ext_resource type="PackedScene" uid="uid://l87fi5igbkb3" path="res://overworld/block/static_block.tscn" id="2_j8qma"]
 
-[node name="DebugOverworld" type="Node2D"]
-y_sort_enabled = true
+[node name="DebugOverworld" type="Node3D"]
 
 [node name="Ravengirl" parent="." instance=ExtResource("1_wbqr6")]
-position = Vector2(111, 122)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.128876, 0, 0)
 
-[node name="StaticBlock" parent="." instance=ExtResource("2_j8qma")]
-position = Vector2(993, 401)
-scale = Vector2(1, 8.39)
-
-[node name="StaticBlock2" parent="." instance=ExtResource("2_j8qma")]
-position = Vector2(-1, 380)
-scale = Vector2(1, 8.18)
-
-[node name="StaticBlock3" parent="." instance=ExtResource("2_j8qma")]
-position = Vector2(506.5, 754)
-scale = Vector2(9.67, 1)
-
-[node name="StaticBlock4" parent="." instance=ExtResource("2_j8qma")]
-position = Vector2(508.5, -6)
-scale = Vector2(9.65, 1)
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 5.71591, 5.83997)
+projection = 1
+size = 5.0

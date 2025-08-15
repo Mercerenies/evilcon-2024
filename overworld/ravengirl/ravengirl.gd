@@ -1,39 +1,33 @@
-extends Node2D
+extends Node3D
 
-const MAX_MOVE_SPEED := 180.0  # pixels per second
-const MOVE_MIN_ACCELERATION := 700.0  # pixels per second^2
-const MOVE_MAX_ACCELERATION := 1000.0  # pixels per second^2
-const MOVE_FRICTION := 800.0  # pixels per second^2
-#const MOVE_SPEED_CORRECTION_FRICTION := 900.0  # pixels per second^2
+const MAX_MOVE_SPEED := 1.8  # meters per second
+const MOVE_MIN_ACCELERATION := 7.0  # meters per second^2
+const MOVE_MAX_ACCELERATION := 10.0  # meters per second^2
+const MOVE_FRICTION := 8.0  # meters per second^2
 const ANIMATION_SPEED := 9.1 # frames per second
 
-var _move_velocity := Vector2.ZERO
+var _move_velocity := Vector3.ZERO
 var _animation_tick := 0.0
 
 func _physics_process(delta: float) -> void:
     var input_dir = _get_input_move_dir()
 
     if input_dir != -1:
-        var input_vec = Vector2.RIGHT.rotated(input_dir * PI / 4.0)
+        var input_vec = Vector3.RIGHT.rotated(Vector3.DOWN, input_dir * PI / 4.0)
         var accel_lerp = (_move_velocity.length() / MAX_MOVE_SPEED) ** 6
         var accel = lerp(MOVE_MAX_ACCELERATION, MOVE_MIN_ACCELERATION, accel_lerp)
         accel = lerp(accel, MOVE_MAX_ACCELERATION, 1.0 - _move_velocity.normalized().dot(input_vec))
         accel = clamp(accel, MOVE_MIN_ACCELERATION, MOVE_MAX_ACCELERATION)
-        #print(accel, "    ", _move_velocity.length(), "   ", delta)
         _move_velocity += input_vec * accel * delta
     else:
         if _move_velocity.length() < MOVE_FRICTION * delta:
-            _move_velocity = Vector2.ZERO
+            _move_velocity = Vector3.ZERO
         else:
             _move_velocity *= 1.0 - MOVE_FRICTION * delta / _move_velocity.length()
 
     if _move_velocity.length() > MAX_MOVE_SPEED:
         _move_velocity = _move_velocity.normalized() * MAX_MOVE_SPEED
         #_move_velocity *= 1.0 - MOVE_SPEED_CORRECTION_FRICTION * delta / _move_velocity.length()
-
-    # Movement / Collisions
-    var space_state = get_world_2d().direct_space_state
-    var result = space_state.intersect_ray(
 
     position += _move_velocity * delta
 
@@ -44,17 +38,17 @@ func _physics_process(delta: float) -> void:
         var anim_speed = ANIMATION_SPEED
         anim_speed *= (_move_velocity.length() / MAX_MOVE_SPEED)
         _animation_tick += delta * anim_speed
-        $Sprite2D.frame = (input_dir * 4 + int(_animation_tick) % 4)
+        $Sprite3D.frame = (input_dir * 4 + int(_animation_tick) % 4)
 
 
 # Returns unit vector of player 8-directional input direction, or
 # Vector2.ZERO if no input is being pressed.
-func _get_input_move_vec() -> Vector2:
+func _get_input_move_vec() -> Vector3:
     var dir = _get_input_move_dir()
     if dir == -1:
-        return Vector2.ZERO
+        return Vector3.ZERO
     else:
-        return Vector2.RIGHT.rotated(dir * PI / 4.0)
+        return Vector3.RIGHT.rotated(Vector3.DOWN, dir * PI / 4.0)
 
 
 # Returns direction (from 0 to 7 in clockwise order) of player
