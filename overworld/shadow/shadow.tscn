@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://brdivrxkovwdd"]
+
+[ext_resource type="Texture2D" uid="uid://clqhofb5backg" path="res://overworld/shadow/shadow.png" id="1_y3qpe"]
+[ext_resource type="Script" uid="uid://bvy3ca77w5oj3" path="res://overworld/shadow/shadow.gd" id="2_crbaf"]
+
+[node name="Shadow" type="Node3D"]
+process_priority = 1
+process_physics_priority = 1
+script = ExtResource("2_crbaf")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+texture = ExtResource("1_y3qpe")
+
+[node name="RayCast3D" type="RayCast3D" parent="."]
+target_position = Vector3(0, -8, 0)
