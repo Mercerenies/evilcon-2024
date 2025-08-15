@@ -23,11 +23,13 @@ func _physics_process(delta: float) -> void:
         velocity += input_vec * accel * delta
     else:
         if xz_velocity.length() < MOVE_FRICTION * delta:
-            velocity = Vector3.ZERO
+            velocity.x = 0.0
+            velocity.z = 0.0
         else:
-            velocity.x *= 1.0 - MOVE_FRICTION * delta / velocity.length()
-            velocity.z *= 1.0 - MOVE_FRICTION * delta / velocity.length()
+            velocity.x *= 1.0 - MOVE_FRICTION * delta / xz_velocity.length()
+            velocity.z *= 1.0 - MOVE_FRICTION * delta / xz_velocity.length()
 
+    xz_velocity = velocity.slide(Vector3.UP)
     if xz_velocity.length() > MAX_MOVE_SPEED:
         velocity.x = xz_velocity.normalized().x * MAX_MOVE_SPEED
         velocity.z = xz_velocity.normalized().z * MAX_MOVE_SPEED
