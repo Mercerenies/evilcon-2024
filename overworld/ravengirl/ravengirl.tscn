@@ -1,12 +1,20 @@
-[gd_scene load_steps=3 format=3 uid="uid://fhismih5qxg7"]
+[gd_scene load_steps=4 format=3 uid="uid://fhismih5qxg7"]
 
 [ext_resource type="Script" uid="uid://x16yor0siub5" path="res://overworld/ravengirl/ravengirl.gd" id="1_g7q3s"]
 [ext_resource type="Texture2D" uid="uid://dblm7j82yms43" path="res://overworld/ravengirl/ravengirl.png" id="2_txbvu"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_txbvu"]
 
 [node name="Ravengirl" type="Node2D"]
 script = ExtResource("1_g7q3s")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -21)
 texture = ExtResource("2_txbvu")
 hframes = 4
 vframes = 8
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_txbvu")

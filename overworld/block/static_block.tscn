@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://l87fi5igbkb3"]
+
+[ext_resource type="Texture2D" uid="uid://cu8pon8cuya1g" path="res://overworld/block/block.png" id="1_473tf"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ot3gb"]
+size = Vector2(99, 100)
+
+[node name="StaticBlock" type="Sprite2D"]
+texture = ExtResource("1_473tf")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0.5, 0)
+shape = SubResource("RectangleShape2D_ot3gb")

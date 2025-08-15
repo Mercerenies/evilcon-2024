@@ -30,6 +30,11 @@ func _physics_process(delta: float) -> void:
     if _move_velocity.length() > MAX_MOVE_SPEED:
         _move_velocity = _move_velocity.normalized() * MAX_MOVE_SPEED
         #_move_velocity *= 1.0 - MOVE_SPEED_CORRECTION_FRICTION * delta / _move_velocity.length()
+
+    # Movement / Collisions
+    var space_state = get_world_2d().direct_space_state
+    var result = space_state.intersect_ray(
+
     position += _move_velocity * delta
 
     # Player animation
