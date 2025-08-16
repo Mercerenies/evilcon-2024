@@ -34,6 +34,10 @@ gdscript/warnings/confusable_local_usage=0
 window/size/viewport_width=1024
 window/size/viewport_height=768
 
+[global_group]
+
+npc="Non-player characters that the player can speak to"
+
 [input]
 
 world_move_left={

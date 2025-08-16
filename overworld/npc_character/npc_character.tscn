@@ -8,7 +8,7 @@
 height = 0.668335
 radius = 0.158691
 
-[node name="NpcCharacter" type="AnimatableBody3D"]
+[node name="NpcCharacter" type="AnimatableBody3D" groups=["npc"]]
 script = ExtResource("1_uhni8")
 
 [node name="FaceableSprite3D" parent="." instance=ExtResource("1_kxtwe")]

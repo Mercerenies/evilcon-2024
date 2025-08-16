@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://bmk35tn3jf7ra"]
+
+[ext_resource type="Script" uid="uid://cq557vimw8exf" path="res://overworld/ravengirl/action_raycast/action_ray_cast.gd" id="1_refy4"]
+
+[node name="ActionRayCast" type="Node3D"]
+script = ExtResource("1_refy4")
+
+[node name="CenterRayCast" type="RayCast3D" parent="."]
+target_position = Vector3(1.2, 0, 0)
+
+[node name="LeftRayCast" type="RayCast3D" parent="."]
+transform = Transform3D(0.906308, 0, 0.422618, 0, 1, 0, -0.422618, 0, 0.906308, 0, 0, 0)
+target_position = Vector3(1.2, 0, 0)
+
+[node name="RightRayCast" type="RayCast3D" parent="."]
+transform = Transform3D(0.906308, 0, -0.422618, 0, 1, 0, 0.422618, 0, 0.906308, 0, 0, 0)
+target_position = Vector3(1.2, 0, 0)

@@ -1,8 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://cwkttdh1g51b7"]
+[gd_scene load_steps=3 format=3 uid="uid://cwkttdh1g51b7"]
 
 [ext_resource type="PackedScene" uid="uid://uaexn03yyky6" path="res://overworld/ui/action_icon/action_icon_panel.tscn" id="1_am6mt"]
+[ext_resource type="Script" uid="uid://cf4b4f8c3e8uo" path="res://overworld/ui/overworld_ui.gd" id="1_xbik3"]
 
 [node name="OverworldUI" type="CanvasLayer"]
+script = ExtResource("1_xbik3")
 
 [node name="ActionIconPanel" parent="." instance=ExtResource("1_am6mt")]
 position = Vector2(927, 82)

@@ -2,6 +2,8 @@
 
 extends Sprite3D
 
+signal facing_frame_changed(facing_dir: int, animation_tick: int)
+
 enum FrameMode {
     ## A 4x1 image containing the four directions RIGHT, DOWN, LEFT,
     ## UP in order. No walking animations.
@@ -44,6 +46,7 @@ func update_frame(facing_dir: int, animation_tick: float) -> void:
             self.frame = _undiagonalize(facing_dir)
         FrameMode.FULL_MOBILITY:
             self.frame = facing_dir * 4 + normalized_animation_tick
+    facing_frame_changed.emit(facing_dir, normalized_animation_tick)
 
 
 func _undiagonalize(facing_dir: int) -> int:

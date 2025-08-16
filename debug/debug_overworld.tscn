@@ -1,41 +1,52 @@
-[gd_scene load_steps=7 format=3 uid="uid://ce5ku2nxm8x54"]
+[gd_scene load_steps=8 format=3 uid="uid://ce5ku2nxm8x54"]
 
 [ext_resource type="PackedScene" uid="uid://cwkttdh1g51b7" path="res://overworld/ui/overworld_ui.tscn" id="1_6ijde"]
 [ext_resource type="PackedScene" uid="uid://fhismih5qxg7" path="res://overworld/ravengirl/ravengirl.tscn" id="1_wbqr6"]
 [ext_resource type="PackedScene" uid="uid://cg68l1fu64gfx" path="res://overworld/overworld_camera/overworld_camera.tscn" id="2_f4402"]
 [ext_resource type="PackedScene" uid="uid://l87fi5igbkb3" path="res://overworld/block/static_block.tscn" id="2_j8qma"]
+[ext_resource type="PackedScene" uid="uid://d3b83cvwrmnim" path="res://overworld/room/room.tscn" id="2_l1ypx"]
 [ext_resource type="PackedScene" uid="uid://psuugbya5c04" path="res://overworld/npc_character/npc_character.tscn" id="4_wcei2"]
 [ext_resource type="Texture2D" uid="uid://bg1jfvok1krou" path="res://overworld/npc_character/minionman.png" id="5_6ijde"]
 
 [node name="DebugOverworld" type="Node3D"]
 
-[node name="OverworldUI" parent="." instance=ExtResource("1_6ijde")]
+[node name="OverworldUI" parent="." node_paths=PackedStringArray("active_room") instance=ExtResource("1_6ijde")]
+active_room = NodePath("../Room")
 
-[node name="Ravengirl" parent="." instance=ExtResource("1_wbqr6")]
+[node name="Room" parent="." node_paths=PackedStringArray("player_character") instance=ExtResource("2_l1ypx")]
+player_character = NodePath("Ravengirl")
+
+[node name="Ravengirl" parent="Room" instance=ExtResource("1_wbqr6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.128876, 0, 0)
 
-[node name="OverworldCamera" parent="." node_paths=PackedStringArray("target_node") instance=ExtResource("2_f4402")]
+[node name="OverworldCamera" parent="Room" node_paths=PackedStringArray("target_node") instance=ExtResource("2_f4402")]
 transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 5.71591, 5.83997)
 target_node = NodePath("../Ravengirl")
 
-[node name="StaticBlock" parent="." instance=ExtResource("2_j8qma")]
+[node name="StaticBlock" parent="Room" instance=ExtResource("2_j8qma")]
 transform = Transform3D(7.10158, 0, 0, 0, 1, 0, 0, 0, 4.33527, 1.62437, -0.501047, -0.283467)
+skeleton = NodePath("../..")
 
-[node name="StaticBlock2" parent="." instance=ExtResource("2_j8qma")]
+[node name="StaticBlock2" parent="Room" instance=ExtResource("2_j8qma")]
 transform = Transform3D(2.98683, 0, 0, 0, 1, 0, 0, 0, 4.33527, 3.50807, 0.726828, 0.0414801)
+skeleton = NodePath("../..")
 
-[node name="StaticBlock4" parent="." instance=ExtResource("2_j8qma")]
+[node name="StaticBlock4" parent="Room" instance=ExtResource("2_j8qma")]
 transform = Transform3D(2.98683, 0, 0, 0, 1, 0, 0, 0, 4.33527, 7.45301, 0.726828, 0.0414801)
+skeleton = NodePath("../..")
 
-[node name="StaticBlock6" parent="." instance=ExtResource("2_j8qma")]
+[node name="StaticBlock6" parent="Room" instance=ExtResource("2_j8qma")]
 transform = Transform3D(0.591573, 0, 0, 0, 0.537323, 0, 0, 0, 1.12296, 5.51462, 0.833235, -0.438532)
+skeleton = NodePath("../..")
 
-[node name="StaticBlock5" parent="." instance=ExtResource("2_j8qma")]
+[node name="StaticBlock5" parent="Room" instance=ExtResource("2_j8qma")]
 transform = Transform3D(1.39407, 0, -0.639903, 0, 1, 0, 0.882383, 0, 1.01098, 7.45301, 0.726828, 3.62686)
+skeleton = NodePath("../..")
 
-[node name="StaticBlock3" parent="." instance=ExtResource("2_j8qma")]
+[node name="StaticBlock3" parent="Room" instance=ExtResource("2_j8qma")]
 transform = Transform3D(2.98683, 0, 0, 0, 1, 0, 0, 0, 0.825099, 0.497126, 0.726828, 1.91299)
+skeleton = NodePath("../..")
 
-[node name="NpcCharacter" parent="." instance=ExtResource("4_wcei2")]
+[node name="NpcCharacter" parent="Room" instance=ExtResource("4_wcei2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.41509, -0.0566066, -1.35217)
 texture = ExtResource("5_6ijde")

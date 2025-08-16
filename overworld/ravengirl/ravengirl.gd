@@ -22,6 +22,8 @@ var _last_input_dir := 2
 
 var _seconds_since_on_floor = 0.0
 
+var _looking_at = null
+
 func _physics_process(delta: float) -> void:
     _update_horizontal_movement_dir(delta)
     _handle_jumping()
@@ -56,6 +58,8 @@ func _physics_process(delta: float) -> void:
         anim_speed *= (xz_velocity.length() / MAX_MOVE_SPEED)
         _animation_tick += delta * anim_speed
     $FaceableSprite3D.update_frame(_last_input_dir, _animation_tick)
+
+    _looking_at = $ActionRayCast.get_collider()
 
 
 func _update_horizontal_movement_dir(delta: float) -> void:
@@ -145,3 +149,21 @@ func _get_input_move_dir() -> int:
         return 6
     else:
         return -1
+
+
+func _on_faceable_sprite_3d_facing_frame_changed(facing_dir: int, _animation_tick: int) -> void:
+    $ActionRayCast.rotation.y = - facing_dir * PI / 4.0
+
+
+func get_looking_at() -> Node3D:
+    return _looking_at
+
+
+func get_primary_button_action() -> Constants.PrimaryButtonAction:
+    if not is_on_floor():
+        return Constants.PrimaryButtonAction.JUMP
+    if _looking_at == null:
+        return Constants.PrimaryButtonAction.JUMP
+    if _looking_at.is_in_group(Groups.NPC):
+        return Constants.PrimaryButtonAction.TALK
+    return Constants.PrimaryButtonAction.JUMP
