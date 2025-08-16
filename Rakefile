@@ -3,6 +3,7 @@
 require_relative './ruby/codex/task'
 require_relative './ruby/lists/playing_card_lists_task'
 require_relative './ruby/lists/card_list'
+require_relative './ruby/yaml'
 require_relative './ruby/yaml/yaml_conversion_task'
 
 CODICES = [
@@ -13,7 +14,7 @@ CODICES = [
 LISTS_FILE = Lists::PlayingCardListsTask.new('./card_game/playing_card/playing_card_lists.gd')
 
 DIALOGUE_JSON_FILES = Dir.glob('./datafiles/dialogue/*.yaml')
-                        .map { |input| Yaml::YamlConversionTask.new(input) }
+                        .map { |input| Yaml::YamlConversionTask.new(input, validator: Yaml::DIALOGUE_VALIDATOR) }
 
 task default: %i[codex lists yaml]
 

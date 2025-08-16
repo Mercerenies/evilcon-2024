@@ -5,6 +5,8 @@ require_relative '../yaml'
 require 'yaml'
 require 'json'
 
+require 'json-schema'
+
 module Yaml
   # Concrete runner which generates the lists needed for our library
   # of cards.
@@ -21,6 +23,7 @@ module Yaml
       puts "Validating YAML for #{input_path} ..."
 
       yaml_data = Yaml.load(File.read(input_path))
+      validator&.validate yaml_data
 
       puts "Writing YAML to #{output_path} ..."
       json_str = Yaml.dump_json(yaml_data)

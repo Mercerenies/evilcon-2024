@@ -1,0 +1,31 @@
+{
+  "$id": "https://mercerenies.com/schema/evilcon-dialogue-schema.json",
+  "$schema": "http://json-schema.org/draft-06/schema",
+  "type": "object",
+  "properties": {
+    "evilcon_datafile": { "const": true },
+    "type": { "const": "dialogue" },
+    "dialogue": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array"
+      },
+      "required": ["START"]
+    }
+  },
+  "required": ["evilcon_datafile", "type", "dialogue"],
+  "$defs": {
+    "dialogue-action": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "action": { "const": "say" },
+            "contents": { "type": "string" }
+          },
+          "required": ["action", "contents"]
+        }
+      ]
+    }
+  }
+}

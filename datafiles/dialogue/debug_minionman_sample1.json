@@ -1,4 +1,16 @@
 {
   "evilcon_datafile": true,
-  "type": "dialogue"
+  "type": "dialogue",
+  "dialogue": {
+    "START": [
+      {
+        "action": "say",
+        "contents": "Mwahahaha for I am Minionman and this is test dialogue!"
+      },
+      {
+        "action": "say",
+        "contents": "And some more text. How are you today, btw? None of this will appear in the final version of the game."
+      }
+    ]
+  }
 }
