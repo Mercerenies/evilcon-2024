@@ -23,7 +23,8 @@ const FaceableSprite3D = preload("res://overworld/faceable_sprite_3d/faceable_sp
         $FaceableSprite3D.frame_mode = v
 
 
-@export_enum("Right", "Down-Right", "Down", "Down-Left", "Left", "Up-Left", "Up", "Up-Right") var facing_direction: int = 2:
+@export_enum("Right", "Down-Right", "Down", "Down-Left", "Left", "Up-Left", "Up", "Up-Right")
+var facing_direction: int = 2:
     set(v):
         if not is_inside_tree():
             await ready
@@ -33,3 +34,8 @@ const FaceableSprite3D = preload("res://overworld/faceable_sprite_3d/faceable_sp
 
 func _ready() -> void:
     $FaceableSprite3D.update_frame(facing_direction, 0.0)
+
+
+func face_direction(direction: int) -> void:
+    facing_direction = direction
+    $FaceableSprite3D.update_frame(direction, 0.0)

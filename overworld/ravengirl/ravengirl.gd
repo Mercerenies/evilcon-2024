@@ -57,9 +57,14 @@ func _physics_process(delta: float) -> void:
         var anim_speed = ANIMATION_SPEED
         anim_speed *= (xz_velocity.length() / MAX_MOVE_SPEED)
         _animation_tick += delta * anim_speed
-    $FaceableSprite3D.update_frame(_last_input_dir, _animation_tick)
+    face_direction(_last_input_dir)
 
     _looking_at = $ActionRayCast.get_collider()
+
+
+func face_direction(dir: int) -> void:
+    _last_input_dir = dir
+    $FaceableSprite3D.update_frame(_last_input_dir, _animation_tick)
 
 
 func _update_horizontal_movement_dir(delta: float) -> void:
