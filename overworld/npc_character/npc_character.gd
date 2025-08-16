@@ -33,5 +33,3 @@ const FaceableSprite3D = preload("res://overworld/faceable_sprite_3d/faceable_sp
 
 func _ready() -> void:
     $FaceableSprite3D.update_frame(facing_direction, 0.0)
-
-# ///// TODO Do not let player stand atop them

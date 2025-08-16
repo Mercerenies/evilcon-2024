@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://cwkttdh1g51b7"]
+
+[ext_resource type="PackedScene" uid="uid://uaexn03yyky6" path="res://overworld/ui/action_icon/action_icon_panel.tscn" id="1_am6mt"]
+
+[node name="OverworldUI" type="CanvasLayer"]
+
+[node name="ActionIconPanel" parent="." instance=ExtResource("1_am6mt")]
+position = Vector2(927, 82)
+scale = Vector2(0.5, 0.5)

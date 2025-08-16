@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://uaexn03yyky6"]
+
+[ext_resource type="Script" uid="uid://r48jecidspg2" path="res://overworld/ui/action_icon/action_icon_panel.gd" id="1_62u21"]
+[ext_resource type="PackedScene" uid="uid://dmlqxti2ijkfe" path="res://overworld/ui/action_icon/action_icon.tscn" id="1_nmau4"]
+
+[node name="ActionIconPanel" type="Node2D"]
+script = ExtResource("1_62u21")
+
+[node name="SpaceActionIcon" parent="." instance=ExtResource("1_nmau4")]
+position = Vector2(99, -57)
+
+[node name="ShiftActionIcon" parent="." instance=ExtResource("1_nmau4")]
+position = Vector2(-80, 54)
+frame = 3

@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://dmlqxti2ijkfe"]
+
+[ext_resource type="Texture2D" uid="uid://b05qs6gf8fit3" path="res://overworld/ui/action_icon/action_icon.png" id="1_8s4yr"]
+[ext_resource type="Script" uid="uid://xxtkfqfb71ia" path="res://overworld/ui/action_icon/action_icon.gd" id="2_7e671"]
+
+[node name="ActionIcon" type="Sprite2D"]
+texture = ExtResource("1_8s4yr")
+hframes = 3
+vframes = 3
+script = ExtResource("2_7e671")
